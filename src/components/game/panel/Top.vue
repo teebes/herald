@@ -1,0 +1,93 @@
+<template>
+  <div class="top-region">
+    <div class="inner">
+      <div class="game-logo"></div>
+      <div class="world-title">
+        <span>{{ world.name }}</span>
+      </div>
+      <div class="game-menu">
+        <button type="button" class="btn btn-small" @click.stop="onClickMenu">&#9776;</button>
+      </div>
+    </div>
+    <div class="menu-region" v-if="showMenu" v-closable="{ handler: 'onClickMenu'}">
+      <div class="callout-actions point-up">
+        <template v-if="$store.state.auth.user.is_temporary">
+          <div class="action create-account" @click="saveCharacter">Save Character</div>
+          <!-- should save -->
+          <div class="action exit-demo" @click="logout">Exit Introduction</div>
+          <!-- should logout -->
+        </template>
+        <template v-else>
+          <div class="action">
+            <a href="https://discord.gg/a3u82tR" target="_blank">Chat on Discord</a>
+          </div>
+          <!-- <div class="action">
+            <a href="#" @click="onClickQuestLog">Quest Log</a>
+          </div>-->
+          <div class="action">
+            <a href="#" class="exit-game" @click="onClickExit">Exit World</a>
+          </div>
+        </template>
+      </div>
+    </div>
+    <img class="game-divider" src="~@/assets/ui/divider.svg" />
+  </div>
+</template>
+
+<script lang='ts'>
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import QuestLog from "../QuestLog.vue";
+import SaveUser from "@/views/SaveUser.vue";
+import { UI_MUTATIONS } from "@/constants.ts";
+
+@Component
+export default class PanelTop extends Vue {
+  showMenu: boolean = false;
+
+  get world() {
+    return this.$store.state.game.world;
+  }
+
+  onClickMenu() {
+    this.showMenu = !this.showMenu;
+  }
+
+  onClickExit() {
+    this.$store.dispatch("game/cmd", "quit");
+  }
+
+  onClickQuestLog() {
+    const modal = {
+      component: QuestLog
+    };
+    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
+  }
+
+  saveCharacter() {
+    const modal = {
+      component: SaveUser,
+      options: {
+        overlayClasses: ["save_user"]
+      }
+    };
+    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
+    this.showMenu = false;
+  }
+
+  logout() {
+    this.$store.dispatch("auth/logout");
+    this.$router.push({ name: "home" });
+  }
+}
+</script>
+
+<style lang='scss' scoped>
+.menu-region {
+  position: relative;
+
+  .callout-actions {
+    right: -31px;
+    top: 3px;
+  }
+}
+</style>

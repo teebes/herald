@@ -1,0 +1,41 @@
+<template>
+    <EditableCollection
+        title="Room Check"
+        name="room_checks"
+        :endpoint="endpoint"
+        :display_component="display_component"
+        :schema="schema"
+        />
+</template>
+
+<script lang='ts'>
+import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
+import axios from "axios";
+import WorldView from "@/components/builder/WorldView.ts";
+import RoomCheck from "@/components/builder/room/RoomCheck.vue"
+import EditableCollection from "@/components/EditableCollection.vue";
+import { FormElement, BUILDER_FORMS } from "@/core/forms.ts"
+
+@Component({
+  components: {
+    EditableCollection
+  }
+})
+export default class WorldFrame extends Mixins(WorldView) {
+    get endpoint() {
+        return `/builder/worlds/${this.$route.params.world_id}/rooms/${this.$route.params.room_id}/checks/`;
+    }
+
+    get display_component() {
+        return RoomCheck;
+    }
+
+    get schema() {
+        return BUILDER_FORMS.ROOM_CHECK;
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+@import "@/styles/colors.scss";
+</style>

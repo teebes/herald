@@ -1,0 +1,29 @@
+// Bootstrap breakpoints
+$screen-xs-max: 767px;
+$screen-sm-min: 768px;
+$screen-sm-max: 991px;
+$screen-md-min: 992px;
+
+/*
+    How to use site breakpoints:
+    @media ($mobile-site) {}
+    @media ($desktop-site) {}
+*/
+
+// Builder breakpoints
+$mobile-breakpoint: 650px;
+$mobile-site: "max-width: 649px";
+$desktop-site: "min-width: 650px";
+
+$site-max-width: 1150px;
+
+@media ($mobile-site) {
+  .mobile-hidden {
+    display: none;
+  }
+}
+
+// Game breakpoints
+$game-mobile-breakpoint: 768px;
+$game-mobile-site: "max-width: 768px";
+$game-desktop-site: "min-width: 767px";
