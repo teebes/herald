@@ -29,7 +29,9 @@ export default class GameLookup extends Vue {
   @Watch("lookup")
   async onChangeLookup(lookup) {
     this.entity = null;
-    await this.doLookup();
+    if (lookup) {
+      await this.doLookup();
+    }
   }
 
   lookupComponent() {

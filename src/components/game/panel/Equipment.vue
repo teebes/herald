@@ -78,6 +78,7 @@ export default class PanelEquipment extends Vue {
 
   onItemClick(item) {
     if (!item) return;
+    if (this.$store.state.game.is_mobile) return;
 
     let items: {}[] = [];
     for (let slotName of EQUIPMENT_SLOT_LIST) {

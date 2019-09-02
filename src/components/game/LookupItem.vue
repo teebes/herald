@@ -148,6 +148,7 @@ export default class GameLookupItem extends Vue {
 
     this.$store.dispatch("game/cmd_structured", payload);
     this.$store.commit("game/lookup_clear");
+    this.$store.commit("ui/modal_clear");
   }
 }
 </script>

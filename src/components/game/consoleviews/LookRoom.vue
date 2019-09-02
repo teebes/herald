@@ -132,11 +132,13 @@ export default class LookRoom extends Vue {
   }
 
   onCharClick(char) {
+    if (this.$store.state.game.is_mobile) return;
     const target = getTargetInGroup(char, this.room.chars);
     this.$store.dispatch("game/cmd", `look ${target}`);
   }
 
   onItemClick(item) {
+    if (this.$store.state.game.is_mobile) return;
     const target = getTargetInGroup(item, this.room.inventory);
     if (item.is_container && !item.is_pickable) {
       this.$store.dispatch("game/cmd", `get all ${target}`);
