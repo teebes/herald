@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="mobile-look">
     <div class="mobile-mini-map" @click="onClickMiniMap" v-if="mapDisplay == 'mini'">
       <GameMap radius="1" />
     </div>
@@ -71,51 +71,56 @@ export default class MobileLook extends Vue {
 <style lang='scss'>
 @import "@/styles/fonts.scss";
 @import "@/styles/colors.scss";
+#mobile-look {
+  .mobile-mini-map {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 500;
 
-.mobile-mini-map {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 500;
-
-  .map-wrapper > .map-view > #map {
-    background: rgba(26, 26, 28, 0.8);
-    border: 1px solid #242629;
+    .map-wrapper > .map-view > #map {
+      background: rgba(26, 26, 28, 0.8);
+      border: 1px solid #242629;
+    }
   }
-}
 
-.mobile-map-full-region {
-  position: absolute;
-  top: 0;
-  background: #121315;
-  border-bottom: 1.5px solid $color-mobile-border;
-  z-index: 10000;
+  .mobile-map-full-region {
+    position: absolute;
+    top: 0;
+    background: #121315;
+    border-bottom: 1.5px solid $color-mobile-border;
+    z-index: 10000;
 
-  width: 100%;
+    width: 100%;
 
-  .mobile-map-full {
-    padding-top: 20px;
+    .mobile-map-full {
+      padding-top: 20px;
 
-    .room-name {
-      @include font-text-light;
-      //margin: 10px 0 15px 0;
-      margin: 10px 0 0px 0;
+      .room-name {
+        @include font-text-light;
+        //margin: 10px 0 15px 0;
+        margin: 10px 0 0px 0;
 
-      display: flex;
-      justify-content: center;
+        display: flex;
+        justify-content: center;
+      }
+
+      .map-region {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .directions-pad {
+        border-top: 1px solid $color-mobile-border;
+        margin-top: 10px;
+        padding: 20px 0;
+      }
     }
+  }
 
-    .map-region {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
-
-    .directions-pad {
-      border-top: 1px solid $color-mobile-border;
-      margin-top: 10px;
-      padding: 20px 0;
-    }
+  .directions-pad {
+    flex-shrink: 0;
   }
 }
 </style>

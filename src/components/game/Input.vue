@@ -9,6 +9,10 @@
           @blur="onBlur"
           @focus="onFocus"
           @keydown.tab="onTab"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
         />
       </div>
     </form>
@@ -172,7 +176,6 @@ export default class Input extends Vue {
       this.input = tokens.join(" ");
     }
   }
-
 }
 </script>
 
