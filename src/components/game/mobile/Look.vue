@@ -76,6 +76,7 @@ export default class MobileLook extends Vue {
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 500;
 
   .map-wrapper > .map-view > #map {
     background: rgba(26, 26, 28, 0.8);
