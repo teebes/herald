@@ -151,6 +151,7 @@ const receiveMessage = async ({
     commit("room_set", message_data.data.room);
   }
 
+  // Track effects for all chars
   if (message_data.type === "effect.start") {
     commit("effects_add", message_data.data);
     setTimeout(() => {
@@ -167,6 +168,23 @@ const receiveMessage = async ({
     if (message_data.data.target === state.player.key) {
       commit("player_effects_remove", message_data.data);
     }
+  }
+
+  // Special case of effects expiration: anathema & combust
+  // TODO: This should actually happen when the skill is consumed, which
+  // requires a new message type to be passed down.
+  if (message_data.type === "cmd.combust.success") {
+    commit("effects_consume", {
+      actor_key: message_data.data.actor,
+      target_key: message_data.data.target,
+      effect_code: "burn"
+    });
+  } else if (message_data.type === "cmd.anathema.success") {
+    commit("effects_consume", {
+      actor_key: message_data.data.actor,
+      target_key: message_data.data.target,
+      effect_code: "wrack"
+    });
   }
 
   // Player cooldowns
@@ -462,6 +480,17 @@ const mutations = {
     }
 
     Vue.set(state.effects, effect.target, applied_effects);
+  },
+
+  effects_consume: (state, { actor_key, target_key, effect_code }) => {
+    const kept_effects: {}[] = _.filter(state.effects, effect => {
+      return (
+        effect.actor != actor_key &&
+        effect.target != target_key &&
+        effect.code != effect_code
+      );
+    });
+    Vue.set(state.effects, target_key, kept_effects);
   },
 
   player_cooldown_start: (state, message_data) => {
