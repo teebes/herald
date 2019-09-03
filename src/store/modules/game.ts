@@ -151,6 +151,7 @@ const receiveMessage = async ({
     commit("room_set", message_data.data.room);
   }
 
+  // Track effects for all chars
   if (message_data.type === "effect.start") {
     commit("effects_add", message_data.data);
     setTimeout(() => {
@@ -166,6 +167,24 @@ const receiveMessage = async ({
   if (message_data.type === "effect.end") {
     if (message_data.data.target === state.player.key) {
       commit("player_effects_remove", message_data.data);
+      commit("effects_remove", message_data.data);
+    }
+  }
+
+  // Special case of effects expiration: anathema & combust
+  if (message_data.type === "notification.combat.attack") {
+    if (message_data.data.attack === "combust") {
+      commit("effects_consume", {
+        actor_key: message_data.data.actor.key,
+        target_key: message_data.data.target.key,
+        effect_code: "burn"
+      });
+    } else if (message_data.data.attack === "anathema") {
+      commit("effects_consume", {
+        actor_key: message_data.data.actor.key,
+        target_key: message_data.data.target.key,
+        effect_code: "wrack"
+      });
     }
   }
 
@@ -462,6 +481,20 @@ const mutations = {
     }
 
     Vue.set(state.effects, effect.target, applied_effects);
+  },
+
+  effects_consume: (state, { actor_key, target_key, effect_code }) => {
+    const char_effects = state.effects[target_key];
+    if (!char_effects || !char_effects.length) return;
+
+    const kept_effects: {}[] = _.filter(char_effects, effect => {
+      return (
+        effect.actor != actor_key &&
+        effect.target != target_key &&
+        effect.code != effect_code
+      );
+    });
+    Vue.set(state.effects, target_key, kept_effects);
   },
 
   player_cooldown_start: (state, message_data) => {
