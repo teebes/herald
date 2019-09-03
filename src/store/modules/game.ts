@@ -171,20 +171,20 @@ const receiveMessage = async ({
   }
 
   // Special case of effects expiration: anathema & combust
-  // TODO: This should actually happen when the skill is consumed, which
-  // requires a new message type to be passed down.
-  if (message_data.type === "cmd.combust.success") {
-    commit("effects_consume", {
-      actor_key: message_data.data.actor,
-      target_key: message_data.data.target,
-      effect_code: "burn"
-    });
-  } else if (message_data.type === "cmd.anathema.success") {
-    commit("effects_consume", {
-      actor_key: message_data.data.actor,
-      target_key: message_data.data.target,
-      effect_code: "wrack"
-    });
+  if (message_data.type === "notification.combat.attack") {
+    if (message_data.data.attack === "combust") {
+      commit("effects_consume", {
+        actor_key: message_data.data.actor.key,
+        target_key: message_data.data.target.key,
+        effect_code: "burn"
+      });
+    } else if (message_data.data.attack === "anathema") {
+      commit("effects_consume", {
+        actor_key: message_data.data.actor.key,
+        target_key: message_data.data.target.key,
+        effect_code: "wrack"
+      });
+    }
   }
 
   // Player cooldowns
@@ -483,7 +483,10 @@ const mutations = {
   },
 
   effects_consume: (state, { actor_key, target_key, effect_code }) => {
-    const kept_effects: {}[] = _.filter(state.effects, effect => {
+    const char_effects = state.effects[target_key];
+    if (!char_effects || !char_effects.length) return;
+
+    const kept_effects: {}[] = _.filter(char_effects, effect => {
       return (
         effect.actor != actor_key &&
         effect.target != target_key &&
