@@ -2,6 +2,12 @@
   <div>
     <div class="name" :class="[item.quality]">{{ this.$capfirst(item.name) }}</div>
     <div class="summary">{{ item.summary }}</div>
+
+    <div
+      class="level-too-high"
+      v-if="$store.state.game.player.archetype !== 'warrior'"
+    >Cannot equip heavy armor.</div>
+
     <div class="description">
       <div class="description-line" v-for="line in lines" :key="lines.indexOf(line)">{{ line }}</div>
     </div>
