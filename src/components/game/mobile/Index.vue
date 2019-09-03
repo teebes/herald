@@ -1,6 +1,7 @@
 <template>
   <div id="augmented-game-mobile" class="game-frame flex flex-grow flex-col">
     <component :is="mainComponent" class="mobile-main" :selectedTab="selectedTab"></component>
+    <Menu v-if="is_menu_open" />
     <Footer @tap="onTap" :selectedTab="selectedTab" />
   </div>
 </template>
@@ -10,16 +11,20 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Footer from "./Footer.vue";
 import Look from "./Look.vue";
 import Info from "./Info.vue";
+import Menu from "./Menu.vue";
 
 @Component({
   components: {
     Footer,
+    Info,
     Look,
-    Info
+    Menu
   }
 })
 export default class MobileGame extends Vue {
   @Prop() messages: any;
+
+  is_menu_open: boolean = false;
 
   selectedTab: string = "look";
 
@@ -36,14 +41,13 @@ export default class MobileGame extends Vue {
   }
 
   onTap(selected) {
-    // Tempoary
     if (selected === "menu") {
-      this.$store.dispatch("game/cmd", "quit");
+      this.is_menu_open = !this.is_menu_open;
       return;
     }
 
-    if (selected === 'look' && this.selectedTab === 'look') {
-      this.$store.dispatch('game/cmd', 'look');
+    if (selected === "look" && this.selectedTab === "look") {
+      this.$store.dispatch("game/cmd", "look");
       return;
     }
 
@@ -78,6 +82,7 @@ export default class MobileGame extends Vue {
   display: flex;
   flex-direction: column;
   width: 100%;
+  position: relative;
 
   .mobile-main {
     display: flex;
