@@ -34,6 +34,7 @@ export default class PanelStatus extends Vue {
   }
 
   get player_effects() {
+    return this.$store.state.game.effects[this.player.key] || [];
     return this.$store.state.game.player_effects;
   }
 

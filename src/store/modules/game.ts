@@ -167,6 +167,7 @@ const receiveMessage = async ({
   if (message_data.type === "effect.end") {
     if (message_data.data.target === state.player.key) {
       commit("player_effects_remove", message_data.data);
+      commit("effects_remove", message_data.data);
     }
   }
 
