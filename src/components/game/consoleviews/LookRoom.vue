@@ -1,5 +1,10 @@
 <template>
   <div class="look-room">
+    <div
+      v-if="message.type === 'affect.death'"
+      class="mt-4 color-text-red font-text-regular"
+    >You have been slain! Rest your weary bones...</div>
+
     <div class="room-name">{{ room.name }}</div>
     <div
       class="room-description"

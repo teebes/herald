@@ -82,7 +82,8 @@ export default class Console extends Vue {
       type === "cmd.move.success" ||
       type === "cmd.flee.success" ||
       type === "system.connect.success" ||
-      type === "cmd.jump.success"
+      type === "cmd.jump.success" ||
+      type === "affect.death"
     ) {
       return "LookRoom";
     } else if (message.type === "cmd.inventory.success") {
