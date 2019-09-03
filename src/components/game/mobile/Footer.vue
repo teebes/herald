@@ -26,7 +26,7 @@
       :class="{ active_tab: isActive('menu')}"
       @click="$emit('tap', 'menu')"
     >
-      <span>Quit</span>
+      <span>Menu</span>
     </div>
   </div>
 </template>
