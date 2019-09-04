@@ -51,6 +51,8 @@ export default class MobileGame extends Vue {
       return;
     }
 
+    this.is_menu_open = false;
+
     if (selected === "look" && this.selectedTab === "look") {
       this.$store.dispatch("game/cmd", "look");
       return;
