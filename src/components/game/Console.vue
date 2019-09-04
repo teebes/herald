@@ -17,7 +17,6 @@
       v-if="!$store.state.game.is_mobile && distanceToBottom != 0"
       @clickScrollTool="scrollToBottom"
     />
-    <div ref="bottom"></div>
   </div>
 </template>
 
@@ -144,8 +143,8 @@ export default class Console extends Vue {
   }
 
   scrollToBottom() {
-    const bottom = this.$refs.bottom as HTMLElement;
-    bottom && bottom.scrollIntoView();
+    const el = this.$refs.console as HTMLElement;
+    el.scrollTop = el.scrollHeight + 1000;
     this.distanceToBottom = 0;
   }
 

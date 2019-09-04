@@ -23,6 +23,7 @@ export default class GameDeathMessage extends Vue {
   }
 
   onCorpseClick() {
+    if (this.$store.state.game.is_mobile) return;
     let target = getTargetInGroup(
       this.corpse,
       this.$store.state.game.room.inventory

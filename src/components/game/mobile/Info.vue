@@ -1,14 +1,14 @@
 <template>
-  <MobilePanel id="mobile-panel" />
+  <Tabs id="mobile-panel" @taplook="$emit('taplook')" />
 </template>
 
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import MobilePanel from "./Panel.vue";
+import Tabs from "../panel/Tabs.vue";
 
 @Component({
   components: {
-    MobilePanel
+    Tabs
   }
 })
 export default class MobileInfo extends Vue {}

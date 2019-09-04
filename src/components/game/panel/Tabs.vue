@@ -26,7 +26,11 @@
         @click="onClick('stats')"
       >Stats</div>
     </div>
-    <component :is="activeTab" class="tab-contents-region flex flex-col"></component>
+    <component
+      :is="activeTab"
+      class="tab-contents-region flex flex-col"
+      @taplook="$emit('taplook')"
+    ></component>
   </div>
 </template>
 

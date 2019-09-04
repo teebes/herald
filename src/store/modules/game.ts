@@ -1,6 +1,7 @@
 import router, {
   LOBBY_WORLD_COMPLETE_SIGNUP,
-  LOBBY_WORLD_TRANSFER
+  LOBBY_WORLD_TRANSFER,
+  BUILDER_WORLD_PLAYER_DETAIL
 } from "@/router";
 import axios from "axios";
 import { LOBBY_WORLD_DETAIL } from "@/router";
@@ -39,6 +40,13 @@ const set_initial_state = () => {
     world: null,
     player: null,
     player_effects: [],
+
+    // The player target is set by a kill command going through, or by
+    // a notification.attack command being received, at which point
+    // we look at the player.targer variable. The distinction is important
+    // because sometimes player.target doesn't get set right away, or gets
+    // cleared momentarily, and we want the UI to be more robust than that.
+    player_target: null,
 
     // Master record for all tracked effects, keyed by character key
     effects: {},
@@ -141,7 +149,7 @@ const receiveMessage = async ({
     }
   }
 
-  // Update the room on successful move
+  // Successful move updates
   if (
     message_data.type === "cmd.move.success" ||
     message_data.type === "cmd.flee.success" ||
@@ -149,6 +157,7 @@ const receiveMessage = async ({
   ) {
     commit("map_add", message_data.data.room);
     commit("room_set", message_data.data.room);
+    commit("player_target_set", null);
   }
 
   // Track effects for all chars
@@ -253,6 +262,23 @@ const receiveMessage = async ({
         }
       });
     }
+  }
+
+  // Target setting
+  if (message_data.type === "cmd.kill.success") {
+    // If we're in an initial hit, the backend takes care of setting actor.target
+    // for that message (but there's a delay afterwards). It would be better if it
+    // set data.target instead, but as a band-aid we're taking advantage of this.
+    commit("player_target_set", message_data.data.actor.target);
+  } else if (message_data.type === "notification.combat.attack") {
+    // We only set the player target if it's a player auto-attacking, essentially.
+    // And we look at the player's target, rather than setting it when they're
+    // the recipient of one, since he could be attacked by multiple enemies.
+    if (message_data.data.actor.key === state.player.key) {
+      commit("player_target_set", message_data.data.target);
+    }
+  } else if (message_data.type === "cmd.flee.success") {
+    commit("player_target_set", null);
   }
 };
 
@@ -609,6 +635,10 @@ const mutations = {
 
   popup_hover_set: (state, value: true | false) => {
     state.popup_hover = value;
+  },
+
+  player_target_set: (state, target) => {
+    state.player_target = target;
   }
 };
 
