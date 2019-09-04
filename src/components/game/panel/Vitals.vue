@@ -35,7 +35,9 @@
     </div>
 
     <Status />
-    <Combat v-if="is_mobile" class="flex-grow flex flex-col justify-center" />
+    <div v-if="is_mobile" class="flex-grow flex flex-col justify-center">
+      <Combat @taplook="$emit('taplook')" />
+    </div>
     <Skills />
   </div>
 </template>

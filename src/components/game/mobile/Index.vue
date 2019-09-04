@@ -1,6 +1,11 @@
 <template>
   <div id="augmented-game-mobile" class="game-frame flex flex-grow flex-col">
-    <component :is="mainComponent" class="mobile-main" :selectedTab="selectedTab"></component>
+    <component
+      :is="mainComponent"
+      class="mobile-main"
+      :selectedTab="selectedTab"
+      @taplook="onTap('look')"
+    ></component>
     <Menu v-if="is_menu_open" />
     <Footer @tap="onTap" :selectedTab="selectedTab" />
   </div>
@@ -57,15 +62,15 @@ export default class MobileGame extends Vue {
     }
   }
 
-  @Watch("target")
-  onChangeTarget(target) {
-    if (target && !this.clickedToLook) {
+  @Watch("player.state")
+  onChangePlayer(player_state) {
+    if (player_state === "combat") {
       this.onTap("info");
     }
   }
 
-  get target() {
-    return this.$store.state.game.player.target;
+  get player() {
+    return this.$store.state.game.player;
   }
 }
 </script>

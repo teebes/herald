@@ -1,17 +1,20 @@
 <template>
-  <div v-if="playerTarget">
+  <div v-if="player_target">
     <div class="combat-view">
-      <div class="combat-header">You're in a fight</div>
+      <div class="combat-header">
+        <span v-if="player_target.health">You're in a fight</span>
+        <span v-else>{{ $capfirst(player_target.name) }} is dead! R.I.P.</span>
+      </div>
       <div class="combat-box">
-        <div class="target-name">{{ playerTarget.name }}</div>
-        <div class="target-summary color-text-50">Level {{ playerTarget.level }}</div>
+        <div class="target-name">{{ player_target.name }}</div>
+        <div class="target-summary color-text-50">Level {{ player_target.level }}</div>
         <div class="target-info">
           <div class="target-health-region">
             <div class="target-health">
               <div class="vital health">
                 <div class="label-row">
                   <div class="label">Health</div>
-                  <div class="amount">{{ playerTarget.health }}</div>
+                  <div class="amount">{{ player_target.health }}</div>
                 </div>
                 <div class="vital-bar">
                   <div class="health-bar" :style="{width: healthPerc + '%'}"></div>
@@ -37,7 +40,7 @@
           <div
             class="action primary"
             action="flee"
-            v-if="playerTarget.health"
+            v-if="player_target.health"
             @click="doAction('flee')"
           >FLEE</div>
           <div class="action primary" action="loot" v-else @click="doAction('loot')">LOOT</div>
@@ -57,50 +60,29 @@ import ProgressBar from "@/components/game/ProgressBar.vue";
   }
 })
 export default class PanelCombat extends Vue {
-  // Since we sometimes want to keep displaying the charater's target even after
-  // they died, we track this in a separate variable.
-  playerTarget = this.target;
-  // playerTarget = {
-  //   health: 10,
-  //   health_max: 100,
-  //   name: "an enemy",
-  //   level: 2
-  // };
+  timeout: number | null = null;
 
-  timeout: any = null;
-
-  playerRoomKey: string | null = null;
+  get player_target() {
+    return this.$store.state.game.player_target;
+  }
 
   doAction(action) {
     this.$store.dispatch("game/cmd", action);
-    this.playerTarget = null;
-  }
-
-  @Watch("target")
-  onTargetChange() {
-    if (this.target) {
-      this.playerTarget = { ...this.target };
-      this.playerRoomKey = this.$store.state.game.player.room;
-    } else {
-      if (
-        this.playerTarget &&
-        this.playerTarget.key === this.$store.state.game.last_death
-      ) {
-        if (this.timeout) {
-          clearTimeout(this.timeout);
-        }
-        this.timeout = setTimeout(() => {
-          this.playerTarget = null;
-        }, 7000);
-        this.playerTarget.health = 0;
-      }
+    if (action === "flee" || action === "loot") {
+      this.$emit("taplook");
     }
   }
 
-  @Watch("player_room")
-  onPlayerRoomChange(room) {
-    if (this.playerTarget && room != this.playerRoomKey) {
-      this.playerTarget = null;
+  @Watch("player_target")
+  onPlayerTargetChange(player_target) {
+    if (player_target && player_target.health === 0) {
+      if (!this.$store.state.game.is_mobile) {
+        this.timeout = setTimeout(() => {
+          if (this.player_target && this.player_target.health === 0) {
+            this.$store.commit("game/player_target_set", null);
+          }
+        }, 5000);
+      }
     }
   }
 
@@ -110,20 +92,12 @@ export default class PanelCombat extends Vue {
     }
   }
 
-  get target() {
-    return this.$store.state.game.player.target;
-  }
-
-  get player_room() {
-    return this.$store.state.game.player.room;
-  }
-
   get healthPerc() {
-    return (this.playerTarget.health / this.playerTarget.health_max) * 100;
+    return (this.player_target.health / this.player_target.health_max) * 100;
   }
 
   get target_effects() {
-    return this.$store.state.game.effects[this.playerTarget.key];
+    return this.$store.state.game.effects[this.player_target.key];
     return [
       {
         active: true,

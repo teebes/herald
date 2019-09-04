@@ -48,7 +48,7 @@ export default class AccessibleGame extends Vue {
     // c.scrollTop = c.scrollHeight;
 
     const bottom = this.$refs.bottom as HTMLElement;
-    bottom.scrollIntoView();
+    bottom && bottom.scrollIntoView();
   }
 
   onInput(args) {
