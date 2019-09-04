@@ -1,6 +1,6 @@
 <template>
   <div class="lookup-desktop lookup-item">
-    <ItemInfo :item="item" />
+    <ItemInfo :item="item" :from_lookup="true" />
 
     <div class="actions">
       <div

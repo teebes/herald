@@ -5,7 +5,7 @@
 
     <div
       class="level-too-high"
-      v-if="$store.state.game.player.archetype !== 'warrior'"
+      v-if="$store.state.game.player.archetype !== 'warrior' && item.armor_class === 'heavy'"
     >Cannot equip heavy armor.</div>
 
     <div class="description">
@@ -49,10 +49,18 @@
           <ul class="list">
             <li v-for="contained_item in item.inventory" :key="contained_item.key">
               <span
-                :class="{ interactive: $store.state.game.lookup, [contained_item.quality]: true}"
-                class="contained-item"
+                :class="{ [contained_item.quality]: true}"
+                class="contained-item interactable"
                 @click="onClickContainedItem(contained_item)"
+                v-if="!from_lookup"
+                v-interactive="{target: contained_item}"
               >{{contained_item.name}}</span>
+              <span
+                v-else
+                :class="{ [contained_item.quality]: true}"
+                @click="onClickContainedItem(contained_item)"
+                class="contained-item"
+              >{{ contained_item.name }}</span>
             </li>
           </ul>
         </div>
@@ -71,6 +79,7 @@ import { getTargetInGroup } from "@/core/utils.ts";
 @Component
 export default class ItemInfo extends Vue {
   @Prop() item!: any;
+  @Prop({ default: false }) from_lookup!: boolean;
 
   get lines() {
     return this.item.description.split("\n") || [];
