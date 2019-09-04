@@ -38,6 +38,9 @@
     <div v-if="is_mobile" class="flex-grow flex flex-col justify-center">
       <Combat @taplook="$emit('taplook')" />
     </div>
+    <div v-if="is_mobile" class="mobile-cast-region">
+      <Cast :message="current_cast" v-if="current_cast" :key="current_cast.data.expires" />
+    </div>
     <Skills />
   </div>
 </template>
@@ -47,12 +50,14 @@ import { Component, Vue } from "vue-property-decorator";
 import Status from "./Status.vue";
 import Skills from "./Skills.vue";
 import Combat from "./Combat.vue";
+import Cast from "../consoleviews/Cast.vue";
 
 @Component({
   components: {
     Combat,
     Skills,
-    Status
+    Status,
+    Cast
   }
 })
 export default class PanelVitals extends Vue {
@@ -79,6 +84,10 @@ export default class PanelVitals extends Vue {
   get hasMana() {
     if (this.player.archetype != "warrior") return true;
     return false;
+  }
+
+  get current_cast() {
+    return this.$store.state.game.current_cast;
   }
 }
 </script>
@@ -167,6 +176,20 @@ export default class PanelVitals extends Vue {
       height: 100%;
       background: $color-secondary;
       border-radius: 6px;
+    }
+  }
+}
+
+.mobile-cast-region {
+  margin: 10px 20px;
+  height: 20px;
+
+  .cast-message {
+    margin: 0 auto;
+    width: 33%;
+
+    .progress-bar {
+      width: 100%;
     }
   }
 }

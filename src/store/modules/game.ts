@@ -59,6 +59,9 @@ const set_initial_state = () => {
     // unique per cast.
     started_casts: {},
 
+    // Currently ongoing cast
+    current_cast: null,
+
     // Value to keep track of what entity the user is currently hovering over,
     // if any. This is to assist in the closing or non-closing of hover popups
     // on desktop.
@@ -158,6 +161,17 @@ const receiveMessage = async ({
     commit("map_add", message_data.data.room);
     commit("room_set", message_data.data.room);
     commit("player_target_set", null);
+  }
+
+  // Track current casts
+  if (
+    message_data.data &&
+    message_data.data.skill &&
+    (message_data.data.method === "cast" ||
+      message_data.data.method === "channel") &&
+    message_data.data.duration !== 0
+  ) {
+    commit("current_cast_set", message_data);
   }
 
   // Track effects for all chars
@@ -639,6 +653,10 @@ const mutations = {
 
   player_target_set: (state, target) => {
     state.player_target = target;
+  },
+
+  current_cast_set: (state, data) => {
+    state.current_cast = data;
   }
 };
 

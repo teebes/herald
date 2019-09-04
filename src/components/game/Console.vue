@@ -144,6 +144,7 @@ export default class Console extends Vue {
 
   scrollToBottom() {
     const el = this.$refs.console as HTMLElement;
+    if (!el) { return; }
     el.scrollTop = el.scrollHeight + 1000;
     this.distanceToBottom = 0;
   }
