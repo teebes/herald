@@ -9,6 +9,7 @@ import { WS_URI } from "@/config.ts";
 import _ from "lodash";
 import Vue from "vue";
 import EventBus from "@/core/eventbus.ts";
+import { INTRO_WORLD_ID } from "@/config.ts";
 
 // Want to make sure we can read THIS
 // Running one more test
@@ -132,10 +133,18 @@ const receiveMessage = async ({
 
   // Disconection
   if (message_data.type === "system.disconnect.success") {
-    router.push({
-      name: LOBBY_WORLD_DETAIL,
-      params: { world_id: state.world.context_id }
-    });
+    if (message_data.data.context.split(".")[1] === INTRO_WORLD_ID) {
+      dispatch("auth/logout", null, { root: true });
+      router.push({
+        name: "home",
+        params: { world_id: state.world.context_id }
+      });
+    } else {
+      router.push({
+        name: LOBBY_WORLD_DETAIL,
+        params: { world_id: state.world.context_id }
+      });
+    }
     commit("reset_state");
     return;
   }
