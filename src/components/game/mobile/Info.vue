@@ -22,7 +22,6 @@ export default class MobileInfo extends Vue {}
 
   .combat-view {
     margin: 0 auto;
-    margin-top: 50px;
   }
 }
 </style>

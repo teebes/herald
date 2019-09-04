@@ -6,10 +6,6 @@
       :method="message.data.method"
       :expires="message.data.expires"
     />
-    <!-- <div class="progress-bar">
-      <div class="progress-fill"></div>
-      <div class="progress-label">{{ message.data.skill }}</div>
-    </div>-->
   </div>
 </template>
 
