@@ -125,7 +125,6 @@ export default class PanelSkills extends Vue {
   }
 
   onCooldownAdjustment(data) {
-
     const cd_data = this.activeCooldowns[data.skill],
       previous_adjustment = cd_data.adjustment || 0,
       adjustment = previous_adjustment + data.adjustment,
@@ -137,7 +136,7 @@ export default class PanelSkills extends Vue {
 
     const overlay = this.$refs[`${data.skill}-overlay`] as HTMLElement;
 
-    this.activeAnimations[data.skill].kill();    
+    this.activeAnimations[data.skill].kill();
 
     if (remaining_time > 0) {
       overlay[0].setAttribute("style", `height: ${remaining_perc}`);
@@ -307,7 +306,7 @@ export default class PanelSkills extends Vue {
         height: 0;
 
         &.finished {
-          background: $color-primary;
+          background: #3c3c3c;
         }
       }
     }
