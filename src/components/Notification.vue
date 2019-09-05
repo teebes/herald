@@ -15,7 +15,6 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({})
 export default class Notification extends Vue {
-
   timeout: number | null = null;
 
   mounted() {
@@ -46,7 +45,7 @@ export default class Notification extends Vue {
 
 <style lang='scss' scoped>
 #notification-box {
-  z-index: 10000;
+  z-index: 20000;
 }
 </style>
 

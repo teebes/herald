@@ -46,7 +46,6 @@ const actions = {
       const resp = await axios.post("/auth/signup/", payload);
       commit("auth_set", resp.data.token);
       commit("user_set", resp.data.user);
-      router.push({ name: "lobby" });
     } catch (error) {
       if (
         error.response.data.email &&

@@ -70,6 +70,8 @@ import { AUTH_ACTIONS } from "@/constants";
 
 @Component
 export default class SignUp extends Vue {
+  @Prop() redirect!: string;
+
   email: string = "";
   password: string = "";
   send_newsletter: boolean = false;
@@ -83,6 +85,17 @@ export default class SignUp extends Vue {
       send_newsletter,
       username
     });
+
+    if (this.redirect) {
+      this.$router.push({
+        path: this.redirect,
+        query: {
+          create: "true"
+        }
+      });
+    } else {
+      this.$router.push({ name: "lobby" });
+    }
   }
 }
 </script>
