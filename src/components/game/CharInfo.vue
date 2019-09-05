@@ -11,7 +11,7 @@
     <div class="health color-text-50">Health: {{ char.health }} / {{ char.health_max }}</div>
     <div class="description">{{ char.description }}</div>
 
-    <div class="equipment" v-if="slots">
+    <div class="equipment" v-if="slots && slots.length">
       <div>{{ this.$capfirst(char.name) }} is using:</div>
       <div v-for="(slot, index) in slots" :key="index">
         <span class="font-text-regular">{{ slot.slotName }}</span>:
