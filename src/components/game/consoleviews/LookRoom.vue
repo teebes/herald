@@ -5,6 +5,13 @@
       class="mt-4 color-text-red font-text-regular"
     >You have been slain! Rest your weary bones...</div>
 
+    <div v-if="message.type === 'cmd.flee.success'" class="mb-4">
+      <span
+        v-if="message.data.is_auto"
+      >Your health is too low and you flee {{ message.data.direction }}!</span>
+      <span v-else>You flee {{ message.data.direction }}!</span>
+    </div>
+
     <div class="room-name">{{ room.name }}</div>
     <div
       class="room-description"
