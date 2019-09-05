@@ -40,6 +40,12 @@ export default class MobileGame extends Vue {
   // This variable helps us track this behavior.
   clickedToLook: boolean = false;
 
+  // Since we're tracking rooms changing, we want to know what the last
+  // viewed room was, because vuex will trigger a change even if the room
+  // itself hasn't changed, and we don't want to trigger 'look' every
+  // beat
+  lastRoom: any = null;
+
   get mainComponent() {
     if (this.selectedTab === "info") return "Info";
     return "Look";
@@ -68,6 +74,21 @@ export default class MobileGame extends Vue {
   onChangePlayer(player_state) {
     if (player_state === "combat") {
       this.onTap("info");
+    }
+  }
+
+  @Watch("player.room")
+  onPlayerRoomChange(room) {
+    if (!this.lastRoom) {
+      this.lastRoom = room;
+    } else if (this.lastRoom.key !== room.key) {
+      this.lastRoom = room;
+    } else {
+      return;
+    }
+
+    if (room && room.key && this.selectedTab !== "look") {
+      this.onTap("look");
     }
   }
 
