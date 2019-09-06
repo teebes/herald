@@ -61,7 +61,6 @@ export default class extends Vue {
   archetype: string = "warrior";
 
   get showSignup() {
-    console.log(this.$store.state.auth);
     return !this.$store.state.auth.token;
   }
 
