@@ -46,6 +46,7 @@ const actions = {
       const resp = await axios.post("/auth/signup/", payload);
       commit("auth_set", resp.data.token);
       commit("user_set", resp.data.user);
+      return resp;
     } catch (error) {
       if (
         error.response.data.email &&
@@ -59,6 +60,7 @@ const actions = {
           root: true
         });
       }
+      return Promise.reject(error);
     }
   },
 

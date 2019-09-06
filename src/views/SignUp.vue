@@ -79,22 +79,25 @@ export default class SignUp extends Vue {
 
   async signup() {
     const { email, password, send_newsletter, username } = this;
-    await this.$store.dispatch("auth/signup", {
-      email,
-      password,
-      send_newsletter,
-      username
-    });
-
-    if (this.redirect) {
-      this.$router.push({
-        path: this.redirect,
-        query: {
-          create: "true"
-        }
+    try {
+      const resp = await this.$store.dispatch("auth/signup", {
+        email,
+        password,
+        send_newsletter,
+        username
       });
-    } else {
-      this.$router.push({ name: "lobby" });
+      if (this.redirect) {
+        this.$router.push({
+          path: this.redirect,
+          query: {
+            create: "true"
+          }
+        });
+      } else {
+        this.$router.push({ name: "lobby" });
+      }
+    } catch (e) {
+      // Stay on the page
     }
   }
 }
