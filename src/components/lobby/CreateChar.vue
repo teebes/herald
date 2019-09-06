@@ -88,6 +88,6 @@ export default class extends Vue {
 @import "@/styles/colors.scss";
 
 .new-character {
-  margin-bottom: 150px;
+  margin-bottom: 50px;
 }
 </style>
