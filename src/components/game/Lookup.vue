@@ -13,13 +13,13 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import axios from "axios";
 import LookupItem from "./LookupItem.vue";
-import LookupMob from "./LookupMob.vue";
+import LookupChar from "./LookupChar.vue";
 import LookupNotFound from "./LookupNotFound.vue";
 
 @Component({
   components: {
     LookupItem,
-    LookupMob,
+    LookupChar,
     LookupNotFound
   }
 })
@@ -43,7 +43,7 @@ export default class GameLookup extends Vue {
     if (type === "item") {
       return "LookupItem";
     }
-    return "LookupMob";
+    return "LookupChar";
   }
 
   get lookup() {

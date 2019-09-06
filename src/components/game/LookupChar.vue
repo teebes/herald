@@ -22,6 +22,7 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { capfirst } from "@/helpers/utils.ts";
 import CharInfo from "./CharInfo.vue";
+import { getTargetInGroup } from "@/core/utils.ts";
 
 interface Payload {
   type: string;
@@ -37,31 +38,9 @@ interface Payload {
 export default class GameLookupChar extends Vue {
   @Prop() entity!: any;
 
-  doAction(char, code) {
-    // Another band-aid, until we can include 'keywords' as
-    // a player resource attribute
-    let char_keyword;
-    if (char.key.split(".")[0] === "player") {
-      char_keyword = char.name;
-    } else {
-      char_keyword = char.keywords.split(" ")[0];
-    }
-
-    // Temporary band-aid until we normalize on the backend
-    // target: string vs target: { key: string }
-    const data = {};
-    if (code === "enquire" || code === "complete") {
-      data["target"] = char.key;
-    } else {
-      data["target"] = { key: char.key };
-    }
-
-    let payload: Payload = {
-      type: `cmd.${code}`,
-      data: data,
-      text: `${code} ${char_keyword}`
-    };
-    this.$store.dispatch("game/cmd_structured", payload);
+  doAction(char, action) {
+    const target = getTargetInGroup(char, this.$store.state.game.room.chars);
+    this.$store.dispatch("game/cmd", `${action} ${target}`);
     this.$store.commit("game/lookup_clear");
     this.$store.commit("ui/modal_clear");
   }
