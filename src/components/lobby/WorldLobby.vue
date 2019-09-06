@@ -49,7 +49,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import axios from "axios";
 import { BUILDER_WORLD_INDEX } from "@/router";
-import { LOBBY_WORLD_TRANSFER, LOBBY_WORLD_DETAIL } from "@/router.ts";
+import { LOBBY_WORLD_DETAIL } from "@/router.ts";
 import { INTRO_WORLD_ID } from "@/config.ts";
 import UserChars from "./UserChars.vue";
 
@@ -123,23 +123,6 @@ export default class WorldLobby extends Vue {
     this.chars = user_chars_resp.data.results;
     this.world = world_resp.data;
     this.leaders = leaderboard_resp.data.results;
-  }
-
-  async onEnter(char) {
-    this.$store.dispatch("game/world_enter", {
-      player_id: char.id,
-      world_id: this.$route.params.world_id
-    });
-  }
-
-  async onTransfer(char) {
-    this.$router.push({
-      name: LOBBY_WORLD_TRANSFER,
-      params: {
-        player_id: char.id,
-        world_id: this.$route.params.world_id
-      }
-    });
   }
 }
 </script>

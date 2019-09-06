@@ -13,6 +13,7 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import eventbus from "@/core/eventbus.ts";
 import Footer from "./Footer.vue";
 import Look from "./Look.vue";
 import Info from "./Info.vue";
@@ -65,8 +66,13 @@ export default class MobileGame extends Vue {
     }
 
     this.selectedTab = selected;
+
     if (selected !== "info") {
       this.clickedToLook = true;
+    }
+
+    if (selected === "info" || selected === "type") {
+      eventbus.$emit("scroll-down");
     }
   }
 

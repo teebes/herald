@@ -22,6 +22,7 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import EventBus from "@/core/eventbus.ts";
 import Cast from "./consoleviews/Cast.vue";
 import CombatMessage from "./consoleviews/CombatMessage.vue";
 import DeathMessage from "./consoleviews/DeathMessage.vue";
@@ -132,6 +133,11 @@ export default class Console extends Vue {
     const el = this.$refs.console as HTMLElement;
     this.scrollHeight = el.scrollHeight;
     this.scrollToBottom();
+    EventBus.$on("scroll-down", this.scrollToBottom);
+  }
+
+  destroyed() {
+    EventBus.$off("scroll-down", this.scrollToBottom);
   }
 
   updated() {

@@ -30,6 +30,7 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import CreateChar from "./CreateChar.vue";
 import { capitalize } from "@/core/utils.ts";
+import { LOBBY_WORLD_TRANSFER } from "@/router.ts";
 
 @Component({
   components: {
@@ -54,6 +55,23 @@ export default class extends Vue {
   onCharCreated(newCharacter) {
     this.newCharacter = false;
     this.$emit("charcreated", newCharacter);
+  }
+
+  async onEnter(char) {
+    this.$store.dispatch("game/world_enter", {
+      player_id: char.id,
+      world_id: this.$route.params.world_id
+    });
+  }
+
+  async onTransfer(char) {
+    this.$router.push({
+      name: LOBBY_WORLD_TRANSFER,
+      params: {
+        player_id: char.id,
+        world_id: this.$route.params.world_id
+      }
+    });
   }
 }
 </script>
