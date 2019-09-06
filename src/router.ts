@@ -220,10 +220,9 @@ const router = new Router({
     },
 
     {
-      path: "/lobby/worlds/:world_id",
+      path: "/lobby/worlds/:world_id/:slug?",
       component: WorldLobby,
-      name: LOBBY_WORLD_DETAIL,
-      beforeEnter: ifAuthenticated
+      name: LOBBY_WORLD_DETAIL
     },
 
     {

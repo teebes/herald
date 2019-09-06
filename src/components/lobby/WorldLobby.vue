@@ -21,70 +21,7 @@
             <div class="world-description">{{ world.description}}</div>
           </div>
 
-          <div class="world-chars-region">
-            <div class="new-character" v-if="newCharacter">
-              <div class="wrapper">
-                <form class @submit.prevent="createCharacter">
-                  <h1 class="form-title">CREATE NEW CHARACTER</h1>
-                  <div class="flex">
-                    <div class="form-group flex-1">
-                      <label for="field-name">Name</label>
-                      <input
-                        id="field-name"
-                        type="name"
-                        class="form-control"
-                        placeholder="Name"
-                        v-model="charname"
-                        required="required"
-                      />
-                    </div>
-                    <div class="form-group flex-1">
-                      <label for="field-gender">Gender</label>
-                      <select id="field-gender" v-model="gender">
-                        <option value="female">Female</option>
-                        <option value="male">Male</option>
-                      </select>
-                    </div>
-                    <div class="form-group flex-1" v-if="$route.params.world_id != INTRO_WORLD_ID">
-                      <label for="field-archetype">Class</label>
-                      <select id="field-archetype" v-model="archetype">
-                        <option value="warrior">Warrior</option>
-                        <option value="mage">Mage</option>
-                        <option value="cleric">Cleric</option>
-                      </select>
-                    </div>
-                  </div>
-                  <button class="btn-large">CREATE CHARACTER</button>
-                </form>
-              </div>
-              <div class="cancel-action" @click="newCharacter = false">cancel</div>
-            </div>
-            <div class="world-chars" v-else>
-              <div class="world-chars-title">YOUR CHARACTERS</div>
-              <div class="world-chars-container">
-                <div v-for="char in chars" :key="char.id" class="char-display">
-                  <div class="char-name">{{ char.name }}</div>
-                  <div class="char-info">{{ charInfo(char) }}</div>
-                  <div class="enter-world">
-                    <button
-                      class="btn-small play-as"
-                      @click="onTransfer(char)"
-                      v-if="char.can_transfer && !$store.state.auth.user.is_temporary"
-                    >TRANSFER {{ char.name }}</button>
-                    <button
-                      class="btn-small play-as"
-                      @click="onEnter(char)"
-                      v-else
-                    >PLAY AS {{ char.name }}</button>
-                  </div>
-                </div>
-                <button
-                  class="btn-add new-character"
-                  @click="newCharacter = true"
-                >CREATE NEW CHARACTER</button>
-              </div>
-            </div>
-          </div>
+          <UserChars @charcreated="onCharCreated" :chars="chars" />
         </div>
 
         <div class="world-leaderboard">
@@ -112,11 +49,15 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import axios from "axios";
 import { BUILDER_WORLD_INDEX } from "@/router";
-import { capitalize } from "@/core/utils.ts";
 import { LOBBY_WORLD_TRANSFER, LOBBY_WORLD_DETAIL } from "@/router.ts";
 import { INTRO_WORLD_ID } from "@/config.ts";
+import UserChars from "./UserChars.vue";
 
-@Component({})
+@Component({
+  components: {
+    UserChars
+  }
+})
 export default class WorldLobby extends Vue {
   BUILDER_WORLD_INDEX = BUILDER_WORLD_INDEX;
   INTRO_WORLD_ID = INTRO_WORLD_ID;
@@ -124,26 +65,9 @@ export default class WorldLobby extends Vue {
   chars: {}[] = [];
   world: any = null;
   leaders: {}[] = [];
-  newCharacter: boolean = false;
-  charname: string = "";
-  gender: string = "female";
-  archetype: string = "warrior";
 
-  async createCharacter() {
-    const resp = await axios.post(
-      `lobby/worlds/${this.$route.params.world_id}/chars/`,
-      {
-        name: this.charname,
-        gender: this.gender,
-        archetype: this.archetype
-      }
-    );
-    if (resp.status === 201) {
-      this.chars.push(resp.data);
-      this.newCharacter = false;
-      this.charname = "";
-      this.gender = "female";
-    }
+  onCharCreated(new_character) {
+    this.chars.push(new_character);
   }
 
   get is_temporary_user() {
@@ -166,10 +90,6 @@ export default class WorldLobby extends Vue {
     return {
       backgroundImage: `url(/ui/lobby/${fileName})`
     };
-  }
-
-  charInfo(char) {
-    return `${capitalize(char.gender)} ${char.archetype}, level ${char.level}`;
   }
 
   async mounted() {
@@ -224,7 +144,7 @@ export default class WorldLobby extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "@/styles/colors.scss";
 @import "@/styles/fonts.scss";
 @import "@/styles/layout.scss";
@@ -400,70 +320,6 @@ export default class WorldLobby extends Vue {
           @include font-text-light;
           font-size: 15px;
           line-height: 26px;
-        }
-      }
-
-      .world-chars-region {
-        padding-top: 50px;
-
-        // Your characters
-        .world-chars {
-          .world-chars-title {
-            @include font-title-regular;
-            color: $color-secondary;
-            letter-spacing: 1.5px;
-            font-size: 15px;
-            line-height: 18px;
-            margin-bottom: 27px;
-          }
-
-          .char-display {
-            margin-bottom: 50px;
-
-            .char-name {
-              @include font-text-regular;
-              line-height: 20px;
-            }
-
-            .char-info {
-              @include font-text-light;
-              line-height: 23px;
-              color: $color-text-hex-50;
-            }
-
-            .play-as {
-              margin-top: 15px;
-            }
-          }
-
-          .create-character {
-            margin-top: 12px;
-          }
-        }
-
-        // New Character
-        .new-character {
-          .wrapper {
-            background: $color-background-light;
-            border: 1px solid $color-background-light-border;
-            padding: 15px;
-            width: 100%;
-
-            .form-title {
-              text-align: center;
-              width: 100%;
-              margin-bottom: 50px;
-            }
-          }
-          .cancel-action {
-            @include font-text-light;
-            opacity: 0.5;
-            width: 100%;
-            text-align: center;
-            &:hover {
-              cursor: pointer;
-            }
-          }
         }
       }
     }

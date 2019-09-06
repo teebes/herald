@@ -35,16 +35,6 @@ export default class ForgotPassword extends Vue {
     this.sent = await this.$store.dispatch("auth/forgotpassword", {
       email: this.email
     });
-    /*
-    const { email, password, send_newsletter } = this;
-    await this.$store.dispatch("auth/signup", {
-      email,
-      password,
-      send_newsletter
-    });
-    this.$router.push("/lobby");
-    return;
-    */
   }
 }
 </script>
