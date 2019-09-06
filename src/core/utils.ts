@@ -39,9 +39,10 @@ export const getTargetInGroup = (entity, group) => {
   // there could be multiple copies of the item or the mob in the context
   // that is being considered.
   //
-  // This function returns a single integer, with the position among the
-  // group that this keyword is in, which is a positive number if found, and
-  // a 0 if not (which would be an incorrect usage of this function)
+  // This function returns a target string which qualifies the entity
+  // in the context of the rom it is in.
+  //
+  // Returns 0 if one could not be found.
 
   // Since we know at least the entity itself is a duplicate of itself,
   // we start at 1.
@@ -60,6 +61,7 @@ export const getTargetInGroup = (entity, group) => {
   if (!found) {
     return 0;
   }
+
   let target = entity.keyword;
   if (duplicateCount > 1) {
     target = `${duplicateCount}.${target}`;
