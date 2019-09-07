@@ -60,6 +60,12 @@ export default class MobileLook extends Vue {
   }
 
   get hasExits() {
+    // As a special mechanism for the intro, we hide the dpad if we are
+    // displaying the 'look' hint.
+    if (this.$store.state.game.room.hint === "7:Enter 'look' or 'l'") {
+      return false;
+    }
+
     for (const direction in DIRECTIONS) {
       if (this.room[direction]) return true;
     }

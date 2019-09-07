@@ -172,6 +172,14 @@ const receiveMessage = async ({
     commit("player_target_set", null);
   }
 
+  // Room updating on look
+  if (
+    message_data.type === "cmd.look.success" &&
+    message_data.data.target_type === "room"
+  ) {
+    commit("room_set", message_data.data.target);
+  }
+
   // Track current casts
   if (
     message_data.data &&
