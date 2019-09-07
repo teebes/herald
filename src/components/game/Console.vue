@@ -161,6 +161,9 @@ export default class Console extends Vue {
 
   updateScroll() {
     const el = this.$refs.console as HTMLElement;
+    if (!el) {
+      return;
+    }
     this.distanceToBottom = el.scrollHeight - el.clientHeight - el.scrollTop;
   }
 }
