@@ -45,7 +45,12 @@ export default class MobileGame extends Vue {
   // viewed room was, because vuex will trigger a change even if the room
   // itself hasn't changed, and we don't want to trigger 'look' every
   // beat
-  lastRoom: any = null;
+  lastRoom: any;
+
+  constructor() {
+    super();
+    this.lastRoom = { ...this.$store.state.game.room } || null;
+  }
 
   get mainComponent() {
     if (this.selectedTab === "info") return "Info";
