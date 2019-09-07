@@ -183,6 +183,6 @@ export default class Input extends Vue {
 @import "@/styles/colors.scss";
 
 #input {
-  padding: 0 20px;
+  //padding: 0 20px;
 }
 </style>

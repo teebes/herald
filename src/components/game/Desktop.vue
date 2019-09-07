@@ -104,6 +104,10 @@ export default class DesktopGame extends Vue {
   .desktop-lookup {
     position: absolute;
   }
+
+  #input {
+    padding: 0 20px;
+  }
 }
 </style>
 

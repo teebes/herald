@@ -122,5 +122,9 @@ export default class MobileLook extends Vue {
   .directions-pad {
     flex-shrink: 0;
   }
+
+  #input {
+    padding: 0 20px;
+  }
 }
 </style>
