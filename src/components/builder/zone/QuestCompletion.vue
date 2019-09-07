@@ -17,8 +17,9 @@
 
     <div
       v-if="!quest.completion_cmd_available && !quest.completion_keywords && !quest.completion_action"
+      class="mt-4"
     >Warning: quest has no way to be completed. Make the completion command available, define completion triggers or a completion action.</div>
-    <div v-else>
+    <div v-else class="mt-4">
       <div v-if="quest.completion_cmd_available">
         Quest can be completed with the
         <strong>complete</strong> command.

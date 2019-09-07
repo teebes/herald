@@ -2,7 +2,11 @@
   <div class="status-region">
     <div class="player-status">
       <div class="state-region">
-        <div class="player-state" :class="[player.state]" @click="onClickState">{{ player_state }}</div>
+        <div
+          class="player-state"
+          :class="{ [player.state]: true, interactable: (player.state == 'standing' || player.state == 'resting')}"
+          @click="onClickState"
+        >{{ player_state }}</div>
       </div>
       <div class="own-effects-region">
         <ProgressBar
@@ -80,7 +84,7 @@ export default class PanelStatus extends Vue {
 
       .player-state {
         @include font-title-light;
-        color: $color-text-hex-50;
+        //color: $color-text-hex-50;
         font-size: 15px;
         line-height: 18px;
 

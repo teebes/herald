@@ -352,6 +352,12 @@ body > .tooltip {
   }
 }
 
+.interactable {
+  @include font-text-regular;
+  border-bottom: 1px dotted #888;
+  cursor: pointer;
+}
+
 .callout-actions {
   position: absolute;
   width: 137px;

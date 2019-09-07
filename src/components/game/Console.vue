@@ -183,12 +183,6 @@ export default class Console extends Vue {
 
   -webkit-overflow-scrolling: touch;
 
-  .interactable {
-    @include font-text-regular;
-    border-bottom: 1px dotted #888;
-    cursor: pointer;
-  }
-
   .message {
     &.echo,
     &.grouped,
