@@ -69,6 +69,8 @@
     </template>
 
     <div class="color-text-50 mt-2" v-if="item.label">An item label reads: "{{ item.label }}"</div>
+
+    <div v-if="item.cost" class="color-secondary mt-2">Sells for {{ item.cost }} gold.</div>
   </div>
 </template>
 
