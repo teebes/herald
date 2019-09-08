@@ -504,6 +504,11 @@ export const BUILDER_FORMS = {
       attr: "probability",
       label: "Load Chance",
       default: 100
+    },
+    {
+      attr: "num_copies",
+      label: "Number of Copies",
+      default: 1
     }
   ],
 
