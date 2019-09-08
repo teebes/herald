@@ -74,6 +74,7 @@ const actions = {
       });
       commit("auth_set", resp.data.token);
       commit("user_set", resp.data.user);
+      return resp;
     } catch (error) {
       if (
         error.response.data.email &&

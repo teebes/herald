@@ -41,7 +41,7 @@ export default class LobbyTransfer extends Vue {
 
   async transfer() {
     const resp = await axios.post(
-      `/lobby/worlds/${this.$route.params.world_id}/transfer/`,
+      `/lobby/worlds/${this.$route.params.player_id}/transfer/`,
       {
         player: this.$route.params.player_id,
         name: this.name,

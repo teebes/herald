@@ -233,7 +233,7 @@ const router = new Router({
     },
 
     {
-      path: "/lobby/worlds/:world_id/transfer/:player_id",
+      path: "/lobby/worlds/transfer/:player_id",
       component: Transfer,
       name: LOBBY_WORLD_TRANSFER,
       beforeEnter: ifAuthenticated

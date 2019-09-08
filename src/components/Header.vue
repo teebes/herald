@@ -12,7 +12,7 @@
         </a>-->
       </div>
 
-      <div class="menu">
+      <div class="menu" v-if="showMenu">
         <template v-if="isAuthenticated">
           <router-link to="/lobby" :class="{ 'selected': isActive('lobby') }">Worlds</router-link>
           <a href="#" @click.prevent="editAccount">Account</a>
@@ -48,6 +48,12 @@ export default class Header extends Vue {
   async logout() {
     this.$store.dispatch("auth/logout");
     this.$router.push({ name: "home" });
+  }
+
+  get showMenu() {
+    // Hide the menu if we're in the complete world screen
+    if (this.$route.name === "lobby_world_complete_signup") return false;
+    return true;
   }
 
   isActive(section) {

@@ -104,12 +104,13 @@ export default class SignUp extends Vue {
       username
     };
     const params = {
-      world_id: this.$route.params.world_id,
       player_id: this.$route.params.player_id
     };
-    const resp = await this.$store.dispatch("auth/save", payload);
-    if (resp.status_code === 200)
-      this.$router.push({ name: LOBBY_WORLD_TRANSFER, params: params });
+    try {
+      const resp = await this.$store.dispatch("auth/save", payload);
+      if (resp.status === 201)
+        this.$router.push({ name: LOBBY_WORLD_TRANSFER, params: params });
+    } catch (e) {}
   }
 }
 </script>
