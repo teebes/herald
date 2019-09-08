@@ -67,7 +67,7 @@ export default class WorldLobby extends Vue {
   leaders: {}[] = [];
 
   onCharCreated(new_character) {
-    this.chars.push(new_character);
+    this.chars.splice(0, 0, new_character);
   }
 
   get is_temporary_user() {

@@ -14,7 +14,7 @@
         <template v-if="$store.state.auth.user.is_temporary">
           <div class="action create-account" @click="saveCharacter">Save Character</div>
           <!-- should save -->
-          <div class="action exit-demo" @click="logout">Exit Introduction</div>
+          <div class="action exit-demo" @click="onClickExit">Exit Introduction</div>
           <!-- should logout -->
         </template>
         <template v-else>
@@ -72,11 +72,6 @@ export default class PanelTop extends Vue {
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
     this.showMenu = false;
-  }
-
-  logout() {
-    this.$store.dispatch("auth/logout");
-    this.$router.push({ name: "home" });
   }
 }
 </script>

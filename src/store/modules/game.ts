@@ -133,7 +133,10 @@ const receiveMessage = async ({
 
   // Disconection
   if (message_data.type === "system.disconnect.success") {
-    if (message_data.data.context.split(".")[1] === INTRO_WORLD_ID) {
+    if (
+      message_data.data.context.split(".")[1] === INTRO_WORLD_ID &&
+      rootState.auth.user.is_temporary
+    ) {
       dispatch("auth/logout", null, { root: true });
       router.push({
         name: "home",
