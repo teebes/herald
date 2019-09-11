@@ -1,5 +1,9 @@
 <template>
   <div class="front-page" ref="frontpage">
+    <div class="scroll-down" v-if="scrollTop <= 5">
+      <img src="@/assets/ui/angle-double-down.svg" />
+    </div>
+
     <div class="container-fluid">
       <div class="top-section" style="display: auto">
         <div class="gradient-background"></div>
@@ -190,6 +194,8 @@ export default class Home extends Vue {
   townPos: string = "50% calc(50%)";
   mountainPos: string = "50% calc(50%)";
 
+  scrollTop: number = 0;
+
   get loginLink() {
     return { name: LOGIN };
   }
@@ -251,6 +257,8 @@ export default class Home extends Vue {
 
   onScroll() {
     const scrollTop = window.scrollY;
+    this.scrollTop = scrollTop;
+
     const townFactor = 3,
       mountainsFactor = 6;
 
@@ -841,6 +849,20 @@ $breakpoint-down-sm: "max-width: 575.98px";
       padding-bottom: 30px;
       color: $color-text-hex-30;
       text-align: center;
+    }
+  }
+
+  .scroll-down {
+    position: fixed;
+    z-index: 1;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    img {
+      fill: $color-primary;
+      width: 50px;
+      height: 50px;
     }
   }
 }
