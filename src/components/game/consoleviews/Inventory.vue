@@ -47,6 +47,7 @@ export default class ConsoleInventory extends Vue {
   }
 
   onItemClick(item) {
+    if (this.$store.state.game.is_mobile) return;
     const target = getTargetInGroup(item, this.inventory);
     this.$store.dispatch("game/cmd", `drop ${target}`);
   }

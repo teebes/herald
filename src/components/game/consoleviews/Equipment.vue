@@ -30,6 +30,7 @@ export default class ConsoleEquipment extends Vue {
   @Prop() message!: any;
 
   onItemClick(item) {
+    if (this.$store.state.game.is_mobile) return;
     let items: {}[] = [];
     for (let slotName of EQUIPMENT_SLOT_LIST) {
       const slotItem = this.message.data.equipment[slotName];
