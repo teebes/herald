@@ -7,8 +7,8 @@
     <div class="wrapper" v-else>
       <form class @submit.prevent="createCharacter">
         <h1 class="form-title">CREATE NEW CHARACTER</h1>
-        <div class="flex">
-          <div class="form-group flex-1">
+        <div class="flex creation-fields" :class="{ selectableFaction: showFactions }">
+          <div class="form-group">
             <label for="field-name">Name</label>
             <input
               id="field-name"
@@ -19,14 +19,26 @@
               required="required"
             />
           </div>
-          <div class="form-group flex-1">
+          <div class="form-group">
             <label for="field-gender">Gender</label>
             <select id="field-gender" v-model="gender">
               <option value="female">Female</option>
               <option value="male">Male</option>
             </select>
           </div>
-          <div class="form-group flex-1" v-if="$route.params.world_id != INTRO_WORLD_ID">
+
+          <div class="form-group" v-if="showFactions">
+            <label for="field-faction">Faction</label>
+            <select id="field-faction" v-model="faction">
+              <option
+                v-for="faction in world.core_factions"
+                :key="faction.code"
+                :value="faction.code"
+              >{{ faction.name }}</option>
+            </select>
+          </div>
+
+          <div class="form-group" v-if="$route.params.world_id != INTRO_WORLD_ID">
             <label for="field-archetype">Class</label>
             <select id="field-archetype" v-model="archetype">
               <option value="warrior">Warrior</option>
@@ -59,19 +71,38 @@ export default class extends Vue {
   charname: string = "";
   gender: string = "female";
   archetype: string = "warrior";
+  faction: string | null;
+
+  @Prop() world!: any;
+
+  constructor() {
+    super();
+    if (this.world.core_factions.length) {
+      this.faction = this.world.core_factions[0].code;
+    } else {
+      this.faction = null;
+    }
+  }
+
+  get showFactions() {
+    return this.world.core_factions.length && this.world.can_select_faction;
+  }
 
   get showSignup() {
     return !this.$store.state.auth.token;
   }
 
   async createCharacter() {
+    const payload = {
+      name: this.charname,
+      gender: this.gender,
+      archetype: this.archetype
+    };
+    if (this.faction) {
+      payload["faction"] = this.faction;
+    }
     const resp = await axios.post(
-      `lobby/worlds/${this.$route.params.world_id}/chars/`,
-      {
-        name: this.charname,
-        gender: this.gender,
-        archetype: this.archetype
-      }
+      `lobby/worlds/${this.$route.params.world_id}/chars/`
     );
     if (resp.status === 201) {
       // this.chars.push(resp.data);
@@ -85,8 +116,68 @@ export default class extends Vue {
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
+@import "@/styles/layout.scss";
+@import "@/styles/fonts.scss";
 
 .new-character {
   margin-bottom: 50px;
+  margin-top: 40px;
+  flex-basis: 33%;
+  height: 60px;
+
+  .wrapper {
+    background: $color-background-light;
+    border: 1px solid $color-background-light-border;
+    padding: 15px;
+    width: 100%;
+
+    .form-title {
+      text-align: center;
+      width: 100%;
+      margin-bottom: 50px;
+    }
+
+    .creation-fields {
+      &.selectableFaction {
+        flex-wrap: wrap;
+        .form-group {
+          flex: 0 48%;
+
+          &:nth-child(even) {
+            margin-left: 2%;
+          }
+          &:nth-child(odd) {
+            margin-right: 2%;
+          }
+        }
+      }
+      &:not(.selectableFaction) {
+        .form-group {
+          flex: 1;
+          &:first-child {
+            margin-right: 1rem;
+            @media ($mobile-site) {
+              margin-right: 0.5rem;
+            }
+          }
+          &:last-child {
+            margin-left: 1rem;
+            @media ($mobile-site) {
+              margin-left: 0.5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  .cancel-action {
+    @include font-text-light;
+    opacity: 0.5;
+    width: 100%;
+    text-align: center;
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 </style>
