@@ -38,6 +38,7 @@ const mutations = {
       Can be invoked either by just passing the notification stream,
       or by passing an object. If with an object, additional options
       may be specified:
+      - notification: the text of the notification
       - expires: how long to wait to expire the message, where a false
         value means never expire.
       - type: success or error
