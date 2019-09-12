@@ -34,17 +34,17 @@
       >Upgrade count: {{item.upgrade_count}}</div>
     </template>
 
-    <template v-else-if="item.type === 'container'">
+    <template v-else-if="item.type === 'container' || item.type === 'corpse'">
       <template v-if="item.inventory.length">
         <div class="container-info">
           <div
             class="list-title"
             v-if="item.inventory.length === 1"
-          >{{ item.inventory.length }} item in container:</div>
+          >{{ item.inventory.length }} item in {{ item.type }}:</div>
           <div
             class="list-title"
             v-else-if="item.inventory.length > 1"
-          >{{ item.inventory.length }} items in container:</div>
+          >{{ item.inventory.length }} items in {{ item.type }}:</div>
 
           <ul class="list">
             <li v-for="contained_item in item.inventory" :key="contained_item.key">
