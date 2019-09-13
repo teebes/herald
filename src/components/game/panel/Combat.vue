@@ -22,8 +22,9 @@
               </div>
             </div>
           </div>
-          <div class="target-effects-region">
-            <div class="effects-collection">
+
+          
+            <div class="target-effects">
               <ProgressBar
                 v-for="effect in target_effects"
                 :key="effect.expires"
@@ -34,7 +35,8 @@
                 method="channel"
               />
             </div>
-          </div>
+          
+
         </div>
         <div class="actions">
           <div
@@ -63,6 +65,13 @@ export default class PanelCombat extends Vue {
   timeout: number | null = null;
 
   get player_target() {
+    // For testing
+    // return {
+    //   health: 100,
+    //   health_max: 100,
+    //   name: 'a dummy',
+    //   level: 10,
+    // }
     return this.$store.state.game.player_target;
   }
 
@@ -97,45 +106,46 @@ export default class PanelCombat extends Vue {
   }
 
   get target_effects() {
+    // For testing
+    // return [
+    //   {
+    //     active: true,
+    //     actor: "player.128",
+    //     code: "wrack",
+    //     duration: 18,
+    //     expires: 1565625865.473659,
+    //     key: "1565625865.473659wrack",
+    //     metadata: null,
+    //     stack: 1,
+    //     target: "mob.559776",
+    //     value: 0
+    //   },
+    //   {
+    //     active: true,
+    //     actor: "player.128",
+    //     code: "wrack",
+    //     duration: 18,
+    //     expires: 1565625865.473659,
+    //     key: "1565625865.473659wrack",
+    //     metadata: null,
+    //     stack: 1,
+    //     target: "mob.559776",
+    //     value: 0
+    //   },
+    //   {
+    //     active: true,
+    //     actor: "player.128",
+    //     code: "wrack",
+    //     duration: 18,
+    //     expires: 1565625865.473659,
+    //     key: "1565625865.473659wrack",
+    //     metadata: null,
+    //     stack: 1,
+    //     target: "mob.559776",
+    //     value: 0
+    //   }
+    // ];
     return this.$store.state.game.effects[this.player_target.key];
-    return [
-      {
-        active: true,
-        actor: "player.128",
-        code: "wrack",
-        duration: 18,
-        expires: 1565625865.473659,
-        key: "1565625865.473659wrack",
-        metadata: null,
-        stack: 1,
-        target: "mob.559776",
-        value: 0
-      },
-      {
-        active: true,
-        actor: "player.128",
-        code: "wrack",
-        duration: 18,
-        expires: 1565625865.473659,
-        key: "1565625865.473659wrack",
-        metadata: null,
-        stack: 1,
-        target: "mob.559776",
-        value: 0
-      },
-      {
-        active: true,
-        actor: "player.128",
-        code: "wrack",
-        duration: 18,
-        expires: 1565625865.473659,
-        key: "1565625865.473659wrack",
-        metadata: null,
-        stack: 1,
-        target: "mob.559776",
-        value: 0
-      }
-    ];
   }
 }
 </script>
@@ -189,13 +199,15 @@ export default class PanelCombat extends Vue {
         margin-top: 10px;
       }
 
-      .effects-collection {
+      .target-effects {
         display: flex;
-        flex-direction: column;
+        flex-grow: 1;
+        flex-direction: row-reverse;
         flex-wrap: wrap;
+        // justify-content: center;
 
         .progress-bar {
-          //margin: 5px;
+          margin: 1px 2px;
         }
       }
     }
