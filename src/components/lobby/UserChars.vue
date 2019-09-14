@@ -2,6 +2,7 @@
   <div class="world-chars-region">
     <CreateChar
       v-if="newCharacter"
+      :world="world"
       @cancelcreate="newCharacter = false"
       @charcreated="onCharCreated"
     />
@@ -39,6 +40,7 @@ import { LOBBY_WORLD_TRANSFER } from "@/router.ts";
 })
 export default class extends Vue {
   @Prop() chars!: {}[];
+  @Prop() world!: {};
 
   newCharacter: boolean = false;
 

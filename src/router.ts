@@ -103,6 +103,7 @@ export const BUILDER_WORLD_BUILDERS = "builder_world_builders";
 export const BUILDER_WORLD_PLAYER_LIST = "builder_world_player_list";
 export const BUILDER_WORLD_PLAYER_DETAIL = "builder_world_player_detail";
 export const BUILDER_WORLD_STATUS = "builder_world_status";
+export const BUILDER_WORLD_FACTIONS = "builder_world_factions";
 export const BUILDER_ROOM_INDEX = "builder_room_index";
 export const BUILDER_ROOM_CHECKS = "builder_room_checks";
 export const BUILDER_ROOM_LOADS = "builder_room_loads";
@@ -327,6 +328,12 @@ const router = new Router({
           path: "players/:player_id",
           name: BUILDER_WORLD_PLAYER_DETAIL,
           component: BuilderWorldPlayerDetail
+        },
+
+        {
+          path: "factions/",
+          name: BUILDER_WORLD_FACTIONS,
+          component: () => import("@/components/builder/world/FactionList.vue")
         },
 
         { path: "status", name: BUILDER_WORLD_STATUS, component: WorldStatus },

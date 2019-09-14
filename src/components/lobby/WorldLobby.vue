@@ -21,7 +21,7 @@
             <div class="world-description">{{ world.description}}</div>
           </div>
 
-          <UserChars @charcreated="onCharCreated" :chars="chars" />
+          <UserChars @charcreated="onCharCreated" :chars="chars" :world="world" />
         </div>
 
         <div class="world-leaderboard">
@@ -200,9 +200,9 @@ export default class WorldLobby extends Vue {
             }
 
             .new-character {
-              margin-top: 40px;
-              flex-basis: 33%;
-              height: 60px;
+              // margin-top: 40px;
+              // flex-basis: 33%;
+              // height: 60px;
             }
           }
         }
@@ -210,45 +210,6 @@ export default class WorldLobby extends Vue {
 
       .world-leaderboard {
         flex: 1;
-      }
-
-      .new-character {
-        .wrapper {
-          background: $color-background-light;
-          border: 1px solid $color-background-light-border;
-          padding: 15px;
-          width: 100%;
-
-          .form-title {
-            text-align: center;
-            width: 100%;
-            margin-bottom: 50px;
-          }
-
-          .form-group {
-            &:first-child {
-              margin-right: 1rem;
-              @media ($mobile-site) {
-                margin-right: 0.5rem;
-              }
-            }
-            &:last-child {
-              margin-left: 1rem;
-              @media ($mobile-site) {
-                margin-left: 0.5rem;
-              }
-            }
-          }
-        }
-        .cancel-action {
-          @include font-text-light;
-          opacity: 0.5;
-          width: 100%;
-          text-align: center;
-          &:hover {
-            cursor: pointer;
-          }
-        }
       }
     }
 

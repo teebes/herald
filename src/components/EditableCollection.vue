@@ -90,6 +90,7 @@ export default class extends Vue {
     }
 
     const modal = {
+      title: `EDIT ${this.title}`,
       data: resource,
       schema: schema,
       action: `builder/${this.registration_name}/edit`

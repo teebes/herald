@@ -82,6 +82,14 @@
         >manage</router-link>
       </div>
 
+      <div class='world-factions'>
+        <h3>Worlds Factions</h3>
+
+        <div>View information about factions in your world.</div>
+
+        <router-link :to="world_factions_link">manage</router-link>
+      </div>      
+
       <div class="world-status">
         <h3>World Status</h3>
 
@@ -103,7 +111,8 @@ import {
   BUILDER_WORLD_PLAYER_LIST,
   BUILDER_ROOM_INDEX,
   BUILDER_WORLD_STATUS,
-  LOBBY
+  BUILDER_WORLD_FACTIONS,
+  LOBBY,
 } from "@/router";
 import { BUILDER_FORMS } from "@/core/forms";
 import { UI_MUTATIONS } from "@/constants";
@@ -207,6 +216,13 @@ export default class WorldFrame extends Mixins(WorldView) {
       name: BUILDER_WORLD_STATUS,
       params: { world_id: this.world.id }
     };
+  }
+
+  get world_factions_link() {
+    return {
+      name: BUILDER_WORLD_FACTIONS,
+      params: { world_id: this.world.id }
+    }
   }
 }
 </script>
