@@ -114,6 +114,7 @@ export default class EditEntity extends Vue {
 <style lang='scss' scoped>
 .edit-entity {
   max-width: 550px !important;
+  padding: 15px !important;
 
   .form-content {
     z-index: 1000;

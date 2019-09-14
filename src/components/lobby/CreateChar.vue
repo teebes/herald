@@ -102,7 +102,7 @@ export default class extends Vue {
       payload["faction"] = this.faction;
     }
     const resp = await axios.post(
-      `lobby/worlds/${this.$route.params.world_id}/chars/`
+      `lobby/worlds/${this.$route.params.world_id}/chars/`, payload
     );
     if (resp.status === 201) {
       // this.chars.push(resp.data);

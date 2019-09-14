@@ -42,6 +42,10 @@
       <div class="side-nav navigation">
         <!-- World nav -->
         <template v-if="isWorldView">
+            <router-link
+              :to="{name: LOBBY_WORLD_DETAIL, params: {world_id: $route.params.world_id}}"
+            >Lobby</router-link>
+
           <router-link
             :to="{name: BUILDER_ZONE_LIST, params: { world_id: $route.params.world_id}}"
           >Zones</router-link>
@@ -68,10 +72,7 @@
             >Players</router-link>
 
             <router-link :to="world_status_link">Status</router-link>
-
-            <router-link
-              :to="{name: LOBBY_WORLD_DETAIL, params: {world_id: $route.params.world_id}}"
-            >Lobby</router-link>
+            <router-link :to="world_factions_link">Factions</router-link>
           </div>
         </template>
 
@@ -159,6 +160,7 @@ import {
   BUILDER_ZONE_QUEST_LIST,
   BUILDER_ZONE_QUEST_DETAIL,
   BUILDER_TRANSFORMATION_LIST,
+  BUILDER_WORLD_FACTIONS,
   LOBBY_WORLD_DETAIL
 } from "@/router";
 
@@ -263,7 +265,8 @@ export default class WorldFrame extends Vue {
       BUILDER_WORLD_BUILDERS,
       BUILDER_WORLD_PLAYER_LIST,
       BUILDER_WORLD_PLAYER_DETAIL,
-      BUILDER_WORLD_STATUS
+      BUILDER_WORLD_STATUS,
+      BUILDER_WORLD_FACTIONS
     ];
     if (this.$store.state.builder.world)
       for (const routeData of this.$route.matched) {
@@ -285,6 +288,13 @@ export default class WorldFrame extends Vue {
       name: BUILDER_WORLD_STATUS,
       params: { world_id: this.$route.params.world_id }
     };
+  }
+
+  get world_factions_link() {
+    return {
+      name: BUILDER_WORLD_FACTIONS,
+      params: { world_id: this.$route.params.world_id }
+    }
   }
 }
 </script>
