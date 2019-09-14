@@ -169,6 +169,7 @@ export default class WorldLobby extends Vue {
       z-index: 10000;
       width: 100%;
       margin-top: 150px;
+      margin-bottom: 50px;
 
       flex-direction: row;
       @media ($mobile-site) {
@@ -189,20 +190,11 @@ export default class WorldLobby extends Vue {
             flex-direction: row;
             flex-wrap: wrap;
             .char-display {
-              flex-basis: 33%;
-              @media (max-width: 900px) {
-                flex-basis: 50%;
-              }
+              flex-basis: 50%;
 
               .play-as {
                 text-transform: uppercase;
               }
-            }
-
-            .new-character {
-              // margin-top: 40px;
-              // flex-basis: 33%;
-              // height: 60px;
             }
           }
         }
@@ -210,6 +202,10 @@ export default class WorldLobby extends Vue {
 
       .world-leaderboard {
         flex: 1;
+
+        @media ($mobile-site) {
+          margin-top: 50px;
+        }
       }
     }
 
