@@ -48,6 +48,7 @@ export default class WorldFrame extends Mixins(WorldView) {
       attr: "is_core",
       label: "Is Core",
       widget: "checkbox",
+      default: true,
     }
 
     const starting_room: FormElement = {
