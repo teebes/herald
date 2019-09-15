@@ -76,8 +76,10 @@ export default class MobileGame extends Vue {
       this.clickedToLook = true;
     }
 
-    if (selected === "info" || selected === "type") {
-      eventbus.$emit("scroll-down");
+    if (selected === "look" || selected === "type") {
+      Vue.nextTick(() => {
+        eventbus.$emit("scroll-down");
+      })
     }
   }
 

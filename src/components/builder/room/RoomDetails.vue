@@ -5,7 +5,7 @@
     <div v-if="isMapReady" class="info-and-map">
       <div class="id-map-coords">
         <div class="id-and-coords">
-          <div class="room-id">{{ room.id }}</div>
+          <div class="room-id" :title="room.key">{{ room.id }}</div>
           <div class="room-coordinates">({{ room.x }}, {{ room.y }}, {{ room.z}})</div>
         </div>
         <Map
