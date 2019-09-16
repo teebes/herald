@@ -11,3 +11,5 @@ export const MAP_CONFIG = {
 };
 
 export const INTRO_WORLD_ID = "217";
+
+export const ANALYTICS_ID = null;
