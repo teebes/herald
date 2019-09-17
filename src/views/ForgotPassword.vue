@@ -15,6 +15,7 @@
           v-model="email"
           name="email"
           required="required"
+          ref="email"
         />
       </div>
 
@@ -35,6 +36,11 @@ export default class ForgotPassword extends Vue {
     this.sent = await this.$store.dispatch("auth/forgotpassword", {
       email: this.email
     });
+  }
+
+  mounted() {
+    const email = this.$refs.email as HTMLElement;
+    email.focus();
   }
 }
 </script>

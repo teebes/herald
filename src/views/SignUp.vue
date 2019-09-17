@@ -12,6 +12,7 @@
         v-model="email"
         name="email"
         required="required"
+        ref="email"
       />
     </div>
 
@@ -99,6 +100,11 @@ export default class SignUp extends Vue {
     } catch (e) {
       // Stay on the page
     }
+  }
+
+  mounted() {
+    const email = this.$refs.email as HTMLElement;
+    email.focus();
   }
 }
 </script>
