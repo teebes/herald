@@ -123,20 +123,27 @@ export default class Lobby extends Vue {
   }
 
   backgroundImage(world) {
-      // Currently, the API returns the location of the banner so that it can
-      // be changed on the fly. Unfortunately it returns a full path and webpack
-      // wants to know which directories to include at runtime, so we have
-      // to do a bit of work here.
+      // Custom world background images can be set provided that the assets
+      // have been installed.
 
       let imagePath = world && world.small_background,
-        fileName = "world-home-bg.jpg";
+        imageUrl;
 
-      if (imagePath) {
-        const pathElements = imagePath.split("/");
-        fileName = pathElements[pathElements.length - 1];
-      }
+        if (/http(s)?:\/\//.test(imagePath)) {
+          imageUrl = imagePath;
+        } else if (imagePath) { 
+          // legacy method, where the full (but relative) path was specified to find
+          // the asset. New way is either just set filename, or supply a url. THis branch
+          // handles the 'just set the filename', including stripping its old (and likely
+          // obsolete) path.
+          const pathElements = imagePath.split("/");
+          const fileName = pathElements[pathElements.length - 1];
+          imageUrl = `/ui/lobby/${fileName}`
+        } else {
+          imageUrl = `/ui/lobby/world-home-bg.jpg`
+        }
       return {
-        backgroundImage: `url(/ui/lobby/${fileName})`
+        backgroundImage: `url(${imageUrl})`
       };
     }
 

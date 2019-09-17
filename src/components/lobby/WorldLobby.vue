@@ -81,14 +81,19 @@ export default class WorldLobby extends Vue {
     // to do a bit of work here.
 
     let imagePath = this.world && this.world.large_background,
-      fileName = "world-home-bg.jpg";
+      imageUrl;
 
-    if (imagePath) {
+    if (/http(s)?:\/\//.test(imagePath)) {
+      imageUrl = imagePath;
+    } else if (imagePath) {
       const pathElements = imagePath.split("/");
-      fileName = pathElements[pathElements.length - 1];
+      const fileName = pathElements[pathElements.length - 1];
+      imageUrl = `/ui/lobby/${fileName}`
+    } else {
+      imageUrl = `/ui/lobby/world-home-bg.jpg`
     }
     return {
-      backgroundImage: `url(/ui/lobby/${fileName})`
+      backgroundImage: `url(${imageUrl})`
     };
   }
 
