@@ -221,20 +221,20 @@ const router = new Router({
     },
 
     {
-      path: "/lobby/worlds/:world_id/:slug?",
+      path: "/worlds/:world_id/:slug?",
       component: WorldLobby,
       name: LOBBY_WORLD_DETAIL
     },
 
     {
-      path: "/lobby/worlds/:world_id/complete/:player_id",
+      path: "/worlds/:world_id/complete/:player_id",
       component: CompleteSignup,
       name: LOBBY_WORLD_COMPLETE_SIGNUP,
       beforeEnter: ifAuthenticated
     },
 
     {
-      path: "/lobby/worlds/transfer/:player_id",
+      path: "/worlds/transfer/:player_id",
       component: Transfer,
       name: LOBBY_WORLD_TRANSFER,
       beforeEnter: ifAuthenticated
@@ -266,7 +266,7 @@ const router = new Router({
     },
 
     {
-      path: "/worlds/:world_id",
+      path: "/build/worlds/:world_id",
       component: BuilderFrame,
       beforeEnter: ifAdmin,
       children: [
