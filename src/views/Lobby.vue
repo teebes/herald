@@ -37,6 +37,7 @@
             :to="{ name: LOBBY_WORLD_DETAIL, params: {world_id: world.id}}"
             class="user-world world-info"
             :class="{['world-' + world.id]: true}"
+            :style="backgroundImage(world)"
           >
             <div class="overlay">
               <div class="title">{{ world.name.toUpperCase() }}</div>
@@ -120,6 +121,25 @@ export default class Lobby extends Vue {
       }
     });
   }
+
+  backgroundImage(world) {
+      // Currently, the API returns the location of the banner so that it can
+      // be changed on the fly. Unfortunately it returns a full path and webpack
+      // wants to know which directories to include at runtime, so we have
+      // to do a bit of work here.
+
+      let imagePath = world && world.small_background,
+        fileName = "world-home-bg.jpg";
+
+      if (imagePath) {
+        const pathElements = imagePath.split("/");
+        fileName = pathElements[pathElements.length - 1];
+      }
+      return {
+        backgroundImage: `url(/ui/lobby/${fileName})`
+      };
+    }
+
 }
 </script>
 
@@ -290,6 +310,7 @@ export default class Lobby extends Vue {
       background: url("/ui/lobby/world-card-horizontal-bg@2x.jpg");
       background-size: 370px 166px;
 
+      /*
       &.world-1 {
         background: url("/ui/lobby/unbroken.jpg");
         background-size: 370px 166px;
@@ -314,16 +335,9 @@ export default class Lobby extends Vue {
         background: url("/ui/lobby/dacrothea.jpg");
         background-size: 370px 166px;
       }
+      */
 
       margin-bottom: 20px;
-      @media (min-width: 805px) and (max-width: 1200px) {
-        &:nth-child(odd) {
-          //margin-right: 20px;
-        }
-        &:nth-child(even) {
-          //margin-left: 20px;
-        }
-      }
       position: relative;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 
