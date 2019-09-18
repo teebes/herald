@@ -12,6 +12,7 @@
       <span
         v-if="player.display_faction"
       >[{{ player.display_faction }}]</span>
+      <span v-if="player.is_invisible" class='ml-1 color-text-50'>[invisible]</span>
     </div>
 
     <div v-for="(grapevine_player, index) in grapevine_who" :key="index">{{grapevine_player}}</div>

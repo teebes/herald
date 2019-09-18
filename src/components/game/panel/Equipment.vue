@@ -31,28 +31,9 @@ export default class PanelEquipment extends Vue {
     return this.$store.state.game.player.equipment;
   }
 
-  get equipmentSlots() {
-    // TODO: Might want to either factor this out into its own
-    // constants file, or fetch it from the game at connection time
-    // (since different worlds could eventually define different
-    // equipment slots, though that's a ways away).
-    return [
-      "weapon",
-      "offhand",
-      "head",
-      "body",
-      "arms",
-      "hands",
-      "waist",
-      "legs",
-      "feet",
-      "shoulders"
-    ];
-  }
-
   get slots() {
     let slots: {}[] = [];
-    for (const slotName of this.equipmentSlots) {
+    for (const slotName of EQUIPMENT_SLOT_LIST) {
       const slotData = {
         slotName: slotName,
         slotItemKey: "",

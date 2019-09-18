@@ -68,6 +68,7 @@
         <template v-else>
           <span>{{ char.room_description }}</span>
         </template>
+        <span v-if="char.is_invisible" class='ml-2 color-text-50'>[invisible]</span>
       </div>
     </div>
   </div>
