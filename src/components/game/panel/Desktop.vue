@@ -8,7 +8,7 @@
       </div>
       <GameMap radius="5"/>
       <RoomInfo />
-      <Tabs />
+      <Tabs class='desktop-tabs'/>
     </div>
     <div class="combat-region"></div>
   </div>
@@ -97,6 +97,16 @@ export default class GamePanel extends Vue {
         left: 310px;
         top: -20px;
       }
+    }
+  }
+
+  .desktop-tabs {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .tab-contents-region {
+      overflow-y: auto;
     }
   }
 }

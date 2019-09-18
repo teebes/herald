@@ -41,6 +41,5 @@ export default class PanelItems extends Vue {
 @import "@/styles/colors.scss";
 .inventory-view {
   padding: 0 20px;
-  margin-top: auto;
 }
 </style>

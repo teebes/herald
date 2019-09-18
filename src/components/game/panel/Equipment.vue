@@ -78,7 +78,6 @@ export default class PanelEquipment extends Vue {
 @import "@/styles/colors.scss";
 .equipment-view {
   padding: 0 20px;
-  margin-top: auto;
 
   display: flex;
   flex-wrap: wrap;
