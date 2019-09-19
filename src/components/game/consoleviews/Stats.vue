@@ -48,7 +48,7 @@
 
         <div class="stat-entry">
           <div class="label">Exp</div>
-          <div class="value">{{ player.experience }} - {{ player.exp_perc_left }}%</div>
+          <div class="value">{{ player.experience }} - {{ exp_perc_left }}%</div>
         </div>
       </div>
 
@@ -111,8 +111,19 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component
 export default class extends Vue {
-  get player() {
-    return this.$store.state.game.player;
+  player: any = {};
+
+  constructor() {
+    super();
+    this.player = this.$store.state.game.player;
+  }
+
+  get exp_perc_left() {
+    return Math.round(
+      (this.player.experience_progress /
+        (this.player.experience_progress + this.player.experience_needed)) *
+        100
+    );
   }
 }
 </script>

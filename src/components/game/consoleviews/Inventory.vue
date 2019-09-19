@@ -1,5 +1,5 @@
 <template>
-  <div class="inventory-view">
+  <div class="inventory-view indented">
     <div v-if="inventory.length === 1">You are carrying 1 item:</div>
     <div v-else-if="inventory.length === 0">You are not carrying any items.</div>
     <div v-else>You are carrying {{inventory.length}} items:</div>
