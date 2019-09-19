@@ -37,6 +37,11 @@
           <div class="cmd" @click="cmdHelp('learn')">learn</div>
           <div class="cmd" @click="cmdHelp('title')">title</div>
         </div>
+        <div class="cmds">
+          <div class="cmd" @click="cmdHelp('follow')">follow</div>
+          <div class="cmd" @click="cmdHelp('unfollow')">unfollow</div>
+          <div class="cmd" @click="cmdHelp('group')">group</div>
+        </div>
       </div>
 
       <div class="cmd-group combat-commands">
