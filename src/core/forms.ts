@@ -8,6 +8,7 @@ export interface FormElement {
   default?: string | number | boolean;
   create_only?: boolean;
   tooltip?: ""[];
+  help?: string;
 }
 
 // Generic form elements
@@ -116,7 +117,15 @@ const ROOM_CHECK: FormElement[] = [
         value: "health_below",
         label: "Health below"
       }
-    ]
+    ],
+    help: `Which check to perform.<br/>
+        - in_inv: whether item template id 'argument' is in the actor's inventory.<br/>
+        - not_in_inv: the opposite of in_inv.<br/>
+        - equipped: whether item template id 'argument' is equipped by the actor.<br/>
+        - not_equipped: the opposite of equipped.<br/>
+        - mob_is_absent: whether a mob with template id 'argument' in the room is not present. If 'argument2' is specified as a faction, only that faction will be affected by the check.<br/>
+        - faction_below: whether a character's standing in faction 'argument' is below 'argument2'.<br/>
+        - health_below: whether a character’s health is below a 'argument' threshold, in % of their max health.`
   },
   {
     attr: "prevent",
@@ -131,20 +140,29 @@ const ROOM_CHECK: FormElement[] = [
         value: "exit",
         label: "Exit"
       }
-    ]
+    ],
+    help: `Which action to prevent.<br/>
+          - entry: look at the move’s destination room entry checks before allowing the actor to enter it.<br/>
+          - exit: look at the move’s current room exit checks before allowing the actor to exit it.`
   },
-  DIRECTION,
+  {
+    ...DIRECTION,
+    help: `Only applicable for 'exit' prevents. If defined, specifies which exit is blocked by the room check.`
+  },
   {
     attr: "argument",
-    label: "Argument"
+    label: "Argument",
+    help: `Parameter depending on the check. See the 'check' field for details.`
   },
   {
     attr: "argument2",
-    label: "Argument 2"
+    label: "Argument 2",
+    help: `Parameter used for the 'mob_is_absent' and 'faction_below' checks. Only See the 'check' field for details.`
   },
   {
     attr: "failure_msg",
-    label: "Failure Message"
+    label: "Failure Message",
+    help: `The message to display if the check was true, meaning the action was prevented.`
   }
 ];
 
