@@ -213,7 +213,8 @@ export default class Console extends Vue {
     }
 
     &.cmd\.tell\.success,
-    &.notification\.tell {
+    &.notification\.tell,
+    &.cmd\.reply\.success {
       color: $color-red;
     }
   }
