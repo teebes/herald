@@ -8,6 +8,7 @@
 
     <div>
       <button class="btn-thin" @click="editInfo">EDIT INFO</button>
+      <button class="btn-thin" @click="deletePlayer">DELETE</button>
     </div>
 
     <div class="data-and-map">
@@ -88,6 +89,10 @@ export default class PlayerDetail extends Mixins(WorldView) {
   center_key: string = "";
   EQUIPMENT_SLOT_LIST = EQUIPMENT_SLOT_LIST;
 
+  get player() {
+    return this.$store.state.builder.worlds.player;
+  }
+
   async activated() {
     const player = await this.$store.dispatch("builder/worlds/player_fetch", {
       world_id: this.$route.params.world_id,
@@ -114,6 +119,21 @@ export default class PlayerDetail extends Mixins(WorldView) {
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
 
+  async deletePlayer() {
+    const c = confirm(
+      `Are you sure you want to delete Player ${this.player.id}?`
+    );
+    if (!c) return;
+
+    await this.$store.dispatch("builder/worlds/player_delete");
+    this.$router.push({
+      name: BUILDER_WORLD_PLAYER_LIST,
+      params: {
+        world_id: this.$route.params.world_id
+      }
+    });
+  }
+
   get player_list_link() {
     return {
       name: BUILDER_WORLD_PLAYER_LIST,
@@ -126,10 +146,6 @@ export default class PlayerDetail extends Mixins(WorldView) {
   onMapClickRoom(room) {
     const index = this.player_rooms.findIndex(_room => room.key == _room.key);
     if (index !== -1) this.center_key = room.key;
-  }
-
-  get player() {
-    return this.$store.state.builder.worlds.player;
   }
 
   get player_rooms() {

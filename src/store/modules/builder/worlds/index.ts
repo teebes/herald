@@ -41,6 +41,12 @@ export default {
       commit("player_set", resp.data);
     },
 
+    player_delete: async ({ commit, rootState, state }) => {
+      const world_id = rootState.builder.world.id;
+      const player_id = state.player.id;
+      await axios.delete(`/builder/worlds/${world_id}/players/${player_id}/`);
+    },
+
     config_fetch: async ({ commit }, { world_id }) => {
       const resp = await axios.get(`/builder/worlds/${world_id}/config/`);
       commit("config_set", resp.data);

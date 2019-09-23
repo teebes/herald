@@ -24,7 +24,7 @@
           <UserChars @charcreated="onCharCreated" :chars="chars" :world="world" />
         </div>
 
-        <div class="world-leaderboard">
+        <div class="world-leaderboard" v-if="!$store.state.lobby.world_details.create_character">
           <template v-if="world.is_multiplayer">
             <div class="leaderboard-title">LEADERBOARD</div>
             <div class="leaderboard-region">
@@ -88,9 +88,9 @@ export default class WorldLobby extends Vue {
     } else if (imagePath) {
       const pathElements = imagePath.split("/");
       const fileName = pathElements[pathElements.length - 1];
-      imageUrl = `/ui/lobby/${fileName}`
+      imageUrl = `/ui/lobby/${fileName}`;
     } else {
-      imageUrl = `/ui/lobby/world-home-bg.jpg`
+      imageUrl = `/ui/lobby/world-home-bg.jpg`;
     }
     return {
       backgroundImage: `url(${imageUrl})`
@@ -106,6 +106,9 @@ export default class WorldLobby extends Vue {
         }
       });
     }
+
+    // reset world details state
+    this.$store.commit("lobby/world_details/reset_state");
 
     const worldFetchPromise = axios.get(
       `/lobby/worlds/${this.$route.params.world_id}/`
