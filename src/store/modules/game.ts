@@ -335,7 +335,11 @@ const actions = {
       });
       dispatch("openWebSocket");
     } catch (e) {
-      commit("ui/notification_set_error", "Unable to enter world.", {
+      let error_message = "Unable to enter world.";
+      if (e.response.data && e.response.data.length) {
+        error_message = e.response.data[0];
+      }
+      commit("ui/notification_set_error", error_message, {
         root: true
       });
     }
