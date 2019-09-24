@@ -191,6 +191,7 @@ export default class Console extends Vue {
     &.grouped,
     &.room_write,
     &.affect\.cmd\.look\.success,
+    &.affect\.idle\.timeout,
     &.notification\.cmd\.say\.success,
     &.notification\.cmd\.yell\.success,
     &.notification\.cmd\.chat\.success,
