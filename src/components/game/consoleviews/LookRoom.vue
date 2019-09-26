@@ -68,7 +68,7 @@
         <template v-else>
           <span>{{ char.room_description }}</span>
         </template>
-        <span v-if="char.is_invisible" class='ml-2 color-text-50'>[invisible]</span>
+        <span v-if="char.is_invisible" class="ml-2 color-text-50">[invisible]</span>
       </div>
     </div>
   </div>
@@ -114,6 +114,8 @@ export default class LookRoom extends Vue {
   }
 
   get descLines() {
+    if (!this.room.description) return [];
+    return this.room.description.split("\n");
     const lines: string[] = [];
     for (const line of this.room.description.split("\n")) {
       if (line) lines.push(line);

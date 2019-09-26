@@ -1,11 +1,6 @@
 <template>
   <div class="world-chars-region">
-    <CreateChar
-      v-if="newCharacter"
-      :world="world"
-      @cancelcreate="newCharacter = false"
-      @charcreated="onCharCreated"
-    />
+    <CreateChar v-if="newCharacter" :world="world" @charcreated="onCharCreated" />
     <div class="world-chars" v-else>
       <div class="world-chars-title">YOUR CHARACTERS</div>
       <div class="world-chars-container">
@@ -21,7 +16,7 @@
             <button class="btn-small play-as" @click="onEnter(char)" v-else>PLAY AS {{ char.name }}</button>
           </div>
         </div>
-        <button class="btn-add new-character" @click="newCharacter = true">CREATE NEW CHARACTER</button>
+        <button class="btn-add new-character" @click="onClickCreateChar()">CREATE NEW CHARACTER</button>
       </div>
     </div>
   </div>
@@ -42,11 +37,13 @@ export default class extends Vue {
   @Prop() chars!: {}[];
   @Prop() world!: {};
 
-  newCharacter: boolean = false;
+  get newCharacter() {
+    return this.$store.state.lobby.world_details.create_character;
+  }
 
   mounted() {
     if (this.$route.query.create) {
-      this.newCharacter = true;
+      this.$store.commit("lobby/world_details/create_character_set", true);
     }
   }
 
@@ -55,8 +52,8 @@ export default class extends Vue {
   }
 
   onCharCreated(newCharacter) {
-    this.newCharacter = false;
     this.$emit("charcreated", newCharacter);
+    this.$store.commit("lobby/world_details/create_character_set", false);
   }
 
   async onEnter(char) {
@@ -74,6 +71,10 @@ export default class extends Vue {
         world_id: this.$route.params.world_id
       }
     });
+  }
+
+  onClickCreateChar() {
+    this.$store.commit("lobby/world_details/create_character_set", true);
   }
 }
 </script>

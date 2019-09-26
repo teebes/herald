@@ -409,6 +409,8 @@ const actions = {
     if (state.hint) {
       commit("hint_clear");
     }
+
+    commit("lookup_clear");
   },
 
   cmd_structured: async ({ dispatch, commit, state }, payload) => {

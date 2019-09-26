@@ -191,6 +191,7 @@ export default class Console extends Vue {
     &.grouped,
     &.room_write,
     &.affect\.cmd\.look\.success,
+    &.affect\.idle\.timeout,
     &.notification\.cmd\.say\.success,
     &.notification\.cmd\.yell\.success,
     &.notification\.cmd\.chat\.success,
@@ -213,7 +214,8 @@ export default class Console extends Vue {
     }
 
     &.cmd\.tell\.success,
-    &.notification\.tell {
+    &.notification\.tell,
+    &.cmd\.reply\.success {
       color: $color-red;
     }
   }

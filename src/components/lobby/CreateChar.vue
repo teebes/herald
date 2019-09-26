@@ -50,7 +50,7 @@
         <button class="btn-large">CREATE CHARACTER</button>
       </form>
     </div>
-    <div class="cancel-action" @click="$emit('cancelcreate')">cancel</div>
+    <div class="cancel-action" @click="onCancelCreate()">cancel</div>
   </div>
 </template>
 
@@ -102,7 +102,8 @@ export default class extends Vue {
       payload["faction"] = this.faction;
     }
     const resp = await axios.post(
-      `lobby/worlds/${this.$route.params.world_id}/chars/`, payload
+      `lobby/worlds/${this.$route.params.world_id}/chars/`,
+      payload
     );
     if (resp.status === 201) {
       // this.chars.push(resp.data);
@@ -110,6 +111,10 @@ export default class extends Vue {
       this.charname = "";
       this.gender = "female";
     }
+  }
+
+  onCancelCreate() {
+    this.$store.commit("lobby/world_details/create_character_set", false);
   }
 }
 </script>
@@ -120,10 +125,11 @@ export default class extends Vue {
 @import "@/styles/fonts.scss";
 
 .new-character {
+  max-width: 800px;
+  margin: 0 auto;
   margin-bottom: 50px;
   margin-top: 40px;
   flex-basis: 33%;
-  height: 60px;
 
   .wrapper {
     background: $color-background-light;
