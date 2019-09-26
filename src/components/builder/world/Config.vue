@@ -18,9 +18,15 @@
         <h3>ADVANCED CONFIG</h3>
         <template v-if="config">
           <div>New characters will enter the game with {{ config.starting_gold }} gold.</div>
+
+          <div>
+            New characters will enter the game in
+            <router-link :to="room_link(config.starting_room.id)">{{ config.starting_room.name }}</router-link>.
+          </div>
+
           <div>
             When dying, characters will be taken to
-            <router-link :to="death_room_link">{{ config.death_room.name }}</router-link>.
+            <router-link :to="room_link(config.death_room.id)">{{ config.death_room.name }}</router-link>.
           </div>
           <button class="btn-thin" @click="editAdvancedConfig">EDIT</button>
         </template>
@@ -82,13 +88,13 @@
         >manage</router-link>
       </div>
 
-      <div class='world-factions'>
+      <div class="world-factions">
         <h3>Worlds Factions</h3>
 
         <div>View information about factions in your world.</div>
 
         <router-link :to="world_factions_link">manage</router-link>
-      </div>      
+      </div>
 
       <div class="world-status">
         <h3>World Status</h3>
@@ -112,7 +118,7 @@ import {
   BUILDER_ROOM_INDEX,
   BUILDER_WORLD_STATUS,
   BUILDER_WORLD_FACTIONS,
-  LOBBY,
+  LOBBY
 } from "@/router";
 import { BUILDER_FORMS } from "@/core/forms";
 import { UI_MUTATIONS } from "@/constants";
@@ -129,12 +135,12 @@ export default class WorldFrame extends Mixins(WorldView) {
   BUILDER_WORLD_BUILDERS = BUILDER_WORLD_BUILDERS;
   BUILDER_WORLD_PLAYER_LIST = BUILDER_WORLD_PLAYER_LIST;
 
-  get death_room_link() {
+  room_link(id) {
     return {
       name: BUILDER_ROOM_INDEX,
       params: {
         world_id: this.world.id,
-        room_id: this.config.death_room.id
+        room_id: id
       }
     };
   }
@@ -182,6 +188,13 @@ export default class WorldFrame extends Mixins(WorldView) {
           label: "Stating Gold"
         },
         {
+          attr: "starting_room",
+          label: "Starting Room",
+          widget: "reference",
+          references: "room",
+          required: true
+        },
+        {
           attr: "death_room",
           label: "Death Room",
           widget: "reference",
@@ -222,7 +235,7 @@ export default class WorldFrame extends Mixins(WorldView) {
     return {
       name: BUILDER_WORLD_FACTIONS,
       params: { world_id: this.world.id }
-    }
+    };
   }
 }
 </script>
