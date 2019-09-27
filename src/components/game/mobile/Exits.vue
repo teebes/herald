@@ -9,7 +9,7 @@
         :class="{ clickable: isClickable(d) }"
         @click="onClick(d)"
       >
-        <span>{{ d.toUpperCase() }}</span>
+        <span class="unselectable">{{ d.toUpperCase() }}</span>
       </div>
     </div>
     <div class="ud-block">
@@ -21,7 +21,7 @@
         :class="{ clickable: isClickable(d) }"
         @click="onClick(d)"
       >
-        <span>{{ d.toUpperCase() }}</span>
+        <span class="unselectable">{{ d.toUpperCase() }}</span>
       </div>
     </div>
   </div>
