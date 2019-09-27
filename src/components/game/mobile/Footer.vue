@@ -5,28 +5,28 @@
       :class="{ active_tab: isActive('look')}"
       @click="$emit('tap', 'look')"
     >
-      <span>Look</span>
+      <span class="unselectable">Look</span>
     </div>
     <div
       class="footer-tab info"
       :class="{ active_tab: isActive('info')}"
       @click="$emit('tap', 'info')"
     >
-      <span>Info</span>
+      <span class="unselectable">Info</span>
     </div>
     <div
       class="footer-tab type"
       :class="{ active_tab: isActive('type')}"
       @click="$emit('tap', 'type')"
     >
-      <span>Type</span>
+      <span class="unselectable">Type</span>
     </div>
     <div
       class="footer-menu menu"
       :class="{ active_tab: isActive('menu')}"
       @click="$emit('tap', 'menu')"
     >
-      <span>Menu</span>
+      <span class="unselectable">Menu</span>
     </div>
   </div>
 </template>

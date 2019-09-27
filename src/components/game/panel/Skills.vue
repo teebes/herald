@@ -13,8 +13,8 @@
                 @click="onClick(skill)"
               >
                 <div class="box-overlay" :ref="skill.cmd + '-overlay'"></div>
-                <span class="box-name">{{ skill.label }}</span>
-                <span class="hotkey">{{ skill.hotKey }}</span>
+                <span class="box-name unselectable">{{ skill.label }}</span>
+                <span class="hotkey unselectable">{{ skill.hotKey }}</span>
               </div>
             </div>
           </div>
@@ -33,8 +33,8 @@
                 @click="onClick(skill)"
               >
                 <div class="box-overlay" :ref="skill.cmd + '-overlay'"></div>
-                <span class="box-name">{{ skill.label }}</span>
-                <span class="hotkey">{{ skill.hotKey }}</span>
+                <span class="box-name unselectable">{{ skill.label }}</span>
+                <span class="hotkey unselectable">{{ skill.hotKey }}</span>
               </div>
             </div>
           </div>
@@ -295,13 +295,6 @@ export default class PanelSkills extends Vue {
         height: 100%;
 
         color: white;
-
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
       }
 
       .box-overlay {
