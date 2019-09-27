@@ -9,6 +9,7 @@
     </div>
     <div v-if="reward.type == 'exp'">Receive {{ reward.qty }} experience.</div>
     <div v-if="reward.type == 'gold'">Receive {{ reward.qty }} gold.</div>
+    <div v-if="reward.type == 'glory'">Receive {{ reward.qty }} glory.</div>
     <div
       v-if="reward.type == 'faction'"
     >Receive {{ reward.qty }} standing with {{ reward.profile.name }}.</div>
@@ -205,6 +206,10 @@ export default class extends Mixins(ZoneView) {
         {
           value: "gold",
           label: "Gold"
+        },
+        {
+          value: "glory",
+          label: "Glory"
         },
         {
           value: "faction",

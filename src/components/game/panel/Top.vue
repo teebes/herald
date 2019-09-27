@@ -21,9 +21,9 @@
           <div class="action">
             <a href="https://discord.gg/a3u82tR" target="_blank">Chat on Discord</a>
           </div>
-          <!-- <div class="action">
+          <div class="action">
             <a href="#" @click="onClickQuestLog">Quest Log</a>
-          </div>-->
+          </div>
           <div class="action">
             <a href="#" class="exit-game" @click="onClickExit">Exit World</a>
           </div>

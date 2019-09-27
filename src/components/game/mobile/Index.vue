@@ -6,8 +6,8 @@
       :selectedTab="selectedTab"
       @taplook="onTap('look')"
     ></component>
-    <Menu v-if="is_menu_open" />
-    <Footer @tap="onTap" :selectedTab="selectedTab" />
+    <Menu v-if="is_menu_open" v-closable="{ handler: 'closeMenu', exclude: ['footer']}" />
+    <Footer @tap="onTap" :selectedTab="selectedTab" ref="footer" />
   </div>
 </template>
 
@@ -79,7 +79,7 @@ export default class MobileGame extends Vue {
     if (selected === "look" || selected === "type") {
       Vue.nextTick(() => {
         eventbus.$emit("scroll-down");
-      })
+      });
     }
   }
 
@@ -107,6 +107,12 @@ export default class MobileGame extends Vue {
 
   get player() {
     return this.$store.state.game.player;
+  }
+
+  closeMenu(event) {
+    if (this.is_menu_open) {
+      this.is_menu_open = false;
+    }
   }
 }
 </script>

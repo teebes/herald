@@ -16,6 +16,7 @@
       >{{ objective.template.name }}</router-link>.
     </div>
     <div v-if="objective.type == 'gold'">Receive {{ objective.qty }} gold.</div>
+    <div v-if="objective.type == 'glory'">Receive {{ objective.qty }} glory.</div>
 
     <div class="actions">
       <button class="btn-thin" @click="edit">EDIT</button>
@@ -164,6 +165,10 @@ export default class extends Mixins(ZoneView) {
         {
           value: "gold",
           label: "Gold Received"
+        },
+        {
+          value: "glory",
+          label: "Glory Received"
         }
       ]
     };
