@@ -1,12 +1,21 @@
 <template>
-  <div>
+  <div id="quest_log" v-if="fetched">
     <h1>Quest Log</h1>
 
-    <div v-for="log_entry in log_entries" :key="log_entry.id" class="mt-4">
-      <h2>{{ log_entry.quest_name }}</h2>
-      <div>Quest given by {{ log_entry.quest_giver }}</div>
-      <div v-for="(line, index) in log_entry.enquire_cmds" :key="index" class="mt-2">{{ line }}</div>
-    </div>
+    <template v-if="log_entries.length">
+      <div v-for="log_entry in log_entries" :key="log_entry.id" class="mt-4">
+        <h2 @click="onClickName(log_entry)" class="mb-2">
+          <span class="interactable">{{ log_entry.quest_name }}</span>
+        </h2>
+        <template v-if="expanded == log_entry.id">
+          <div>Quest given by {{ log_entry.quest_giver }}</div>
+          <div v-for="(line, index) in log_entry.enquire_cmds" :key="index" class="mt-2">{{ line }}</div>
+        </template>
+      </div>
+    </template>
+    <template v-else>
+      <div class="mt-6">No enquired quests.</div>
+    </template>
   </div>
 </template>
 
@@ -25,15 +34,30 @@ interface QuestLogEntry {
 @Component
 export default class QuestLog extends Vue {
   log_entries: QuestLogEntry[] = [];
+  expanded: number = 0;
+  fetched: boolean = false;
 
   async created() {
-    const resp = await axios.get("/game/enquiredquests/");
+    const resp = await axios.get("/game/enquiredquests/", {
+      headers: { "X-PLAYER-ID": this.$store.state.game.player.id }
+    });
     this.log_entries = resp.data;
-    //console.log(this.log_entries);
+    this.fetched = true;
+
+    if (this.log_entries.length) {
+      this.expanded = this.log_entries[0].id;
+    }
+  }
+
+  onClickName(log_entry) {
+    this.expanded = log_entry.id;
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
+#quest_log {
+  padding: 15px;
+}
 </style>

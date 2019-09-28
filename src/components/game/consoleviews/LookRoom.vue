@@ -114,6 +114,7 @@ export default class LookRoom extends Vue {
   }
 
   get descLines() {
+    if (!this.room.description) return [];
     return this.room.description.split("\n");
     const lines: string[] = [];
     for (const line of this.room.description.split("\n")) {
