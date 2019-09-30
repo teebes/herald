@@ -36,7 +36,12 @@ export default function setup() {
         } else if (Array.isArray(errorData)) {
           errorMsg += ": " + errorData[0];
         } else {
-          errorMsg += ".";
+          const error_keys = Object.keys(errorData);
+          if (error_keys.length) {
+            errorMsg += ": " + errorData[error_keys[0]][0];
+          } else {
+            errorMsg += ".";
+          }
         }
         store.commit(UI_MUTATIONS.SET_NOTIFICATION_ERROR, errorMsg);
       }
