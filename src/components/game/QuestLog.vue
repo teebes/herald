@@ -1,5 +1,9 @@
 <template>
   <div id="quest_log" v-if="fetched">
+    <div class="close-button hover" aria-label="Close" @click="closeQuestLog">
+      <span aria-hidden="true">&#10006;</span>
+    </div>
+
     <h1>Quest Log</h1>
 
     <template v-if="log_entries.length">
@@ -52,6 +56,10 @@ export default class QuestLog extends Vue {
   onClickName(log_entry) {
     this.expanded = log_entry.id;
   }
+
+  closeQuestLog() {
+    this.$store.commit("ui/modal_clear");
+  }
 }
 </script>
 
@@ -59,5 +67,13 @@ export default class QuestLog extends Vue {
 @import "@/styles/colors.scss";
 #quest_log {
   padding: 15px;
+  position: relative;
+
+  .close-button {
+    position: absolute;
+    right: 0;
+    top: -10px;
+    padding: 20px;
+  }
 }
 </style>
