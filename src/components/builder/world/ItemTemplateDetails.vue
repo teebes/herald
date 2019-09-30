@@ -112,11 +112,21 @@
       <div class="advanced">
         <h3>ADVANCED</h3>
 
-        <div v-if="item_template.is_persistent">Items spawned by this template will be persistent.</div>
-        <div v-else>Items spawned by this template will not be persistent.</div>
-
         <div v-if="item_template.is_pickable">Item can be picked up.</div>
         <div v-else>Item cannot be picked up.</div>
+
+        <div class="mt-4" v-if="item_template.is_boat">Item allows to go on water.</div>
+
+        <template v-if="$store.state.builder.world.is_multiplayer">
+          <div
+            class="mt-4"
+            v-if="item_template.is_persistent"
+          >Items spawned by this template will persist over reboots even if left on the ground.</div>
+          <div
+            class="mt-4"
+            v-else
+          >Items spawned by this template will not persist over reboots if left on the ground.</div>
+        </template>
 
         <button class="btn-thin edit-advanced" @click="editAdvanced">EDIT ADVANCED SETTINGS</button>
       </div>
@@ -179,26 +189,29 @@ export default class ItemTemplateDetails extends Mixins(WorldView) {
 
   editAdvanced() {
     const entity = this.item_template;
+    const schema: {}[] = [
+      {
+        attr: "is_pickable",
+        label: "Can be picked up",
+        widget: "checkbox"
+      },
+      {
+        attr: "is_boat",
+        label: "Allows to go on water",
+        widget: "checkbox"
+      }
+    ];
+    if (this.$store.state.builder.world.is_multiplayer) {
+      schema.push({
+        attr: "is_persistent",
+        label: "Is Persistent",
+        widget: "checkbox"
+      });
+    }
     const modal = {
       title: `Item Template ${entity.id}`,
       data: entity,
-      schema: [
-        {
-          attr: "is_persistent",
-          label: "Is Persistent",
-          widget: "checkbox"
-        },
-        {
-          attr: "is_pickable",
-          label: "Can be picked up",
-          widget: "checkbox"
-        },
-        {
-          attr: "is_boat",
-          label: "Allows to go on water",
-          widget: "checkbox"
-        }
-      ],
+      schema: schema,
       action: "builder/worlds/item_template_save"
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
