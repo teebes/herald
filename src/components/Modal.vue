@@ -123,6 +123,9 @@ export default class Modal extends Vue {
   align-items: center;
 
   z-index: 20000;
+  &.opaque {
+    z-index: 40000;
+  }
 
   .modal-contents {
     background: $color-background;
