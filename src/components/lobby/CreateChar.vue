@@ -85,11 +85,6 @@ export default class extends Vue {
     }
   }
 
-  mounted() {
-    console.log("this.worldFaction:");
-    console.log(this.worldFactions);
-  }
-
   get worldFactions() {
     const world_factions = this.world.core_factions;
     const selectable_factions = _.filter(world_factions, faction => {
@@ -98,7 +93,6 @@ export default class extends Vue {
     const sorted_factions = _.sortBy(selectable_factions, faction => {
       return !faction.is_default;
     });
-    console.log(`first is ${sorted_factions[0].code}`)
     return sorted_factions;
   }
 
