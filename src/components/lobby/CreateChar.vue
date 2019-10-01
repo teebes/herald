@@ -31,7 +31,7 @@
             <label for="field-faction">Faction</label>
             <select id="field-faction" v-model="faction">
               <option
-                v-for="faction in world.core_factions"
+                v-for="faction in worldFactions"
                 :key="faction.code"
                 :value="faction.code"
               >{{ faction.name }}</option>
@@ -59,6 +59,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import axios from "axios";
 import { INTRO_WORLD_ID } from "@/config.ts";
 import SignUp from "@/views/SignUp.vue";
+import _ from "lodash";
 
 @Component({
   components: {
@@ -77,11 +78,28 @@ export default class extends Vue {
 
   constructor() {
     super();
-    if (this.world.core_factions.length) {
-      this.faction = this.world.core_factions[0].code;
+    if (this.worldFactions.length) {
+      this.faction = this.worldFactions[0].code;
     } else {
       this.faction = null;
     }
+  }
+
+  mounted() {
+    console.log("this.worldFaction:");
+    console.log(this.worldFactions);
+  }
+
+  get worldFactions() {
+    const world_factions = this.world.core_factions;
+    const selectable_factions = _.filter(world_factions, faction => {
+      return faction.is_selectable;
+    });
+    const sorted_factions = _.sortBy(selectable_factions, faction => {
+      return !faction.is_default;
+    });
+    console.log(`first is ${sorted_factions[0].code}`)
+    return sorted_factions;
   }
 
   get showFactions() {

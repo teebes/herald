@@ -1,12 +1,12 @@
 <template>
-  <div class='w-full'>
+  <div class="w-full">
     <EditableCollection
-    title="World Faction"
-    name="factions"
-    :endpoint="endpoint"
-    :display_component="display_component"
-    :schema="schema"
-  />    
+      title="World Faction"
+      name="factions"
+      :endpoint="endpoint"
+      :display_component="display_component"
+      :schema="schema"
+    />
   </div>
 </template>
 
@@ -24,49 +24,69 @@ import { FormElement, BUILDER_FORMS } from "@/core/forms.ts";
   }
 })
 export default class WorldFrame extends Mixins(WorldView) {
-
   get endpoint() {
     return `/builder/worlds/${this.$route.params.world_id}/factions/`;
   }
 
   get display_component() {
-    return FactionDetail
+    return FactionDetail;
   }
 
   get schema() {
     const code: FormElement = {
       attr: "code",
-      label: "Code",
-    }
+      label: "Code"
+    };
 
     const name: FormElement = {
       attr: "name",
-      label: "Name",
-    }
+      label: "Name"
+    };
 
     const is_core: FormElement = {
       attr: "is_core",
       label: "Is Core",
       widget: "checkbox",
-      default: true,
-    }
+      default: true
+    };
 
     const starting_room: FormElement = {
       attr: "starting_room",
       label: "Starting Room",
       widget: "reference",
-      references: "room",
-    }
+      references: "room"
+    };
+
+    const is_default: FormElement = {
+      attr: "is_default",
+      label: "Is Default",
+      widget: "checkbox",
+      default: false
+    };
+
+    const is_selectable: FormElement = {
+      attr: "is_selectable",
+      label: "Is Selectable",
+      widget: "checkbox",
+      default: true
+    };
 
     const death_room: FormElement = {
       attr: "death_room",
       label: "Death Room",
       widget: "reference",
-      references: "room",
-    }
+      references: "room"
+    };
 
-    return [code, name, is_core, starting_room, death_room];
+    return [
+      code,
+      name,
+      is_core,
+      starting_room,
+      death_room,
+      is_default,
+      is_selectable
+    ];
   }
-
 }
 </script>
