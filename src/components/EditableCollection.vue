@@ -4,7 +4,7 @@
 
     <div v-if="collection" class="collection-element-list">
       <div class="collection-element" v-for="resource in collection" :key="resource.id">
-        <component class="display-view" :is="display_component" :resource="resource"/>
+        <component class="display-view" :is="display_component" :resource="resource" />
         <div class="actions">
           <div>
             <button class="btn-thin" @click="edit(resource)">EDIT</button>
@@ -64,7 +64,7 @@ export default class extends Vue {
   add() {
     let new_data = {};
     for (const field of this.schema) {
-      if (field.default) new_data[field.attr] = field.default;
+      if (field.default !== undefined) new_data[field.attr] = field.default;
       else new_data[field.attr] = "";
     }
     const modal = {
