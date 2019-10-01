@@ -8,6 +8,7 @@
 
           <td class="eq-item">
             <span
+              v-interactive="{target: slot.slotItem}"
               class="interactable"
               :class="[slot.slotItemQuality]"
               @click="onItemClick(slot.slotItem)"

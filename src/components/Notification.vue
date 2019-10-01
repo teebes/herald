@@ -45,7 +45,7 @@ export default class Notification extends Vue {
 
 <style lang='scss' scoped>
 #notification-box {
-  z-index: 20000;
+  z-index: 30000;
 }
 </style>
 

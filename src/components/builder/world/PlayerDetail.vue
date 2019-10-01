@@ -5,10 +5,12 @@
     <div>Level {{ player.level }} {{ player.archetype }}</div>
     <div v-if="player.title">Title: {{ player.title }}</div>
     <div v-if="player.is_immortal">This is a builder character.</div>
+    <div>Spawn world details: {{ player.world.id }} ({{ player.world.state }})</div>
 
-    <div>
-      <button class="btn-thin" @click="editInfo">EDIT INFO</button>
-      <button class="btn-thin" @click="deletePlayer">DELETE</button>
+    <div class="mt-4">
+      <button class="btn-small" @click="editInfo">EDIT INFO</button>
+      <button class="btn-small ml-4" @click="resetPlayer">RESET</button>
+      <button class="btn-small ml-4" @click="deletePlayer">DELETE</button>
     </div>
 
     <div class="data-and-map">
@@ -132,6 +134,21 @@ export default class PlayerDetail extends Mixins(WorldView) {
         world_id: this.$route.params.world_id
       }
     });
+  }
+
+  async resetPlayer() {
+    const c = confirm(
+      `Are you sure you want to reset Player ${this.player.id}? This will erase all of their progress`
+    );
+    if (!c) return;
+
+    await this.$store.dispatch("builder/worlds/player_reset");
+    // this.$router.push({
+    //   name: BUILDER_WORLD_PLAYER_LIST,
+    //   params: {
+    //     world_id: this.$route.params.world_id
+    //   }
+    // });
   }
 
   get player_list_link() {

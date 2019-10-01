@@ -57,6 +57,7 @@ export default class PanelTop extends Vue {
   }
 
   onClickQuestLog() {
+    this.showMenu = false;
     const modal = {
       component: QuestLog
     };
