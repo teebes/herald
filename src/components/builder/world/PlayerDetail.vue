@@ -9,7 +9,11 @@
 
     <div class="mt-4">
       <button class="btn-small" @click="editInfo">EDIT INFO</button>
-      <button class="btn-small ml-4" @click="resetPlayer">RESET</button>
+      <button
+        class="btn-small ml-4"
+        @click="resetPlayer"
+        v-if="!$store.state.builder.world.is_multiplayer"
+      >RESET</button>
       <button class="btn-small ml-4" @click="deletePlayer">DELETE</button>
     </div>
 
