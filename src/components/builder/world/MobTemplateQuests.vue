@@ -1,7 +1,7 @@
 <template>
   <div id="mob-quests" v-if="loaded">
     <h3>USED BY QUESTS</h3>
-    <ul v-for="quest in quests" :key="quest.id">
+    <ul v-for="quest in quests" :key="quest.id" class='list'>
       <li>
         <router-link :to="quest_link(quest)">{{ quest.name }}</router-link>
       </li>
@@ -32,6 +32,10 @@ export default class MobTemplateQuests extends Mixins(KeepAliveFetch) {
         quest_id: quest.id
       }
     };
+  }
+
+  async mounted() {
+    this.fetch();
   }
 
   async fetch() {
