@@ -90,18 +90,30 @@
 
         <div class="item-equipment-info">
           <div>
+            <div class="field-desc">Equipment Slot</div>
             <div>{{ item_template.equipment_type }}</div>
           </div>
 
-          <div>
-            <div class="field-desc">First person hit</div>
-            <div>You {{ item_template.hit_msg_first }} your target</div>
+          <div
+            v-if="item_template.equipment_type !== 'weapon_1h' && item_template.equipment_type !== 'weapon_2h'"
+          >
+            <div class="field-desc">Armor class</div>
+            <div>{{ item_template.armor_class }}</div>
           </div>
 
-          <div>
-            <div class="field-desc">Third person hit</div>
-            <div>Someone {{ item_template.hit_msg_third }} their target</div>
-          </div>
+          <template
+            v-if="item_template.equipment_type === 'weapon_1h' || item_template.equipment_type === 'weapon_2h'"
+          >
+            <div>
+              <div class="field-desc">First person hit</div>
+              <div>You {{ item_template.hit_msg_first }} your target</div>
+            </div>
+
+            <div>
+              <div class="field-desc">Third person hit</div>
+              <div>Someone {{ item_template.hit_msg_third }} their target</div>
+            </div>
+          </template>
         </div>
 
         <button class="btn-thin edit-mob" @click="editEquipment">EDIT EQUIPMENT</button>
