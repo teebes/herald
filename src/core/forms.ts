@@ -649,7 +649,7 @@ export const BUILDER_FORMS = {
     },
     {
       attr: "reaction",
-      label: "Reaction",
+      label: "Reactions",
       widget: "textarea",
       help: `Enter the commands that the mob will respond with, one per line. <br/><br/>
              The commands should be exactly as a mob would execute them, so they should almost always start with either 'say' or 'emote'.`

@@ -546,12 +546,11 @@ body > .tooltip {
   }
 }
 
-.message {
-  &.indented {
-    border-left: 1px solid #262626;
-    padding-left: 8px;
-  }
+.indented {
+  border-left: 1px solid #262626;
+  padding-left: 8px;
 }
+
 
 // Box shadow
 @mixin box-shadow {
