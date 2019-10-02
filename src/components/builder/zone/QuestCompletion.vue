@@ -69,25 +69,31 @@ export default class extends Vue {
     const completion_cmds: FormElement = {
       attr: "completion_cmds",
       label: "Completion Commands",
-      widget: "textarea"
+      widget: "textarea",
+      help: `Enter the commands that the mob will execute when the quest completes, one per line.
+            <br/><br/>
+            The commands should be exactly as a mob would execute them, so they should almost always start with either 'say' or 'emote'`
     };
 
     const completion_cmd_available: FormElement = {
       attr: "completion_cmd_available",
       label: "Completion Command is Available",
-      widget: "checkbox"
+      widget: "checkbox",
+      help: `test`
     };
 
     const completion_keywords: FormElement = {
       attr: "completion_keywords",
       label: "Completion Triggers",
-      widget: "text"
+      widget: "text",
+      help: `Keywords that can be said in a room by a player wanting to complete this quest.`
     };
 
     const completion_despawn: FormElement = {
       attr: "completion_despawn",
       label: "Despawn on Completion for",
-      widget: "text"
+      widget: "text",
+      help: `If set to a positive integer, the quest mob will disappear for the specified amount of time on completion of this quest.`
     };
 
     const complete_silently: FormElement = {
@@ -98,7 +104,8 @@ export default class extends Vue {
 
     const completion_action: FormElement = {
       attr: "completion_action",
-      label: "Completion Action"
+      label: "Completion Action",
+      help: `Enter one or more commands (separated by 'or') that a player can execute to complete this quest, in addition to complete.`
     };
 
     const modal = {

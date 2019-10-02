@@ -51,7 +51,10 @@ export default class extends Vue {
     const enquire_cmds: FormElement = {
       attr: "enquire_cmds",
       label: "Enquire Commands",
-      widget: "textarea"
+      widget: "textarea",
+      help: `Enter the commands that the mob will execute when the player enquire, one per line.
+            <br/><br/>
+            The commands should be exactly as a mob would execute them, so they should almost always start with either 'say' or 'emote'`
     };
 
     const enquire_cmd_available: FormElement = {
@@ -62,7 +65,8 @@ export default class extends Vue {
 
     const enquire_keywords: FormElement = {
       attr: "enquire_keywords",
-      label: "Enquire Triggers"
+      label: "Enquire Triggers",
+      help: `Keywords that can be said in a room by a player wanting to complete this quest.`,
     };
 
     const modal = {
