@@ -5,7 +5,7 @@
     <div v-if="enquire_cmds.length">
       <div>
         Messages displayed on enquire:
-        <ul>
+        <ul class='list'>
           <li v-for="enquire_cmd in enquire_cmds" :key="enquire_cmd">{{ enquire_cmd }}</li>
         </ul>
       </div>

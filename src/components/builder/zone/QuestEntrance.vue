@@ -4,7 +4,7 @@
       <h3>ENQUIRE ENTRANCE COMMANDS</h3>
 
       <div v-if="entrance_cmds.length">
-        <ul>
+        <ul class='list'>
           <li
             v-for="entrance_cmd in entrance_cmds"
             :key="entrance_cmd"
@@ -28,7 +28,7 @@
       <div v-if="completion_entrance_cmds.length">
         <div>
           Messages displayed when entering the room and the :
-          <ul>
+          <ul class='list'>
             <li
               v-for="completion_entrance_cmd in completion_entrance_cmds"
               :key="completion_entrance_cmd"

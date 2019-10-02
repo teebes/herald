@@ -4,8 +4,8 @@
 
     <div v-if="completion_cmds.length">
       <div>
-        Commands executed on completion:
-        <ul>
+        Commands executed on completion::
+        <ul class='list'>
           <li v-for="completion_cmd in completion_cmds" :key="completion_cmd">{{ completion_cmd }}</li>
         </ul>
       </div>
