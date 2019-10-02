@@ -168,7 +168,8 @@ const receiveMessage = async ({
   if (
     message_data.type === "cmd.move.success" ||
     message_data.type === "cmd.flee.success" ||
-    message_data.type === "notification.transport.exit"
+    message_data.type === "notification.transport.exit" ||
+    message_data.type === "affect.death"
   ) {
     commit("map_add", message_data.data.room);
     commit("room_set", message_data.data.room);
@@ -181,6 +182,11 @@ const receiveMessage = async ({
     message_data.data.target_type === "room"
   ) {
     commit("room_set", message_data.data.target);
+  }
+
+  // On death, clear out combat window
+  if (message_data.type === 'affect.death') {
+    commit("player_target_set", null);
   }
 
   // Track current casts
@@ -442,7 +448,8 @@ const mutations = {
     if (
       message.type === "cmd.flee.success" ||
       message.type === "cmd.move.success" ||
-      message.type === "system.connect.success"
+      message.type === "system.connect.success" ||
+      message.type === "affect.death"
     ) {
       state.last_viewed_room_message = message;
     } else if (
