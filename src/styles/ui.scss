@@ -435,10 +435,6 @@ body > .tooltip {
     margin-top: 10px;
   }
 
-  .level-too-high {
-    color: $color-red;
-  }
-
   .description {
     .description-line {
       &:not(:last-child) {
@@ -550,7 +546,6 @@ body > .tooltip {
   border-left: 1px solid #262626;
   padding-left: 8px;
 }
-
 
 // Box shadow
 @mixin box-shadow {

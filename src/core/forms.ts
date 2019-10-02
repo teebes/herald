@@ -882,26 +882,21 @@ export const BUILDER_FORMS = {
             }
           ]
         },
-        {}
-        // {
-        //   attr: "quality",
-        //   label: "Quality",
-        //   widget: "select",
-        //   options: [
-        //     {
-        //       value: "normal",
-        //       label: "Normal"
-        //     },
-        //     {
-        //       value: "imbued",
-        //       label: "Imbued"
-        //     },
-        //     {
-        //       value: "enchanted",
-        //       label: "Enchanted"
-        //     }
-        //   ]
-        // }
+        {
+          attr: "armor_class",
+          label: "Armor Class",
+          widget: "select",
+          options: [
+            {
+              value: "light",
+              label: "Light"
+            },
+            {
+              value: "heavy",
+              label: "Heavy"
+            }
+          ]
+        }
       ]
     },
     {

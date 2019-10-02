@@ -4,9 +4,14 @@
     <div class="summary">{{ item.summary }}</div>
 
     <div
-      class="level-too-high"
-      v-if="$store.state.game.player.archetype !== 'warrior' && item.armor_class === 'heavy'"
+      class="cannot-eq-heavy-armor"
+      v-if="player.archetype !== 'warrior' && item.armor_class === 'heavy'"
     >Cannot equip heavy armor.</div>
+
+    <div
+      class="level-too-high"
+      v-if="is_item_too_high_level"
+    >Can only wear items up to level {{ is_item_too_high_level }}.</div>
 
     <div class="description">
       <div class="description-line" v-for="line in lines" :key="lines.indexOf(line)">{{ line }}</div>
@@ -87,6 +92,22 @@ export default class ItemInfo extends Vue {
     return this.item.description.split("\n") || [];
   }
 
+  get player() {
+    return this.$store.state.game.player;
+  }
+
+  get is_item_too_high_level() {
+    // If the user is allowed to wear the item, return false.
+    // If the user cannot wear the item, return the max level
+    // they are able to wear equipment at.
+    const delta = this.item.level - this.player.level;
+    if (delta >= 3) {
+      return this.player.level + 3;
+    } else {
+      return false;
+    }
+  }
+
   onClickContainedItem(contained_item) {
     // Get the selection string for the item we're getting
     const target = getTargetInGroup(contained_item, this.item.inventory);
@@ -111,4 +132,8 @@ export default class ItemInfo extends Vue {
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
+.level-too-high,
+.cannot-eq-heavy-armor {
+  color: $color-red;
+}
 </style>
