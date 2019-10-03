@@ -212,9 +212,15 @@
           </div>
           <div class="cmds">
             <div class="cmd" @click="cmdHelp('winvisible')">winvisible</div>
-            <div class="cmd" @click="cmdHelp('echo')">echo</div>
             <div class="cmd" @click="cmdHelp('repop')">repop</div>
             <div class="cmd" @click="cmdHelp('ping')">ping</div>
+          </div>
+          <div class="cmds">
+            <div class="cmd" @click="cmdHelp('echo')">echo</div>
+            <div class="cmd" @click="cmdHelp('gecho')">gecho</div>
+            <div class="cmd" @click="cmdHelp('zecho')">zecho</div>
+            <div class="cmd" @click="cmdHelp('send')">send</div>
+            <div class="cmd" @click="cmdHelp('sendexcept')">sendexcept</div>
           </div>
         </div>
       </template>
