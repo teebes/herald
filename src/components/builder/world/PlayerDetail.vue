@@ -19,6 +19,19 @@
 
     <div class="data-and-map">
       <div class="player-data">
+        <div class="factions">
+          <h3>Factions</h3>
+          <div>core: {{ player.animation_data.factions.core }}</div>
+          <div
+            v-for="faction_code in Object.keys(player.animation_data.factions)"
+            :key="faction_code"
+          >
+            <template
+              v-if="faction_code !== 'core'"
+            >{{ faction_code }}: {{ player.animation_data.factions[faction_code] }}</template>
+          </div>
+        </div>
+
         <div class="inventory">
           <h3>Inventory</h3>
           <div v-for="item in player.inventory" :key="item.id">{{ item.name }}</div>
@@ -36,18 +49,6 @@
         <div class="quests">
           <h3>Quests</h3>
           <div v-for="quest in player.quests" :key="quest.id">{{ quest.name }}</div>
-        </div>
-
-        <div class="factions">
-          <h3>Factions</h3>
-          <div
-            v-for="faction_code in Object.keys(player.animation_data.factions)"
-            :key="faction_code"
-          >
-            <template
-              v-if="faction_code !== 'core'"
-            >{{ faction_code }}: {{ player.animation_data.factions[faction_code] }}</template>
-          </div>
         </div>
 
         <div class="trophy">

@@ -2,7 +2,7 @@
   <div class="stats indented">
     <div
       class="summary"
-    >{{ player.name }} {{ player.title }} - Level {{ player.level }} {{ this.$capfirst(player.factions.core)}} {{ this.$capfirst(player.archetype) }}</div>
+    >{{ player.name }} {{ player.title }} - Level {{ player.level }} {{ core_faction_name }} {{ this.$capfirst(player.archetype) }}</div>
 
     <div class="columns">
       <div class="left-side">
@@ -124,6 +124,11 @@ export default class extends Vue {
         (this.player.experience_progress + this.player.experience_needed)) *
         100
     );
+  }
+
+  get core_faction_name() {
+    return this.$store.state.game.world.factions[this.player.factions.core]
+      .name;
   }
 }
 </script>

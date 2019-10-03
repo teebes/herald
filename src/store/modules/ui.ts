@@ -61,7 +61,7 @@ const mutations = {
   notification_set_error: (state, notification) => {
     state.notification = notification;
     state.notificationType = "error";
-    state.notification_expires = 3000;
+    state.notification_expires = 5000;
   },
 
   modal_set: (state, modal) => {
