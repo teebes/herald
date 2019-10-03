@@ -11,7 +11,7 @@
         @blur="onBlur"
         autocomplete="off"
         ref="inputEl"
-      >
+      />
       <div v-else>
         <input
           class="readonly-input"
@@ -19,7 +19,7 @@
           readonly="true"
           ref="inputEl"
           @click="onClickReadonly"
-        >
+        />
       </div>
     </div>
 
@@ -159,7 +159,9 @@ export default class ReferenceField extends Vue {
   }
 
   onBlur(event) {
-    this.$store.commit(UI_MUTATIONS.EDITING_FIELD_CLEAR);
+    setTimeout(() => {
+      this.$store.commit(UI_MUTATIONS.EDITING_FIELD_CLEAR);
+    }, 250);
 
     if (this.timeout) {
       clearTimeout(this.timeout);
@@ -182,7 +184,6 @@ export default class ReferenceField extends Vue {
   // Debounce and trigger lookupReference
   timeout: number | null = null;
   onUserReferenceChange(event) {
-
     this.$store.commit(UI_MUTATIONS.EDITING_FIELD_SET);
 
     this.user_input = event.target.value;

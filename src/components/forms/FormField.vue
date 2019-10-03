@@ -22,6 +22,8 @@
         v-model="internalValue"
         v-if="elementSchema.widget == 'textarea'"
         @keyup="delete formErrors[elementSchema.attr]"
+        @focus="onFocus"
+        @blur="onBlur"
       ></textarea>
 
       <template v-else-if="elementSchema.options">
@@ -97,7 +99,9 @@ export default class FormField extends Vue {
   }
 
   onBlur() {
-    this.$store.commit(UI_MUTATIONS.EDITING_FIELD_CLEAR);
+    setTimeout(() => {
+      this.$store.commit(UI_MUTATIONS.EDITING_FIELD_CLEAR);
+    }, 250);
   }
 }
 </script>
