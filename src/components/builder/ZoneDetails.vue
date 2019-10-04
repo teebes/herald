@@ -97,7 +97,7 @@ export default class ZoneDetails extends Mixins(ZoneView) {
   BUILDER_MOB_TEMPLATE_DETAILS = BUILDER_MOB_TEMPLATE_DETAILS;
   BUILDER_ITEM_TEMPLATE_DETAILS = BUILDER_ITEM_TEMPLATE_DETAILS;
 
-  async activated() {
+  async mounted() {
     const world_id = this.$route.params.world_id;
     const zone_id = this.$route.params.zone_id;
 

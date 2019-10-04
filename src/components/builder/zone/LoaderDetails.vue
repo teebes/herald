@@ -115,7 +115,7 @@ export default class extends Mixins(ZoneView) {
     return this.$store.state.builder.zones.loader;
   }
 
-  async activated() {
+  async mounted() {
     const world_id = this.$route.params.world_id;
     const loader_id = this.$route.params.loader_id;
 

@@ -6,12 +6,7 @@ import { Component, Vue } from "vue-property-decorator";
 export class KeepAliveFetch extends Vue {
   async fetch() {}
 
-  async activated() {
+  async mounted() {
     if (this.fetch) return await this.fetch();
   }
-
-  // async created() {
-  //   console.log("created");
-  //   if (this.fetch) return await this.fetch();
-  // }
 }

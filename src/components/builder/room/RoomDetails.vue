@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <RoomActions/>
+    <RoomActions />
 
     <div class="mt-8" v-if="room.note">
       <h3>ROOM NOTE</h3>
@@ -79,10 +79,10 @@ export default class RoomDetails extends Mixins(MapRoomClick, RoomView) {
     if (key === "e") this.editInfo();
   }
 
-  async activated() {
+  async mounted() {
     window.addEventListener("keypress", this.onTypeE);
   }
-  deactivated() {
+  destroyed() {
     let x = 1;
     window.removeEventListener("keypress", this.onTypeE);
   }

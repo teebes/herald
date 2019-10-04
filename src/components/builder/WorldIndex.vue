@@ -32,7 +32,6 @@ import { MapRoomClick } from "@/components/builder/Mixins.ts";
   }
 })
 export default class WorldAdmin extends Mixins(MapRoomClick, WorldView) {
-
   map_radius: number = 0;
 
   measureMapContainer() {
@@ -49,18 +48,18 @@ export default class WorldAdmin extends Mixins(MapRoomClick, WorldView) {
     this.map_radius = map_dimensions.radius;
   }
 
-  async activated() {
+  async mounted() {
     this.measureMapContainer();
     window.addEventListener("resize", this.debouncedResize);
   }
 
-  deactivated() {
+  destroyed() {
     window.removeEventListener("resize", this.debouncedResize);
   }
 
   debouncedResize = _.debounce(this.onResize, 100);
 
-   onResize() {
+  onResize() {
     this.map_radius = 0;
     this.measureMapContainer();
   }

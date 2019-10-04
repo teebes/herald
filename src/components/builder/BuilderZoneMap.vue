@@ -4,7 +4,7 @@
 
     <div v-if="zone_rooms.length">
       <div>here</div>
-      <Map :rooms="zone_rooms"/>
+      <Map :rooms="zone_rooms" />
     </div>
   </div>
   <div v-else class="loading-screen">Loading...</div>
@@ -25,16 +25,14 @@ import axios from "axios";
 export default class extends Vue {
   zone_rooms: Array<any> = [];
 
-  async activated() {
+  async mounted() {
     await this.$store.dispatch(BUILDER_ACTIONS.ZONE_FETCH, {
       world_id: this.$route.params.world_id,
       zone_id: this.$route.params.zone_id
     });
 
     const resp = await axios.get(
-      `builder/worlds/${this.$route.params.world_id}/zones/${
-        this.$route.params.zone_id
-      }/map/`
+      `builder/worlds/${this.$route.params.world_id}/zones/${this.$route.params.zone_id}/map/`
     );
     this.zone_rooms = resp.data.data;
   }
