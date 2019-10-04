@@ -53,7 +53,7 @@
           <div>
             <span
               v-if="quest.repeatable_after"
-            >Repeatbale after {{ quest.repeatable_after }} seconds.</span>
+            >Repeatable after {{ quest.repeatable_after }} seconds.</span>
             <span v-else>Repeatable immediately.</span>
           </div>
           <button class="btn-thin" @click="editRepeat">EDIT</button>
