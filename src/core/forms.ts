@@ -116,16 +116,26 @@ const ROOM_CHECK: FormElement[] = [
       {
         value: "health_below",
         label: "Health below"
+      },
+      {
+        value: "quest_complete",
+        label: "Quest complete"
+      },
+      {
+        value: "quest_incomplete",
+        label: "Quest incomplete"
       }
     ],
     help: `Which check to perform.<br/>
-        - in_inv: whether item template id 'argument' is in the actor's inventory.<br/>
-        - not_in_inv: the opposite of in_inv.<br/>
+        - in inventory: whether item template id 'argument' is in the actor's inventory.<br/>
+        - not in inventory: the opposite of in_inv.<br/>
         - equipped: whether item template id 'argument' is equipped by the actor.<br/>
-        - not_equipped: the opposite of equipped.<br/>
-        - mob_is_absent: whether a mob with template id 'argument' in the room is not present. If 'argument2' is specified as a faction, only that faction will be affected by the check.<br/>
-        - faction_below: whether a character's standing in faction 'argument' is below 'argument2'.<br/>
-        - health_below: whether a character’s health is below a 'argument' threshold, in % of their max health.`
+        - not equipped: the opposite of equipped.<br/>
+        - mob is absent: whether a mob with template id 'argument' in the room is not present. If 'argument2' is specified as a faction, only that faction will be affected by the check.<br/>
+        - faction below: whether a character's standing in faction 'argument' is below 'argument2'.<br/>
+        - health below: whether a character’s health is below a 'argument' threshold, in % of their max health.<br/>
+        - quest complete: whether a character has completed quest id 'argument'.<br/>
+        - quest incomplete: whether a character has not completed quest id 'argument'.<br/>`
   },
   {
     attr: "prevent",
