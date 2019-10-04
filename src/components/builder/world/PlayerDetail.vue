@@ -19,6 +19,12 @@
 
     <div class="data-and-map">
       <div class="player-data">
+        <div class="instance-details" v-if="!$store.state.builder.world.is_multiplayer">
+          <h3>Instance Details</h3>
+          <div>Mob count: {{ player.instance_details.mob_count }}</div>
+          <div>Item count: {{ player.instance_details.item_count }}</div>
+        </div>
+
         <div class="factions">
           <h3>Factions</h3>
           <div>core: {{ player.animation_data.factions.core }}</div>
