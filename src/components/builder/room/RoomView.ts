@@ -8,7 +8,6 @@ export default class extends Mixins(KeepAliveFetch) {
     // When we activate any world view, we want to know show the information if
     // we have it, otherwise wait for it. In both cases, we trigger a fetch
     // so that we can update our world data.
-
     if (
       !this.$store.state.builder.room ||
       this.$store.state.builder.room != this.$route.params.room_id

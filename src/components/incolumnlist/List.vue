@@ -63,15 +63,9 @@ export default class InColumnList extends Vue {
 
   async fetch() {
     const resp = await axios.get(this.endpoint);
-    if (resp.data.data)
-      this.elements = resp.data.data;
-    else if (resp.data.results)
-      this.elements = resp.data.results;
+    if (resp.data.data) this.elements = resp.data.data;
+    else if (resp.data.results) this.elements = resp.data.results;
     else this.elements = resp.data;
-  }
-
-  async activated() {
-    await this.fetch();
   }
 
   async mounted() {

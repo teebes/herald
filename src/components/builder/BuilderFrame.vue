@@ -42,9 +42,9 @@
       <div class="side-nav navigation">
         <!-- World nav -->
         <template v-if="isWorldView">
-            <router-link
-              :to="{name: LOBBY_WORLD_DETAIL, params: {world_id: $route.params.world_id}}"
-            >Lobby</router-link>
+          <router-link
+            :to="{name: LOBBY_WORLD_DETAIL, params: {world_id: $route.params.world_id}}"
+          >Lobby</router-link>
 
           <router-link
             :to="{name: BUILDER_ZONE_LIST, params: { world_id: $route.params.world_id}}"
@@ -117,10 +117,10 @@
       </div>
 
       <div class="builder-contents">
-        <keep-alive v-if="$store.state.builder.map">
-          <!-- <keep-alive> -->
-          <router-view :key="$route.fullPath"></router-view>
-        </keep-alive>
+        <!-- <keep-alive v-if="$store.state.builder.map"> -->
+        <!-- <keep-alive> -->
+        <router-view :key="$route.fullPath" v-if="$store.state.builder.map"></router-view>
+        <!-- </keep-alive> -->
         <div v-else>Loading...</div>
       </div>
     </div>
@@ -294,7 +294,7 @@ export default class WorldFrame extends Vue {
     return {
       name: BUILDER_WORLD_FACTIONS,
       params: { world_id: this.$route.params.world_id }
-    }
+    };
   }
 }
 </script>

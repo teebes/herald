@@ -7,7 +7,7 @@ import { KeepAliveFetch } from "@/components/Mixins.ts";
 
 @Component
 export default class extends Mixins(KeepAliveFetch) {
-  async activated() {
+  async mounted() {
     this.selectZone(this.$route.params.zone_id);
   }
 

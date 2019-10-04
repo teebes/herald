@@ -22,31 +22,6 @@ export class MapRoomClick extends Vue {
     if (this.postMapClickRoom) {
       this.postMapClickRoom(room);
     }
-    return;
-
-    // Update store
-    this.$store.commit(BUILDER_MUTATIONS.ROOM_SET, room);
-
-    // Dispatch fetch
-    this.$store.dispatch(BUILDER_ACTIONS.ROOM_FETCH, {
-      world_id: this.$route.params.world_id,
-      room_id: room.id
-    });
-
-    // If the clicked room is taking us to a new zone,
-    // dispatch to get that as well
-    if (room.zone.id != this.$store.state.builder.zone.id) {
-      // Clear the zone's rooms since they will be refetched
-      this.$store.commit(BUILDER_MUTATIONS.ZONE_ROOMS_CLEAR);
-      this.$store.dispatch(BUILDER_ACTIONS.ZONE_FETCH, {
-        world_id: this.$route.params.world_id,
-        zone_id: room.zone.id
-      });
-    }
-
-    if (this.postMapClickRoom) {
-      this.postMapClickRoom(room);
-    }
   }
 }
 
@@ -56,13 +31,7 @@ export class OutsideClick extends Vue {
     document.body.addEventListener("click", this.onOutsideClick);
   }
 
-  unmounted() {}
-
-  activated() {
-    document.body.addEventListener("click", this.onOutsideClick);
-  }
-
-  deactivated() {
+  destroyed() {
     document.body.removeEventListener("click", this.onOutsideClick);
   }
 

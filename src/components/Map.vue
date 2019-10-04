@@ -46,10 +46,6 @@ export default class Map extends Vue {
 
   mapRenderer: any = null;
 
-  activated() {
-    this.renderMap();
-  }
-
   @Watch("center_key")
   changeCenterKey() {
     this.renderMap();
@@ -153,7 +149,7 @@ export default class Map extends Vue {
           const index_pack = `${x}:${y}:${z}`;
           //const roomAtCoords = this.$store.state.builder.map_index[index_pack];
           const roomAtCoords = index[index_pack];
-        
+
           // The room is in visible range, and is present in the index, we add it
           // to the shown rooms.
           if (roomAtCoords) {
@@ -172,7 +168,6 @@ export default class Map extends Vue {
         }
       }
     }
-  
 
     if (this.modified_rooms && this.modified_rooms.length) {
       for (const room of this.modified_rooms) {

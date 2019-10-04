@@ -108,7 +108,7 @@ export default class ElementList extends Vue {
     });
   }
 
-  activated() {
+  mounted() {
     this.fetchData();
   }
 

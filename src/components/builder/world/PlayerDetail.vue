@@ -106,7 +106,7 @@ export default class PlayerDetail extends Mixins(WorldView) {
     return this.$store.state.builder.worlds.player;
   }
 
-  async activated() {
+  async mounted() {
     const player = await this.$store.dispatch("builder/worlds/player_fetch", {
       world_id: this.$route.params.world_id,
       player_id: this.$route.params.player_id

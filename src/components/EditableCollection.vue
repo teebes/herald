@@ -48,7 +48,7 @@ export default class extends Vue {
     return [];
   }
 
-  async activated() {
+  async mounted() {
     this.$store.commit("builder/register_collection", {
       name: this.registration_name,
       endpoint: this.endpoint
@@ -57,7 +57,7 @@ export default class extends Vue {
     this.fetched = true;
   }
 
-  deactivated() {
+  destroyed() {
     this.$store.commit("builder/unregister_collection", this.registration_name);
   }
 
