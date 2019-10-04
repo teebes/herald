@@ -25,8 +25,11 @@
         </div>
 
         <div class="world-leaderboard" v-if="!$store.state.lobby.world_details.create_character">
-          <template v-if="world.is_multiplayer">
-            <div class="leaderboard-title">LEADERBOARD</div>
+          <template v-if="world.id != 217">
+            <div class="leaderboard-title">
+              <template v-if="world.id == 1">TRAILBLAZERS</template>
+              <template v-else>LEADERBOARD</template>
+            </div>
             <div class="leaderboard-region">
               <ul>
                 <li class="world-leader" v-for="leader in leaders" :key="leader.id">
