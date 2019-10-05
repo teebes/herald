@@ -70,7 +70,7 @@
                 <a
                   :href="config.small_background"
                   v-if="config.small_background.startsWith('http')"
-                >{{ config.small_background }}</a>
+                >link</a>
                 <span v-else>{{ config.small_background }}</span>
               </div>
               <div v-if="config.large_background">
@@ -78,7 +78,7 @@
                 <a
                   :href="config.large_background"
                   v-if="config.large_background.startsWith('http')"
-                >{{ config.large_background }}</a>
+                >link</a>
                 <span v-else>{{ config.large_background }}</span>
               </div>
             </li>
