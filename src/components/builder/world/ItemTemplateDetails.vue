@@ -148,7 +148,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Mixins } from "vue-property-decorator";
-import WorldView from "@/components/builder/WorldView.ts";
+import WorldView from "@/components/builder/world/WorldView.ts";
 import { BUILDER_FORMS } from "@/core/forms.ts";
 import ItemTemplateStats from "./ItemTemplateStats.vue";
 import ItemTemplateInventory from "./ItemTemplateInventory.vue";

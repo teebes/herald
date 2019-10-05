@@ -12,7 +12,7 @@
 import { Component, Prop, Vue, Mixins } from "vue-property-decorator";
 import { BUILDER_ROOM_INDEX } from "@/router.ts";
 import ElementList from "@/components/elementlist/ElementList.vue";
-import ZoneView from "@/components/builder/ZoneView";
+import ZoneView from "@/components/builder/zone/ZoneView";
 
 @Component({
   components: {

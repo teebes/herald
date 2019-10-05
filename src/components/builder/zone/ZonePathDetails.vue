@@ -37,8 +37,8 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Mixins, Watch } from "vue-property-decorator";
-import ZoneView from "@/components/builder/ZoneView";
-import Map from "../Map.vue";
+import ZoneView from "@/components/builder/zone/ZoneView";
+import Map from "@/components/Map.vue";
 import axios from "axios";
 import { BUILDER_ACTIONS, BUILDER_MUTATIONS, UI_MUTATIONS } from "@/constants";
 import { Room } from "@/core/interfaces";

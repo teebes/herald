@@ -73,9 +73,9 @@ import {
   UI_MODALS
 } from "@/constants";
 import { Room } from "@/core/interfaces";
-import Map from "../Map.vue";
+import Map from "@/components/Map.vue";
 import axios from "axios";
-import ZoneView from "@/components/builder/ZoneView";
+import ZoneView from "@/components/builder/zone/ZoneView";
 import {
   BUILDER_ZONE_INDEX,
   BUILDER_MOB_TEMPLATE_DETAILS,

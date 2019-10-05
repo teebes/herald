@@ -23,15 +23,15 @@ import Transfer from "@/components/lobby/Transfer.vue";
 
 // Builder
 import BuilderFrame from "@/components/builder/BuilderFrame.vue";
-import ZoneDetails from "@/components/builder/ZoneDetails.vue";
+import ZoneDetails from "@/components/builder/zone/ZoneDetails.vue";
 import RoomDetails from "@/components/builder/room/RoomDetails.vue";
 import RoomPaths from "@/components/builder/room/RoomPaths.vue";
 import RoomConfig from "@/components/builder/room/RoomConfig.vue";
-import WorldIndex from "@/components/builder/WorldIndex.vue";
-import ZoneList from "@/components/builder/ZoneList.vue";
-import RoomList from "@/components/builder/ZoneRoomList.vue";
-import ZonePathList from "@/components/builder/ZonePathList.vue";
-import ZonePathDetails from "@/components/builder/ZonePathDetails.vue";
+import WorldIndex from "@/components/builder/world/WorldIndex.vue";
+import ZoneList from "@/components/builder/world/ZoneList.vue";
+import RoomList from "@/components/builder/zone/ZoneRoomList.vue";
+import ZonePathList from "@/components/builder/zone/ZonePathList.vue";
+import ZonePathDetails from "@/components/builder/zone/ZonePathDetails.vue";
 import ZoneLoaderList from "@/components/builder/zone/LoaderList.vue";
 import ZoneLoaderDetails from "@/components/builder/zone/LoaderDetails.vue";
 import ZoneQuestList from "@/components/builder/zone/QuestList.vue";

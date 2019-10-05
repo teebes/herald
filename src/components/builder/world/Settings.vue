@@ -8,7 +8,7 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
-import WorldView from "@/components/builder/WorldView.ts";
+import WorldView from "@/components/builder/world/WorldView.ts";
 
 @Component
 export default class WorldFrame extends Mixins(WorldView) {}

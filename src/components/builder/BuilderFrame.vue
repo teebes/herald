@@ -63,6 +63,7 @@
           >Config</router-link>
 
           <div class="mobile-hidden">
+            <div class="line-divider my-2" />
             <router-link
               :to="{name: BUILDER_WORLD_BUILDERS, params: {world_id: $route.params.world_id}}"
             >Builders</router-link>
@@ -480,6 +481,10 @@ export default class WorldFrame extends Vue {
         margin-bottom: 10px;
       }
     }
+  }
+
+  .line-divider {
+    width: 60%;
   }
 }
 </style>

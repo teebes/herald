@@ -11,7 +11,7 @@
 <script lang='ts'>
 import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 import axios from "axios";
-import WorldView from "@/components/builder/WorldView.ts";
+import WorldView from "@/components/builder/world/WorldView.ts";
 import Builder from "@/components/builder/world/Builder.vue";
 import EditableCollection from "@/components/EditableCollection.vue";
 import { FormElement, BUILDER_FORMS } from "@/core/forms.ts";

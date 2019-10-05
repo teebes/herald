@@ -64,7 +64,7 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Mixins, Watch } from "vue-property-decorator";
-import ZoneView from "@/components/builder/ZoneView";
+import ZoneView from "@/components/builder/zone/ZoneView";
 import FormField from "@/components/forms/FormField.vue";
 import { Entity } from "@/core/interfaces.ts";
 import { FormElement, BUILDER_FORMS } from "@/core/forms";
