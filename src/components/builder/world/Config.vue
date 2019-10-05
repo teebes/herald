@@ -54,9 +54,9 @@
               Game
               <template v-if="config.allow_combat">
                 allows combat
-                <template v-if="config.allow_pvp">and PvP</template>
+                <template v-if="config.allow_pvp">and PvP</template>.
               </template>
-              .
+              <template v-else>does not allow combat.</template>
             </li>
 
             <!-- Consider adding to display:
@@ -336,12 +336,12 @@ export default class WorldFrame extends Mixins(WorldView) {
     };
     const small_background: FormElement = {
       attr: "small_background",
-      label: "740 x 332 card URL",
+      label: "740 x 332 Card URL",
       help: `Image displayed in the general lobby`
     };
     const large_background: FormElement = {
       attr: "large_background",
-      label: "2300 x 598 banner URL",
+      label: "2300 x 598 Banner URL",
       help: `Image displayed in the world lobby`
     };
 

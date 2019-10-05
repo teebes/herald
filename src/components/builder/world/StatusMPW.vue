@@ -65,6 +65,22 @@ export default class StatusMPW extends Mixins(WorldView) {
     const world_id = this.world.id;
     const resp = await axios.get(`/builder/worlds/${this.world.id}/admin/`);
     this.admin_data = resp.data;
+
+    // Check for up state
+    if (
+      this.admin_data.api_state === "running" &&
+      this.admin_data.game_state === "online"
+    ) {
+      this.$store.commit("ui/notification_clear");
+    }
+
+    // Check for down state
+    if (
+      this.admin_data.api_state === "stopped" &&
+      this.admin_data.game_state === "N/A"
+    ) {
+      this.$store.commit("ui/notification_clear");
+    }
   }
 
   async mounted() {
@@ -91,7 +107,7 @@ export default class StatusMPW extends Mixins(WorldView) {
   async onStart() {
     this.action_submitted = true;
     this.$store.commit(UI_MUTATIONS.SET_NOTIFICATION, {
-      notification: "Starting world, this may take a minute...",
+      text: "Starting world, this may take a minute...",
       expires: false
     });
     const resp = await axios.post(`/builder/worlds/${this.world.id}/start/`);
@@ -102,7 +118,7 @@ export default class StatusMPW extends Mixins(WorldView) {
   async onStop() {
     this.action_submitted = true;
     this.$store.commit(UI_MUTATIONS.SET_NOTIFICATION, {
-      notification: "Stopping world, this may take a minute...",
+      text: "Stopping world, this may take a minute...",
       expires: false
     });
     const resp = await axios.post(`/builder/worlds/${this.world.id}/stop/`);
