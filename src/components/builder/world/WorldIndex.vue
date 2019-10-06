@@ -22,7 +22,7 @@ import { DIRECTIONS } from "@/constants";
 import Map from "@/components/Map.vue";
 import { Room } from "@/core/interfaces";
 import _ from "lodash";
-import WorldView from "@/components/builder/WorldView.ts";
+import WorldView from "@/components/builder/world/WorldView.ts";
 import { BUILDER_ACTIONS, BUILDER_MUTATIONS } from "@/constants";
 import { MapRoomClick } from "@/components/builder/Mixins.ts";
 

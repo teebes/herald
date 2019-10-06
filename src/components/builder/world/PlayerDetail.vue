@@ -85,7 +85,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Mixins } from "vue-property-decorator";
-import WorldView from "@/components/builder/WorldView.ts";
+import WorldView from "@/components/builder/world/WorldView.ts";
 import Map from "@/components/Map.vue";
 import { Room } from "@/core/interfaces.ts";
 import { EQUIPMENT_SLOT_LIST } from "@/constants";

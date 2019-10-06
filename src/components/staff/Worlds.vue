@@ -12,7 +12,7 @@
 import { Component, Prop, Vue, Mixins } from "vue-property-decorator";
 import { BUILDER_ZONE_INDEX } from "@/router.ts";
 import ElementList from "@/components/elementlist/ElementList.vue";
-import WorldView from "@/components/builder/WorldView.ts";
+import WorldView from "@/components/builder/world/WorldView.ts";
 import { BUILDER_FORMS } from "@/core/forms.ts";
 import {
   BUILDER_ACTIONS,

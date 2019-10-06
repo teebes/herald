@@ -136,7 +136,7 @@ import MobTemplateFactions from "./MobTemplateFactions.vue";
 import MobTemplateMerchant from "./MobTemplateMerchant.vue";
 import MobTemplateLoads from "./MobTemplateLoads.vue";
 import MobTemplateQuests from "./MobTemplateQuests.vue";
-import WorldView from "@/components/builder/WorldView.ts";
+import WorldView from "@/components/builder/world/WorldView.ts";
 import { KeepAliveFetch } from "@/components/Mixins.ts";
 
 @Component({

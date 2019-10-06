@@ -27,6 +27,7 @@ body > .tooltip {
 }
 
 .divider {
+  // fancy divider
   // 582 - 24
   background: url("assets/ui/divider.png") no-repeat center;
   background-size: 291px 12px;
@@ -35,6 +36,13 @@ body > .tooltip {
   margin: 0 auto;
   //height: 48px;
   //width: 100%;
+}
+
+.line-divider {
+  // plain divider
+  content: " ";
+  display: block;
+  border-bottom: 1px solid $color-text-hex-30;
 }
 
 .half-panels {

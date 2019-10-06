@@ -63,6 +63,9 @@
           >Config</router-link>
 
           <div class="mobile-hidden">
+            <div class="line-divider my-2" />
+            <router-link :to="world_status_link">Status</router-link>
+
             <router-link
               :to="{name: BUILDER_WORLD_BUILDERS, params: {world_id: $route.params.world_id}}"
             >Builders</router-link>
@@ -71,7 +74,6 @@
               :to="{name: BUILDER_WORLD_PLAYER_LIST, params: {world_id: $route.params.world_id}}"
             >Players</router-link>
 
-            <router-link :to="world_status_link">Status</router-link>
             <router-link :to="world_factions_link">Factions</router-link>
           </div>
         </template>
@@ -480,6 +482,10 @@ export default class WorldFrame extends Vue {
         margin-bottom: 10px;
       }
     }
+  }
+
+  .line-divider {
+    width: 60%;
   }
 }
 </style>

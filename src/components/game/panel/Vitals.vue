@@ -41,7 +41,7 @@
     <div v-if="is_mobile" class="mobile-cast-region">
       <Cast :message="current_cast" v-if="current_cast" :key="current_cast.data.expires" />
     </div>
-    <Skills />
+    <Skills v-if="$store.state.game.world.allow_combat" />
   </div>
 </template>
 

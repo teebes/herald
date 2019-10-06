@@ -83,7 +83,7 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Mixins } from "vue-property-decorator";
-import ZoneView from "@/components/builder/ZoneView";
+import ZoneView from "@/components/builder/zone/ZoneView";
 import axios from "axios";
 import {
   BUILDER_ACTIONS,

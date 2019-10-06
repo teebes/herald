@@ -12,7 +12,7 @@
 <script lang='ts'>
 import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 import ElementList from "@/components/elementlist/ElementList.vue";
-import ZoneView from "@/components/builder/ZoneView";
+import ZoneView from "@/components/builder/zone/ZoneView";
 import { BUILDER_FORMS } from "@/core/forms.ts";
 import { BUILDER_ZONE_QUEST_DETAIL } from "@/router.ts";
 import { BUILDER_ACTIONS, UI_MUTATIONS } from "@/constants";
@@ -24,9 +24,7 @@ import { BUILDER_ACTIONS, UI_MUTATIONS } from "@/constants";
 })
 export default class extends Mixins(ZoneView) {
   get endpoint() {
-    return `/builder/worlds/${this.$route.params.world_id}/zones/${
-      this.$route.params.zone_id
-    }/quests/`;
+    return `/builder/worlds/${this.$route.params.world_id}/zones/${this.$route.params.zone_id}/quests/`;
   }
 
   get resolve_route() {
