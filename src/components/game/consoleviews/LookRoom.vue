@@ -13,11 +13,25 @@
     </div>
 
     <div class="room-name">{{ room.name }}</div>
-    <div
-      class="room-description"
-      v-for="line in descLines"
-      :key="descLines.indexOf(line)"
-    >{{ line }}</div>
+
+    <!-- Description -->
+    <template v-if="isLastMessage">
+      <div class="room-description" v-for="(line, index) in descLines" :key="index">
+        <template v-for="(word, word_index) in line.split(' ')">
+          <span
+            :key="word_index"
+            v-if="isDetail(word)"
+            class="interactable"
+            @click="onClickDetail(word)"
+          >{{ word }}</span>
+          <span :key="word_index" v-else>{{ word }}</span>
+          {{ ' ' }}
+        </template>
+      </div>
+    </template>
+    <template v-else>
+      <div class="room-description" v-for="(line, index) in descLines" :key="index">{{ line }}</div>
+    </template>
 
     <div class="room-exits" v-if="exits">{{ exits }}</div>
 
@@ -82,6 +96,7 @@ import { stackedInventory, getTargetInGroup } from "@/core/utils.ts";
 interface Char {
   key: string;
   name: string;
+  id: number;
 }
 
 interface Room {
@@ -89,6 +104,7 @@ interface Room {
   description: string;
   chars: Char[];
   inventory: {}[];
+  details: string[];
 }
 
 @Component
@@ -116,11 +132,13 @@ export default class LookRoom extends Vue {
   get descLines() {
     if (!this.room.description) return [];
     return this.room.description.split("\n");
-    const lines: string[] = [];
-    for (const line of this.room.description.split("\n")) {
-      if (line) lines.push(line);
+  }
+
+  isDetail(word) {
+    for (const detail of this.room.details) {
+      if (word.toLowerCase() === detail.toLowerCase()) return true;
     }
-    return lines;
+    return false;
   }
 
   get exits() {
@@ -139,7 +157,7 @@ export default class LookRoom extends Vue {
   get chars() {
     let chars: Char[] = [];
     for (let char of this.room.chars) {
-      if (char.key != this.$store.state.game.player.key) {
+      if (char.id != this.$store.state.game.player_id) {
         chars.push(char);
       }
     }
@@ -162,6 +180,10 @@ export default class LookRoom extends Vue {
     }
   }
 
+  onClickDetail(word) {
+    this.$store.dispatch("game/cmd", `l ${word}`);
+  }
+
   stackedInventory = stackedInventory;
 }
 </script>
@@ -179,6 +201,7 @@ export default class LookRoom extends Vue {
 
   .room-description {
     line-height: 21px;
+    min-height: 14px;
     color: #ddd;
   }
 

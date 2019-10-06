@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h3 class="name">{{ resource.name.toUpperCase() }}</h3>
+  <div v-if="resource">
+    <h3 class="name" v-if="resource.name">{{ resource.name.toUpperCase() }}</h3>
     <div>Prevent: {{ resource.prevent }}</div>
 
     <div v-if="resource.check === 'mob_is_present'">
@@ -17,7 +17,12 @@
     >
       If
       <span class="resource-link">
-        <router-link :to="item_link(resource.argument)">item {{ resource.argument }}</router-link>
+        <router-link
+          v-if="resource.argument"
+          :to="item_link(resource.argument)"
+        >item {{ resource.argument }}</router-link>
+        <span v-else>item</span>
+        {{' '}}
       </span>
       <span v-if="resource.check === 'not_in_inv'">is not in inventory</span>
       <span v-if="resource.check === 'in_inv'">is in inventory</span>

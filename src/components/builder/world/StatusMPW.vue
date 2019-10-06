@@ -35,6 +35,11 @@
       <div class="actions">
         <button class="btn btn-small start" :disabled="disableStart" @click="onStart">START</button>
         <button class="btn btn-small stop" :disabled="disableStop" @click="onStop">STOP</button>
+        <button
+          v-if="$store.state.auth.user.is_staff"
+          class="btn btn-small kill"
+          @click="onKill"
+        >KILL</button>
       </div>
     </div>
   </div>
@@ -96,7 +101,10 @@ export default class StatusMPW extends Mixins(WorldView) {
 
   get disableStart() {
     if (!this.admin_data || this.action_submitted) return true;
-    return this.admin_data.api_state != "stopped";
+    return (
+      this.admin_data.api_state != "stopped" &&
+      this.admin_data.api_state != "clean"
+    );
   }
 
   get disableStop() {
@@ -125,6 +133,17 @@ export default class StatusMPW extends Mixins(WorldView) {
     this.admin_data = resp.data;
     this.action_submitted = false;
   }
+
+  async onKill() {
+    this.$store.commit(UI_MUTATIONS.SET_NOTIFICATION, {
+      text: "Killing...",
+      expires: false
+    });
+    const resp = await axios.post(`/builder/worlds/${this.world.id}/kill/`);
+    this.admin_data = resp.data;
+    this.action_submitted = false;
+    this.$store.commit("ui/notification_set", "World killed.");
+  }
 }
 </script>
 
@@ -134,7 +153,8 @@ export default class StatusMPW extends Mixins(WorldView) {
   margin-top: 1rem;
 }
 
-button.stop {
+button.stop,
+button.kill {
   margin-left: 1rem;
 }
 </style>

@@ -78,6 +78,11 @@ export default class Console extends Vue {
     ) {
       return "LookChar";
     } else if (
+      type === "cmd.look.success" &&
+      message.data.target_type === "room_detail"
+    ) {
+      return "Message";
+    } else if (
       type === "cmd.look.success" ||
       type === "cmd.move.success" ||
       type === "cmd.flee.success" ||

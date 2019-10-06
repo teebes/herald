@@ -41,6 +41,7 @@ import ZoneQuestDetail from "@/components/builder/zone/QuestDetail.vue";
 import RoomCheckList from "@/components/builder/room/RoomCheckList.vue";
 import RoomLoads from "@/components/builder/room/RoomLoads.vue";
 import RoomFlags from "@/components/builder/room/RoomFlags.vue";
+import RoomDetailList from "@/components/builder/room/RoomDetailList.vue";
 
 // World
 import WorldCreate from "@/components/builder/world/Create.vue";
@@ -110,6 +111,7 @@ export const BUILDER_ROOM_LOADS = "builder_room_loads";
 export const BUILDER_ROOM_PATHS = "builder_room_paths";
 export const BUILDER_ROOM_CONFIG = "builder_room_config";
 export const BUILDER_ROOM_FLAGS = "builder_room_flags";
+export const BUILDER_ROOM_DETAIL_LIST = "builder_room_detail_list";
 export const BUILDER_ZONE_LIST = "builder_zone_list";
 export const BUILDER_ZONE_INDEX = "builder_zone_index";
 export const BUILDER_ZONE_ROOM_LIST = "builder_zone_room_list";
@@ -368,6 +370,11 @@ const router = new Router({
           path: "rooms/:room_id/flags",
           name: BUILDER_ROOM_FLAGS,
           component: RoomFlags
+        },
+        {
+          path: "rooms/:room_id/details",
+          name: BUILDER_ROOM_DETAIL_LIST,
+          component: RoomDetailList
         },
 
         {

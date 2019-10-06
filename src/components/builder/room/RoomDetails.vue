@@ -25,7 +25,22 @@
 
       <div class="room-description">
         <div class="description-title">Description</div>
-        <div class="description-content" v-if="room.description">{{ room.description }}</div>
+
+        <div class="description-content" v-if="room.description">
+          <!-- {{ room.description }} -->
+
+          <div
+            class="description-line"
+            v-for="(line, index) in room.description.split('\n')"
+            :key="index"
+          >
+            <template v-for="(word, word_index) in line.split(' ')">
+              <span :key="word_index" v-if="isDetail(word)" class="interactable">{{ word }}</span>
+              <span :key="word_index" v-else>{{ word }}</span>
+              {{ ' ' }}
+            </template>
+          </div>
+        </div>
         <div class="description-content no-description" v-else>Room has no description.</div>
         <button class="btn-thin" @click="onEditDescription">EDIT DESCRIPTION</button>
       </div>
@@ -71,6 +86,14 @@ export default class RoomDetails extends Mixins(MapRoomClick, RoomView) {
 
   get room_info_schema() {
     return BUILDER_FORMS.ROOM_INFO;
+  }
+
+  isDetail(word) {
+    if (!this.room.details) return false;
+    for (const detail of this.room.details) {
+      if (word.toLowerCase() === detail.toLowerCase()) return true;
+    }
+    return false;
   }
 
   onTypeE(e) {
@@ -178,6 +201,14 @@ export default class RoomDetails extends Mixins(MapRoomClick, RoomView) {
         padding: 5px 10px;
         height: 178px;
         overflow-y: auto;
+
+        .description-line {
+          min-height: 14px;
+
+          span.interactable {
+            cursor: default;
+          }
+        }
       }
       button {
         margin-top: 8px;

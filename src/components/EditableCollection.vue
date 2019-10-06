@@ -132,7 +132,7 @@ export default class extends Vue {
     }
   }
   .collection-add {
-    margin: 20px 0 100px 15px;
+    margin: 20px 0 100px 0;
   }
 }
 </style>

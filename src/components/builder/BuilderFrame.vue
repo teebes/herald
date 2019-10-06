@@ -115,6 +115,15 @@
           <router-link
             :to="{name: BUILDER_ROOM_FLAGS, params: { world_id: $route.params.world_id, room_id: this.$route.params.room_id}}"
           >Flags</router-link>
+
+          <router-link
+            :to="{name: BUILDER_ROOM_DETAIL_LIST, params: { world_id: $route.params.world_id, room_id: this.$route.params.room_id}}"
+          >
+            Details
+            <span
+              v-if="room && room.details && room.details.length"
+            >({{ room.details.length }})</span>
+          </router-link>
         </template>
       </div>
 
@@ -148,6 +157,7 @@ import {
   BUILDER_ROOM_PATHS,
   BUILDER_ROOM_CONFIG,
   BUILDER_ROOM_FLAGS,
+  BUILDER_ROOM_DETAIL_LIST,
   BUILDER_ITEM_TEMPLATE_LIST,
   BUILDER_ITEM_TEMPLATE_DETAILS,
   BUILDER_MOB_TEMPLATE_LIST,
@@ -176,6 +186,7 @@ export default class WorldFrame extends Vue {
   BUILDER_ROOM_PATHS: string = BUILDER_ROOM_PATHS;
   BUILDER_ROOM_CONFIG: string = BUILDER_ROOM_CONFIG;
   BUILDER_ROOM_FLAGS: string = BUILDER_ROOM_FLAGS;
+  BUILDER_ROOM_DETAIL_LIST: string = BUILDER_ROOM_DETAIL_LIST;
   BUILDER_ZONE_PATH_LIST: string = BUILDER_ZONE_PATH_LIST;
   BUILDER_ZONE_LOADER_LIST: string = BUILDER_ZONE_LOADER_LIST;
   BUILDER_ZONE_QUEST_LIST: string = BUILDER_ZONE_QUEST_LIST;
@@ -234,7 +245,8 @@ export default class WorldFrame extends Vue {
           this.$route.name == BUILDER_ROOM_LOADS ||
           this.$route.name == BUILDER_ROOM_PATHS ||
           this.$route.name == BUILDER_ROOM_CONFIG ||
-          this.$route.name == BUILDER_ROOM_FLAGS)
+          this.$route.name == BUILDER_ROOM_FLAGS ||
+          this.$route.name == BUILDER_ROOM_DETAIL_LIST)
     );
   }
 
