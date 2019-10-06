@@ -9,6 +9,7 @@ export interface FormElement {
   create_only?: boolean;
   tooltip?: ""[];
   help?: string;
+  required?: boolean;
 }
 
 // Generic form elements
