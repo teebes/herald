@@ -56,7 +56,6 @@ const mutations = {
       state.notificationType = notification.type || "success";
     }
     state.notification_expires = expires;
-    console.log(`set expires to: ${state.notification_expires}`);
   },
 
   notification_set_error: (state, notification) => {
