@@ -4,6 +4,10 @@ export const capitalize = function(string) {
   return string.charAt(0).toUpperCase() + string.substring(1);
 };
 
+export const capfirst = word => {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+};
+
 export const stackedInventory = function(inv) {
   /*
     Takes a list of items and consolidates those with identical template IDs

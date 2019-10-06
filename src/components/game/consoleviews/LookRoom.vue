@@ -135,6 +135,7 @@ export default class LookRoom extends Vue {
   }
 
   isDetail(word) {
+    if (!this.room || !this.room.details) return false;
     for (const detail of this.room.details) {
       if (word.toLowerCase() === detail.toLowerCase()) return true;
     }

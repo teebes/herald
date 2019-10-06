@@ -127,8 +127,11 @@ export default class extends Vue {
   }
 
   get core_faction_name() {
-    return this.$store.state.game.world.factions[this.player.factions.core]
-      .name;
+    const world_factions = this.$store.state.game.world.factions;
+    if (world_factions[this.player.factions.core]) {
+      return world_factions[this.player.factions.core].name;
+    }
+    return this.$capfirst(this.player.factions.core);
   }
 }
 </script>
