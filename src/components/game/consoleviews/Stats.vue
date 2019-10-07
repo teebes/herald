@@ -108,6 +108,7 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { capfirst } from "@/core/utils.ts"
 
 @Component
 export default class extends Vue {
@@ -131,7 +132,7 @@ export default class extends Vue {
     if (world_factions[this.player.factions.core]) {
       return world_factions[this.player.factions.core].name;
     }
-    return this.$capfirst(this.player.factions.core);
+    return capfirst(this.player.factions.core);
   }
 }
 </script>
