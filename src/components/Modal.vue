@@ -101,7 +101,12 @@ export default class Modal extends Vue {
   }
 
   clickBackground() {
-    if (!this.$store.state.ui.editingField) {
+    if (
+      this.modal &&
+      this.modal.options &&
+      this.modal.options.closeOnOutsideClick &&
+      !this.$store.state.ui.editingField
+    ) {
       this.closeModal();
     }
   }

@@ -13,7 +13,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { UI_MUTATIONS } from "@/constants";
 
 @Component
-export default class extends Vue {
+export default class Intro extends Vue {
   @Prop() overlayClasses!: string[];
 
   onClick() {

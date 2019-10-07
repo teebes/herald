@@ -245,7 +245,8 @@ export default class Home extends Vue {
     this.$store.commit(UI_MUTATIONS.MODAL_SET, {
       component: Intro,
       options: {
-        overlayClasses: ["opaque"]
+        overlayClasses: ["opaque"],
+        closeOnOutsideClick: true
       }
     });
     this.$store.dispatch("game/play");
