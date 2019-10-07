@@ -5,9 +5,13 @@
         <div class="template-info">
           <h2 class="entity-title">{{ template.name }}</h2>
 
-          <div
-            class="mob-summary mb-2 text-base"
-          >Level {{ template.level }} {{ template.type }} {{ template.gender }} {{ template.archetype}}</div>
+          <div class="mob-summary mb-2 text-base">
+            Level {{ template.level }} {{ template.type }} {{ template.gender }} {{ template.archetype}}
+            <span
+              v-if="template.is_invisible"
+              class="color-text-50 ml-2"
+            >[ Invisible ]</span>
+          </div>
           <div v-if="template.notes" class="mob-note">Notes: {{ template.notes }}</div>
 
           <div class="info-elements">

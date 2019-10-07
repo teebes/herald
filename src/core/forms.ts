@@ -450,8 +450,10 @@ export const BUILDER_FORMS = {
       ]
     },
     {
-      attr: "notes",
-      label: "Notes"
+      children: [
+        { attr: "notes", label: "Notes" },
+        { attr: "is_invisible", label: "Is Invisible", widget: "checkbox" }
+      ]
     }
     // {
     //   children: [

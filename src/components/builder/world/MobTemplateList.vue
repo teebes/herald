@@ -107,7 +107,8 @@ export default class MobTemplateList extends Mixins(WorldView) {
       hit_msg_first: "hit",
       hit_msg_third: "hits",
       aggression: "normal",
-      gender: "female"
+      gender: "female",
+      is_invisible: false
     };
 
     const modal = {
