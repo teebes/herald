@@ -41,7 +41,13 @@ export default class RoomChecks extends Mixins(RoomView) {
       label: "Description",
       required: true
     };
-    return [keywords, description];
+    const is_hidden: FormElement = {
+      attr: "is_hidden",
+      label: "Is Hidden",
+      widget: "checkbox",
+      default: false
+    };
+    return [keywords, description, is_hidden];
   }
 }
 </script>
