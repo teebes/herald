@@ -185,7 +185,7 @@ const receiveMessage = async ({
   }
 
   // On death, clear out combat window
-  if (message_data.type === 'affect.death') {
+  if (message_data.type === "affect.death") {
     commit("player_target_set", null);
   }
 
@@ -342,7 +342,11 @@ const actions = {
       dispatch("openWebSocket");
     } catch (e) {
       let error_message = "Unable to enter world.";
-      if (e.response.data && e.response.data.length) {
+      if (
+        e.response.status === 400 &&
+        e.response.data &&
+        e.response.data.length
+      ) {
         error_message = e.response.data[0];
       }
       commit("ui/notification_set_error", error_message, {
