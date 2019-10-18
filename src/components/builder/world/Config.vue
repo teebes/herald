@@ -1,5 +1,5 @@
 <template>
-  <div id="world-config">
+  <div id="world-config" class="builder-config">
     <h2>WORLD CONFIG</h2>
 
     <div class="general-settings">
@@ -411,29 +411,4 @@ export default class WorldFrame extends Mixins(WorldView) {
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
 @import "@/styles/layout.scss";
-#world-config {
-  h3 {
-    text-transform: uppercase;
-    margin: 30px 0 10px 0;
-  }
-  ul {
-    margin-bottom: 0;
-  }
-  .config-panels {
-    display: flex;
-    flex-wrap: wrap;
-
-    @media ($desktop-site) {
-      > div {
-        flex-basis: 50%;
-        &:nth-child(odd) {
-          padding-right: 15px;
-        }
-        &:nth-child(even) {
-          padding-left: 15px;
-        }
-      }
-    }
-  }
-}
 </style>
