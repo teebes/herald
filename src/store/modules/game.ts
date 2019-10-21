@@ -129,6 +129,7 @@ const receiveMessage = async ({
     commit("player_set", message_data.data.actor);
     commit("full_screen_message_clear");
     router.push({ name: "game" });
+    commit("ui/notification_set", "Connected.", { root: true });
   }
 
   // Disconection
