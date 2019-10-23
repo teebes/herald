@@ -10,7 +10,6 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
-import axios from "axios";
 import WorldView from "@/components/builder/world/WorldView.ts";
 import TransformationTemplate from "@/components/builder/world/TransformationTemplate.vue";
 import EditableCollection from "@/components/EditableCollection.vue";

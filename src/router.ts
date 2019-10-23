@@ -121,6 +121,9 @@ export const BUILDER_ZONE_LOADER_LIST = "builder_zone_loader_list";
 export const BUILDER_ZONE_LOADER_DETAILS = "builder_zone_loader_details";
 export const BUILDER_ZONE_QUEST_LIST = "builder_zone_quest_list";
 export const BUILDER_ZONE_QUEST_DETAIL = "builder_zone_quest_detail";
+export const BUILDER_ZONE_CONFIG = "builder_zone_config";
+export const BUILDER_ZONE_PROCESSION_LIST = "builder_zone_procession_list";
+export const BUILDER_ZONE_PROCESSION_DETAIL = "builder_zone_procession_detail";
 export const BUILDER_MOB_TEMPLATE_LIST = "builder_mob_template_list";
 export const BUILDER_MOB_TEMPLATE_DETAILS = "builder_mob_template_details";
 export const BUILDER_ITEM_TEMPLATE_LIST = "builder_item_template_list";
@@ -428,6 +431,26 @@ const router = new Router({
           path: "zones/:zone_id/quests/:quest_id",
           component: ZoneQuestDetail,
           name: BUILDER_ZONE_QUEST_DETAIL
+        },
+
+        {
+          path: "zones/:zone_id/config",
+          component: () => import("@/components/builder/zone/ZoneConfig.vue"),
+          name: BUILDER_ZONE_CONFIG
+        },
+
+        {
+          path: "zones/:zone_id/processions",
+          component: () =>
+            import("@/components/builder/zone/ZoneProcessionList.vue"),
+          name: BUILDER_ZONE_PROCESSION_LIST
+        },
+
+        {
+          path: "zones/:zone_id/processions/:procession_id",
+          component: () =>
+            import("@/components/builder/zone/ZoneProcessionDetail.vue"),
+          name: BUILDER_ZONE_PROCESSION_DETAIL
         }
       ]
     },

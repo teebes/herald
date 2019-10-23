@@ -95,6 +95,10 @@
           <router-link
             :to="{name: BUILDER_ZONE_QUEST_LIST, params: { world_id: $route.params.world_id, zone_id: this.$route.params.zone_id}}"
           >Quests</router-link>
+
+          <router-link
+            :to="{name: BUILDER_ZONE_CONFIG, params: { world_id: $route.params.world_id, zone_id: this.$route.params.zone_id}}"
+          >Config</router-link>
         </template>
 
         <template v-else-if="isRoomView">
@@ -171,6 +175,8 @@ import {
   BUILDER_ZONE_LOADER_DETAILS,
   BUILDER_ZONE_QUEST_LIST,
   BUILDER_ZONE_QUEST_DETAIL,
+  BUILDER_ZONE_CONFIG,
+  BUILDER_ZONE_PROCESSION_LIST,
   BUILDER_TRANSFORMATION_LIST,
   BUILDER_WORLD_FACTIONS,
   LOBBY_WORLD_DETAIL
@@ -190,6 +196,7 @@ export default class WorldFrame extends Vue {
   BUILDER_ZONE_PATH_LIST: string = BUILDER_ZONE_PATH_LIST;
   BUILDER_ZONE_LOADER_LIST: string = BUILDER_ZONE_LOADER_LIST;
   BUILDER_ZONE_QUEST_LIST: string = BUILDER_ZONE_QUEST_LIST;
+  BUILDER_ZONE_CONFIG: string = BUILDER_ZONE_CONFIG;
   BUILDER_TRANSFORMATION_LIST: string = BUILDER_TRANSFORMATION_LIST;
   BUILDER_WORLD_CONFIG: string = BUILDER_WORLD_CONFIG;
   BUILDER_WORLD_RANDOM_PROFILES: string = BUILDER_WORLD_RANDOM_PROFILES;
@@ -260,7 +267,9 @@ export default class WorldFrame extends Vue {
           this.$route.name == BUILDER_ZONE_LOADER_LIST ||
           this.$route.name == BUILDER_ZONE_LOADER_DETAILS ||
           this.$route.name == BUILDER_ZONE_QUEST_LIST ||
-          this.$route.name == BUILDER_ZONE_QUEST_DETAIL)
+          this.$route.name == BUILDER_ZONE_QUEST_DETAIL ||
+          this.$route.name == BUILDER_ZONE_CONFIG ||
+          this.$route.name == BUILDER_ZONE_PROCESSION_LIST)
     );
   }
 
