@@ -21,10 +21,6 @@ import { BUILDER_ROOM_INDEX, BUILDER_WORLD_FACTIONS } from "@/router";
 export default class ZoneProcessionDetail extends Mixins(ZoneView) {
   @Prop() resource!: any;
 
-  mounted() {
-    console.log(this.resource);
-  }
-
   get death_room_link() {
     return {
       name: BUILDER_ROOM_INDEX,
