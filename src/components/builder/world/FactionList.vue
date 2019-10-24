@@ -83,7 +83,7 @@ export default class WorldFrame extends Mixins(WorldView) {
       name,
       is_core,
       starting_room,
-      death_room,
+      //death_room,
       is_default,
       is_selectable
     ];
