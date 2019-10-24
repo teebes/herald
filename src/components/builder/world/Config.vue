@@ -295,6 +295,10 @@ export default class WorldFrame extends Mixins(WorldView) {
         {
           value: "far_room",
           label: "Far Room"
+        },
+        {
+          value: "nearest_in_zone",
+          label: "Nearest In Zone"
         }
       ],
       help: `Where to go on death.<br/><br/>
