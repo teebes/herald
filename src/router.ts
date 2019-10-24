@@ -491,9 +491,29 @@ const router = new Router({
   ]
 });
 
-// router.beforeEach((to, from, next) => {
-//   console.log(to)
-//   console.log(from)
-// })
+router.afterEach(async () => {
+  const parseJwt = function(token) {
+    var base64Url = token.split(".")[1];
+    var base64 = base64Url.replace("-", "+").replace("_", "/");
+    return JSON.parse(window.atob(base64));
+  };
+
+  const getUnixTS = function() {
+    return Math.round(new Date().getTime() / 1000);
+  };
+
+  if (localStorage.jwtToken) {
+    const exp = parseJwt(localStorage.jwtToken)["exp"],
+      ts = getUnixTS(),
+      delta = exp - ts;
+
+    // If the token is more than an hour old, refresh it.
+    // This assumes a 24 hour expiration renewal.
+    if (delta > 0 && delta < 60 * 60 * 23) {
+      // Renew the token
+      await store.dispatch("auth/renew", localStorage.jwtToken);
+    }
+  }
+});
 
 export default router;
