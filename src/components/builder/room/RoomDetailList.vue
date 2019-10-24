@@ -6,7 +6,7 @@
     :display_component="display_component"
     :schema="schema"
   >
-    <RoomDescription :room="room" v-if="room.description" />
+    <RoomDescription :room="room" v-if="room && room.description" />
   </EditableCollection>
 </template>
 
