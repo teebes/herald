@@ -5,7 +5,9 @@
     <div class="general-settings">
       <h3>GENERAL SETTINGS</h3>
 
-      <div v-if="world.description">{{ world.description }}</div>
+      <div v-if="world.description" class="world-description">
+        <div class="desc-line" v-for="(line, index) of descLines" :key="index">{{ line }}</div>
+      </div>
 
       <div class="settings-actions mt-4">
         <button class="btn-small mr-4" @click="editGeneral">EDIT</button>
@@ -409,10 +411,20 @@ export default class WorldFrame extends Mixins(WorldView) {
       params: { world_id: this.world.id }
     };
   }
+
+  get descLines() {
+    return this.world.description.split("\n");
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
 @import "@/styles/layout.scss";
+
+.world-description {
+  div.desc-line:not(:last-child) {
+    margin-bottom: 0.8em;
+  }
+}
 </style>
