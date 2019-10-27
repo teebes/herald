@@ -292,21 +292,22 @@ export default class WorldFrame extends Mixins(WorldView) {
         },
         {
           value: "near_room",
-          label: "Near Room"
+          label: "Nearest Room"
         },
         {
           value: "far_room",
-          label: "Far Room"
+          label: "Furthest Room"
         },
         {
           value: "nearest_in_zone",
-          label: "Nearest In Zone"
+          label: "Nearest in Zone"
         }
       ],
-      help: `Where to go on death.<br/><br/>
-             Top Faction: The death room of the faction you have highest standing with.<br/>
-             Near Room: The death room nearest where you died.<br/>
-             Far Room: the death room furthest from where you died.`
+      help: `Where players go on death.<br/><br/>
+             Top Faction: the nearest procession room of the faction you have highest standing with.<br/>
+             Nearest Room: the procession room nearest where you died.<br/>
+             Furthest Room: the procession room furthest from where you died.<br/>
+             Nearest in Zone: the procession room closest to you in your current zone.`
     };
     const auto_equip: FormElement = {
       attr: "auto_equip",
