@@ -1,11 +1,11 @@
 <template>
   <div>
     <div>{{ resource.name }} ({{ resource.code }})</div>
-    <div v-if="resource.death_rooms.length" class="mt-4">
+    <div v-if="resource.death_rooms && resource.death_rooms.length" class="mt-4">
       <div>Death Rooms:</div>
       <ul class="list">
         <li v-for="room in resource.death_rooms" :key="room.id">
-          <router-link to="room_link(room)">{{ room.name }}</router-link>
+          <router-link :to="room_link(room)">{{ room.name }}</router-link>
         </li>
       </ul>
     </div>
