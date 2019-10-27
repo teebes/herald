@@ -27,6 +27,7 @@ import Cast from "./consoleviews/Cast.vue";
 import CombatMessage from "./consoleviews/CombatMessage.vue";
 import DeathMessage from "./consoleviews/DeathMessage.vue";
 import Equipment from "./consoleviews/Equipment.vue";
+import Exits from "./consoleviews/Exits.vue";
 import Factions from "./consoleviews/Factions.vue";
 import Help from "./consoleviews/Help.vue";
 import Inventory from "./consoleviews/Inventory.vue";
@@ -49,6 +50,7 @@ import _ from "lodash";
     CombatMessage,
     DeathMessage,
     Equipment,
+    Exits,
     Factions,
     Help,
     Inventory,
@@ -70,6 +72,13 @@ export default class Console extends Vue {
 
   consoleMessage(message) {
     const type = message.type;
+
+    // Simple map from message type to console view
+    const type_mapping = {
+      "cmd.exits.success": "Exits"
+    };
+    if (type_mapping[type]) return type_mapping[type];
+
     if (type === "cmd.look.success" && message.data.target_type === "item") {
       return "LookItem";
     } else if (

@@ -18,7 +18,9 @@
                 >EDIT WORLD</router-link>
               </template>
             </div>
-            <div class="world-description">{{ world.description}}</div>
+            <div class="world-description">
+              <div class="desc-line" v-for="(line, index) of descLines" :key="index">{{ line }}</div>
+            </div>
           </div>
 
           <UserChars @charcreated="onCharCreated" :chars="chars" :world="world" />
@@ -134,6 +136,10 @@ export default class WorldLobby extends Vue {
     this.chars = user_chars_resp.data.results;
     this.world = world_resp.data;
     this.leaders = leaderboard_resp.data.results;
+  }
+
+  get descLines() {
+    return this.world.description.split("\n");
   }
 }
 </script>
@@ -271,6 +277,10 @@ export default class WorldLobby extends Vue {
           @include font-text-light;
           font-size: 15px;
           line-height: 26px;
+
+          div.desc-line:not(:last-child) {
+            margin-bottom: 0.8em;
+          }
         }
       }
     }

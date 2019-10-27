@@ -5,6 +5,7 @@ import axios from "axios";
 import router from "@/router.ts";
 
 const LOGIN_ENDPOINT = `${API_BASE}auth/login/`;
+const REFRESH_ENDPOINT = `${API_BASE}auth/refresh/`;
 
 const state = {
   token: localStorage.getItem("jwtToken") || "",
@@ -39,6 +40,13 @@ const actions = {
   logout: async ({ commit }) => {
     commit(AUTH_MUTATIONS.SET_UNAUTH);
     commit("auth_clear");
+  },
+
+  renew: async ({ commit }, token) => {
+    const resp = await axios.post(REFRESH_ENDPOINT, {
+      token: token
+    });
+    commit("auth_set", resp.data.token);
   },
 
   signup: async ({ commit }, payload) => {

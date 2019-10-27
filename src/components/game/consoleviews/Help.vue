@@ -218,6 +218,8 @@
             <div class="cmd" @click="cmdHelp('winvisible')">winvisible</div>
             <div class="cmd" @click="cmdHelp('repop')">repop</div>
             <div class="cmd" @click="cmdHelp('ping')">ping</div>
+            <div class="cmd" @click="cmdHelp('jump')">jump</div>
+            <div class="cmd" @click="cmdHelp('transfer')">transfer</div>
           </div>
           <div class="cmds">
             <div class="cmd" @click="cmdHelp('echo')">echo</div>

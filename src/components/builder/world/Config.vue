@@ -1,11 +1,13 @@
 <template>
-  <div id="world-config">
+  <div id="world-config" class="builder-config">
     <h2>WORLD CONFIG</h2>
 
     <div class="general-settings">
       <h3>GENERAL SETTINGS</h3>
 
-      <div v-if="world.description">{{ world.description }}</div>
+      <div v-if="world.description" class="world-description">
+        <div class="desc-line" v-for="(line, index) of descLines" :key="index">{{ line }}</div>
+      </div>
 
       <div class="settings-actions mt-4">
         <button class="btn-small mr-4" @click="editGeneral">EDIT</button>
@@ -295,6 +297,10 @@ export default class WorldFrame extends Mixins(WorldView) {
         {
           value: "far_room",
           label: "Far Room"
+        },
+        {
+          value: "nearest_in_zone",
+          label: "Nearest In Zone"
         }
       ],
       help: `Where to go on death.<br/><br/>
@@ -405,35 +411,20 @@ export default class WorldFrame extends Mixins(WorldView) {
       params: { world_id: this.world.id }
     };
   }
+
+  get descLines() {
+    return this.world.description.split("\n");
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
 @import "@/styles/layout.scss";
-#world-config {
-  h3 {
-    text-transform: uppercase;
-    margin: 30px 0 10px 0;
-  }
-  ul {
-    margin-bottom: 0;
-  }
-  .config-panels {
-    display: flex;
-    flex-wrap: wrap;
 
-    @media ($desktop-site) {
-      > div {
-        flex-basis: 50%;
-        &:nth-child(odd) {
-          padding-right: 15px;
-        }
-        &:nth-child(even) {
-          padding-left: 15px;
-        }
-      }
-    }
+.world-description {
+  div.desc-line:not(:last-child) {
+    margin-bottom: 0.8em;
   }
 }
 </style>

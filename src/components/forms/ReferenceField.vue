@@ -16,6 +16,7 @@
         <input
           class="readonly-input"
           :value="readOnlyValue"
+          :placeholder="schema.label"
           readonly="true"
           ref="inputEl"
           @click="onClickReadonly"
