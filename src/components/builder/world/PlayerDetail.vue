@@ -75,7 +75,7 @@
           :center_key="center_key"
           :unit="8"
           :radius="4"
-          :display_planes="false"
+          :display_planes="true"
           @clickRoom="onMapClickRoom"
         />
       </div>
