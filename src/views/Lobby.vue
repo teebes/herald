@@ -51,9 +51,11 @@
       </div>
     </div>
 
+    <div class="divider higher-divider" v-if="discover_worlds.length"></div>
+
     <div class="worlds-row discover" style="justify-content: center" v-if="discover_worlds.length">
       <div>
-        <div class="section-title text-center">Discover</div>
+        <div class="section-title text-center">Namubumo</div>
 
         <carousel
           :per-page="1"
@@ -81,6 +83,8 @@
         </carousel>
       </div>
     </div>
+
+    <div class="divider lower-divider"></div>
 
     <div class="worlds-row mt-8">
       <!-- All Worlds -->
@@ -171,15 +175,13 @@ export default class Lobby extends Vue {
       });
     }
 
-    const worlds_promise = axios.get("lobby/worlds/user/?page_size=50");
-
     const chars_promise = axios.get("lobby/chars/recent/");
     const featured_worlds_promise = axios.get(
       "lobby/worlds/featured/?page_size=2"
     );
     const discover_worlds_promise = axios.get("lobby/worlds/discover/");
-    const all_worlds_promise = axios.get("lobby/worlds/all/");
-    const user_worlds_promise = axios.get("lobby/worlds/user/");
+    const all_worlds_promise = axios.get("lobby/worlds/all/?page_size=50");
+    const user_worlds_promise = axios.get("lobby/worlds/user/?page_size=50");
 
     const [
       chars_resp,
@@ -188,7 +190,6 @@ export default class Lobby extends Vue {
       all_worlds_resp,
       user_worlds_resp
     ] = await Promise.all([
-      //worlds_promise,
       chars_promise,
       featured_worlds_promise,
       discover_worlds_promise,
@@ -200,6 +201,7 @@ export default class Lobby extends Vue {
     this.chars = chars_resp.data.results;
     this.featured_worlds = featured_worlds_resp.data.results;
     this.discover_worlds = discover_worlds_resp.data.results;
+    // this.discover_worlds = [];
     this.all_worlds = all_worlds_resp.data.results;
     this.user_worlds = user_worlds_resp.data.results;
     this.loaded = true;
@@ -280,11 +282,24 @@ $lobby-breakpoint: 760px;
 
   margin-top: 20px;
   width: 100%;
+  max-width: $lobby-wide-width;
+
+  .divider {
+    margin: 60px 0 20px 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
   @media (min-width: $lobby-breakpoint) {
-    max-width: $lobby-wide-width;
     margin-top: 50px;
     margin-bottom: 50px;
+
+    .higher-divider {
+      margin-top: 80px;
+    }
+    .lower-divider {
+      margin-bottom: 40px;
+    }
   }
 
   .worlds-row {
@@ -297,26 +312,19 @@ $lobby-breakpoint: 760px;
 
       > div {
         box-sizing: content-box;
-        &:nth-child(even) {
-          // padding-right: 50px;
-        }
-        &:nth-child(odd) {
-          // padding-left: 50px;
-        }
       }
     }
 
     @media (max-width: $lobby-breakpoint) {
       flex-direction: column;
-      margin-bottom: 30px;
+      // margin-bottom: 30px;
       align-items: center;
     }
 
     &.discover {
       margin: 0;
       @media (min-width: $lobby-breakpoint) {
-        margin-top: 60px;
-        margin-bottom: 20px;
+        margin: 20px 0 0 0;
       }
     }
 
@@ -375,7 +383,9 @@ $lobby-breakpoint: 760px;
       color: $color-text-gray;
       width: 370px;
       height: 73px;
-      margin-bottom: 20px;
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
       padding: 10px;
 
       .char-name {
@@ -460,7 +470,9 @@ $lobby-breakpoint: 760px;
       background: url("/ui/lobby/world-card-horizontal-bg@2x.jpg");
       background-size: 370px 166px;
 
-      margin-bottom: 20px;
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
       position: relative;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 
