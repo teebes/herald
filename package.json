@@ -15,6 +15,7 @@
     "v-tooltip": "^2.0.2",
     "vue": "^2.5.17",
     "vue-analytics": "^5.17.2",
+    "vue-carousel": "^0.18.0",
     "vue-class-component": "^6.0.0",
     "vue-closable": "0.0.3",
     "vue-property-decorator": "^7.0.0",

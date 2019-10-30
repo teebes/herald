@@ -5,6 +5,12 @@ export interface Entity {
   id: number;
 }
 
+export interface World {
+  id: number;
+  key: string;
+  name: string;
+}
+
 export interface Room {
   id: number;
   key: string;

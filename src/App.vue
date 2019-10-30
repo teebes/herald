@@ -31,6 +31,7 @@ import Modal from "./components/Modal.vue";
 import store from "@/store";
 import { capfirst } from "@/core/utils.ts";
 import { interactive } from "@/core/directives.ts";
+import VueCarousel from "vue-carousel";
 
 TweenLite.lagSmoothing(0);
 
@@ -38,6 +39,7 @@ Vue.prototype.$capfirst = capfirst;
 Vue.prototype.$http = axios;
 Vue.use(VTooltip);
 Vue.use(VueClosable);
+Vue.use(VueCarousel);
 
 if (ANALYTICS_ID) {
   Vue.use(VueAnalytics, {
