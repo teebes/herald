@@ -212,6 +212,7 @@
             <div class="cmd" @click="cmdHelp('seta')">seta</div>
             <div class="cmd" @click="cmdHelp('regen')">regen</div>
             <div class="cmd" @click="cmdHelp('purge')">purge</div>
+            <div class="cmd" @click="cmdHelp('masspurge')">masspurge</div>
             <div class="cmd" @click="cmdHelp('force')">force</div>
           </div>
           <div class="cmds">
