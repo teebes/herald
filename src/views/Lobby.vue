@@ -305,6 +305,7 @@ $lobby-breakpoint: 760px;
   .worlds-row {
     display: flex;
     flex-direction: row-reverse;
+    flex-shrink: 0;
     @media (min-width: $lobby-breakpoint) {
       flex-direction: row-reverse;
       justify-content: space-between;
