@@ -1,10 +1,13 @@
 <template>
   <div id="mobilemenu">
     <div class="menu-item">
+      <a href="#" @click="onClickQuestLog">Quest Log</a>
+    </div>
+    <div class="menu-item">
       <a href="https://discord.gg/a3u82tR" target="_blank">Chat on Discord</a>
     </div>
     <div class="menu-item">
-      <a href="#" @click="onClickQuestLog">Quest Log</a>
+      <a href="https://www.patreon.com/writtenrealms" target="_blank">Patreon Page</a>
     </div>
     <div class="menu-item">
       <a href="#" class="exit-game" @click.prevent="$store.dispatch('game/cmd', 'quit')">Exit World</a>
