@@ -234,7 +234,7 @@ export default class ItemTemplateDetails extends Mixins(WorldView) {
 
     // Crude confirm dialog
     const c = confirm(
-      `Are you sure you want to delete Mob Template ${item_template_id}?`
+      `Are you sure you want to delete Item Template ${item_template_id}?`
     );
     if (!c) return;
 
