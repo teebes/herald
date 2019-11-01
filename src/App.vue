@@ -32,6 +32,7 @@ import store from "@/store";
 import { capfirst } from "@/core/utils.ts";
 import { interactive } from "@/core/directives.ts";
 import VueCarousel from "vue-carousel";
+import VueClipboard from "vue-clipboard2";
 
 TweenLite.lagSmoothing(0);
 
@@ -40,6 +41,7 @@ Vue.prototype.$http = axios;
 Vue.use(VTooltip);
 Vue.use(VueClosable);
 Vue.use(VueCarousel);
+Vue.use(VueClipboard)
 
 if (ANALYTICS_ID) {
   Vue.use(VueAnalytics, {

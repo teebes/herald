@@ -16,6 +16,8 @@
                 <router-link
                   :to="{ name: BUILDER_WORLD_INDEX, params: { world_id: $route.params.world_id }}"
                 >EDIT WORLD</router-link>
+                <span class="divider"></span>
+                <a href @click.prevent="copyShareLink" @click="copyShareLink">SHARE</a>
               </template>
             </div>
             <div class="world-description">
@@ -140,6 +142,16 @@ export default class WorldLobby extends Vue {
 
   get descLines() {
     return this.world.description.split("\n");
+  }
+
+  async copyShareLink() {
+    const slug = this.world.name
+      .toLowerCase()
+      .split(/\W+/)
+      .join("-");
+    const url = `${window.location.href}/${slug}`;
+    await this.$copyText(url);
+    this.$store.commit("ui/notification_set", `World URL copied to clipboard!`);
   }
 }
 </script>
@@ -268,8 +280,8 @@ export default class WorldLobby extends Vue {
           span.divider {
             border-left: 1px solid white;
             opacity: 0.2;
-            margin-left: 10px;
-            padding-left: 14px;
+            margin-left: 12px;
+            padding-left: 12px;
           }
         }
 
