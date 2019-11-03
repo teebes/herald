@@ -28,12 +28,12 @@ export default class extends Mixins(ZoneView) {
   }
 
   get resolve_route() {
-    return element_id => {
+    return element => {
       return {
         name: BUILDER_ZONE_QUEST_DETAIL,
         params: {
           world_id: this.$store.state.builder.world.id,
-          quest_id: element_id
+          quest_id: element.id
         }
       };
     };

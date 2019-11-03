@@ -135,7 +135,11 @@ export const LOBBY_WORLD_DETAIL = "lobby_world_detail";
 export const LOBBY_WORLD_COMPLETE_SIGNUP = "lobby_world_complete_signup";
 export const LOBBY_WORLD_TRANSFER = "lobby_world_transfer";
 export const LOBBY = "lobby";
+
 export const STAFF_HOME = "staff_home";
+export const STAFF_PLAYING = "staff_playing";
+export const STAFF_SIGNUPS = "staff_signups";
+export const STAFF_WORLDS = "staff_worlds";
 
 export const ABOUT = "about";
 export const TERMS = "terms";
@@ -220,9 +224,26 @@ const router = new Router({
 
     {
       path: "/staff",
-      name: STAFF_HOME,
-      component: Staff,
-      beforeEnter: ifStaff
+      beforeEnter: ifStaff,
+      component: () => import("@/components/staff/Frame.vue"),
+      redirect: "/staff/playing",
+      children: [
+        {
+          path: "playing",
+          name: STAFF_PLAYING,
+          component: () => import("@/components/staff/Playing.vue")
+        },
+        {
+          path: "signups",
+          name: STAFF_SIGNUPS,
+          component: () => import("@/components/staff/SignUps.vue")
+        },
+        {
+          path: "worlds",
+          name: STAFF_WORLDS,
+          component: () => import("@/components/staff/Worlds.vue")
+        }
+      ]
     },
 
     {
@@ -477,17 +498,13 @@ const router = new Router({
       path: "/privacy",
       name: PRIVACY,
       component: Privacy
-    }
-
-    // {
-    //   path: "/about",
-    //   name: "about",
-    //   // route level code-splitting
-    //   // this generates a separate chunk (about.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () =>
-    //     import(/* webpackChunkName: "about" */ "./views/About.vue")
-    // }
+    },
+    {
+      path: "/404",
+      name: "404",
+      component: () => import("@/views/NotFound.vue")
+    },
+    { path: "*", redirect: "/404" }
   ]
 });
 

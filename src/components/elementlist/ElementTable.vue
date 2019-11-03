@@ -9,7 +9,7 @@
         </thead>
 
         <tbody>
-          <tr v-for="element in elements" :key="element.id" @click="clickRow(element.id)">
+          <tr v-for="element in elements" :key="element.id" @click="clickRow(element)">
             <td v-for="field in schema" :key="field.name">{{ element[field.name] }}</td>
           </tr>
         </tbody>
@@ -33,8 +33,8 @@ export default class ElementTable extends Vue {
   @Prop() endpoint!: string;
   @Prop() elements!: Array<ElementListSchema>;
 
-  clickRow(element_id) {
-    this.$emit("show-details", element_id);
+  clickRow(element) {
+    this.$emit("show-details", element);
   }
 }
 </script>

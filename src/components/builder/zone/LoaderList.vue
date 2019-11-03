@@ -30,12 +30,12 @@ export default class extends ZoneView {
   }
 
   get resolve_route() {
-    return element_id => {
+    return element => {
       return {
         name: BUILDER_ZONE_LOADER_DETAILS,
         params: {
           world_id: this.$store.state.builder.world.id,
-          loader_id: element_id
+          loader_id: element.id
         }
       };
     };

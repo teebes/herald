@@ -153,8 +153,8 @@ export default class ElementList extends Vue {
 
   // Display details
 
-  onShowDetails(element_id) {
-    const route_data = this.resolve_route(element_id);
+  onShowDetails(element) {
+    const route_data = this.resolve_route(element);
     this.$router.push(route_data);
   }
 
