@@ -28,12 +28,12 @@ export default class MobTemplateList extends Mixins(WorldView) {
   }
 
   get resolve_route() {
-    return element_id => {
+    return element => {
       return {
         name: BUILDER_MOB_TEMPLATE_DETAILS,
         params: {
           world_id: this.$store.state.builder.world.id,
-          mob_template_id: element_id
+          mob_template_id: element.id
         }
       };
     };

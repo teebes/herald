@@ -27,12 +27,12 @@ export default class extends Mixins(WorldView) {
   }
 
   get resolve_route() {
-    return element_id => {
+    return element => {
       return {
         name: BUILDER_ZONE_INDEX,
         params: {
           world_id: this.$store.state.builder.world.id,
-          zone_id: element_id
+          zone_id: element.id
         }
       };
     };

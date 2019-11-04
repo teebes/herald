@@ -423,41 +423,41 @@ export default class WorldFrame extends Vue {
     flex-grow: 1;
 
     // Navigation
-    .side-nav {
-      a {
-        display: block;
-        @include font-title-light;
-        font-size: 19px;
-        line-height: 30px;
-        list-style-type: none;
-        color: $color-text-hex-30;
+    // .side-nav {
+    //   a {
+    //     display: block;
+    //     @include font-title-light;
+    //     font-size: 19px;
+    //     line-height: 30px;
+    //     list-style-type: none;
+    //     color: $color-text-hex-30;
 
-        &:hover {
-          color: $color-primary;
-        }
+    //     &:hover {
+    //       color: $color-primary;
+    //     }
 
-        &.router-link-active {
-          color: $color-text;
-        }
+    //     &.router-link-active {
+    //       color: $color-text;
+    //     }
 
-        &.router-link-exact-active:hover {
-          text-decoration: none;
-          cursor: default;
-        }
-      }
+    //     &.router-link-exact-active:hover {
+    //       text-decoration: none;
+    //       cursor: default;
+    //     }
+    //   }
 
-      @media ($mobile-site) {
-        background: $color-background-header;
-        display: flex;
-        justify-content: space-around;
-        flex-shrink: 0;
-        padding: 0;
+    //   @media ($mobile-site) {
+    //     background: $color-background-header;
+    //     display: flex;
+    //     justify-content: space-around;
+    //     flex-shrink: 0;
+    //     padding: 0;
 
-        a {
-          padding: 20px 0;
-        }
-      }
-    }
+    //     a {
+    //       padding: 20px 0;
+    //     }
+    //   }
+    // }
 
     /* Responsive nav set */
     @media ($desktop-site) {
