@@ -10,7 +10,7 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Mixins } from "vue-property-decorator";
-import { BUILDER_ZONE_INDEX } from "@/router.ts";
+import { BUILDER_WORLD_INDEX } from "@/router.ts";
 import ElementList from "@/components/elementlist/ElementList.vue";
 import WorldView from "@/components/builder/world/WorldView.ts";
 import { BUILDER_FORMS } from "@/core/forms.ts";
@@ -21,7 +21,7 @@ import { BUILDER_ACTIONS, UI_MUTATIONS } from "@/constants";
     ElementList
   }
 })
-export default class extends Mixins(WorldView) {
+export default class extends Vue {
   get endpoint() {
     return `/staff/worlds/`;
   }
@@ -29,10 +29,9 @@ export default class extends Mixins(WorldView) {
   get resolve_route() {
     return element => {
       return {
-        name: BUILDER_ZONE_INDEX,
+        name: BUILDER_WORLD_INDEX,
         params: {
-          world_id: this.$store.state.builder.world.id,
-          zone_id: element.id
+          world_id: element.id
         }
       };
     };
@@ -42,7 +41,10 @@ export default class extends Mixins(WorldView) {
     return [
       { name: "id", label: "ID" },
       { name: "name", label: "Name" },
-      { name: "num_rooms", label: "Rooms" }
+      { name: "num_rooms", label: "Rooms" },
+      { name: "num_players", label: "Players" },
+      { name: "num_mobs", label: "Mobs" },
+      { name: "num_items", label: "Items" }
     ];
   }
 

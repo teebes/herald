@@ -1,9 +1,10 @@
 <template>
   <div class="frame">
-    <div class="staff-nav">
+    <div class="staff-nav side-nav">
       <router-link :to="to_playing">Playing</router-link>
-      <router-link :to="to_playing">Signups</router-link>
-      <router-link :to="to_playing">Worlds</router-link>
+      <router-link :to="to_signups">Signups</router-link>
+      <router-link :to="to_worlds">Worlds</router-link>
+      <router-link :to="to_activity">Activity</router-link>
     </div>
 
     <div class="staff-contents flex-grow">
@@ -14,13 +15,36 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import { STAFF_PLAYING } from "@/router";
+import {
+  STAFF_PLAYING,
+  STAFF_SIGNUPS,
+  STAFF_WORLDS,
+  STAFF_ACTIVITY
+} from "@/router";
 
 @Component
 export default class extends Vue {
   get to_playing() {
     return {
       name: STAFF_PLAYING
+    };
+  }
+
+  get to_signups() {
+    return {
+      name: STAFF_SIGNUPS
+    };
+  }
+
+  get to_worlds() {
+    return {
+      name: STAFF_WORLDS
+    };
+  }
+
+  get to_activity() {
+    return {
+      name: STAFF_ACTIVITY
     };
   }
 }
@@ -46,6 +70,14 @@ export default class extends Vue {
 
   @media ($desktop-site) {
     flex-direction: row;
+    .staff-nav {
+      flex-direction: column;
+      justify-content: start;
+      padding: 65px 20px 20px 20px;
+      // a:not(:last-child) {
+      //   margin-bottom: 1em;
+      // }
+    }
   }
 }
 </style>

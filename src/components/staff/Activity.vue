@@ -1,6 +1,6 @@
 <template>
   <ElementList
-    title="Sign Ups"
+    title="Activity"
     :schema="list_schema"
     :endpoint="endpoint"
     :resolve_route="resolve_route"
@@ -11,29 +11,34 @@
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import ElementList from "@/components/elementlist/ElementList.vue";
-import { BUILDER_WORLD_PLAYER_DETAIL } from "@/router";
+import { STAFF_USER_INFO } from "@/router";
 
 @Component({
   components: {
     ElementList
   }
 })
-export default class StaffSignUps extends Vue {
+export default class StaffActivity extends Vue {
   get endpoint() {
-    return `/staff/signups/`;
+    return `/staff/activity/`;
   }
 
   get resolve_route() {
-    return "";
+    return player => {
+      return {
+        name: STAFF_USER_INFO,
+        params: {
+          user_id: player.user_id
+        }
+      };
+    };
   }
 
   get list_schema() {
     return [
       { name: "id", label: "ID" },
       { name: "name", label: "Name" },
-      { name: "email", label: "Email", light: true },
-      { name: "date_joined_str", label: "Joined", light: true },
-      { name: "send_newsletter", label: "Sub", light: true }
+      { name: "level", label: "Level", light: true }
     ];
   }
 }

@@ -140,6 +140,8 @@ export const STAFF_HOME = "staff_home";
 export const STAFF_PLAYING = "staff_playing";
 export const STAFF_SIGNUPS = "staff_signups";
 export const STAFF_WORLDS = "staff_worlds";
+export const STAFF_ACTIVITY = "staff_activity";
+export const STAFF_USER_INFO = "staff_user_info";
 
 export const ABOUT = "about";
 export const TERMS = "terms";
@@ -242,6 +244,16 @@ const router = new Router({
           path: "worlds",
           name: STAFF_WORLDS,
           component: () => import("@/components/staff/Worlds.vue")
+        },
+        {
+          path: "activity",
+          name: STAFF_ACTIVITY,
+          component: () => import("@/components/staff/Activity.vue")
+        },
+        {
+          path: "users/:user_id",
+          name: STAFF_USER_INFO,
+          component: () => import("@/components/staff/UserInfo.vue")
         }
       ]
     },
