@@ -101,7 +101,7 @@ export default class ItemInfo extends Vue {
     // If the user cannot wear the item, return the max level
     // they are able to wear equipment at.
     const delta = this.item.level - this.player.level;
-    if (delta >= 3) {
+    if (delta > 3) {
       return this.player.level + 3;
     } else {
       return false;
