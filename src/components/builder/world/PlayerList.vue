@@ -27,12 +27,12 @@ export default class MobTemplateList extends Mixins(WorldView) {
   }
 
   get resolve_route() {
-    return element_id => {
+    return element => {
       return {
         name: BUILDER_WORLD_PLAYER_DETAIL,
         params: {
           world_id: this.$route.params.world_id,
-          player_id: element_id
+          player_id: element.id
         }
       };
     };
