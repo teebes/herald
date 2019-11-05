@@ -28,7 +28,7 @@ export default class StaffPlaying extends Vue {
       return {
         name: BUILDER_WORLD_PLAYER_DETAIL,
         params: {
-          world: player.world_id,
+          world_id: player.root_world_id,
           player_id: player.id
         }
       };
