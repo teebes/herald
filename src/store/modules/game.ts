@@ -153,6 +153,23 @@ const receiveMessage = async ({
     return;
   }
 
+  // Successful move updates
+  if (
+    message_data.type === "cmd.move.success" ||
+    message_data.type === "cmd.flee.success" ||
+    message_data.type === "notification.transport.exit" ||
+    message_data.type === "affect.death" ||
+    message_data.type === "affect.transfer"
+  ) {
+    commit("map_add", message_data.data.room);
+    commit("room_set", message_data.data.room);
+    commit("player_target_set", null);
+  } else if (message_data.type === "cmd.jump.success") {
+    commit("map_add", message_data.data.target);
+    commit("room_set", message_data.data.target);
+    commit("player_target_set", null);
+  }
+
   // Anything that has an actor who is the connected player
   if (
     message_data.data["actor"] &&
@@ -163,18 +180,6 @@ const receiveMessage = async ({
     if (message_data.data.actor && message_data.data.actor.room) {
       commit("set_room_key", message_data.data.actor.room.key);
     }
-  }
-
-  // Successful move updates
-  if (
-    message_data.type === "cmd.move.success" ||
-    message_data.type === "cmd.flee.success" ||
-    message_data.type === "notification.transport.exit" ||
-    message_data.type === "affect.death"
-  ) {
-    commit("map_add", message_data.data.room);
-    commit("room_set", message_data.data.room);
-    commit("player_target_set", null);
   }
 
   // Room updating on look

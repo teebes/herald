@@ -48,7 +48,7 @@ export default class Map extends Vue {
 
   @Watch("center_key")
   changeCenterKey() {
-    this.renderMap();
+    if (this.center_key) this.renderMap();
   }
 
   @Watch("rooms_filter")
@@ -182,7 +182,9 @@ export default class Map extends Vue {
   }
 
   renderMap() {
-    let rooms = this.get_rooms_around(this.map[this.center_key], this.radius);
+    const room = this.map[this.center_key];
+    if (!room) return;
+    let rooms = this.get_rooms_around(room, this.radius);
 
     // Now go through each room and see if any have a connection to some other
     // room within the greater map, but that is not in the shown rooms.
