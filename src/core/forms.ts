@@ -132,7 +132,7 @@ const ROOM_CHECK: FormElement[] = [
         - not in inventory: the opposite of in_inv.<br/>
         - equipped: whether item template id 'argument' is equipped by the actor.<br/>
         - not equipped: the opposite of equipped.<br/>
-        - mob is absent: whether a mob with template id 'argument' in the room is not present. If 'argument2' is specified as a faction, only that faction will be affected by the check.<br/>
+        - mob is present: whether a mob with template id 'argument' in the room is present. If 'argument2' is specified as a faction, that faction is exempt from the check.<br/>
         - faction below: whether a character's standing in faction 'argument' is below 'argument2'.<br/>
         - health below: whether a character’s health is below a 'argument' threshold, in % of their max health.<br/>
         - quest complete: whether a character has completed quest id 'argument'.<br/>
