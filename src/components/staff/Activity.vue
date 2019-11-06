@@ -24,11 +24,11 @@ export default class StaffActivity extends Vue {
   }
 
   get resolve_route() {
-    return player => {
+    return user => {
       return {
         name: STAFF_USER_INFO,
         params: {
-          user_id: player.user_id
+          user_id: user.id
         }
       };
     };
@@ -38,7 +38,8 @@ export default class StaffActivity extends Vue {
     return [
       { name: "id", label: "ID" },
       { name: "name", label: "Name" },
-      { name: "level", label: "Level", light: true }
+      { name: "email", label: "Email", light: true },
+      { name: "date_joined_str", label: "Joined", light: true }
     ];
   }
 }
