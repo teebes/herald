@@ -10,7 +10,11 @@
 
         <tbody>
           <tr v-for="element in elements" :key="element.id" @click="clickRow(element)">
-            <td v-for="field in schema" :key="field.name">{{ element[field.name] }}</td>
+            <td
+              v-for="field in schema"
+              :key="field.name"
+              :nowrap="isNowrap(field)"
+            >{{ element[field.name] }}</td>
           </tr>
         </tbody>
       </table>
@@ -35,6 +39,10 @@ export default class ElementTable extends Vue {
 
   clickRow(element) {
     this.$emit("show-details", element);
+  }
+
+  isNowrap(field) {
+    return field.nowrap;
   }
 }
 </script>

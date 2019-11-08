@@ -42,8 +42,9 @@ export default class MobTemplateList extends Mixins(WorldView) {
   get list_schema() {
     return [
       { name: "id", label: "ID" },
-      { name: "name", label: "Name" },
-      { name: "level", label: "Level", light: true }
+      { name: "name", label: "Name", nowrap: true },
+      { name: "level", label: "Level", light: true },
+      { name: "notes", label: "Notes", light: true }
     ];
   }
 
