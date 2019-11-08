@@ -218,6 +218,15 @@ export default class Console extends Vue {
       margin-top: 1rem;
     }
 
+    &.room_write,
+    &.write\.send,
+    &.write\.sendexcept,
+    &.write\.game,
+    &.write\.zone {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
     &.notification\.cmd\.say\.success,
     &.notification\.cmd\.yell\.success,
     &.notification\.cmd\.chat\.success,

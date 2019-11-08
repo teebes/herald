@@ -5,7 +5,7 @@
     <div v-if="completion_cmds.length">
       <div>
         Commands executed on completion::
-        <ul class='list'>
+        <ul class="list">
           <li v-for="completion_cmd in completion_cmds" :key="completion_cmd">{{ completion_cmd }}</li>
         </ul>
       </div>
@@ -78,8 +78,7 @@ export default class extends Vue {
     const completion_cmd_available: FormElement = {
       attr: "completion_cmd_available",
       label: "Completion Command is Available",
-      widget: "checkbox",
-      help: `test`
+      widget: "checkbox"
     };
 
     const completion_keywords: FormElement = {
@@ -99,7 +98,8 @@ export default class extends Vue {
     const complete_silently: FormElement = {
       attr: "complete_silently",
       label: "Complete Silently",
-      widget: "checkbox"
+      widget: "checkbox",
+      help: `If checked, the user will not receiving a message saying they completed a quest.`
     };
 
     const completion_action: FormElement = {
