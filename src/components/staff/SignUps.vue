@@ -11,7 +11,7 @@
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import ElementList from "@/components/elementlist/ElementList.vue";
-import { BUILDER_WORLD_PLAYER_DETAIL } from "@/router";
+import { STAFF_USER_INFO } from "@/router";
 
 @Component({
   components: {
@@ -24,7 +24,14 @@ export default class StaffSignUps extends Vue {
   }
 
   get resolve_route() {
-    return "";
+    return user => {
+      return {
+        name: STAFF_USER_INFO,
+        params: {
+          user_id: user.id
+        }
+      };
+    };
   }
 
   get list_schema() {
