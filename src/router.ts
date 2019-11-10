@@ -540,7 +540,12 @@ router.afterEach(async () => {
     // This assumes a 24 hour expiration renewal.
     if (delta > 0 && delta < 60 * 60 * 23) {
       // Renew the token
-      await store.dispatch("auth/renew", localStorage.jwtToken);
+      try {
+        await store.dispatch("auth/renew", localStorage.jwtToken);
+      } catch (error) {
+        store.commit("auth/auth_clear");
+        router.push({ name: "login" });
+      }
     }
   }
 });
