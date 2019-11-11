@@ -60,6 +60,9 @@
       <div
         class="color-text-70"
       >Zone has no rooms. Go to an existing room and assign it to this zone to see a map.</div>
+      <div>
+        <button class="btn-thin edit-mob" @click="editInfo">EDIT</button>
+      </div>
     </div>
   </div>
 </template>
