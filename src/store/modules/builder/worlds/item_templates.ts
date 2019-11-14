@@ -26,7 +26,18 @@ const item_template_crud_actions = generate_crud_actions("item_template", {
 });
 
 export const item_template_actions = {
-  ...item_template_crud_actions
+  ...item_template_crud_actions,
+
+  item_template_loads_fetch: async (
+    { commit },
+    { world_id, item_template_id }
+  ) => {
+    const resp = await axios.get(
+      `/builder/worlds/${world_id}/itemtemplates/${item_template_id}/loadsin/`
+    );
+    commit("item_template_loads_set", resp.data.loaders);
+    return resp.data.loaders;
+  }
 };
 
 export const item_template_mutations = {
@@ -36,5 +47,9 @@ export const item_template_mutations = {
 
   item_template_clear: state => {
     state.item_template = null;
+  },
+
+  item_template_loads_set: (state, item_template_loads) => {
+    state.item_template_loads = item_template_loads;
   }
 };

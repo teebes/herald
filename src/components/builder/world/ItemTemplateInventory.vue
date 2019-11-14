@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h3>LOAD ITEMS</h3>
-    <InColumnList :endpoint="endpoint" :schema="schema" title="Inventory Item"/>
+    <h3>ITEM INVENTORY</h3>
+    <InColumnList :endpoint="endpoint" :schema="schema" title="Inventory Item" />
   </div>
 </template>
 

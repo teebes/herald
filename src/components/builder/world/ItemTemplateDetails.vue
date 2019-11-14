@@ -22,9 +22,9 @@
             <div>{{ item_template.cost }}</div>
           </div>
 
-          <div>
-            <button class="btn-thin edit-mob" @click="editInfo">EDIT INFO</button>
-            <button class="btn-thin delete-mob" @click="deleteItem">DELETE ITEM</button>
+          <div class="info-actions mt-4">
+            <button class="btn-small edit-mob" @click="editInfo">EDIT INFO</button>
+            <button class="btn-small delete-mob delete-template" @click="deleteItem">DELETE ITEM</button>
           </div>
         </div>
 
@@ -85,41 +85,7 @@
     <div class="divider"></div>
 
     <div class="half-panels">
-      <div class="equipment" v-if="item_template.type === 'equippable'">
-        <h3>EQUIPMENT</h3>
-
-        <div class="item-equipment-info">
-          <div>
-            <div class="field-desc">Equipment Slot</div>
-            <div>{{ item_template.equipment_type }}</div>
-          </div>
-
-          <div
-            v-if="item_template.equipment_type !== 'weapon_1h' && item_template.equipment_type !== 'weapon_2h'"
-          >
-            <div class="field-desc">Armor class</div>
-            <div>{{ item_template.armor_class }}</div>
-          </div>
-
-          <template
-            v-if="item_template.equipment_type === 'weapon_1h' || item_template.equipment_type === 'weapon_2h'"
-          >
-            <div>
-              <div class="field-desc">First person hit</div>
-              <div>You {{ item_template.hit_msg_first }} your target</div>
-            </div>
-
-            <div>
-              <div class="field-desc">Third person hit</div>
-              <div>Someone {{ item_template.hit_msg_third }} their target</div>
-            </div>
-          </template>
-        </div>
-
-        <button class="btn-thin edit-mob" @click="editEquipment">EDIT EQUIPMENT</button>
-      </div>
-
-      <ItemTemplateInventory />
+      <ItemTemplateEquipment v-if="item_template.type === 'equippable'" />
 
       <div class="advanced">
         <h3>ADVANCED</h3>
@@ -142,6 +108,11 @@
 
         <button class="btn-thin edit-advanced" @click="editAdvanced">EDIT ADVANCED SETTINGS</button>
       </div>
+
+      <div v-if="item_template.type !== 'equippable'"></div>
+
+      <ItemTemplateInventory />
+      <ItemTemplateLoads />
     </div>
   </div>
 </template>
@@ -152,6 +123,8 @@ import WorldView from "@/components/builder/world/WorldView.ts";
 import { BUILDER_FORMS } from "@/core/forms.ts";
 import ItemTemplateStats from "./ItemTemplateStats.vue";
 import ItemTemplateInventory from "./ItemTemplateInventory.vue";
+import ItemTemplateEquipment from "./ItemTemplateEquipment.vue";
+import ItemTemplateLoads from "./ItemTemplateLoads.vue";
 import {
   BUILDER_ACTIONS,
   BUILDER_MUTATIONS,
@@ -162,7 +135,9 @@ import {
 @Component({
   components: {
     ItemTemplateStats,
-    ItemTemplateInventory
+    ItemTemplateInventory,
+    ItemTemplateEquipment,
+    ItemTemplateLoads
   }
 })
 export default class ItemTemplateDetails extends Mixins(WorldView) {
@@ -183,17 +158,6 @@ export default class ItemTemplateDetails extends Mixins(WorldView) {
       title: `Item Template ${entity.id}`,
       data: entity,
       schema: BUILDER_FORMS.ITEM_TEMPLATE_INFO,
-      action: "builder/worlds/item_template_save"
-    };
-    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
-  }
-
-  editEquipment() {
-    const entity = this.item_template;
-    const modal = {
-      title: `Item Template ${entity.id}`,
-      data: entity,
-      schema: BUILDER_FORMS.ITEM_TEMPLATE_EQUIPMENT,
       action: "builder/worlds/item_template_save"
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);

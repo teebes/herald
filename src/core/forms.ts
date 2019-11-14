@@ -4,7 +4,7 @@ export interface FormElement {
   references?: string;
   widget?: "text" | "textarea" | "reference" | "select" | "checkbox";
   context?: string;
-  options?: { value: string; label: string }[];
+  options?: { value: string | null; label: string }[];
   default?: string | number | boolean;
   create_only?: boolean;
   tooltip?: ""[];
@@ -700,11 +700,18 @@ export const BUILDER_FORMS = {
       children: [
         {
           attr: "name",
-          label: "Name"
+          label: "Name",
+          help: `When naming items, use a lowercase article to start its name,
+                 for example 'a sword', rather than something like 'Big Sword'.
+                 This ensures that the game generates correct sentences with the
+                 item like 'You get a sword from the ground.'`
         },
         {
           attr: "level",
-          label: "Level"
+          label: "Level",
+          help: `The level of an item represents its power. For weapons, it 
+                determines how much damage is dealt, and for armor how much physical
+                damage it absorbs.`
         }
       ]
     },
@@ -743,11 +750,20 @@ export const BUILDER_FORMS = {
               value: "key",
               label: "Key"
             }
-          ]
+          ],
+          help: `The type of the item.<br/>
+            - inert: an item that does nothing special.
+            - equippable: weapons or armor meant that can be worn.
+            - container: bags, chests and items that can contain other items.
+            - trash: a containe items that delete items put into it.
+            - quest: an item used as a quest objective.
+            - food: an item that restores stamina on consumption.
+            - key: an item that opens a door.`
         },
         {
           attr: "cost",
-          label: "Cost"
+          label: "Cost",
+          help: `How much a merchant would buy the item for. Merchants sell items for twice their cost.`
         }
       ]
     },
@@ -840,88 +856,6 @@ export const BUILDER_FORMS = {
         {
           attr: "",
           label: ""
-        }
-      ]
-    }
-  ],
-
-  ITEM_TEMPLATE_EQUIPMENT: [
-    {
-      children: [
-        {
-          attr: "equipment_type",
-          label: "Equipment Type",
-          widget: "select",
-          options: [
-            {
-              value: "weapon_1h",
-              label: "1H Weapon"
-            },
-            {
-              value: "weapon_2h",
-              label: "2H Weapon"
-            },
-            {
-              value: "shield",
-              label: "Shield"
-            },
-            {
-              value: "head",
-              label: "Head"
-            },
-            {
-              value: "body",
-              label: "Body"
-            },
-            {
-              value: "arms",
-              label: "Arms"
-            },
-            {
-              value: "hands",
-              label: "Hands"
-            },
-            {
-              value: "waist",
-              label: "Waist"
-            },
-            {
-              value: "legs",
-              label: "Legs"
-            },
-            {
-              value: "feet",
-              label: "Feet"
-            }
-          ]
-        },
-        {
-          attr: "armor_class",
-          label: "Armor Class",
-          widget: "select",
-          options: [
-            {
-              value: "light",
-              label: "Light"
-            },
-            {
-              value: "heavy",
-              label: "Heavy"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      row_name: "hit message",
-      children: [
-        {
-          attr: "hit_msg_first",
-          label: "First Person"
-        },
-        {
-          attr: "hit_msg_third",
-          label: "Third Person"
         }
       ]
     }

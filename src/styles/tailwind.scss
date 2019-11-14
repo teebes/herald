@@ -1,13 +1,16 @@
 /* Tailwind-like helpers */
+
+/* === START FLEX ==== */
+
 .flex {
   display: flex;
 }
 .flex-col {
   flex-direction: column;
 }
-.flex-1 {
-  flex: 1;
-}
+// .flex-1 {
+//   flex: 1;
+// }
 .flex-2 {
   flex: 2;
 }
@@ -20,6 +23,21 @@
 .flex-nowrap {
   flex-wrap: nowrap;
 }
+
+.flex-initial {
+  flex: 0 1 auto;
+}
+.flex-1 {
+  flex: 1 1 0%;
+}
+.flex-auto {
+  flex: 1 1 auto;
+}
+.flex-none {
+  flex: none;
+}
+
+/* ==== END FLEX ==== */
 
 .justify-center {
   justify-content: center;
