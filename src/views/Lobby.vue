@@ -43,7 +43,7 @@
               <div class="overlay">
                 <div class="title">{{ world.name.toUpperCase() }}</div>
 
-                <div class="num-characters">{{ world.num_user_characters }} characters</div>
+                <div class="num-characters">{{ world.num_characters }} characters</div>
               </div>
             </router-link>
           </div>
@@ -75,7 +75,7 @@
                 <div class="overlay">
                   <div class="title">{{ world.name.toUpperCase() }}</div>
 
-                  <div class="num-characters">{{ world.num_user_characters }} characters</div>
+                  <div class="num-characters">{{ world.num_characters }} characters</div>
                 </div>
               </div>
             </div>
@@ -102,7 +102,7 @@
               <div class="overlay">
                 <div class="title">{{ world.name.toUpperCase() }}</div>
 
-                <div class="num-characters">{{ world.num_user_characters }} characters</div>
+                <div class="num-characters">{{ world.num_characters }} characters</div>
               </div>
             </router-link>
           </div>
@@ -124,7 +124,7 @@
               <div class="overlay">
                 <div class="title">{{ world.name.toUpperCase() }}</div>
 
-                <div class="num-characters">{{ world.num_user_characters }} characters</div>
+                <div class="num-characters">{{ world.num_characters }} characters</div>
               </div>
             </router-link>
             <router-link :to="create_link" class="w-full">
