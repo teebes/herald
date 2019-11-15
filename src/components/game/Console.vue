@@ -29,6 +29,7 @@ import DeathMessage from "./consoleviews/DeathMessage.vue";
 import Equipment from "./consoleviews/Equipment.vue";
 import Exits from "./consoleviews/Exits.vue";
 import Factions from "./consoleviews/Factions.vue";
+import Feats from "./consoleviews/Feats.vue";
 import Help from "./consoleviews/Help.vue";
 import Inventory from "./consoleviews/Inventory.vue";
 import LookChar from "./consoleviews/LookChar.vue";
@@ -37,10 +38,10 @@ import LookRoom from "./consoleviews/LookRoom.vue";
 import MerchantInventory from "./consoleviews/MerchantInventory.vue";
 import Message from "./consoleviews/Message.vue";
 import OfferInventory from "./consoleviews/OfferInventory.vue";
+import ScrollTool from "./ScrollTool.vue";
 import Stats from "./consoleviews/Stats.vue";
 import Upgrade from "./consoleviews/Upgrade.vue";
 import Who from "./consoleviews/Who.vue";
-import ScrollTool from "./ScrollTool.vue";
 
 import _ from "lodash";
 
@@ -52,6 +53,7 @@ import _ from "lodash";
     Equipment,
     Exits,
     Factions,
+    Feats,
     Help,
     Inventory,
     LookChar,
@@ -75,7 +77,8 @@ export default class Console extends Vue {
 
     // Simple map from message type to console view
     const type_mapping = {
-      "cmd.exits.success": "Exits"
+      "cmd.exits.success": "Exits",
+      "cmd.feats.success": "Feats"
     };
     if (type_mapping[type]) return type_mapping[type];
 
