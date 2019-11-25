@@ -134,7 +134,14 @@ export default class ReferenceField extends Vue {
     } else if (this.model_type === "zone") {
       return `builder/worlds/${world_id}/zones/`;
     } else if (this.model_type === "faction") {
-      return `builder/worlds/${world_id}/factions/`;
+      let endpoint = `builder/worlds/${world_id}/factions/`;
+      if (
+        this.schema.context === "mob_factions" ||
+        this.schema.context === "quest_reward"
+      ) {
+        endpoint += "?is_core=false";
+      }
+      return endpoint;
     } else if (this.model_type === "room") {
       return `builder/worlds/${world_id}/rooms/`;
     } else if (

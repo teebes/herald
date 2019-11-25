@@ -24,16 +24,6 @@
               <div class="color-text-70">Aggression</div>
               <div>{{ template.aggression }}</div>
             </div>
-
-            <!-- <div class="mob-abilities my-2">
-              <div class="color-text-70">Use Abilities</div>
-              <div>{{ template.use_abilities }}</div>
-            </div>
-
-            <div class="mob-gold my-2">
-              <div class="color-text-70">Gold Dropped</div>
-              <div>{{ template.gold }}</div>
-            </div>-->
           </div>
 
           <div class="info-actions">
@@ -132,7 +122,7 @@ import {
   UI_MUTATIONS,
   UI_MODALS
 } from "@/constants";
-import { BUILDER_FORMS } from "@/core/forms.ts";
+import { BUILDER_FORMS, GET_MOB_TEMPLATE_INFO } from "@/core/forms.ts";
 import MobTemplateReactions from "./MobTemplateReactions.vue";
 import MobTemplateStats from "./MobTemplateStats.vue";
 import MobTemplateInventory from "./MobTemplateInventory.vue";
@@ -169,13 +159,11 @@ export default class MobTemplateDetails extends Mixins(WorldView) {
   }
 
   editInfo() {
-    let schema = {
-      ...BUILDER_FORMS.MOB_TEMPLATE_INFO
-    };
+    let schema = GET_MOB_TEMPLATE_INFO();
     const modal = {
       title: `Mob Template ${this.template.id}`,
       data: this.template,
-      schema: BUILDER_FORMS.MOB_TEMPLATE_INFO,
+      schema: schema,
       action: "builder/worlds/mob_template_save"
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);

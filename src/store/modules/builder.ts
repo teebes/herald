@@ -136,6 +136,37 @@ const getters = {
       canDisconnect,
       canOneWay
     };
+  },
+
+  coreFactionsOptions: state => {
+    // Faction data as usable by create / edit mob pages.
+    const factions: {}[] = [
+      {
+        value: "",
+        label: ""
+      }
+    ];
+    for (const faction of state.world.factions) {
+      if (faction.is_core) {
+        factions.push({
+          value: faction.code,
+          label: faction.name
+        });
+      }
+    }
+    return factions;
+  },
+
+  defaultCoreFaction: state => {
+    const core_factions: any[] = [];
+    for (const faction of state.world.factions) {
+      if (faction.is_core && faction.is_default) {
+        return faction.code;
+      } else {
+        core_factions.push(faction);
+      }
+    }
+    return core_factions[0].code;
   }
 };
 

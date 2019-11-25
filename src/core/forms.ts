@@ -1,3 +1,5 @@
+import store from "@/store";
+
 export interface FormElement {
   attr: string;
   label: string;
@@ -177,123 +179,32 @@ const ROOM_CHECK: FormElement[] = [
   }
 ];
 
-export const BUILDER_FORMS = {
-  ITEM_TEMPLATE,
-  MOB_TEMPLATE,
-  ZONE,
-  NAME,
-  DESCRIPTION,
-
-  ROOM_CHECK,
-
-  // Builder screens
-
-  ROOM_INFO: [
-    {
-      attr: "name",
-      label: "Name"
-    },
-    {
-      children: [
-        { attr: "x", label: "X" },
-        { attr: "y", label: "Y" },
-        { attr: "z", label: "Z" }
-      ]
-    },
-    {
-      children: [
-        ZONE,
-        {
-          attr: "type",
-          label: "Room Type",
-          help: `Different rooms have different stamina costs for going through them:<br/>
-                <br/>
-                * 1 stamina: road, city, indoor<br/>
-                * 2 stamina: trail, field<br/>
-                * 3 stamina: forest, desert, water<br/>
-                * 4 stamina: mountain<br/>
-                <br/>
-                In addition, different room types are colored differently in the map.`,
-          options: [
-            {
-              value: "road",
-              label: "Road"
-            },
-            {
-              value: "trail",
-              label: "Trail"
-            },
-            {
-              value: "city",
-              label: "City"
-            },
-            {
-              value: "indoor",
-              label: "Indoor"
-            },
-            {
-              value: "field",
-              label: "Field"
-            },
-            {
-              value: "mountain",
-              label: "Mountain"
-            },
-            {
-              value: "forest",
-              label: "Forest"
-            },
-            {
-              value: "desert",
-              label: "Desert"
-            },
-            {
-              value: "water",
-              label: "Water"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      attr: "description",
-      label: "Description",
-      widget: "textarea"
-    },
-    {
-      attr: "note",
-      label: "Notes"
-    }
-  ],
-
-  ZONE_INFO: [
-    {
-      attr: "name",
-      label: "Name"
-    }
-  ],
-
-  MOB_TEMPLATE_INFO: [
+export const GET_MOB_TEMPLATE_INFO = () => {
+  return [
     {
       children: [
         {
           attr: "name",
           label: "Name",
           help: `If naming a non-proper noun, use a lowercase article to start its name,
-             for example 'a rat'. This ensures combat messaged will be properly
-             formatted, for example 'You strike a rat.' The article will be
-             auto-capitalized when needed.`
+              for example 'a rat'. This ensures combat messaged will be properly
+              formatted, for example 'You strike a rat.' The article will be
+              auto-capitalized when needed.`
         },
         {
-          attr: "level",
-          label: "Level",
-          help: `The level of a mob determines how hard it is to kill and how much 
-                 experience it gives.`
+          attr: "notes",
+          label: "Notes"
         }
       ]
     },
     {
       children: [
+        {
+          attr: "level",
+          label: "Level",
+          help: `The level of a mob determines how hard it is to kill and how much 
+                experience it gives.`
+        },
         {
           attr: "gender",
           label: "Gender",
@@ -308,6 +219,16 @@ export const BUILDER_FORMS = {
               label: "Male"
             }
           ]
+        }
+      ]
+    },
+    {
+      children: [
+        {
+          attr: "core_faction",
+          label: "Core Faction",
+          widget: "select",
+          options: store.getters["builder/coreFactionsOptions"]
         },
         {
           attr: "aggression",
@@ -333,7 +254,7 @@ export const BUILDER_FORMS = {
           ],
           help: `Determines a mob's behavior when you enter its room.
                  <br/><br/>
-                 * Passive: mob will never attack (even if provoked).<br/>
+                 * Passive: mob will never attack first.<br/>
                  * Normal: mob will only attack if their faction is at odds with the entering char.<br/>
                  * Players: mob will attack all players.<br/>
                  * All: mob will attack players & other mobs.
@@ -437,7 +358,6 @@ export const BUILDER_FORMS = {
       ]
     },
     {
-      //row_name: 'Hit Message',
       children: [
         {
           attr: "hit_msg_first",
@@ -449,21 +369,121 @@ export const BUILDER_FORMS = {
         }
       ]
     },
+    // {
+    //   attr: "notes",
+    //   label: "Notes"
+    // },
     {
       children: [
-        { attr: "notes", label: "Notes" },
-        { attr: "is_invisible", label: "Is Invisible", widget: "checkbox" }
+        {
+          attr: "is_invisible",
+          label: "Is Invisible",
+          widget: "checkbox"
+        },
+        {
+          attr: "fights_back",
+          label: "Fights Back",
+          widget: "checkbox"
+        }
       ]
     }
-    // {
-    //   children: [
-    //     {
-    //       attr: "use_abilities",
-    //       label: "Use Abilities",
-    //       widget: "checkbox"
-    //     }
-    //   ]
-    // }
+  ];
+};
+
+export const BUILDER_FORMS = {
+  ITEM_TEMPLATE,
+  MOB_TEMPLATE,
+  ZONE,
+  NAME,
+  DESCRIPTION,
+
+  ROOM_CHECK,
+
+  // Builder screens
+
+  ROOM_INFO: [
+    {
+      attr: "name",
+      label: "Name"
+    },
+    {
+      children: [
+        { attr: "x", label: "X" },
+        { attr: "y", label: "Y" },
+        { attr: "z", label: "Z" }
+      ]
+    },
+    {
+      children: [
+        ZONE,
+        {
+          attr: "type",
+          label: "Room Type",
+          help: `Different rooms have different stamina costs for going through them:<br/>
+                <br/>
+                * 1 stamina: road, city, indoor<br/>
+                * 2 stamina: trail, field<br/>
+                * 3 stamina: forest, desert, water<br/>
+                * 4 stamina: mountain<br/>
+                <br/>
+                In addition, different room types are colored differently in the map.`,
+          options: [
+            {
+              value: "road",
+              label: "Road"
+            },
+            {
+              value: "trail",
+              label: "Trail"
+            },
+            {
+              value: "city",
+              label: "City"
+            },
+            {
+              value: "indoor",
+              label: "Indoor"
+            },
+            {
+              value: "field",
+              label: "Field"
+            },
+            {
+              value: "mountain",
+              label: "Mountain"
+            },
+            {
+              value: "forest",
+              label: "Forest"
+            },
+            {
+              value: "desert",
+              label: "Desert"
+            },
+            {
+              value: "water",
+              label: "Water"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      attr: "description",
+      label: "Description",
+      widget: "textarea"
+    },
+    {
+      attr: "note",
+      label: "Notes"
+    }
+  ],
+
+  ZONE_INFO: [
+    {
+      attr: "name",
+      label: "Name"
+    }
   ],
 
   MOB_TEMPLATE_STATS: [
@@ -678,20 +698,6 @@ export const BUILDER_FORMS = {
               <br/>
               Does nothing for other event types.
               `
-    }
-  ],
-
-  MOB_TEMPLATE_FACTION: [
-    {
-      attr: "faction",
-      label: "Faction",
-      references: "faction",
-      widget: "reference"
-    },
-    {
-      attr: "value",
-      label: "Value",
-      default: "0"
     }
   ],
 

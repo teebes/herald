@@ -170,7 +170,8 @@ export default class extends Mixins(ZoneView) {
       attr: "faction",
       label: "Faction Standing",
       widget: "reference",
-      references: "faction"
+      references: "faction",
+      context: "quest_reward"
     };
     return faction_schema;
   }
