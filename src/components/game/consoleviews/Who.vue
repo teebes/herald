@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>Players online:</div>
+  <div class="indented">
+    <h3 class="my-2">{{ message.data.players.length }} PLAYERS IN WORLD</h3>
     <div
       v-for="player in message.data.players"
       :key="player.id"
@@ -16,7 +16,23 @@
       <span v-if="player.is_invisible" class="ml-1 color-text-50">[invisible]</span>
     </div>
 
-    <div v-for="(grapevine_player, index) in grapevine_who" :key="index">{{grapevine_player}}</div>
+    <template v-if="grapevine_worlds.length">
+      <h3 class="mt-2">GRAPEVINE</h3>
+      <div v-for="world_data of grapevine_worlds" :key="world_data.name">
+        <div class="gworld-name-and-count" @click="clickWorld(world_data.name)">
+          <span v-if="expanded_worlds[world_data.name]">-</span>
+          <span v-else>+</span>
+          {{ world_data.name }} ({{ world_data.players.length }} players)
+        </div>
+        <template v-if="expanded_worlds[world_data.name]">
+          <div
+            class="gworld-players ml-4"
+            v-for="player in world_data.players"
+            :key="player"
+          >{{ player }}@{{ world_data.name }}</div>
+        </template>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -26,57 +42,40 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 export default class GameWho extends Vue {
   @Prop() message!: any;
 
-  get grapevine_who() {
-    const grapevine_who: string[] = [];
-    const PER_GAME_LIMIT = 5;
+  expanded_worlds: {} = {};
 
-    const gplayers: {} = this.message.data.grapevine || {};
+  get grapevine_worlds() {
+    const worlds: {}[] = [],
+      world_names = Object.keys(this.message.data.grapevine).sort();
 
-    // Sample input:
-    // var gplayers = {
-    //     Akrios: [],
-    //     Apotheosis: ["Shaitan"],
-    //     Atlantis: [],
-    //     DumDevelopment: [],
-    //     EF: ["Tim"],
-    //     MidMUD: [],
-    //     MoltenShores: [],
-    //     NeonMOO: ["Crisis", "McAllister"],
-    //     Olympia: [],
-    //     SIGINT: [],
-    //     Sindome: ["Barrien", "femmefatale", "Viper272", "Mirino", "Reganza", "thomavich", "ReeferMadness", "tr1cky", "Grizzly666", "villa", "Fris", "Rangerkrauser", "MongOfTheWeek", "0x1mm", "mindkontrol", "theziwen", "Kyrius00", "Johnny", "Misbiopy", "Non_Sequitur_Snowman", "poppyj", "Dawnshot", "Elise-7322", "Ironmanticore", "Hour", "Evie", "RealHumanBean", "Brozilla", "Grey0", "Baguette", "Jade1202", "DMODP", "pfh", "RheaGhe", "HolyChrome", "Halyon", "Varolokkur", "Dreamer", "Kisaki", "BCingyou", "SenatorDankstrong", "Bogrin", "Dvar", "eggsaresides", "floored", "Pinklepop", "Napoleon", "peemant", "Kiwi"],
-    //     Snakelines: [],
-    //     UtEclipse: [],
-    //     hmrmud: [],
-    //     myelinalpha: [],
-    //     zenos: ["SwiftAusterity"],
-    // }
-
-    for (const game in gplayers) {
-      const players: string[] = gplayers[game];
-      if (!players.length) continue;
-
-      for (let i = 0; i < players.length; i++) {
-        var player = players[i];
-
-        grapevine_who.push(`${player}@${game}`);
-
-        if (i === PER_GAME_LIMIT - 1 && player.length >= i) {
-          const more_players: number = players.length - i;
-          grapevine_who.push(
-            "(" + more_players + " more " + game + " players)"
-          );
-          break;
-        }
+    for (const world_name of world_names) {
+      const players = this.message.data.grapevine[world_name];
+      if (players && players.length) {
+        worlds.push({
+          players: players,
+          name: world_name
+        });
       }
     }
+    return worlds;
+  }
 
-    return grapevine_who;
+  clickWorld(world_name) {
+    if (!this.expanded_worlds[world_name]) {
+      Vue.set(this.expanded_worlds, world_name, true);
+    } else {
+      Vue.set(this.expanded_worlds, world_name, false);
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
+.gworld-name-and-count {
+  &:hover {
+    cursor: pointer;
+  }
+}
 </style>
 
