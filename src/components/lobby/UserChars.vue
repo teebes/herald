@@ -1,28 +1,43 @@
 <template>
   <div class="world-chars-region">
-    <CreateChar v-if="newCharacter" :world="world" @charcreated="onCharCreated" />
+    <CreateChar
+      v-if="newCharacter"
+      :world="world"
+      @charcreated="onCharCreated"
+    />
     <div class="world-chars" v-else>
       <div class="world-chars-title">YOUR CHARACTERS</div>
       <div class="world-chars-container">
         <div v-for="char in chars" :key="char.id" class="char-display">
-          <div class="char-name">{{ char.name }}</div>
+          <div class="char-name">
+            {{ char.name }}
+            <span v-if="char.is_immortal" class="color-text-50 ml-2"
+              >[ Builder ]</span
+            >
+          </div>
           <div class="char-info">{{ charInfo(char) }}</div>
           <div class="enter-world">
             <button
               class="btn-small play-as"
               @click="onTransfer(char)"
               v-if="char.can_transfer && !$store.state.auth.user.is_temporary"
-            >TRANSFER {{ char.name }}</button>
-            <button class="btn-small play-as" @click="onEnter(char)" v-else>PLAY AS {{ char.name }}</button>
+            >
+              TRANSFER {{ char.name }}
+            </button>
+            <button class="btn-small play-as" @click="onEnter(char)" v-else>
+              PLAY AS {{ char.name }}
+            </button>
           </div>
         </div>
-        <button class="btn-add new-character" @click="onClickCreateChar()">CREATE NEW CHARACTER</button>
+        <button class="btn-add new-character" @click="onClickCreateChar()">
+          CREATE NEW CHARACTER
+        </button>
       </div>
     </div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import CreateChar from "./CreateChar.vue";
 import { capitalize } from "@/core/utils.ts";
