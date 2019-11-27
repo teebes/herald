@@ -3,12 +3,14 @@
     <div
       v-if="message.type === 'affect.death'"
       class="mt-4 color-text-red font-text-regular"
-    >You have been slain! Rest your weary bones...</div>
+    >
+      You have been slain! Rest your weary bones...
+    </div>
 
     <div v-if="message.type === 'cmd.flee.success'" class="mb-4">
-      <span
-        v-if="message.data.is_auto"
-      >Your health is too low and you flee {{ message.data.direction }}!</span>
+      <span v-if="message.data.is_auto"
+        >Your health is too low and you flee {{ message.data.direction }}!</span
+      >
       <span v-else>You flee {{ message.data.direction }}!</span>
     </div>
 
@@ -16,21 +18,32 @@
 
     <!-- Description -->
     <template v-if="isLastMessage">
-      <div class="room-description" v-for="(line, index) in descLines" :key="index">
+      <div
+        class="room-description"
+        v-for="(line, index) in descLines"
+        :key="index"
+      >
         <template v-for="(word, word_index) in line.split(' ')">
           <span
             :key="word_index"
             v-if="isDetail(word)"
             class="interactable"
             @click="onClickDetail(word)"
-          >{{ word }}</span>
+            >{{ word }}</span
+          >
           <span :key="word_index" v-else>{{ word }}</span>
-          {{ ' ' }}
+          {{ " " }}
         </template>
       </div>
     </template>
     <template v-else>
-      <div class="room-description" v-for="(line, index) in descLines" :key="index">{{ line }}</div>
+      <div
+        class="room-description"
+        v-for="(line, index) in descLines"
+        :key="index"
+      >
+        {{ line }}
+      </div>
     </template>
 
     <div class="room-exits" v-if="exits">{{ exits }}</div>
@@ -45,26 +58,30 @@
     </template>
 
     <div class="room-inventory">
-      <div class="room-item" v-for="item in stackedInventory(room.inventory)" :key="item.key">
+      <div
+        class="room-item"
+        v-for="item in stackedInventory(room.inventory)"
+        :key="item.key"
+      >
         <template v-if="isLastMessage">
           <span
-            v-interactive="{target: item}"
+            v-interactive="{ target: item }"
             class="interactable"
             :class="[item.quality]"
             @click="onItemClick(item)"
           >
             {{ item.ground_description }}
-            <template
-              v-if="item.count && item.count > 1"
-            >[{{ item.count }}]</template>
+            <template v-if="item.count && item.count > 1"
+              >[{{ item.count }}]</template
+            >
           </span>
         </template>
         <template v-else>
           <span>
             {{ item.ground_description }}
-            <template
-              v-if="item.count && item.count > 1"
-            >[{{ item.count }}]</template>
+            <template v-if="item.count && item.count > 1"
+              >[{{ item.count }}]</template
+            >
           </span>
         </template>
       </div>
@@ -74,24 +91,31 @@
       <div class="room-char" v-for="char in chars" :key="char.key">
         <template v-if="isLastMessage">
           <span
-            v-interactive="{target: char}"
+            v-interactive="{ target: char }"
             class="interactable"
             @click="onCharClick(char)"
-          >{{ char.room_description }}</span>
+          >
+            {{ room_char_desc(char) }}
+          </span>
         </template>
         <template v-else>
-          <span>{{ char.room_description }}</span>
+          <span>
+            {{ room_char_desc(char) }}
+          </span>
         </template>
-        <span v-if="char.is_invisible" class="ml-2 color-text-50">[invisible]</span>
+        <span v-if="char.is_invisible" class="ml-2 color-text-50"
+          >[invisible]</span
+        >
       </div>
     </div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { DIRECTIONS } from "@/constants.ts";
 import { stackedInventory, getTargetInGroup } from "@/core/utils.ts";
+import { capfirst } from "@/core/utils.ts";
 
 interface Char {
   key: string;
@@ -183,6 +207,15 @@ export default class LookRoom extends Vue {
 
   onClickDetail(word) {
     this.$store.dispatch("game/cmd", `l ${word}`);
+  }
+
+  room_char_desc(char) {
+    let desc = `${capfirst(char.name)} is here`;
+    if (char.target) {
+      desc += `, fighting ${char.target.name}`;
+    }
+    desc += ".";
+    return desc;
   }
 
   stackedInventory = stackedInventory;
