@@ -18,12 +18,15 @@
             <div class="box-row">
               <div
                 class="box-item no-touch"
+                :class="{ disabled: skill.is_disabled }"
                 v-for="skill in coreSkills"
                 :key="skill.cmd"
                 @click="onClick(skill)"
               >
                 <div class="box-overlay" :ref="skill.cmd + '-overlay'"></div>
-                <span class="box-name unselectable">{{ skill.label }}</span>
+                <span class="box-name unselectable"
+                  >{{ skill.label }} ({{ skill.is_disabled }})</span
+                >
                 <span class="hotkey unselectable">{{ skill.hotKey }}</span>
               </div>
             </div>
@@ -194,6 +197,14 @@ export default class PanelSkills extends Vue {
         stance = this.player.stance;
       for (const skill_code of skills.core) {
         const skill = skills[skill_code];
+
+        // Mark the skill disabled if in a disabled stance
+        if (skill.disabled.indexOf(stance) !== -1) {
+          skill.is_disabled = true;
+        } else {
+          skill.is_disabled = false;
+        }
+
         // If the player's stance is one of the allowed stances
         if (skill.stances.indexOf(stance) !== -1) {
           core_asn_skills.push(skill.code);
@@ -201,6 +212,8 @@ export default class PanelSkills extends Vue {
       }
       skills.core = core_asn_skills;
     }
+
+    console.log(skills);
 
     return skills;
   }
@@ -214,7 +227,8 @@ export default class PanelSkills extends Vue {
         skills.push({
           label: skillData.name,
           cmd: skillData.code,
-          hotKey: hotKey
+          hotKey: hotKey,
+          is_disabled: skillData.is_disabled
         });
       }
       hotKey += 1;
