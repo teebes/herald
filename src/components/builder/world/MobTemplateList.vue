@@ -89,7 +89,7 @@ export default class MobTemplateList extends Vue {
 
     const factions = {
       label: "factions",
-      attr: "core_faction",
+      attr: "faction",
       filter_options: this.world_factions
     };
 
