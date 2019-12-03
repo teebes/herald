@@ -1,9 +1,19 @@
 <template>
   <div class="skills-region flex flex-col">
     <div class="skills-view flex flex-col">
-      <div class="core-skills-region skills action-boxes" v-if="coreSkills.length">
+      <div
+        class="core-skills-region skills action-boxes"
+        v-if="coreSkills.length"
+      >
         <div>
-          <div class="label">Core Skills</div>
+          <div class="label">
+            Core Skills
+            <span
+              class="stance"
+              v-if="$store.state.game.player.archetype === 'assassin'"
+              >- {{ $capfirst($store.state.game.player.stance) }}</span
+            >
+          </div>
           <div class="skill-boxes">
             <div class="box-row">
               <div
@@ -21,7 +31,10 @@
         </div>
       </div>
 
-      <div class="flex-skills-region skills action-boxes" v-if="flexSkills.length">
+      <div
+        class="flex-skills-region skills action-boxes"
+        v-if="flexSkills.length"
+      >
         <div>
           <div class="label">Flex Skills</div>
           <div class="skill-boxes">
@@ -44,7 +57,7 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { TweenLite, Linear } from "gsap";
 import EventBus from "@/core/eventbus.ts";
@@ -173,7 +186,23 @@ export default class PanelSkills extends Vue {
 
   get archetypeSkills() {
     const archetype = this.player.archetype;
-    return this.$store.state.game.world.skills[archetype];
+    let skills = { ...this.$store.state.game.world.skills[archetype] };
+
+    // For assassins, modify the available skills based on stance
+    if (archetype === "assassin") {
+      const core_asn_skills = [],
+        stance = this.player.stance;
+      for (const skill_code of skills.core) {
+        const skill = skills[skill_code];
+        // If the player's stance is one of the allowed stances
+        if (skill.stances.indexOf(stance) !== -1) {
+          core_asn_skills.push(skill.code);
+        }
+      }
+      skills.core = core_asn_skills;
+    }
+
+    return skills;
   }
 
   get coreSkills() {
@@ -232,6 +261,11 @@ export default class PanelSkills extends Vue {
     font-size: 15px;
     line-height: 18px;
     padding-bottom: 2px;
+
+    > span {
+      font-size: inherit;
+      color: $color-text-hex-70;
+    }
   }
 
   .box-row {
