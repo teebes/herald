@@ -40,6 +40,7 @@ export default class StaffPlaying extends Vue {
       { name: "id", label: "ID" },
       { name: "name", label: "Name" },
       { name: "level", label: "Level", light: true },
+      { name: "world_name", label: "World", light: true },
       { name: "user.email", label: "Email", light: true }
     ];
   }
