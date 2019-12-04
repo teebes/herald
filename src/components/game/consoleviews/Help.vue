@@ -202,6 +202,17 @@
         </div>
       </template>
 
+      <template v-if="archetype === 'assassin'">
+        <div class="cmd-group">
+          <div class="group-title">Assassin Core Skills</div>
+          <div class="cmds">
+            <div class="cmd" @click="cmdHelp('quickstrike')">quickstrike</div>
+            <div class="cmd" @click="cmdHelp('maelstrom')">maelstrom</div>
+            <div class="cmd" @click="cmdHelp('heartstrike')">heartstrike</div>
+          </div>
+        </div>
+      </template>
+
       <template v-if="isBuilder">
         <div class="cmd-group">
           <div class="group-title">Builder Commands</div>

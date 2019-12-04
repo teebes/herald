@@ -24,9 +24,7 @@
                 @click="onClick(skill)"
               >
                 <div class="box-overlay" :ref="skill.cmd + '-overlay'"></div>
-                <span class="box-name unselectable"
-                  >{{ skill.label }} ({{ skill.is_disabled }})</span
-                >
+                <span class="box-name unselectable">{{ skill.label }}</span>
                 <span class="hotkey unselectable">{{ skill.hotKey }}</span>
               </div>
             </div>
@@ -105,6 +103,8 @@ export default class PanelSkills extends Vue {
     for (const skill in cooldowns) {
       if (!this.activeCooldowns[skill]) {
         const overlay = this.$refs[`${skill}-overlay`] as HTMLElement;
+        if (overlay[0] === undefined) return;
+
         const cooldown: Cooldown = cooldowns[skill];
 
         const current = new Date().getTime();
@@ -180,6 +180,7 @@ export default class PanelSkills extends Vue {
   }
 
   onClick(skill) {
+    if (skill.is_disabled) return;
     this.$store.dispatch("game/cmd", skill.cmd);
   }
 
@@ -212,8 +213,6 @@ export default class PanelSkills extends Vue {
       }
       skills.core = core_asn_skills;
     }
-
-    console.log(skills);
 
     return skills;
   }
@@ -295,11 +294,16 @@ export default class PanelSkills extends Vue {
       text-align: center;
       flex-wrap: wrap;
 
+      color: white;
       background: #828283;
+
+      &.disabled {
+        background: #3c3c3c;
+      }
+
       height: 40px;
       max-width: 50%;
 
-      color: white;
       font-size: 11px;
       line-height: 15px;
 
@@ -313,6 +317,9 @@ export default class PanelSkills extends Vue {
       &.no-touch {
         &:hover {
           cursor: pointer;
+          &.disabled {
+            cursor: default;
+          }
 
           .hotkey {
             display: block;
@@ -324,6 +331,9 @@ export default class PanelSkills extends Vue {
             font-size: 10px;
           }
         }
+      }
+      &.disabled:hover > .hotkey {
+        display: none;
       }
 
       &.cooldown {
@@ -343,6 +353,9 @@ export default class PanelSkills extends Vue {
         height: 100%;
 
         color: white;
+      }
+      &.disabled > .box-name {
+        color: $color-text-hex-50;
       }
 
       .box-overlay {
