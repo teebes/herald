@@ -9,12 +9,18 @@
         </thead>
 
         <tbody>
-          <tr v-for="element in elements" :key="element.id" @click="clickRow(element)">
+          <tr
+            v-for="element in elements"
+            :key="element.id"
+            @click="clickRow(element)"
+          >
             <td
               v-for="field in schema"
               :key="field.name"
               :nowrap="isNowrap(field)"
-            >{{ element[field.name] }}</td>
+            >
+              {{ getFieldValue(element, field.name) }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -22,8 +28,7 @@
   </div>
 </template>
 
-
-<script lang='ts'>
+<script lang="ts">
 import axios from "axios";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import Pagination from "@/components/elementlist/Pagination.vue";
@@ -44,7 +49,15 @@ export default class ElementTable extends Vue {
   isNowrap(field) {
     return field.nowrap;
   }
+
+  getFieldValue(element, name) {
+    if (name.indexOf(".") !== -1) {
+      const parts = name.split(".");
+      const parent = element[parts[0]];
+      return parent[parts[1]];
+    }
+    return element[name];
+  }
 }
 </script>
-<style lang='scss' scoped>
-</style>
+<style lang="scss" scoped></style>
