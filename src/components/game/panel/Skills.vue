@@ -194,7 +194,7 @@ export default class PanelSkills extends Vue {
 
     // For assassins, modify the available skills based on stance
     if (archetype === "assassin") {
-      const core_asn_skills = [],
+      const core_asn_skills: {}[] = [],
         stance = this.player.stance;
       for (const skill_code of skills.core) {
         const skill = skills[skill_code];
@@ -242,6 +242,7 @@ export default class PanelSkills extends Vue {
       const skillCode = this.player.skills.flex[flexNumber];
       if (skillCode) {
         const skillData = this.archetypeSkills[skillCode];
+        if (!skillData) continue;
         if (this.player.level >= skillData.level) {
           skills.push({
             label: skillData.name,
