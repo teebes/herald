@@ -1,7 +1,7 @@
 <template>
   <div v-if="user" id="page">
     <h1>
-      {{ user.name }}
+      {{ user.name || "Anonymous User"}}
       <span class="color-text-70 ml-4">[ {{ user.id }} ]</span>
     </h1>
 

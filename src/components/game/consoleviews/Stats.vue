@@ -132,6 +132,7 @@ export default class extends Vue {
     if (world_factions[this.player.factions.core]) {
       return world_factions[this.player.factions.core].name;
     }
+    if (!this.player.factions.core) return '';
     return capfirst(this.player.factions.core);
   }
 }

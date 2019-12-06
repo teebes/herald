@@ -2,7 +2,12 @@
   <div id="builder-player-detail" v-if="fetched">
     <h2 class="entity-title">{{ player.name }}</h2>
 
-    <div>Level {{ player.level }} {{ player.archetype }}</div>
+    <div>
+      Level {{ player.level }} {{ player.archetype }}
+      <span v-if="$store.state.auth.user.is_staff" class='ml-2 color-text-50'>
+        [ <router-link :to="user_page(player)">user {{ player.animation_data.user_id }}</router-link> ]
+      </span>
+    </div>
     <div v-if="player.title">Title: {{ player.title }}</div>
     <div v-if="player.is_immortal">This is a builder character.</div>
     <div>Spawn world details: {{ player.world.id }} ({{ player.world.state }})</div>
@@ -89,7 +94,7 @@ import WorldView from "@/components/builder/world/WorldView.ts";
 import Map from "@/components/Map.vue";
 import { Room } from "@/core/interfaces.ts";
 import { EQUIPMENT_SLOT_LIST } from "@/constants";
-import { BUILDER_WORLD_PLAYER_LIST } from "@/router";
+import { BUILDER_WORLD_PLAYER_LIST, STAFF_USER_INFO } from "@/router";
 import { UI_MUTATIONS } from "@/constants";
 
 @Component({
@@ -194,6 +199,15 @@ export default class PlayerDetail extends Mixins(WorldView) {
       player_rooms.push(this.player.room);
 
     return player_rooms;
+  }
+
+  user_page(player) {
+    return {
+      name: STAFF_USER_INFO,
+      params: {
+        user_id: player.animation_data.user_id
+      }
+    }
   }
 }
 </script>

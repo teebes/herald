@@ -55,7 +55,7 @@
 
     <div class="worlds-row discover" style="justify-content: center" v-if="discover_worlds.length">
       <div>
-        <div class="section-title text-center">Namubumo</div>
+        <div class="section-title text-center namubumo"><a href="https://namubumo.com">National Mud Building Month</a></div>
 
         <carousel
           :per-page="1"
@@ -500,6 +500,16 @@ $lobby-breakpoint: 760px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+
+  .namubumo {
+    a { color: $color-secondary; }
+    a { 
+      &:hover { 
+        text-decoration: none; 
+        color: $color-primary; 
+      }
+    }
   }
 }
 </style>

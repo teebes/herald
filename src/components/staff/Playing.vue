@@ -8,7 +8,7 @@
   />
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import ElementList from "@/components/elementlist/ElementList.vue";
 import { BUILDER_WORLD_PLAYER_DETAIL } from "@/router";
@@ -39,7 +39,9 @@ export default class StaffPlaying extends Vue {
     return [
       { name: "id", label: "ID" },
       { name: "name", label: "Name" },
-      { name: "level", label: "Level", light: true }
+      { name: "level", label: "Level", light: true },
+      { name: "world_name", label: "World", light: true },
+      { name: "user.email", label: "Email", light: true }
     ];
   }
 }
