@@ -11,7 +11,7 @@
             <span
               class="stance"
               v-if="$store.state.game.player.archetype === 'assassin'"
-              >- {{ $capfirst($store.state.game.player.stance) }}</span
+              >{{ $capfirst($store.state.game.player.stance) }}</span
             >
           </div>
           <div class="skill-boxes">
@@ -232,6 +232,17 @@ export default class PanelSkills extends Vue {
       }
       hotKey += 1;
     }
+
+    // Hack, insert a disabled box in slot 2 while player is less than level 9
+    if (this.player.archetype === 'assassin' && this.player.level < 9) {
+      skills.splice(1, 0, {
+        label: '',
+        cmd: '',
+        hotkey: 2,
+        is_disabled: true,
+      })
+    }
+
     return skills;
   }
 
@@ -279,6 +290,13 @@ export default class PanelSkills extends Vue {
     > span {
       font-size: inherit;
       color: $color-text-hex-70;
+    }
+
+    > .stance {
+      text-transform: lowercase;
+      margin-left: 35px;
+      float: right;
+      font-size: 17px;
     }
   }
 
