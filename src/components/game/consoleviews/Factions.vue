@@ -7,7 +7,7 @@
       <div
         v-for="(faction, index) in message.data.clanned_factions"
         :key="index"
-      >{{faction.name}} - {{faction.rank_name}} [{{faction.standing}}]</div>
+      >Rank {{ faction.rank_number }} {{faction.name}} - {{faction.rank_name}} [{{faction.standing}}]</div>
     </div>
 
     <div class="friendly-factions faction-group mt-4" v-if="has_friendly_factions">
