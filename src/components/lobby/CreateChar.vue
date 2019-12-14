@@ -44,6 +44,7 @@
               <option value="warrior">Warrior</option>
               <option value="mage">Mage</option>
               <option value="cleric">Cleric</option>
+              <option value="assassin">Assassin</option>
             </select>
           </div>
         </div>
