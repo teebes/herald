@@ -209,21 +209,21 @@
             <div class="cmd" @click="cmdHelp('quickstrike')">quickstrike</div>
             <div class="cmd" @click="cmdHelp('maelstrom')">maelstrom</div>
             <div class="cmd" @click="cmdHelp('heartstrike')">heartstrike</div>
-            <div class="cmd" @click="cmdHelp('heartstrike')">dancingslash</div>
-            <div class="cmd" @click="cmdHelp('heartstrike')">hiltsmack</div>
-            <div class="cmd" @click="cmdHelp('heartstrike')">secondwind</div>
+            <div class="cmd" @click="cmdHelp('dancingslash')">dancingslash</div>
+            <div class="cmd" @click="cmdHelp('hiltsmack')">hiltsmack</div>
+            <div class="cmd" @click="cmdHelp('secondwind')">secondwind</div>
           </div>
         </div>
 
         <div class="cmd-group">
           <div class="group-title">Assassin Flex Skills</div>
           <div class="cmds">
-            <div class="cmd" @click="cmdHelp('flurry')">quickstrike</div>
-            <div class="cmd" @click="cmdHelp('mistform')">maelstrom</div>
-            <div class="cmd" @click="cmdHelp('knee')">heartstrike</div>
-            <div class="cmd" @click="cmdHelp('blind')">dancingslash</div>
-            <div class="cmd" @click="cmdHelp('heartstrike')">sneak</div>
-            <div class="cmd" @click="cmdHelp('heartstrike')">backstab</div>
+            <div class="cmd" @click="cmdHelp('flurry')">flurry</div>
+            <div class="cmd" @click="cmdHelp('mistform')">mistform</div>
+            <div class="cmd" @click="cmdHelp('knee')">knee</div>
+            <div class="cmd" @click="cmdHelp('blind')">blind</div>
+            <div class="cmd" @click="cmdHelp('sneak')">sneak</div>
+            <div class="cmd" @click="cmdHelp('backstab')">backstab</div>
           </div>
         </div>
       </template>
