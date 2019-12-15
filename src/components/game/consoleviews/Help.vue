@@ -206,20 +206,18 @@
         <div class="cmd-group">
           <div class="group-title">Assassin Core Skills</div>
           <div class="cmds">
-            <div>
-              <div class="cmd" @click="cmdHelp('quickstrike')">quickstrike</div>
-              <div class="cmd" @click="cmdHelp('maelstrom')">maelstrom</div>
-              <div class="cmd" @click="cmdHelp('heartstrike')">heartstrike</div>
-            </div>
-            <div>
-              <div class="cmd" @click="cmdHelp('dancingslash')">dancingslash</div>
-              <div class="cmd" @click="cmdHelp('hiltsmack')">hiltsmack</div>
-              <div class="cmd" @click="cmdHelp('secondwind')">secondwind</div>
-            </div>
-            <div>
-              <div class="cmd" @click="cmdHelp('sneak')">sneak</div>
-              <div class="cmd" @click="cmdHelp('backstab')">backstab</div>              
-            </div>
+            <div class="cmd" @click="cmdHelp('quickstrike')">quickstrike</div>
+            <div class="cmd" @click="cmdHelp('maelstrom')">maelstrom</div>
+            <div class="cmd" @click="cmdHelp('heartstrike')">heartstrike</div>
+          </div>
+          <div class="cmds">
+            <div class="cmd" @click="cmdHelp('dancingslash')">dancingslash</div>
+            <div class="cmd" @click="cmdHelp('hiltsmack')">hiltsmack</div>
+            <div class="cmd" @click="cmdHelp('secondwind')">secondwind</div>
+          </div>
+          <div class="cmds">
+            <div class="cmd" @click="cmdHelp('sneak')">sneak</div>
+            <div class="cmd" @click="cmdHelp('backstab')">backstab</div>
           </div>
         </div>
 
