@@ -123,7 +123,7 @@ export default class PanelSkills extends Vue {
 
   onComplete(skill) {
     const overlay = this.$refs[`${skill}-overlay`] as HTMLElement;
-    if (!overlay) return;
+    if (!overlay || !overlay[0]) return;
     overlay[0].setAttribute("style", "height: 100%");
     overlay[0].classList.add("finished");
 
