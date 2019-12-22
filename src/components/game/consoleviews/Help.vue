@@ -202,6 +202,38 @@
         </div>
       </template>
 
+      <template v-if="archetype === 'assassin'">
+        <div class="cmd-group">
+          <div class="group-title">Assassin Core Skills</div>
+          <div class="cmds">
+            <div class="cmd" @click="cmdHelp('quickstrike')">quickstrike</div>
+            <div class="cmd" @click="cmdHelp('maelstrom')">maelstrom</div>
+            <div class="cmd" @click="cmdHelp('heartstrike')">heartstrike</div>
+          </div>
+          <div class="cmds">
+            <div class="cmd" @click="cmdHelp('dancingslash')">dancingslash</div>
+            <div class="cmd" @click="cmdHelp('hiltsmack')">hiltsmack</div>
+            <div class="cmd" @click="cmdHelp('secondwind')">secondwind</div>
+          </div>
+          <div class="cmds">
+            <div class="cmd" @click="cmdHelp('sneak')">sneak</div>
+            <div class="cmd" @click="cmdHelp('backstab')">backstab</div>
+            <div class="cmd" @click="cmdHelp('skullcrack')">skullcrack</div>
+          </div>
+        </div>
+
+        <div class="cmd-group">
+          <div class="group-title">Assassin Flex Skills</div>
+          <div class="cmds">
+            <div class="cmd" @click="cmdHelp('flurry')">flurry</div>
+            <div class="cmd" @click="cmdHelp('mistform')">mistform</div>
+            <div class="cmd" @click="cmdHelp('knee')">knee</div>
+            <div class="cmd" @click="cmdHelp('blind')">blind</div>
+            <div class="cmd" @click="cmdHelp('knockout')">knockout</div>
+          </div>
+        </div>
+      </template>
+
       <template v-if="isBuilder">
         <div class="cmd-group">
           <div class="group-title">Builder Commands</div>
