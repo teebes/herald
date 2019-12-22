@@ -1,18 +1,14 @@
 <template>
   <div class="skills-region flex flex-col">
     <div class="skills-view flex flex-col">
-      <div
-        class="core-skills-region skills action-boxes"
-        v-if="coreSkills.length"
-      >
+      <div class="core-skills-region skills action-boxes" v-if="coreSkills.length">
         <div>
           <div class="label">
             Core Skills
             <span
               class="stance"
               v-if="$store.state.game.player.archetype === 'assassin'"
-              >{{ $capfirst($store.state.game.player.stance) }}</span
-            >
+            >{{ $capfirst($store.state.game.player.stance) }}</span>
           </div>
           <div class="skill-boxes">
             <div class="box-row">
@@ -32,10 +28,7 @@
         </div>
       </div>
 
-      <div
-        class="flex-skills-region skills action-boxes"
-        v-if="flexSkills.length"
-      >
+      <div class="flex-skills-region skills action-boxes" v-if="flexSkills.length">
         <div>
           <div class="label">Flex Skills</div>
           <div class="skill-boxes">
@@ -130,6 +123,7 @@ export default class PanelSkills extends Vue {
 
   onComplete(skill) {
     const overlay = this.$refs[`${skill}-overlay`] as HTMLElement;
+    if (!overlay) return;
     overlay[0].setAttribute("style", "height: 100%");
     overlay[0].classList.add("finished");
 
@@ -234,13 +228,13 @@ export default class PanelSkills extends Vue {
     }
 
     // Hack, insert a disabled box in slot 2 while player is less than level 9
-    if (this.player.archetype === 'assassin' && this.player.level < 9) {
+    if (this.player.archetype === "assassin" && this.player.level < 9) {
       skills.splice(1, 0, {
-        label: '',
-        cmd: '',
+        label: "",
+        cmd: "",
         hotkey: 2,
-        is_disabled: true,
-      })
+        is_disabled: true
+      });
     }
 
     return skills;
