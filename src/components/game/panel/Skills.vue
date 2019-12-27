@@ -96,7 +96,9 @@ export default class PanelSkills extends Vue {
     for (const skill in cooldowns) {
       if (!this.activeCooldowns[skill]) {
         const overlay = this.$refs[`${skill}-overlay`] as HTMLElement;
-        if (overlay[0] === undefined) return;
+        if (!overlay || overlay[0] === undefined) {
+          return;
+        }
 
         const cooldown: Cooldown = cooldowns[skill];
 
