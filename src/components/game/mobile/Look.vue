@@ -27,6 +27,7 @@
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { DIRECTIONS } from "@/constants.ts";
+import eventbus from "@/core/eventbus.ts";
 import Console from "../Console.vue";
 import Exits from "./Exits.vue";
 import Input from "../Input.vue";
@@ -53,6 +54,9 @@ export default class MobileLook extends Vue {
 
   onClickFullMap() {
     this.mapDisplay = "mini";
+    Vue.nextTick(() => {
+      eventbus.$emit("scroll-down");
+    });
   }
 
   get room() {

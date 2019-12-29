@@ -75,7 +75,7 @@ export default class Game extends Vue {
       this.$router.push({ name: "lobby" });
     }
     this.loaded = true;
-    this.$store.commit("ui/notification_set", "Connected.");
+    //this.$store.commit("ui/notification_set", "Connected.");
     window.addEventListener("resize", this.onResize);
   }
 

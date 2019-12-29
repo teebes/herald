@@ -12,7 +12,7 @@
 import { Component, Prop, Vue, Mixins } from "vue-property-decorator";
 import { BUILDER_ROOM_INDEX } from "@/router.ts";
 import ElementList from "@/components/elementlist/ElementList.vue";
-import ZoneView from "@/components/builder/ZoneView";
+import ZoneView from "@/components/builder/zone/ZoneView";
 
 @Component({
   components: {
@@ -25,12 +25,12 @@ export default class extends Mixins(ZoneView) {
   }
 
   get resolve_route() {
-    return element_id => {
+    return element => {
       return {
         name: BUILDER_ROOM_INDEX,
         params: {
           world_id: this.$store.state.builder.world.id,
-          room_id: element_id
+          room_id: element.id
         }
       };
     };

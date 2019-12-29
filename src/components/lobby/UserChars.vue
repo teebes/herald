@@ -3,31 +3,41 @@
     <CreateChar
       v-if="newCharacter"
       :world="world"
-      @cancelcreate="newCharacter = false"
       @charcreated="onCharCreated"
     />
     <div class="world-chars" v-else>
       <div class="world-chars-title">YOUR CHARACTERS</div>
       <div class="world-chars-container">
         <div v-for="char in chars" :key="char.id" class="char-display">
-          <div class="char-name">{{ char.name }}</div>
+          <div class="char-name">
+            {{ char.name }}
+            <span v-if="char.is_immortal" class="color-text-50 ml-2"
+              >[ Builder ]</span
+            >
+          </div>
           <div class="char-info">{{ charInfo(char) }}</div>
           <div class="enter-world">
             <button
               class="btn-small play-as"
               @click="onTransfer(char)"
               v-if="char.can_transfer && !$store.state.auth.user.is_temporary"
-            >TRANSFER {{ char.name }}</button>
-            <button class="btn-small play-as" @click="onEnter(char)" v-else>PLAY AS {{ char.name }}</button>
+            >
+              TRANSFER {{ char.name }}
+            </button>
+            <button class="btn-small play-as" @click="onEnter(char)" v-else>
+              PLAY AS {{ char.name }}
+            </button>
           </div>
         </div>
-        <button class="btn-add new-character" @click="newCharacter = true">CREATE NEW CHARACTER</button>
+        <button class="btn-add new-character" @click="onClickCreateChar()">
+          CREATE NEW CHARACTER
+        </button>
       </div>
     </div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import CreateChar from "./CreateChar.vue";
 import { capitalize } from "@/core/utils.ts";
@@ -42,11 +52,13 @@ export default class extends Vue {
   @Prop() chars!: {}[];
   @Prop() world!: {};
 
-  newCharacter: boolean = false;
+  get newCharacter() {
+    return this.$store.state.lobby.world_details.create_character;
+  }
 
   mounted() {
     if (this.$route.query.create) {
-      this.newCharacter = true;
+      this.$store.commit("lobby/world_details/create_character_set", true);
     }
   }
 
@@ -55,8 +67,8 @@ export default class extends Vue {
   }
 
   onCharCreated(newCharacter) {
-    this.newCharacter = false;
     this.$emit("charcreated", newCharacter);
+    this.$store.commit("lobby/world_details/create_character_set", false);
   }
 
   async onEnter(char) {
@@ -74,6 +86,10 @@ export default class extends Vue {
         world_id: this.$route.params.world_id
       }
     });
+  }
+
+  onClickCreateChar() {
+    this.$store.commit("lobby/world_details/create_character_set", true);
   }
 }
 </script>

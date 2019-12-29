@@ -24,7 +24,7 @@
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { EQUIPMENT_SLOT_LIST } from "@/constants";
-import { capfirst } from "@/helpers/utils.ts";
+import { capfirst } from "@/core/utils.ts";
 
 @Component
 export default class CharInfo extends Vue {

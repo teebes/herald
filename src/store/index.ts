@@ -4,6 +4,7 @@ import auth from "./modules/auth";
 import builder from "./modules/builder";
 import ui from "./modules/ui";
 import game from "./modules/game";
+import lobby from "./modules/lobby/index";
 
 Vue.use(Vuex);
 
@@ -19,7 +20,8 @@ export default new Vuex.Store({
     auth,
     builder,
     ui,
-    game
+    game,
+    lobby
   },
   strict: debug
 });

@@ -129,6 +129,7 @@ const receiveMessage = async ({
     commit("player_set", message_data.data.actor);
     commit("full_screen_message_clear");
     router.push({ name: "game" });
+    commit("ui/notification_set", "Connected.", { root: true });
   }
 
   // Disconection
@@ -152,6 +153,23 @@ const receiveMessage = async ({
     return;
   }
 
+  // Successful move updates
+  if (
+    message_data.type === "cmd.move.success" ||
+    message_data.type === "cmd.flee.success" ||
+    message_data.type === "notification.transport.exit" ||
+    message_data.type === "affect.death" ||
+    message_data.type === "affect.transfer"
+  ) {
+    commit("map_add", message_data.data.room);
+    commit("room_set", message_data.data.room);
+    commit("player_target_set", null);
+  } else if (message_data.type === "cmd.jump.success") {
+    commit("map_add", message_data.data.target);
+    commit("room_set", message_data.data.target);
+    commit("player_target_set", null);
+  }
+
   // Anything that has an actor who is the connected player
   if (
     message_data.data["actor"] &&
@@ -164,23 +182,17 @@ const receiveMessage = async ({
     }
   }
 
-  // Successful move updates
-  if (
-    message_data.type === "cmd.move.success" ||
-    message_data.type === "cmd.flee.success" ||
-    message_data.type === "notification.transport.exit"
-  ) {
-    commit("map_add", message_data.data.room);
-    commit("room_set", message_data.data.room);
-    commit("player_target_set", null);
-  }
-
   // Room updating on look
   if (
     message_data.type === "cmd.look.success" &&
     message_data.data.target_type === "room"
   ) {
     commit("room_set", message_data.data.target);
+  }
+
+  // On death, clear out combat window
+  if (message_data.type === "affect.death") {
+    commit("player_target_set", null);
   }
 
   // Track current casts
@@ -335,7 +347,15 @@ const actions = {
       });
       dispatch("openWebSocket");
     } catch (e) {
-      commit("ui/notification_set_error", "Unable to enter world.", {
+      let error_message = "Unable to enter world.";
+      if (
+        e.response.status === 400 &&
+        e.response.data &&
+        e.response.data.length
+      ) {
+        error_message = e.response.data[0];
+      }
+      commit("ui/notification_set_error", error_message, {
         root: true
       });
     }
@@ -409,6 +429,8 @@ const actions = {
     if (state.hint) {
       commit("hint_clear");
     }
+
+    commit("lookup_clear");
   },
 
   cmd_structured: async ({ dispatch, commit, state }, payload) => {
@@ -436,7 +458,8 @@ const mutations = {
     if (
       message.type === "cmd.flee.success" ||
       message.type === "cmd.move.success" ||
-      message.type === "system.connect.success"
+      message.type === "system.connect.success" ||
+      message.type === "affect.death"
     ) {
       state.last_viewed_room_message = message;
     } else if (

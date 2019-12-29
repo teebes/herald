@@ -35,7 +35,16 @@
           <div class="cmd" @click="cmdHelp('alias')">alias</div>
           <div class="cmd" @click="cmdHelp('roll')">roll</div>
           <div class="cmd" @click="cmdHelp('learn')">learn</div>
-          <div class="cmd" @click="cmdHelp('title')">title</div>
+          <div
+            class="cmd"
+            @click="cmdHelp('title')"
+            v-if="$store.state.game.world.players_can_set_title"
+          >title</div>
+        </div>
+        <div class="cmds">
+          <div class="cmd" @click="cmdHelp('follow')">follow</div>
+          <div class="cmd" @click="cmdHelp('unfollow')">unfollow</div>
+          <div class="cmd" @click="cmdHelp('group')">group</div>
         </div>
       </div>
 
@@ -193,6 +202,38 @@
         </div>
       </template>
 
+      <template v-if="archetype === 'assassin'">
+        <div class="cmd-group">
+          <div class="group-title">Assassin Core Skills</div>
+          <div class="cmds">
+            <div class="cmd" @click="cmdHelp('quickstrike')">quickstrike</div>
+            <div class="cmd" @click="cmdHelp('maelstrom')">maelstrom</div>
+            <div class="cmd" @click="cmdHelp('heartstrike')">heartstrike</div>
+          </div>
+          <div class="cmds">
+            <div class="cmd" @click="cmdHelp('dancingslash')">dancingslash</div>
+            <div class="cmd" @click="cmdHelp('hiltsmack')">hiltsmack</div>
+            <div class="cmd" @click="cmdHelp('secondwind')">secondwind</div>
+          </div>
+          <div class="cmds">
+            <div class="cmd" @click="cmdHelp('sneak')">sneak</div>
+            <div class="cmd" @click="cmdHelp('backstab')">backstab</div>
+            <div class="cmd" @click="cmdHelp('skullcrack')">skullcrack</div>
+          </div>
+        </div>
+
+        <div class="cmd-group">
+          <div class="group-title">Assassin Flex Skills</div>
+          <div class="cmds">
+            <div class="cmd" @click="cmdHelp('flurry')">flurry</div>
+            <div class="cmd" @click="cmdHelp('mistform')">mistform</div>
+            <div class="cmd" @click="cmdHelp('knee')">knee</div>
+            <div class="cmd" @click="cmdHelp('blind')">blind</div>
+            <div class="cmd" @click="cmdHelp('knockout')">knockout</div>
+          </div>
+        </div>
+      </template>
+
       <template v-if="isBuilder">
         <div class="cmd-group">
           <div class="group-title">Builder Commands</div>
@@ -203,13 +244,22 @@
             <div class="cmd" @click="cmdHelp('seta')">seta</div>
             <div class="cmd" @click="cmdHelp('regen')">regen</div>
             <div class="cmd" @click="cmdHelp('purge')">purge</div>
+            <div class="cmd" @click="cmdHelp('masspurge')">masspurge</div>
             <div class="cmd" @click="cmdHelp('force')">force</div>
           </div>
           <div class="cmds">
             <div class="cmd" @click="cmdHelp('winvisible')">winvisible</div>
-            <div class="cmd" @click="cmdHelp('echo')">echo</div>
             <div class="cmd" @click="cmdHelp('repop')">repop</div>
             <div class="cmd" @click="cmdHelp('ping')">ping</div>
+            <div class="cmd" @click="cmdHelp('jump')">jump</div>
+            <div class="cmd" @click="cmdHelp('transfer')">transfer</div>
+          </div>
+          <div class="cmds">
+            <div class="cmd" @click="cmdHelp('echo')">echo</div>
+            <div class="cmd" @click="cmdHelp('gecho')">gecho</div>
+            <div class="cmd" @click="cmdHelp('zecho')">zecho</div>
+            <div class="cmd" @click="cmdHelp('send')">send</div>
+            <div class="cmd" @click="cmdHelp('sendexcept')">sendexcept</div>
           </div>
         </div>
       </template>

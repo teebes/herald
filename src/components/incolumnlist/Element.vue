@@ -8,12 +8,18 @@
     :selected_key="selected"
   >
     <template v-for="fieldSchema in schema">
-      <div :key="fieldSchema.attr" v-if="element[fieldSchema.attr]">
+      <div :key="fieldSchema.attr" v-if="element[fieldSchema.attr]" class='mb-1'>
         <div
           v-if="fieldSchema.references && element[fieldSchema.attr]"
         >{{ fieldSchema.label }}: {{ element[fieldSchema.attr].name }}</div>
+        <div v-else-if="splitLines(element[fieldSchema.attr]).length > 1">
+            {{ fieldSchema.label }}:<br/> 
+            <div class='indented'>
+              <div v-for="(line, index) in splitLines(element[fieldSchema.attr])" :key="index">{{ line }}</div>
+            </div>
+        </div>
         <div v-else>
-          <div>{{ fieldSchema.label }}: {{ element[fieldSchema.attr] }}</div>
+          {{ fieldSchema.label }}: {{ element[fieldSchema.attr] }}
         </div>
       </div>
     </template>
@@ -114,6 +120,13 @@ export default class Element extends Vue {
 
   onFormFieldUpdate(attr, value) {
     if (this.schema) this.edit_data[attr] = value;
+  }
+
+  splitLines(element) {
+    if (typeof(element) === 'string') {
+      return element.split('\n');
+    }
+    return [];
   }
 
   async save() {

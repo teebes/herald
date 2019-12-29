@@ -12,6 +12,7 @@
         v-model="email"
         name="email"
         required="required"
+        ref="email"
       />
     </div>
 
@@ -60,6 +61,11 @@ export default class Login extends Vue {
     this.$store.dispatch(AUTH_ACTIONS.LOGIN, { email, password }).then(() => {
       this.$router.push("/lobby");
     });
+  }
+
+  mounted() {
+    const email = this.$refs.email as HTMLElement;
+    email.focus();
   }
 }
 </script>

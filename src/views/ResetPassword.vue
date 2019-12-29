@@ -12,6 +12,7 @@
         placeholder="Password"
         required="required"
         v-model="password"
+        ref="password"
       />
     </div>
 
@@ -49,6 +50,11 @@ export default class ResetPassword extends Vue {
       code: this.$route.params.code,
       password: this.password
     });
+  }
+
+  mounted() {
+    const password = this.$refs.password as HTMLElement;
+    password.focus();
   }
 }
 </script>

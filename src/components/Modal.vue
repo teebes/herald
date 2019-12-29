@@ -1,5 +1,5 @@
 <template>
-  <div id="modal" @click="closeModal" :class="extraClasses">
+  <div id="modal" @click="clickBackground" :class="extraClasses">
     <component
       class="modal-contents"
       :is="modalComponent"
@@ -91,16 +91,35 @@ export default class Modal extends Vue {
   mounted() {
     const body = document.getElementsByTagName("body")[0];
     body.setAttribute("style", "overflow: hidden");
+    window.addEventListener("keydown", this.onKeyDown);
   }
 
   destroyed() {
     const body = document.getElementsByTagName("body")[0];
     body.setAttribute("style", "");
+    window.removeEventListener("keydown", this.onKeyDown);
+  }
+
+  clickBackground() {
+    if (
+      this.modal &&
+      this.modal.options &&
+      this.modal.options.closeOnOutsideClick &&
+      !this.$store.state.ui.editingField
+    ) {
+      this.closeModal();
+    }
   }
 
   closeModal() {
-    if (!this.$store.state.ui.editingField) {
-      this.$store.commit(UI_MUTATIONS.MODAL_CLOSE);
+    this.$store.commit(UI_MUTATIONS.MODAL_CLOSE);
+  }
+
+  onKeyDown(event) {
+    event.stopPropagation();
+
+    if (event.which === 27) {
+      this.closeModal();
     }
   }
 }
@@ -123,6 +142,9 @@ export default class Modal extends Vue {
   align-items: center;
 
   z-index: 20000;
+  &.opaque {
+    z-index: 40000;
+  }
 
   .modal-contents {
     background: $color-background;

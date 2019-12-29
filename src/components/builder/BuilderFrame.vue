@@ -42,9 +42,9 @@
       <div class="side-nav navigation">
         <!-- World nav -->
         <template v-if="isWorldView">
-            <router-link
-              :to="{name: LOBBY_WORLD_DETAIL, params: {world_id: $route.params.world_id}}"
-            >Lobby</router-link>
+          <router-link
+            :to="{name: LOBBY_WORLD_DETAIL, params: {world_id: $route.params.world_id}}"
+          >Lobby</router-link>
 
           <router-link
             :to="{name: BUILDER_ZONE_LIST, params: { world_id: $route.params.world_id}}"
@@ -63,6 +63,9 @@
           >Config</router-link>
 
           <div class="mobile-hidden">
+            <div class="line-divider my-2" />
+            <router-link :to="world_status_link">Status</router-link>
+
             <router-link
               :to="{name: BUILDER_WORLD_BUILDERS, params: {world_id: $route.params.world_id}}"
             >Builders</router-link>
@@ -71,7 +74,6 @@
               :to="{name: BUILDER_WORLD_PLAYER_LIST, params: {world_id: $route.params.world_id}}"
             >Players</router-link>
 
-            <router-link :to="world_status_link">Status</router-link>
             <router-link :to="world_factions_link">Factions</router-link>
           </div>
         </template>
@@ -93,6 +95,10 @@
           <router-link
             :to="{name: BUILDER_ZONE_QUEST_LIST, params: { world_id: $route.params.world_id, zone_id: this.$route.params.zone_id}}"
           >Quests</router-link>
+
+          <router-link
+            :to="{name: BUILDER_ZONE_CONFIG, params: { world_id: $route.params.world_id, zone_id: this.$route.params.zone_id}}"
+          >Config</router-link>
         </template>
 
         <template v-else-if="isRoomView">
@@ -113,14 +119,23 @@
           <router-link
             :to="{name: BUILDER_ROOM_FLAGS, params: { world_id: $route.params.world_id, room_id: this.$route.params.room_id}}"
           >Flags</router-link>
+
+          <router-link
+            :to="{name: BUILDER_ROOM_DETAIL_LIST, params: { world_id: $route.params.world_id, room_id: this.$route.params.room_id}}"
+          >
+            Details
+            <span
+              v-if="room && room.details && room.details.length"
+            >({{ room.details.length }})</span>
+          </router-link>
         </template>
       </div>
 
       <div class="builder-contents">
-        <keep-alive v-if="$store.state.builder.map">
-          <!-- <keep-alive> -->
-          <router-view :key="$route.fullPath"></router-view>
-        </keep-alive>
+        <!-- <keep-alive v-if="$store.state.builder.map"> -->
+        <!-- <keep-alive> -->
+        <router-view :key="$route.fullPath" v-if="$store.state.builder.map"></router-view>
+        <!-- </keep-alive> -->
         <div v-else>Loading...</div>
       </div>
     </div>
@@ -146,6 +161,7 @@ import {
   BUILDER_ROOM_PATHS,
   BUILDER_ROOM_CONFIG,
   BUILDER_ROOM_FLAGS,
+  BUILDER_ROOM_DETAIL_LIST,
   BUILDER_ITEM_TEMPLATE_LIST,
   BUILDER_ITEM_TEMPLATE_DETAILS,
   BUILDER_MOB_TEMPLATE_LIST,
@@ -159,6 +175,8 @@ import {
   BUILDER_ZONE_LOADER_DETAILS,
   BUILDER_ZONE_QUEST_LIST,
   BUILDER_ZONE_QUEST_DETAIL,
+  BUILDER_ZONE_CONFIG,
+  BUILDER_ZONE_PROCESSION_LIST,
   BUILDER_TRANSFORMATION_LIST,
   BUILDER_WORLD_FACTIONS,
   LOBBY_WORLD_DETAIL
@@ -174,9 +192,11 @@ export default class WorldFrame extends Vue {
   BUILDER_ROOM_PATHS: string = BUILDER_ROOM_PATHS;
   BUILDER_ROOM_CONFIG: string = BUILDER_ROOM_CONFIG;
   BUILDER_ROOM_FLAGS: string = BUILDER_ROOM_FLAGS;
+  BUILDER_ROOM_DETAIL_LIST: string = BUILDER_ROOM_DETAIL_LIST;
   BUILDER_ZONE_PATH_LIST: string = BUILDER_ZONE_PATH_LIST;
   BUILDER_ZONE_LOADER_LIST: string = BUILDER_ZONE_LOADER_LIST;
   BUILDER_ZONE_QUEST_LIST: string = BUILDER_ZONE_QUEST_LIST;
+  BUILDER_ZONE_CONFIG: string = BUILDER_ZONE_CONFIG;
   BUILDER_TRANSFORMATION_LIST: string = BUILDER_TRANSFORMATION_LIST;
   BUILDER_WORLD_CONFIG: string = BUILDER_WORLD_CONFIG;
   BUILDER_WORLD_RANDOM_PROFILES: string = BUILDER_WORLD_RANDOM_PROFILES;
@@ -232,7 +252,8 @@ export default class WorldFrame extends Vue {
           this.$route.name == BUILDER_ROOM_LOADS ||
           this.$route.name == BUILDER_ROOM_PATHS ||
           this.$route.name == BUILDER_ROOM_CONFIG ||
-          this.$route.name == BUILDER_ROOM_FLAGS)
+          this.$route.name == BUILDER_ROOM_FLAGS ||
+          this.$route.name == BUILDER_ROOM_DETAIL_LIST)
     );
   }
 
@@ -246,7 +267,9 @@ export default class WorldFrame extends Vue {
           this.$route.name == BUILDER_ZONE_LOADER_LIST ||
           this.$route.name == BUILDER_ZONE_LOADER_DETAILS ||
           this.$route.name == BUILDER_ZONE_QUEST_LIST ||
-          this.$route.name == BUILDER_ZONE_QUEST_DETAIL)
+          this.$route.name == BUILDER_ZONE_QUEST_DETAIL ||
+          this.$route.name == BUILDER_ZONE_CONFIG ||
+          this.$route.name == BUILDER_ZONE_PROCESSION_LIST)
     );
   }
 
@@ -294,7 +317,7 @@ export default class WorldFrame extends Vue {
     return {
       name: BUILDER_WORLD_FACTIONS,
       params: { world_id: this.$route.params.world_id }
-    }
+    };
   }
 }
 </script>
@@ -400,41 +423,41 @@ export default class WorldFrame extends Vue {
     flex-grow: 1;
 
     // Navigation
-    .side-nav {
-      a {
-        display: block;
-        @include font-title-light;
-        font-size: 19px;
-        line-height: 30px;
-        list-style-type: none;
-        color: $color-text-hex-30;
+    // .side-nav {
+    //   a {
+    //     display: block;
+    //     @include font-title-light;
+    //     font-size: 19px;
+    //     line-height: 30px;
+    //     list-style-type: none;
+    //     color: $color-text-hex-30;
 
-        &:hover {
-          color: $color-primary;
-        }
+    //     &:hover {
+    //       color: $color-primary;
+    //     }
 
-        &.router-link-active {
-          color: $color-text;
-        }
+    //     &.router-link-active {
+    //       color: $color-text;
+    //     }
 
-        &.router-link-exact-active:hover {
-          text-decoration: none;
-          cursor: default;
-        }
-      }
+    //     &.router-link-exact-active:hover {
+    //       text-decoration: none;
+    //       cursor: default;
+    //     }
+    //   }
 
-      @media ($mobile-site) {
-        background: $color-background-header;
-        display: flex;
-        justify-content: space-around;
-        flex-shrink: 0;
-        padding: 0;
+    //   @media ($mobile-site) {
+    //     background: $color-background-header;
+    //     display: flex;
+    //     justify-content: space-around;
+    //     flex-shrink: 0;
+    //     padding: 0;
 
-        a {
-          padding: 20px 0;
-        }
-      }
-    }
+    //     a {
+    //       padding: 20px 0;
+    //     }
+    //   }
+    // }
 
     /* Responsive nav set */
     @media ($desktop-site) {
@@ -480,6 +503,10 @@ export default class WorldFrame extends Vue {
         margin-bottom: 10px;
       }
     }
+  }
+
+  .line-divider {
+    width: 60%;
   }
 }
 </style>

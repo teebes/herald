@@ -46,13 +46,9 @@ export default class Map extends Vue {
 
   mapRenderer: any = null;
 
-  activated() {
-    this.renderMap();
-  }
-
   @Watch("center_key")
   changeCenterKey() {
-    this.renderMap();
+    if (this.center_key) this.renderMap();
   }
 
   @Watch("rooms_filter")
@@ -153,7 +149,7 @@ export default class Map extends Vue {
           const index_pack = `${x}:${y}:${z}`;
           //const roomAtCoords = this.$store.state.builder.map_index[index_pack];
           const roomAtCoords = index[index_pack];
-        
+
           // The room is in visible range, and is present in the index, we add it
           // to the shown rooms.
           if (roomAtCoords) {
@@ -172,7 +168,6 @@ export default class Map extends Vue {
         }
       }
     }
-  
 
     if (this.modified_rooms && this.modified_rooms.length) {
       for (const room of this.modified_rooms) {
@@ -187,7 +182,9 @@ export default class Map extends Vue {
   }
 
   renderMap() {
-    let rooms = this.get_rooms_around(this.map[this.center_key], this.radius);
+    const room = this.map[this.center_key];
+    if (!room) return;
+    let rooms = this.get_rooms_around(room, this.radius);
 
     // Now go through each room and see if any have a connection to some other
     // room within the greater map, but that is not in the shown rooms.

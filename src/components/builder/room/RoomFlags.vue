@@ -26,7 +26,7 @@ interface RoomFlag {
 export default class RoomFlags extends Mixins(RoomView) {
   flags: RoomFlag[] = [];
 
-  async activated() {
+  async mounted() {
     const world_id = this.$route.params.world_id;
     const room_id = this.$route.params.room_id;
     const resp = await axios.get(

@@ -1,9 +1,8 @@
 <template>
   <div v-if="path">
     <h2>
-      {{ $store.state.builder.path.name }} 
-      <button class='btn-small'
-              @click="editInfo">EDIT</button>
+      {{ $store.state.builder.path.name }}
+      <button class="btn-small" @click="editInfo">EDIT</button>
     </h2>
     <div class="map-and-rooms">
       <Map
@@ -38,17 +37,13 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Mixins, Watch } from "vue-property-decorator";
-import ZoneView from "@/components/builder/ZoneView";
-import Map from "../Map.vue";
+import ZoneView from "@/components/builder/zone/ZoneView";
+import Map from "@/components/Map.vue";
 import axios from "axios";
-import { 
-  BUILDER_ACTIONS, 
-  BUILDER_MUTATIONS, 
-  UI_MUTATIONS } from "@/constants";
+import { BUILDER_ACTIONS, BUILDER_MUTATIONS, UI_MUTATIONS } from "@/constants";
 import { Room } from "@/core/interfaces";
 import InColumnList from "@/components/incolumnlist/List.vue";
 import { BUILDER_FORMS } from "@/core/forms.ts";
-
 
 @Component({
   components: {
@@ -115,7 +110,7 @@ export default class extends Mixins(ZoneView) {
     return this.map && this.zone && this.room && this.path;
   }
 
-  async activated() {
+  async mounted() {
     const path_id = this.$route.params.path_id;
 
     const fetchZoneRoomsPromise = this.$store.dispatch(
@@ -126,17 +121,15 @@ export default class extends Mixins(ZoneView) {
       }
     );
 
-    const fetchPathPromise = this.$store.dispatch(
-      BUILDER_ACTIONS.PATH_FETCH,
-      {
-        world_id: this.$route.params.world_id,
-        path_id: this.$route.params.path_id,
-      }
-    )
+    const fetchPathPromise = this.$store.dispatch(BUILDER_ACTIONS.PATH_FETCH, {
+      world_id: this.$route.params.world_id,
+      path_id: this.$route.params.path_id
+    });
 
     const [zone_rooms_resp, path_resp] = await Promise.all([
-      fetchZoneRoomsPromise, fetchPathPromise
-    ])
+      fetchZoneRoomsPromise,
+      fetchPathPromise
+    ]);
 
     this.zone_rooms = zone_rooms_resp;
     this.path = path_resp;
@@ -156,8 +149,10 @@ export default class extends Mixins(ZoneView) {
     // room to the the first room in the path instead.
     // This ensures that whenever we select a path, we are taken to somewhere
     // on path.
-    if (this.path_rooms.length 
-        && !this.path_rooms.find(room => room.key == this.room.key))
+    if (
+      this.path_rooms.length &&
+      !this.path_rooms.find(room => room.key == this.room.key)
+    )
       this.$store.commit(BUILDER_MUTATIONS.ROOM_SET, this.path_rooms[0]);
   }
 
@@ -171,12 +166,15 @@ export default class extends Mixins(ZoneView) {
   onRemoveRoom(path_room) {
     const removedRoom = path_room.room;
     this.$store.commit(BUILDER_MUTATIONS.PATH_ROOMS_DELETE, removedRoom);
-    
+
     if (removedRoom.key == this.room.key) {
       if (this.path.rooms.length) {
         this.$store.commit(BUILDER_MUTATIONS.ROOM_SET, this.path.rooms[0]);
       } else {
-        this.$store.commit(BUILDER_MUTATIONS.ROOM_SET, this.$store.state.builder.zone_rooms[0])
+        this.$store.commit(
+          BUILDER_MUTATIONS.ROOM_SET,
+          this.$store.state.builder.zone_rooms[0]
+        );
       }
     }
   }
@@ -192,8 +190,8 @@ export default class extends Mixins(ZoneView) {
       title: `Path ${this.path.id}`,
       data: this.$store.state.builder.path,
       schema: BUILDER_FORMS.ZONE_PATH_DETAILS,
-      action: BUILDER_ACTIONS.PATH_SAVE,
-    }
+      action: BUILDER_ACTIONS.PATH_SAVE
+    };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
 }
@@ -208,7 +206,6 @@ h2 {
   margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
-  
 }
 
 .map-and-rooms {

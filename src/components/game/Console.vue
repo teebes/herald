@@ -24,10 +24,13 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import EventBus from "@/core/eventbus.ts";
 import Cast from "./consoleviews/Cast.vue";
+import Chat from "./consoleviews/Chat.vue";
 import CombatMessage from "./consoleviews/CombatMessage.vue";
 import DeathMessage from "./consoleviews/DeathMessage.vue";
 import Equipment from "./consoleviews/Equipment.vue";
+import Exits from "./consoleviews/Exits.vue";
 import Factions from "./consoleviews/Factions.vue";
+import Feats from "./consoleviews/Feats.vue";
 import Help from "./consoleviews/Help.vue";
 import Inventory from "./consoleviews/Inventory.vue";
 import LookChar from "./consoleviews/LookChar.vue";
@@ -36,20 +39,23 @@ import LookRoom from "./consoleviews/LookRoom.vue";
 import MerchantInventory from "./consoleviews/MerchantInventory.vue";
 import Message from "./consoleviews/Message.vue";
 import OfferInventory from "./consoleviews/OfferInventory.vue";
+import ScrollTool from "./ScrollTool.vue";
 import Stats from "./consoleviews/Stats.vue";
 import Upgrade from "./consoleviews/Upgrade.vue";
 import Who from "./consoleviews/Who.vue";
-import ScrollTool from "./ScrollTool.vue";
 
 import _ from "lodash";
 
 @Component({
   components: {
     Cast,
+    Chat,
     CombatMessage,
     DeathMessage,
     Equipment,
+    Exits,
     Factions,
+    Feats,
     Help,
     Inventory,
     LookChar,
@@ -70,6 +76,14 @@ export default class Console extends Vue {
 
   consoleMessage(message) {
     const type = message.type;
+
+    // Simple map from message type to console view
+    const type_mapping = {
+      "cmd.exits.success": "Exits",
+      "cmd.feats.success": "Feats"
+    };
+    if (type_mapping[type]) return type_mapping[type];
+
     if (type === "cmd.look.success" && message.data.target_type === "item") {
       return "LookItem";
     } else if (
@@ -77,6 +91,11 @@ export default class Console extends Vue {
       message.data.target_type === "char"
     ) {
       return "LookChar";
+    } else if (
+      type === "cmd.look.success" &&
+      message.data.target_type === "room_detail"
+    ) {
+      return "Message";
     } else if (
       type === "cmd.look.success" ||
       type === "cmd.move.success" ||
@@ -104,6 +123,8 @@ export default class Console extends Vue {
       return "Upgrade";
     } else if (message.type === "cmd.who.success") {
       return "Who";
+    } else if (message.type === "notification.cmd.chat.success" || message.type === "cmd.chat.success") {
+      return "Chat";
     } else if (message.type === "notification.death") {
       return "DeathMessage";
     } else if (
@@ -191,6 +212,7 @@ export default class Console extends Vue {
     &.grouped,
     &.room_write,
     &.affect\.cmd\.look\.success,
+    &.affect\.idle\.timeout,
     &.notification\.cmd\.say\.success,
     &.notification\.cmd\.yell\.success,
     &.notification\.cmd\.chat\.success,
@@ -203,6 +225,15 @@ export default class Console extends Vue {
       margin-top: 1rem;
     }
 
+    &.room_write,
+    &.write\.send,
+    &.write\.sendexcept,
+    &.write\.game,
+    &.write\.zone {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
     &.notification\.cmd\.say\.success,
     &.notification\.cmd\.yell\.success,
     &.notification\.cmd\.chat\.success,
@@ -213,7 +244,8 @@ export default class Console extends Vue {
     }
 
     &.cmd\.tell\.success,
-    &.notification\.tell {
+    &.notification\.tell,
+    &.cmd\.reply\.success {
       color: $color-red;
     }
   }

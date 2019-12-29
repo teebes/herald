@@ -13,27 +13,44 @@
 import { Component, Prop, Vue, Mixins } from "vue-property-decorator";
 import ElementList from "@/components/elementlist/ElementList.vue";
 import { BUILDER_MOB_TEMPLATE_DETAILS } from "@/router.ts";
-import WorldView from "@/components/builder/WorldView.ts";
-import { BUILDER_FORMS } from "@/core/forms.ts";
+import WorldView from "@/components/builder/world/WorldView.ts";
+import { BUILDER_FORMS, GET_MOB_TEMPLATE_INFO } from "@/core/forms.ts";
 import { BUILDER_ACTIONS, UI_MUTATIONS } from "@/constants";
+import axios from "axios";
 
 @Component({
   components: {
     ElementList
   }
 })
-export default class MobTemplateList extends Mixins(WorldView) {
+export default class MobTemplateList extends Vue {
+  world_factions: {}[] = [];
+
   get endpoint() {
     return `/builder/worlds/${this.$route.params.world_id}/mobtemplates/`;
   }
 
+  async mounted() {
+    const resp = await axios.get(
+      `/builder/worlds/${this.$route.params.world_id}/factions/`
+    );
+    const world_factions: {}[] = [];
+    for (const faction of resp.data.results) {
+      world_factions.push({
+        key: faction.code,
+        name: faction.name
+      });
+    }
+    this.world_factions = world_factions;
+  }
+
   get resolve_route() {
-    return element_id => {
+    return element => {
       return {
         name: BUILDER_MOB_TEMPLATE_DETAILS,
         params: {
           world_id: this.$store.state.builder.world.id,
-          mob_template_id: element_id
+          mob_template_id: element.id
         }
       };
     };
@@ -42,31 +59,41 @@ export default class MobTemplateList extends Mixins(WorldView) {
   get list_schema() {
     return [
       { name: "id", label: "ID" },
-      { name: "name", label: "Name" },
-      { name: "level", label: "Level", light: true }
+      { name: "name", label: "Name", nowrap: true },
+      { name: "level", label: "Level", light: true },
+      { name: "notes", label: "Notes", light: true }
     ];
   }
 
   get list_filters() {
+    const mob_types = {
+      label: "types",
+      attr: "type",
+      filter_options: [
+        { key: "humanoid", name: "humanoid" },
+        { key: "aberration", name: "aberration" },
+        { key: "beast", name: "beast" },
+        { key: "celestial", name: "celestial" },
+        { key: "construct", name: "construct" },
+        { key: "dragon", name: "dragon" },
+        { key: "elemental", name: "elemental" },
+        { key: "fey", name: "fey" },
+        { key: "fiend", name: "fiend" },
+        { key: "giant", name: "giant" },
+        { key: "monstrosity", name: "monstrosity" },
+        { key: "ooze", name: "ooze" },
+        { key: "plant", name: "plant" },
+        { key: "undead", name: "undead" }
+      ]
+    };
+
+    const factions = {
+      label: "factions",
+      attr: "faction",
+      filter_options: this.world_factions
+    };
+
     return [
-      {
-        label: "types",
-        attr: "type",
-        filter_options: [
-          { key: "humanoid", name: "Humanoid" },
-          { key: "beast", name: "Beast" },
-          { key: "plant", name: "Plant" }
-        ]
-      },
-      {
-        label: "factions",
-        attr: "core_faction",
-        filter_options: [
-          { key: "human", name: "Human" },
-          { key: "orc", name: "Orc" },
-          { key: "lifeless", name: "Lifeless" }
-        ]
-      },
       {
         label: "levels",
         attr: "level_range",
@@ -90,7 +117,9 @@ export default class MobTemplateList extends Mixins(WorldView) {
         attr: "sort_by",
         label: "sorting",
         filter_options: [{ key: "-created_ts", name: "Last Created" }]
-      }
+      },
+      factions,
+      mob_types
     ];
   }
 
@@ -107,13 +136,17 @@ export default class MobTemplateList extends Mixins(WorldView) {
       hit_msg_first: "hit",
       hit_msg_third: "hits",
       aggression: "normal",
-      gender: "female"
+      gender: "female",
+      is_invisible: false,
+      core_faction: this.$store.getters["builder/defaultCoreFaction"],
+      fights_back: true
     };
+    const schema = GET_MOB_TEMPLATE_INFO();
 
     const modal = {
       title: `Add Mob Template`,
       data: new_mob_template,
-      schema: BUILDER_FORMS.MOB_TEMPLATE_INFO,
+      schema: schema,
       action: "builder/worlds/mob_template_create"
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);

@@ -2,16 +2,47 @@
   <div id="builder-player-detail" v-if="fetched">
     <h2 class="entity-title">{{ player.name }}</h2>
 
-    <div>Level {{ player.level }} {{ player.archetype }}</div>
+    <div>
+      Level {{ player.level }} {{ player.archetype }}
+      <span v-if="$store.state.auth.user.is_staff" class='ml-2 color-text-50'>
+        [ <router-link :to="user_page(player)">user {{ player.animation_data.user_id }}</router-link> ]
+      </span>
+    </div>
     <div v-if="player.title">Title: {{ player.title }}</div>
     <div v-if="player.is_immortal">This is a builder character.</div>
+    <div>Spawn world details: {{ player.world.id }} ({{ player.world.state }})</div>
 
-    <div>
-      <button class="btn-thin" @click="editInfo">EDIT INFO</button>
+    <div class="mt-4">
+      <button class="btn-small" @click="editInfo">EDIT INFO</button>
+      <button
+        class="btn-small ml-4"
+        @click="resetPlayer"
+        v-if="!$store.state.builder.world.is_multiplayer"
+      >RESET</button>
+      <button class="btn-small ml-4" @click="deletePlayer">DELETE</button>
     </div>
 
     <div class="data-and-map">
       <div class="player-data">
+        <div class="instance-details" v-if="!$store.state.builder.world.is_multiplayer">
+          <h3>Instance Details</h3>
+          <div>Mob count: {{ player.instance_details.mob_count }}</div>
+          <div>Item count: {{ player.instance_details.item_count }}</div>
+        </div>
+
+        <div class="factions">
+          <h3>Factions</h3>
+          <div>core: {{ player.animation_data.factions.core }}</div>
+          <div
+            v-for="faction_code in Object.keys(player.animation_data.factions)"
+            :key="faction_code"
+          >
+            <template
+              v-if="faction_code !== 'core'"
+            >{{ faction_code }}: {{ player.animation_data.factions[faction_code] }}</template>
+          </div>
+        </div>
+
         <div class="inventory">
           <h3>Inventory</h3>
           <div v-for="item in player.inventory" :key="item.id">{{ item.name }}</div>
@@ -29,18 +60,6 @@
         <div class="quests">
           <h3>Quests</h3>
           <div v-for="quest in player.quests" :key="quest.id">{{ quest.name }}</div>
-        </div>
-
-        <div class="factions">
-          <h3>Factions</h3>
-          <div
-            v-for="faction_code in Object.keys(player.animation_data.factions)"
-            :key="faction_code"
-          >
-            <template
-              v-if="faction_code !== 'core'"
-            >{{ faction_code }}: {{ player.animation_data.factions[faction_code] }}</template>
-          </div>
         </div>
 
         <div class="trophy">
@@ -61,7 +80,7 @@
           :center_key="center_key"
           :unit="8"
           :radius="4"
-          :display_planes="false"
+          :display_planes="true"
           @clickRoom="onMapClickRoom"
         />
       </div>
@@ -71,11 +90,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Mixins } from "vue-property-decorator";
-import WorldView from "@/components/builder/WorldView.ts";
+import WorldView from "@/components/builder/world/WorldView.ts";
 import Map from "@/components/Map.vue";
 import { Room } from "@/core/interfaces.ts";
 import { EQUIPMENT_SLOT_LIST } from "@/constants";
-import { BUILDER_WORLD_PLAYER_LIST } from "@/router";
+import { BUILDER_WORLD_PLAYER_LIST, STAFF_USER_INFO } from "@/router";
 import { UI_MUTATIONS } from "@/constants";
 
 @Component({
@@ -88,7 +107,11 @@ export default class PlayerDetail extends Mixins(WorldView) {
   center_key: string = "";
   EQUIPMENT_SLOT_LIST = EQUIPMENT_SLOT_LIST;
 
-  async activated() {
+  get player() {
+    return this.$store.state.builder.worlds.player;
+  }
+
+  async mounted() {
     const player = await this.$store.dispatch("builder/worlds/player_fetch", {
       world_id: this.$route.params.world_id,
       player_id: this.$route.params.player_id
@@ -114,6 +137,36 @@ export default class PlayerDetail extends Mixins(WorldView) {
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
 
+  async deletePlayer() {
+    const c = confirm(
+      `Are you sure you want to delete Player ${this.player.id}?`
+    );
+    if (!c) return;
+
+    await this.$store.dispatch("builder/worlds/player_delete");
+    this.$router.push({
+      name: BUILDER_WORLD_PLAYER_LIST,
+      params: {
+        world_id: this.$route.params.world_id
+      }
+    });
+  }
+
+  async resetPlayer() {
+    const c = confirm(
+      `Are you sure you want to reset Player ${this.player.id}? This will erase all of their progress`
+    );
+    if (!c) return;
+
+    await this.$store.dispatch("builder/worlds/player_reset");
+    // this.$router.push({
+    //   name: BUILDER_WORLD_PLAYER_LIST,
+    //   params: {
+    //     world_id: this.$route.params.world_id
+    //   }
+    // });
+  }
+
   get player_list_link() {
     return {
       name: BUILDER_WORLD_PLAYER_LIST,
@@ -126,10 +179,6 @@ export default class PlayerDetail extends Mixins(WorldView) {
   onMapClickRoom(room) {
     const index = this.player_rooms.findIndex(_room => room.key == _room.key);
     if (index !== -1) this.center_key = room.key;
-  }
-
-  get player() {
-    return this.$store.state.builder.worlds.player;
   }
 
   get player_rooms() {
@@ -150,6 +199,15 @@ export default class PlayerDetail extends Mixins(WorldView) {
       player_rooms.push(this.player.room);
 
     return player_rooms;
+  }
+
+  user_page(player) {
+    return {
+      name: STAFF_USER_INFO,
+      params: {
+        user_id: player.animation_data.user_id
+      }
+    }
   }
 }
 </script>

@@ -16,6 +16,7 @@
       >{{ objective.template.name }}</router-link>.
     </div>
     <div v-if="objective.type == 'gold'">Receive {{ objective.qty }} gold.</div>
+    <div v-if="objective.type == 'glory'">Receive {{ objective.qty }} glory.</div>
 
     <div class="actions">
       <button class="btn-thin" @click="edit">EDIT</button>
@@ -67,7 +68,7 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Mixins } from "vue-property-decorator";
-import ZoneView from "@/components/builder/ZoneView";
+import ZoneView from "@/components/builder/zone/ZoneView";
 import FormField from "@/components/forms/FormField.vue";
 import { Entity } from "@/core/interfaces.ts";
 import { FormElement, BUILDER_FORMS } from "@/core/forms";
@@ -164,6 +165,10 @@ export default class extends Mixins(ZoneView) {
         {
           value: "gold",
           label: "Gold Received"
+        },
+        {
+          value: "glory",
+          label: "Glory Received"
         }
       ]
     };

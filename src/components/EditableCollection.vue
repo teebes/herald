@@ -2,9 +2,11 @@
   <div class="editable-collection">
     <h2>{{ title.toUpperCase() }}S</h2>
 
+    <slot></slot>
+
     <div v-if="collection" class="collection-element-list">
       <div class="collection-element" v-for="resource in collection" :key="resource.id">
-        <component class="display-view" :is="display_component" :resource="resource"/>
+        <component class="display-view" :is="display_component" :resource="resource" />
         <div class="actions">
           <div>
             <button class="btn-thin" @click="edit(resource)">EDIT</button>
@@ -48,7 +50,7 @@ export default class extends Vue {
     return [];
   }
 
-  async activated() {
+  async mounted() {
     this.$store.commit("builder/register_collection", {
       name: this.registration_name,
       endpoint: this.endpoint
@@ -57,14 +59,14 @@ export default class extends Vue {
     this.fetched = true;
   }
 
-  deactivated() {
+  destroyed() {
     this.$store.commit("builder/unregister_collection", this.registration_name);
   }
 
   add() {
     let new_data = {};
     for (const field of this.schema) {
-      if (field.default) new_data[field.attr] = field.default;
+      if (field.default !== undefined) new_data[field.attr] = field.default;
       else new_data[field.attr] = "";
     }
     const modal = {
@@ -132,7 +134,7 @@ export default class extends Vue {
     }
   }
   .collection-add {
-    margin: 20px 0 100px 15px;
+    margin: 20px 0 100px 0;
   }
 }
 </style>

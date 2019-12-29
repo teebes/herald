@@ -1,7 +1,7 @@
 <template>
   <div id="mob-loads">
     <h3>MOB LOADED BY</h3>
-    <ul v-for="loader in loaders" :key="loader.id">
+    <ul v-for="loader in loaders" :key="loader.id" class='list'>
       <li>
         <router-link :to="loader_link(loader)">{{ loader.name }}</router-link>
       </li>
@@ -34,6 +34,10 @@ export default class MobTemplateLoads extends Mixins(KeepAliveFetch) {
         zone_id: loader.zone.id
       }
     };
+  }
+
+  async mounted() {
+    this.fetch();
   }
 
   async fetch() {

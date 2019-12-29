@@ -11,7 +11,7 @@
 <script lang='ts'>
 import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 import axios from "axios";
-import WorldView from "@/components/builder/WorldView.ts";
+import WorldView from "@/components/builder/world/WorldView.ts";
 import RandomItemProfile from "@/components/builder/world/RandomItemProfile.vue";
 import EditableCollection from "@/components/EditableCollection.vue";
 import { FormElement, BUILDER_FORMS } from "@/core/forms.ts";
@@ -90,6 +90,62 @@ export default class WorldFrame extends Mixins(WorldView) {
         {
           value: "armor_light_only",
           label: "Light Armor Only"
+        },
+        {
+          value: "armor_light_head",
+          label: "Light Head Armor"
+        },
+        {
+          value: "armor_light_body",
+          label: "Light Body Armor"
+        },
+        {
+          value: "armor_light_arms",
+          label: "Light Arm Armor"
+        },
+        {
+          value: "armor_light_hands",
+          label: "Light Hand Armor"
+        },
+        {
+          value: "armor_light_waist",
+          label: "Light Waist Armor"
+        },
+        {
+          value: "armor_light_legs",
+          label: "Light Leg Armor"
+        },
+        {
+          value: "armor_light_feet",
+          label: "Light Foot Armor"
+        },
+        {
+          value: "armor_heavy_head",
+          label: "Heavy Head Armor"
+        },
+        {
+          value: "armor_heavy_body",
+          label: "Heavy Body Armor"
+        },
+        {
+          value: "armor_heavy_arms",
+          label: "Heavy Arm Armor"
+        },
+        {
+          value: "armor_heavy_hands",
+          label: "Heavy Hand Armor"
+        },
+        {
+          value: "armor_heavy_waist",
+          label: "Heavy Waist Armor"
+        },
+        {
+          value: "armor_heavy_legs",
+          label: "Heavy Leg Armor"
+        },
+        {
+          value: "armor_heavy_feet",
+          label: "Heavy Foot Armor"
         }
       ]
     };

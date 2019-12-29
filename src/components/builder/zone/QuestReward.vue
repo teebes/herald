@@ -9,6 +9,7 @@
     </div>
     <div v-if="reward.type == 'exp'">Receive {{ reward.qty }} experience.</div>
     <div v-if="reward.type == 'gold'">Receive {{ reward.qty }} gold.</div>
+    <div v-if="reward.type == 'glory'">Receive {{ reward.qty }} glory.</div>
     <div
       v-if="reward.type == 'faction'"
     >Receive {{ reward.qty }} standing with {{ reward.profile.name }}.</div>
@@ -63,7 +64,7 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Mixins, Watch } from "vue-property-decorator";
-import ZoneView from "@/components/builder/ZoneView";
+import ZoneView from "@/components/builder/zone/ZoneView";
 import FormField from "@/components/forms/FormField.vue";
 import { Entity } from "@/core/interfaces.ts";
 import { FormElement, BUILDER_FORMS } from "@/core/forms";
@@ -169,7 +170,8 @@ export default class extends Mixins(ZoneView) {
       attr: "faction",
       label: "Faction Standing",
       widget: "reference",
-      references: "faction"
+      references: "faction",
+      context: "quest_reward"
     };
     return faction_schema;
   }
@@ -205,6 +207,10 @@ export default class extends Mixins(ZoneView) {
         {
           value: "gold",
           label: "Gold"
+        },
+        {
+          value: "glory",
+          label: "Glory"
         },
         {
           value: "faction",

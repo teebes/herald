@@ -42,7 +42,7 @@ export default class AccessibleGame extends Vue {
   }
 
   scrollToBottom() {
-    console.log("scrolling to bottom");
+    // console.log("scrolling to bottom");
 
     // const c = this.$refs.console as HTMLElement;
     // c.scrollTop = c.scrollHeight;

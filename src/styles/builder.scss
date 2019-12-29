@@ -281,3 +281,29 @@
     }
   }
 }
+
+.builder-config {
+  h3 {
+    text-transform: uppercase;
+    margin: 30px 0 10px 0;
+  }
+  ul {
+    margin-bottom: 0;
+  }
+  .config-panels {
+    display: flex;
+    flex-wrap: wrap;
+
+    @media ($desktop-site) {
+      > div {
+        flex-basis: 50%;
+        &:nth-child(odd) {
+          padding-right: 15px;
+        }
+        &:nth-child(even) {
+          padding-left: 15px;
+        }
+      }
+    }
+  }
+}

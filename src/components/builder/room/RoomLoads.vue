@@ -6,7 +6,8 @@
       <div class="loader" v-for="loader_info in loaders" :key="loader_info.loader.id">
         <h3>{{ loader_info.loader.name }}</h3>
 
-        <div v-if="loader_info.room.mobs.length">Mobs in room:
+        <div v-if="loader_info.room.mobs.length">
+          Mobs in room:
           <ul class="list">
             <li v-for="mob in loader_info.room.mobs" :key="mob.id">
               <router-link :to="mob_template_link(mob)">{{ mob.name }}</router-link>
@@ -14,7 +15,8 @@
           </ul>
         </div>
 
-        <div v-if="loader_info.room.items.length">Items in room:
+        <div v-if="loader_info.room.items.length">
+          Items in room:
           <ul class="list">
             <li v-for="item in loader_info.room.items" :key="item.id">
               <router-link :to="item_template_link(item)">{{ item.name }}</router-link>
@@ -22,7 +24,8 @@
           </ul>
         </div>
 
-        <div v-if="loader_info.path.mobs.length">Mobs in path:
+        <div v-if="loader_info.path.mobs.length">
+          Mobs in path:
           <ul class="list">
             <li v-for="mob in loader_info.path.mobs" :key="mob.id">
               <router-link :to="mob_template_link(mob)">{{ mob.name }}</router-link>
@@ -30,7 +33,8 @@
           </ul>
         </div>
 
-        <div v-if="loader_info.path.items.length">Items in path:
+        <div v-if="loader_info.path.items.length">
+          Items in path:
           <ul class="list">
             <li v-for="item in loader_info.path.items" :key="item.id">
               <router-link :to="item_template_link(item)">{{ item.name }}</router-link>
@@ -67,11 +71,9 @@ export default class RoomLoads extends Mixins(RoomView) {
   BUILDER_MOB_TEMPLATE_DETAILS: string = BUILDER_MOB_TEMPLATE_DETAILS;
   BUILDER_ITEM_TEMPLATE_DETAILS: string = BUILDER_ITEM_TEMPLATE_DETAILS;
 
-  async activated() {
+  async mounted() {
     const resp = await axios.get(
-      `/builder/worlds/${this.$route.params.world_id}/rooms/${
-        this.$route.params.room_id
-      }/loads/`
+      `/builder/worlds/${this.$route.params.world_id}/rooms/${this.$route.params.room_id}/loads/`
     );
     this.loaders = resp.data.loaders;
     this.fetched = true;

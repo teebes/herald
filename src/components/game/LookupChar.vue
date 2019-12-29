@@ -20,7 +20,6 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import { capfirst } from "@/helpers/utils.ts";
 import CharInfo from "./CharInfo.vue";
 import { getTargetInGroup } from "@/core/utils.ts";
 

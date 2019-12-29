@@ -60,6 +60,9 @@
       <div
         class="color-text-70"
       >Zone has no rooms. Go to an existing room and assign it to this zone to see a map.</div>
+      <div>
+        <button class="btn-thin edit-mob" @click="editInfo">EDIT</button>
+      </div>
     </div>
   </div>
 </template>
@@ -73,9 +76,9 @@ import {
   UI_MODALS
 } from "@/constants";
 import { Room } from "@/core/interfaces";
-import Map from "../Map.vue";
+import Map from "@/components/Map.vue";
 import axios from "axios";
-import ZoneView from "@/components/builder/ZoneView";
+import ZoneView from "@/components/builder/zone/ZoneView";
 import {
   BUILDER_ZONE_INDEX,
   BUILDER_MOB_TEMPLATE_DETAILS,
@@ -97,7 +100,7 @@ export default class ZoneDetails extends Mixins(ZoneView) {
   BUILDER_MOB_TEMPLATE_DETAILS = BUILDER_MOB_TEMPLATE_DETAILS;
   BUILDER_ITEM_TEMPLATE_DETAILS = BUILDER_ITEM_TEMPLATE_DETAILS;
 
-  async activated() {
+  async mounted() {
     const world_id = this.$route.params.world_id;
     const zone_id = this.$route.params.zone_id;
 

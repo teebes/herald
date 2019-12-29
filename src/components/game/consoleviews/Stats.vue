@@ -2,7 +2,7 @@
   <div class="stats indented">
     <div
       class="summary"
-    >{{ player.name }} {{ player.title }} - Level {{ player.level }} {{ this.$capfirst(player.factions.core)}} {{ this.$capfirst(player.archetype) }}</div>
+    >{{ player.name }} {{ player.title }} - Level {{ player.level }} {{ core_faction_name }} {{ this.$capfirst(player.archetype) }}</div>
 
     <div class="columns">
       <div class="left-side">
@@ -48,7 +48,7 @@
 
         <div class="stat-entry">
           <div class="label">Exp</div>
-          <div class="value">{{ player.experience }} - {{ player.exp_perc_left }}%</div>
+          <div class="value">{{ player.experience }} - {{ exp_perc_left }}%</div>
         </div>
       </div>
 
@@ -108,11 +108,32 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { capfirst } from "@/core/utils.ts"
 
 @Component
 export default class extends Vue {
-  get player() {
-    return this.$store.state.game.player;
+  player: any = {};
+
+  constructor() {
+    super();
+    this.player = this.$store.state.game.player;
+  }
+
+  get exp_perc_left() {
+    return Math.round(
+      (this.player.experience_progress /
+        (this.player.experience_progress + this.player.experience_needed)) *
+        100
+    );
+  }
+
+  get core_faction_name() {
+    const world_factions = this.$store.state.game.world.factions;
+    if (world_factions[this.player.factions.core]) {
+      return world_factions[this.player.factions.core].name;
+    }
+    if (!this.player.factions.core) return '';
+    return capfirst(this.player.factions.core);
   }
 }
 </script>

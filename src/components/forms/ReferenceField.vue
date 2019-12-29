@@ -11,15 +11,16 @@
         @blur="onBlur"
         autocomplete="off"
         ref="inputEl"
-      >
+      />
       <div v-else>
         <input
           class="readonly-input"
           :value="readOnlyValue"
+          :placeholder="schema.label"
           readonly="true"
           ref="inputEl"
           @click="onClickReadonly"
-        >
+        />
       </div>
     </div>
 
@@ -133,7 +134,14 @@ export default class ReferenceField extends Vue {
     } else if (this.model_type === "zone") {
       return `builder/worlds/${world_id}/zones/`;
     } else if (this.model_type === "faction") {
-      return `builder/worlds/${world_id}/factions/`;
+      let endpoint = `builder/worlds/${world_id}/factions/`;
+      if (
+        this.schema.context === "mob_factions" ||
+        this.schema.context === "quest_reward"
+      ) {
+        endpoint += "?is_core=false";
+      }
+      return endpoint;
     } else if (this.model_type === "room") {
       return `builder/worlds/${world_id}/rooms/`;
     } else if (
@@ -159,7 +167,9 @@ export default class ReferenceField extends Vue {
   }
 
   onBlur(event) {
-    this.$store.commit(UI_MUTATIONS.EDITING_FIELD_CLEAR);
+    setTimeout(() => {
+      this.$store.commit(UI_MUTATIONS.EDITING_FIELD_CLEAR);
+    }, 250);
 
     if (this.timeout) {
       clearTimeout(this.timeout);
@@ -182,7 +192,6 @@ export default class ReferenceField extends Vue {
   // Debounce and trigger lookupReference
   timeout: number | null = null;
   onUserReferenceChange(event) {
-
     this.$store.commit(UI_MUTATIONS.EDITING_FIELD_SET);
 
     this.user_input = event.target.value;

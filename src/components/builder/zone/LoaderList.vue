@@ -14,7 +14,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { BUILDER_ZONE_PATH_LIST } from "@/router.ts";
 import ElementList from "@/components/elementlist/ElementList.vue";
 import ZoneLoaderDetails from "@/components/builder/ZoneLoaderDetails.vue";
-import ZoneView from "@/components/builder/ZoneView";
+import ZoneView from "@/components/builder/zone/ZoneView";
 import { BUILDER_ZONE_LOADER_DETAILS } from "@/router.ts";
 import { BUILDER_FORMS, FormElement } from "@/core/forms.ts";
 import { BUILDER_ACTIONS, UI_MUTATIONS } from "@/constants";
@@ -26,18 +26,16 @@ import { BUILDER_ACTIONS, UI_MUTATIONS } from "@/constants";
 })
 export default class extends ZoneView {
   get endpoint() {
-    return `/builder/worlds/${this.$route.params.world_id}/zones/${
-      this.$route.params.zone_id
-    }/loaders/`;
+    return `/builder/worlds/${this.$route.params.world_id}/zones/${this.$route.params.zone_id}/loaders/`;
   }
 
   get resolve_route() {
-    return element_id => {
+    return element => {
       return {
         name: BUILDER_ZONE_LOADER_DETAILS,
         params: {
           world_id: this.$store.state.builder.world.id,
-          loader_id: element_id
+          loader_id: element.id
         }
       };
     };

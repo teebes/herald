@@ -16,17 +16,24 @@
                 <router-link
                   :to="{ name: BUILDER_WORLD_INDEX, params: { world_id: $route.params.world_id }}"
                 >EDIT WORLD</router-link>
+                <span class="divider"></span>
+                <a href @click.prevent="copyShareLink" @click="copyShareLink">SHARE</a>
               </template>
             </div>
-            <div class="world-description">{{ world.description}}</div>
+            <div class="world-description">
+              <div class="desc-line" v-for="(line, index) of descLines" :key="index">{{ line }}</div>
+            </div>
           </div>
 
           <UserChars @charcreated="onCharCreated" :chars="chars" :world="world" />
         </div>
 
-        <div class="world-leaderboard">
-          <template v-if="world.is_multiplayer">
-            <div class="leaderboard-title">LEADERBOARD</div>
+        <div class="world-leaderboard" v-if="!$store.state.lobby.world_details.create_character">
+          <template v-if="world.id != 217">
+            <div class="leaderboard-title">
+              <template v-if="world.id == 1">TRAILBLAZERS</template>
+              <template v-else>LEADERBOARD</template>
+            </div>
             <div class="leaderboard-region">
               <ul>
                 <li class="world-leader" v-for="leader in leaders" :key="leader.id">
@@ -88,9 +95,9 @@ export default class WorldLobby extends Vue {
     } else if (imagePath) {
       const pathElements = imagePath.split("/");
       const fileName = pathElements[pathElements.length - 1];
-      imageUrl = `/ui/lobby/${fileName}`
+      imageUrl = `/ui/lobby/${fileName}`;
     } else {
-      imageUrl = `/ui/lobby/world-home-bg.jpg`
+      imageUrl = `/ui/lobby/world-home-bg.jpg`;
     }
     return {
       backgroundImage: `url(${imageUrl})`
@@ -106,6 +113,9 @@ export default class WorldLobby extends Vue {
         }
       });
     }
+
+    // reset world details state
+    this.$store.commit("lobby/world_details/reset_state");
 
     const worldFetchPromise = axios.get(
       `/lobby/worlds/${this.$route.params.world_id}/`
@@ -128,6 +138,20 @@ export default class WorldLobby extends Vue {
     this.chars = user_chars_resp.data.results;
     this.world = world_resp.data;
     this.leaders = leaderboard_resp.data.results;
+  }
+
+  get descLines() {
+    return this.world.description.split("\n");
+  }
+
+  async copyShareLink() {
+    const slug = this.world.name
+      .toLowerCase()
+      .split(/\W+/)
+      .join("-");
+    const url = `${window.location.href}/${slug}`;
+    await this.$copyText(url);
+    this.$store.commit("ui/notification_set", `World URL copied to clipboard!`);
   }
 }
 </script>
@@ -256,8 +280,8 @@ export default class WorldLobby extends Vue {
           span.divider {
             border-left: 1px solid white;
             opacity: 0.2;
-            margin-left: 10px;
-            padding-left: 14px;
+            margin-left: 12px;
+            padding-left: 12px;
           }
         }
 
@@ -265,6 +289,10 @@ export default class WorldLobby extends Vue {
           @include font-text-light;
           font-size: 15px;
           line-height: 26px;
+
+          div.desc-line:not(:last-child) {
+            margin-bottom: 0.8em;
+          }
         }
       }
     }

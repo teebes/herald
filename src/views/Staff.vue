@@ -67,14 +67,14 @@ export default class StaffPage extends Vue {
   player_events: {}[] = [];
 
   async created() {
-    const root_worlds_promise = axios.get("/staff/worlds/");
+    const root_worlds_promise = axios.get("/staff/worlds/?page_size=50");
     const player_events_promise = axios.get("/staff/playerevents?page_size=50");
 
     const [root_worlds_resp, player_events_resp] = await Promise.all([
       root_worlds_promise,
       player_events_promise
     ]);
-    this.root_worlds = root_worlds_resp.data;
+    this.root_worlds = root_worlds_resp.data.results;
     this.player_events = player_events_resp.data.results;
   }
 

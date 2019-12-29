@@ -2,25 +2,25 @@
   <div>
     <div class="tabs">
       <div
-        class="tab-item"
+        class="tab-item unselectable"
         tab="actions"
         :class="{ activeTab: isSelected('vitals')}"
         @click="onClick('vitals')"
       >Vitals</div>
       <div
-        class="tab-item"
+        class="tab-item unselectable"
         tab="inventory"
         :class="{ activeTab: isSelected('items')}"
         @click="onClick('items')"
       >Items</div>
       <div
-        class="tab-item"
+        class="tab-item unselectable"
         tab="equipment"
         :class="{ activeTab: isSelected('eq')}"
         @click="onClick('eq')"
       >EQ</div>
       <div
-        class="tab-item"
+        class="tab-item unselectable"
         tab="stats"
         :class="{ activeTab: isSelected('stats')}"
         @click="onClick('stats')"

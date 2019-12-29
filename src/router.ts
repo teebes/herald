@@ -23,15 +23,15 @@ import Transfer from "@/components/lobby/Transfer.vue";
 
 // Builder
 import BuilderFrame from "@/components/builder/BuilderFrame.vue";
-import ZoneDetails from "@/components/builder/ZoneDetails.vue";
+import ZoneDetails from "@/components/builder/zone/ZoneDetails.vue";
 import RoomDetails from "@/components/builder/room/RoomDetails.vue";
 import RoomPaths from "@/components/builder/room/RoomPaths.vue";
 import RoomConfig from "@/components/builder/room/RoomConfig.vue";
-import WorldIndex from "@/components/builder/WorldIndex.vue";
-import ZoneList from "@/components/builder/ZoneList.vue";
-import RoomList from "@/components/builder/ZoneRoomList.vue";
-import ZonePathList from "@/components/builder/ZonePathList.vue";
-import ZonePathDetails from "@/components/builder/ZonePathDetails.vue";
+import WorldIndex from "@/components/builder/world/WorldIndex.vue";
+import ZoneList from "@/components/builder/world/ZoneList.vue";
+import RoomList from "@/components/builder/zone/ZoneRoomList.vue";
+import ZonePathList from "@/components/builder/zone/ZonePathList.vue";
+import ZonePathDetails from "@/components/builder/zone/ZonePathDetails.vue";
 import ZoneLoaderList from "@/components/builder/zone/LoaderList.vue";
 import ZoneLoaderDetails from "@/components/builder/zone/LoaderDetails.vue";
 import ZoneQuestList from "@/components/builder/zone/QuestList.vue";
@@ -41,6 +41,7 @@ import ZoneQuestDetail from "@/components/builder/zone/QuestDetail.vue";
 import RoomCheckList from "@/components/builder/room/RoomCheckList.vue";
 import RoomLoads from "@/components/builder/room/RoomLoads.vue";
 import RoomFlags from "@/components/builder/room/RoomFlags.vue";
+import RoomDetailList from "@/components/builder/room/RoomDetailList.vue";
 
 // World
 import WorldCreate from "@/components/builder/world/Create.vue";
@@ -110,6 +111,7 @@ export const BUILDER_ROOM_LOADS = "builder_room_loads";
 export const BUILDER_ROOM_PATHS = "builder_room_paths";
 export const BUILDER_ROOM_CONFIG = "builder_room_config";
 export const BUILDER_ROOM_FLAGS = "builder_room_flags";
+export const BUILDER_ROOM_DETAIL_LIST = "builder_room_detail_list";
 export const BUILDER_ZONE_LIST = "builder_zone_list";
 export const BUILDER_ZONE_INDEX = "builder_zone_index";
 export const BUILDER_ZONE_ROOM_LIST = "builder_zone_room_list";
@@ -119,6 +121,9 @@ export const BUILDER_ZONE_LOADER_LIST = "builder_zone_loader_list";
 export const BUILDER_ZONE_LOADER_DETAILS = "builder_zone_loader_details";
 export const BUILDER_ZONE_QUEST_LIST = "builder_zone_quest_list";
 export const BUILDER_ZONE_QUEST_DETAIL = "builder_zone_quest_detail";
+export const BUILDER_ZONE_CONFIG = "builder_zone_config";
+export const BUILDER_ZONE_PROCESSION_LIST = "builder_zone_procession_list";
+export const BUILDER_ZONE_PROCESSION_DETAIL = "builder_zone_procession_detail";
 export const BUILDER_MOB_TEMPLATE_LIST = "builder_mob_template_list";
 export const BUILDER_MOB_TEMPLATE_DETAILS = "builder_mob_template_details";
 export const BUILDER_ITEM_TEMPLATE_LIST = "builder_item_template_list";
@@ -130,7 +135,13 @@ export const LOBBY_WORLD_DETAIL = "lobby_world_detail";
 export const LOBBY_WORLD_COMPLETE_SIGNUP = "lobby_world_complete_signup";
 export const LOBBY_WORLD_TRANSFER = "lobby_world_transfer";
 export const LOBBY = "lobby";
+
 export const STAFF_HOME = "staff_home";
+export const STAFF_PLAYING = "staff_playing";
+export const STAFF_SIGNUPS = "staff_signups";
+export const STAFF_WORLDS = "staff_worlds";
+export const STAFF_ACTIVITY = "staff_activity";
+export const STAFF_USER_INFO = "staff_user_info";
 
 export const ABOUT = "about";
 export const TERMS = "terms";
@@ -215,9 +226,36 @@ const router = new Router({
 
     {
       path: "/staff",
-      name: STAFF_HOME,
-      component: Staff,
-      beforeEnter: ifStaff
+      beforeEnter: ifStaff,
+      component: () => import("@/components/staff/Frame.vue"),
+      redirect: "/staff/playing",
+      children: [
+        {
+          path: "playing",
+          name: STAFF_PLAYING,
+          component: () => import("@/components/staff/Playing.vue")
+        },
+        {
+          path: "signups",
+          name: STAFF_SIGNUPS,
+          component: () => import("@/components/staff/SignUps.vue")
+        },
+        {
+          path: "worlds",
+          name: STAFF_WORLDS,
+          component: () => import("@/components/staff/Worlds.vue")
+        },
+        {
+          path: "activity",
+          name: STAFF_ACTIVITY,
+          component: () => import("@/components/staff/Activity.vue")
+        },
+        {
+          path: "users/:user_id",
+          name: STAFF_USER_INFO,
+          component: () => import("@/components/staff/UserInfo.vue")
+        }
+      ]
     },
 
     {
@@ -369,6 +407,11 @@ const router = new Router({
           name: BUILDER_ROOM_FLAGS,
           component: RoomFlags
         },
+        {
+          path: "rooms/:room_id/details",
+          name: BUILDER_ROOM_DETAIL_LIST,
+          component: RoomDetailList
+        },
 
         {
           path: "zones/:zone_id",
@@ -421,6 +464,26 @@ const router = new Router({
           path: "zones/:zone_id/quests/:quest_id",
           component: ZoneQuestDetail,
           name: BUILDER_ZONE_QUEST_DETAIL
+        },
+
+        {
+          path: "zones/:zone_id/config",
+          component: () => import("@/components/builder/zone/ZoneConfig.vue"),
+          name: BUILDER_ZONE_CONFIG
+        },
+
+        {
+          path: "zones/:zone_id/processions",
+          component: () =>
+            import("@/components/builder/zone/ZoneProcessionList.vue"),
+          name: BUILDER_ZONE_PROCESSION_LIST
+        },
+
+        {
+          path: "zones/:zone_id/processions/:procession_id",
+          component: () =>
+            import("@/components/builder/zone/ZoneProcessionDetail.vue"),
+          name: BUILDER_ZONE_PROCESSION_DETAIL
         }
       ]
     },
@@ -447,23 +510,44 @@ const router = new Router({
       path: "/privacy",
       name: PRIVACY,
       component: Privacy
-    }
-
-    // {
-    //   path: "/about",
-    //   name: "about",
-    //   // route level code-splitting
-    //   // this generates a separate chunk (about.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () =>
-    //     import(/* webpackChunkName: "about" */ "./views/About.vue")
-    // }
+    },
+    {
+      path: "/404",
+      name: "404",
+      component: () => import("@/views/NotFound.vue")
+    },
+    { path: "*", redirect: "/404" }
   ]
 });
 
-// router.beforeEach((to, from, next) => {
-//   console.log(to)
-//   console.log(from)
-// })
+router.afterEach(async () => {
+  const parseJwt = function(token) {
+    var base64Url = token.split(".")[1];
+    var base64 = base64Url.replace("-", "+").replace("_", "/");
+    return JSON.parse(window.atob(base64));
+  };
+
+  const getUnixTS = function() {
+    return Math.round(new Date().getTime() / 1000);
+  };
+
+  if (localStorage.jwtToken) {
+    const exp = parseJwt(localStorage.jwtToken)["exp"],
+      ts = getUnixTS(),
+      delta = exp - ts;
+
+    // If the token is more than an hour old, refresh it.
+    // This assumes a 24 hour expiration renewal.
+    if (delta > 0 && delta < 60 * 60 * 23) {
+      // Renew the token
+      try {
+        await store.dispatch("auth/renew", localStorage.jwtToken);
+      } catch (error) {
+        store.commit("auth/auth_clear");
+        router.push({ name: "login" });
+      }
+    }
+  }
+});
 
 export default router;

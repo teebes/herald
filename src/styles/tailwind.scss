@@ -1,13 +1,16 @@
 /* Tailwind-like helpers */
+
+/* === START FLEX ==== */
+
 .flex {
   display: flex;
 }
 .flex-col {
   flex-direction: column;
 }
-.flex-1 {
-  flex: 1;
-}
+// .flex-1 {
+//   flex: 1;
+// }
 .flex-2 {
   flex: 2;
 }
@@ -21,8 +24,27 @@
   flex-wrap: nowrap;
 }
 
+.flex-initial {
+  flex: 0 1 auto;
+}
+.flex-1 {
+  flex: 1 1 0%;
+}
+.flex-auto {
+  flex: 1 1 auto;
+}
+.flex-none {
+  flex: none;
+}
+
+/* ==== END FLEX ==== */
+
 .justify-center {
   justify-content: center;
+}
+
+.text-center {
+  text-align: center;
 }
 
 .mx-0 {
@@ -109,6 +131,31 @@
   margin-right: 2rem;
 }
 
+.ml-1 {
+  margin-left: 0.25rem;
+}
+.ml-2 {
+  margin-left: 0.5rem;
+}
+.ml-3 {
+  margin-left: 0.75rem;
+}
+.ml-4 {
+  margin-left: 1rem;
+}
+.ml-5 {
+  margin-left: 1.25rem;
+}
+.ml-6 {
+  margin-left: 1.5rem;
+}
+.ml-7 {
+  margin-left: 1.75rem;
+}
+.ml-8 {
+  margin-left: 2rem;
+}
+
 .my-1 {
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
@@ -140,6 +187,38 @@
 .my-8 {
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+.mx-1 {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+.mx-3 {
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+}
+.mx-4 {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+.mx-5 {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+}
+.mx-6 {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+.mx-7 {
+  margin-left: 1.75rem;
+  margin-right: 1.75rem;
+}
+.mx-8 {
+  margin-left: 2rem;
+  margin-right: 2rem;
 }
 .text-xs {
   font-size: 0.75rem;

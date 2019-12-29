@@ -4,8 +4,8 @@
 
     <div v-if="completion_cmds.length">
       <div>
-        Commands executed on completion:
-        <ul>
+        Commands executed on completion::
+        <ul class="list">
           <li v-for="completion_cmd in completion_cmds" :key="completion_cmd">{{ completion_cmd }}</li>
         </ul>
       </div>
@@ -69,7 +69,10 @@ export default class extends Vue {
     const completion_cmds: FormElement = {
       attr: "completion_cmds",
       label: "Completion Commands",
-      widget: "textarea"
+      widget: "textarea",
+      help: `Enter the commands that the mob will execute when the quest completes, one per line.
+            <br/><br/>
+            The commands should be exactly as a mob would execute them, so they should almost always start with either 'say' or 'emote'`
     };
 
     const completion_cmd_available: FormElement = {
@@ -81,24 +84,28 @@ export default class extends Vue {
     const completion_keywords: FormElement = {
       attr: "completion_keywords",
       label: "Completion Triggers",
-      widget: "text"
+      widget: "text",
+      help: `Keywords that can be said in a room by a player wanting to complete this quest.`
     };
 
     const completion_despawn: FormElement = {
       attr: "completion_despawn",
       label: "Despawn on Completion for",
-      widget: "text"
+      widget: "text",
+      help: `If set to a positive integer, the quest mob will disappear for the specified amount of time on completion of this quest.`
     };
 
     const complete_silently: FormElement = {
       attr: "complete_silently",
       label: "Complete Silently",
-      widget: "checkbox"
+      widget: "checkbox",
+      help: `If checked, the user will not receiving a message saying they completed a quest.`
     };
 
     const completion_action: FormElement = {
       attr: "completion_action",
-      label: "Completion Action"
+      label: "Completion Action",
+      help: `Enter one or more commands (separated by 'or') that a player can execute to complete this quest, in addition to complete.`
     };
 
     const modal = {

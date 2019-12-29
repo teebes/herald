@@ -4,7 +4,7 @@
       <h3>ENQUIRE ENTRANCE COMMANDS</h3>
 
       <div v-if="entrance_cmds.length">
-        <ul>
+        <ul class='list'>
           <li
             v-for="entrance_cmd in entrance_cmds"
             :key="entrance_cmd"
@@ -28,7 +28,7 @@
       <div v-if="completion_entrance_cmds.length">
         <div>
           Messages displayed when entering the room and the :
-          <ul>
+          <ul class='list'>
             <li
               v-for="completion_entrance_cmd in completion_entrance_cmds"
               :key="completion_entrance_cmd"
@@ -68,13 +68,17 @@ export default class extends Vue {
     const completion_entrance_cmds: FormElement = {
       attr: "completion_entrance_cmds",
       label: "Completion Entrance Commands",
-      widget: "textarea"
+      widget: "textarea",
+      help: `Enter the commands that the mob will execute when the player enters its room, one per line.
+            <br/><br/>
+            The commands should be exactly as a mob would execute them, so they should almost always start with either 'say' or 'emote'`      
     };
 
     const repeat_completion_entrance_cmds_after: FormElement = {
       attr: "repeat_completion_entrance_cmds_after",
       label: "Wait before repeating completion entrance commands",
-      widget: "text"
+      widget: "text",
+      help: `When a player enters the room, a mob will issue completion entrance commands as long as it has been longer than the specified number of seconds since the last time they've reacted to someone's entrance.`
     };
 
     const modal = {
@@ -95,13 +99,17 @@ export default class extends Vue {
     const entrance_cmds_schema: FormElement = {
       attr: "entrance_cmds",
       label: "Entrance Commands",
-      widget: "textarea"
+      widget: "textarea",
+      help: `Enter the commands that the mob will execute when the player enters its room, one per line.
+            <br/><br/>
+            The commands should be exactly as a mob would execute them, so they should almost always start with either 'say' or 'emote'`
     };
 
     const repeat_entrance_cmd_after_schema: FormElement = {
       attr: "repeat_entrance_cmd_after",
-      label: "Repeat entrance command after",
-      widget: "text"
+      label: "Repeat Entrance Command After",
+      widget: "text",
+      help: `When a player enters the room, a mob will issue entrance commands as long as it has been longer than the specified number of seconds since the last time they've reacted to someone's entrance.`
     };
 
     const modal = {

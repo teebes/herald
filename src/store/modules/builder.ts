@@ -136,6 +136,38 @@ const getters = {
       canDisconnect,
       canOneWay
     };
+  },
+
+  coreFactionsOptions: state => {
+    // Faction data as usable by create / edit mob pages.
+    const factions: {}[] = [
+      {
+        value: "",
+        label: ""
+      }
+    ];
+    for (const faction of state.world.factions) {
+      if (faction.is_core) {
+        factions.push({
+          value: faction.code,
+          label: faction.name
+        });
+      }
+    }
+    return factions;
+  },
+
+  defaultCoreFaction: state => {
+    const core_factions: any[] = [];
+    for (const faction of state.world.factions) {
+      if (faction.is_core && faction.is_default) {
+        return faction.code;
+      } else {
+        core_factions.push(faction);
+      }
+    }
+    if (core_factions.length === 0) return '';
+    return core_factions[0].code;
   }
 };
 
@@ -167,6 +199,11 @@ const actions = {
   world_delete: async ({ commit, state }) => {
     const resp = await axios.delete(`/builder/worlds/${state.world.id}/`);
     commit("world_clear");
+  },
+
+  world_update_factions: async({ commit, state }) => {
+    const resp = await axios.get(`/builder/worlds/${state.world.id}/factions?page_size=100`);
+    commit("world_update", resp.data['results']);
   },
 
   // Assumes that a world is in the store
@@ -395,6 +432,13 @@ const mutations = {
 
   world_set: (state, world) => {
     state.world = world;
+  },
+
+  world_update: (state, new_data) => {
+    state.world = {
+      ...state.world,
+      ...new_data,
+    }
   },
 
   world_clear: (state, world) => {

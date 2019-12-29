@@ -12,6 +12,7 @@
         v-model="email"
         name="email"
         required="required"
+        ref="email"
       />
     </div>
 
@@ -89,6 +90,11 @@ export default class SignUp extends Vue {
     );
     this.$store.commit(UI_MUTATIONS.MODAL_CLOSE);
   }
+
+  mounted() {
+    const email = this.$refs.email as HTMLElement;
+    email.focus();
+  }    
 }
 </script>
 

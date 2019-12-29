@@ -1,13 +1,17 @@
+import store from "@/store";
+
 export interface FormElement {
   attr: string;
   label: string;
   references?: string;
   widget?: "text" | "textarea" | "reference" | "select" | "checkbox";
   context?: string;
-  options?: { value: string; label: string }[];
+  options?: { value: string | null; label: string }[];
   default?: string | number | boolean;
   create_only?: boolean;
   tooltip?: ""[];
+  help?: string;
+  required?: boolean;
 }
 
 // Generic form elements
@@ -115,8 +119,26 @@ const ROOM_CHECK: FormElement[] = [
       {
         value: "health_below",
         label: "Health below"
+      },
+      {
+        value: "quest_complete",
+        label: "Quest complete"
+      },
+      {
+        value: "quest_incomplete",
+        label: "Quest incomplete"
       }
-    ]
+    ],
+    help: `Which check to perform.<br/>
+        - in inventory: whether item template id 'argument' is in the actor's inventory.<br/>
+        - not in inventory: the opposite of in_inv.<br/>
+        - equipped: whether item template id 'argument' is equipped by the actor.<br/>
+        - not equipped: the opposite of equipped.<br/>
+        - mob is present: whether a mob with template id 'argument' in the room is present. If 'argument2' is specified as a faction, that faction is exempt from the check.<br/>
+        - faction below: whether a character's standing in faction 'argument' is below 'argument2'.<br/>
+        - health below: whether a character’s health is below a 'argument' threshold, in % of their max health.<br/>
+        - quest complete: whether a character has completed quest id 'argument'.<br/>
+        - quest incomplete: whether a character has not completed quest id 'argument'.<br/>`
   },
   {
     attr: "prevent",
@@ -131,140 +153,58 @@ const ROOM_CHECK: FormElement[] = [
         value: "exit",
         label: "Exit"
       }
-    ]
+    ],
+    help: `Which action to prevent.<br/>
+          - entry: look at the move’s destination room entry checks before allowing the actor to enter it.<br/>
+          - exit: look at the move’s current room exit checks before allowing the actor to exit it.`
   },
-  DIRECTION,
+  {
+    ...DIRECTION,
+    help: `Only applicable for 'exit' prevents. If defined, specifies which exit is blocked by the room check.`
+  },
   {
     attr: "argument",
-    label: "Argument"
+    label: "Argument",
+    help: `Parameter depending on the check. See the 'check' field for details.`
   },
   {
     attr: "argument2",
-    label: "Argument 2"
+    label: "Argument 2",
+    help: `Parameter used for the 'mob_is_absent' and 'faction_below' checks. Only See the 'check' field for details.`
   },
   {
     attr: "failure_msg",
-    label: "Failure Message"
+    label: "Failure Message",
+    help: `The message to display if the check was true, meaning the action was prevented.`
   }
 ];
 
-export const BUILDER_FORMS = {
-  ITEM_TEMPLATE,
-  MOB_TEMPLATE,
-  ZONE,
-  NAME,
-  DESCRIPTION,
-
-  ROOM_CHECK,
-
-  // Builder screens
-
-  ROOM_INFO: [
-    {
-      attr: "name",
-      label: "Name"
-    },
-    {
-      children: [
-        { attr: "x", label: "X" },
-        { attr: "y", label: "Y" },
-        { attr: "z", label: "Z" }
-      ]
-    },
-    {
-      children: [
-        ZONE,
-        {
-          attr: "type",
-          label: "Room Type",
-          help: `Different rooms have different stamina costs for going through them:<br/>
-                <br/>
-                * 1 stamina: road, city, indoor<br/>
-                * 2 stamina: trail, field<br/>
-                * 3 stamina: forest, desert, water<br/>
-                * 4 stamina: mountain<br/>
-                <br/>
-                In addition, different room types are colored differently in the map.`,
-          options: [
-            {
-              value: "road",
-              label: "Road"
-            },
-            {
-              value: "trail",
-              label: "Trail"
-            },
-            {
-              value: "city",
-              label: "City"
-            },
-            {
-              value: "indoor",
-              label: "Indoor"
-            },
-            {
-              value: "field",
-              label: "Field"
-            },
-            {
-              value: "mountain",
-              label: "Mountain"
-            },
-            {
-              value: "forest",
-              label: "Forest"
-            },
-            {
-              value: "desert",
-              label: "Desert"
-            },
-            {
-              value: "water",
-              label: "Water"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      attr: "description",
-      label: "Description",
-      widget: "textarea"
-    },
-    {
-      attr: "note",
-      label: "Notes"
-    }
-  ],
-
-  ZONE_INFO: [
-    {
-      attr: "name",
-      label: "Name"
-    }
-  ],
-
-  MOB_TEMPLATE_INFO: [
+export const GET_MOB_TEMPLATE_INFO = () => {
+  return [
     {
       children: [
         {
           attr: "name",
           label: "Name",
           help: `If naming a non-proper noun, use a lowercase article to start its name,
-             for example 'a rat'. This ensures combat messaged will be properly
-             formatted, for example 'You strike a rat.' The article will be
-             auto-capitalized when needed.`
+              for example 'a rat'. This ensures combat messaged will be properly
+              formatted, for example 'You strike a rat.' The article will be
+              auto-capitalized when needed.`
         },
         {
-          attr: "level",
-          label: "Level",
-          help: `The level of a mob determines how hard it is to kill and how much 
-                 experience it gives.`
+          attr: "notes",
+          label: "Notes"
         }
       ]
     },
     {
       children: [
+        {
+          attr: "level",
+          label: "Level",
+          help: `The level of a mob determines how hard it is to kill and how much 
+                experience it gives.`
+        },
         {
           attr: "gender",
           label: "Gender",
@@ -279,6 +219,16 @@ export const BUILDER_FORMS = {
               label: "Male"
             }
           ]
+        }
+      ]
+    },
+    {
+      children: [
+        {
+          attr: "core_faction",
+          label: "Core Faction",
+          widget: "select",
+          options: store.getters["builder/coreFactionsOptions"]
         },
         {
           attr: "aggression",
@@ -304,7 +254,7 @@ export const BUILDER_FORMS = {
           ],
           help: `Determines a mob's behavior when you enter its room.
                  <br/><br/>
-                 * Passive: mob will never attack (even if provoked).<br/>
+                 * Passive: mob will never attack first.<br/>
                  * Normal: mob will only attack if their faction is at odds with the entering char.<br/>
                  * Players: mob will attack all players.<br/>
                  * All: mob will attack players & other mobs.
@@ -408,7 +358,6 @@ export const BUILDER_FORMS = {
       ]
     },
     {
-      //row_name: 'Hit Message',
       children: [
         {
           attr: "hit_msg_first",
@@ -420,19 +369,121 @@ export const BUILDER_FORMS = {
         }
       ]
     },
+    // {
+    //   attr: "notes",
+    //   label: "Notes"
+    // },
     {
-      attr: "notes",
+      children: [
+        {
+          attr: "is_invisible",
+          label: "Is Invisible",
+          widget: "checkbox"
+        },
+        {
+          attr: "fights_back",
+          label: "Fights Back",
+          widget: "checkbox"
+        }
+      ]
+    }
+  ];
+};
+
+export const BUILDER_FORMS = {
+  ITEM_TEMPLATE,
+  MOB_TEMPLATE,
+  ZONE,
+  NAME,
+  DESCRIPTION,
+
+  ROOM_CHECK,
+
+  // Builder screens
+
+  ROOM_INFO: [
+    {
+      attr: "name",
+      label: "Name"
+    },
+    {
+      children: [
+        { attr: "x", label: "X" },
+        { attr: "y", label: "Y" },
+        { attr: "z", label: "Z" }
+      ]
+    },
+    {
+      children: [
+        ZONE,
+        {
+          attr: "type",
+          label: "Room Type",
+          help: `Different rooms have different stamina costs for going through them:<br/>
+                <br/>
+                * 1 stamina: road, city, indoor<br/>
+                * 2 stamina: trail, field<br/>
+                * 3 stamina: forest, desert, water<br/>
+                * 4 stamina: mountain<br/>
+                <br/>
+                In addition, different room types are colored differently in the map.`,
+          options: [
+            {
+              value: "road",
+              label: "Road"
+            },
+            {
+              value: "trail",
+              label: "Trail"
+            },
+            {
+              value: "city",
+              label: "City"
+            },
+            {
+              value: "indoor",
+              label: "Indoor"
+            },
+            {
+              value: "field",
+              label: "Field"
+            },
+            {
+              value: "mountain",
+              label: "Mountain"
+            },
+            {
+              value: "forest",
+              label: "Forest"
+            },
+            {
+              value: "desert",
+              label: "Desert"
+            },
+            {
+              value: "water",
+              label: "Water"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      attr: "description",
+      label: "Description",
+      widget: "textarea"
+    },
+    {
+      attr: "note",
       label: "Notes"
     }
-    // {
-    //   children: [
-    //     {
-    //       attr: "use_abilities",
-    //       label: "Use Abilities",
-    //       widget: "checkbox"
-    //     }
-    //   ]
-    // }
+  ],
+
+  ZONE_INFO: [
+    {
+      attr: "name",
+      label: "Name"
+    }
   ],
 
   MOB_TEMPLATE_STATS: [
@@ -631,8 +682,10 @@ export const BUILDER_FORMS = {
     },
     {
       attr: "reaction",
-      label: "Reaction",
-      widget: "textarea"
+      label: "Reactions",
+      widget: "textarea",
+      help: `Enter the commands that the mob will respond with, one per line. <br/><br/>
+             The commands should be exactly as a mob would execute them, so they should almost always start with either 'say' or 'emote'.`
     },
     {
       attr: "option",
@@ -648,30 +701,23 @@ export const BUILDER_FORMS = {
     }
   ],
 
-  MOB_TEMPLATE_FACTION: [
-    {
-      attr: "faction",
-      label: "Faction",
-      references: "faction",
-      widget: "reference"
-    },
-    {
-      attr: "value",
-      label: "Value",
-      default: "0"
-    }
-  ],
-
   ITEM_TEMPLATE_INFO: [
     {
       children: [
         {
           attr: "name",
-          label: "Name"
+          label: "Name",
+          help: `When naming items, use a lowercase article to start its name,
+                 for example 'a sword', rather than something like 'Big Sword'.
+                 This ensures that the game generates correct sentences with the
+                 item like 'You get a sword from the ground.'`
         },
         {
           attr: "level",
-          label: "Level"
+          label: "Level",
+          help: `The level of an item represents its power. For weapons, it 
+                determines how much damage is dealt, and for armor how much physical
+                damage it absorbs.`
         }
       ]
     },
@@ -710,11 +756,20 @@ export const BUILDER_FORMS = {
               value: "key",
               label: "Key"
             }
-          ]
+          ],
+          help: `The type of the item.<br/>
+            - inert: an item that does nothing special.
+            - equippable: weapons or armor meant that can be worn.
+            - container: bags, chests and items that can contain other items.
+            - trash: a containe items that delete items put into it.
+            - quest: an item used as a quest objective.
+            - food: an item that restores stamina on consumption.
+            - key: an item that opens a door.`
         },
         {
           attr: "cost",
-          label: "Cost"
+          label: "Cost",
+          help: `How much a merchant would buy the item for. Merchants sell items for twice their cost.`
         }
       ]
     },
@@ -807,93 +862,6 @@ export const BUILDER_FORMS = {
         {
           attr: "",
           label: ""
-        }
-      ]
-    }
-  ],
-
-  ITEM_TEMPLATE_EQUIPMENT: [
-    {
-      children: [
-        {
-          attr: "equipment_type",
-          label: "Equipment Type",
-          widget: "select",
-          options: [
-            {
-              value: "weapon_1h",
-              label: "1H Weapon"
-            },
-            {
-              value: "weapon_2h",
-              label: "2H Weapon"
-            },
-            {
-              value: "shield",
-              label: "Shield"
-            },
-            {
-              value: "head",
-              label: "Head"
-            },
-            {
-              value: "body",
-              label: "Body"
-            },
-            {
-              value: "arms",
-              label: "Arms"
-            },
-            {
-              value: "hands",
-              label: "Hands"
-            },
-            {
-              value: "waist",
-              label: "Waist"
-            },
-            {
-              value: "legs",
-              label: "Legs"
-            },
-            {
-              value: "feet",
-              label: "Feet"
-            }
-          ]
-        },
-        {}
-        // {
-        //   attr: "quality",
-        //   label: "Quality",
-        //   widget: "select",
-        //   options: [
-        //     {
-        //       value: "normal",
-        //       label: "Normal"
-        //     },
-        //     {
-        //       value: "imbued",
-        //       label: "Imbued"
-        //     },
-        //     {
-        //       value: "enchanted",
-        //       label: "Enchanted"
-        //     }
-        //   ]
-        // }
-      ]
-    },
-    {
-      row_name: "hit message",
-      children: [
-        {
-          attr: "hit_msg_first",
-          label: "First Person"
-        },
-        {
-          attr: "hit_msg_third",
-          label: "Third Person"
         }
       ]
     }

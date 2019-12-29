@@ -39,13 +39,17 @@
       <Combat @taplook="$emit('taplook')" />
     </div>
     <div v-if="is_mobile" class="mobile-cast-region">
-      <Cast :message="current_cast" v-if="current_cast" :key="current_cast.data.expires" />
+      <Cast
+        :message="current_cast"
+        v-if="current_cast"
+        :key="current_cast.data.expires"
+      />
     </div>
-    <Skills />
+    <Skills v-if="$store.state.game.world.allow_combat" />
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Status from "./Status.vue";
 import Skills from "./Skills.vue";
@@ -82,7 +86,8 @@ export default class PanelVitals extends Vue {
   }
 
   get hasMana() {
-    if (this.player.archetype != "warrior") return true;
+    if (this.player.archetype == "mage" || this.player.archetype == "cleric")
+      return true;
     return false;
   }
 
@@ -92,7 +97,7 @@ export default class PanelVitals extends Vue {
 }
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 @import "@/styles/colors.scss";
 @import "@/styles/fonts.scss";
 

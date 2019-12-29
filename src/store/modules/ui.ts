@@ -38,7 +38,7 @@ const mutations = {
       Can be invoked either by just passing the notification stream,
       or by passing an object. If with an object, additional options
       may be specified:
-      - notification: the text of the notification
+      - text: the text of the notification
       - expires: how long to wait to expire the message, where a false
         value means never expire.
       - type: success or error
@@ -61,7 +61,11 @@ const mutations = {
   notification_set_error: (state, notification) => {
     state.notification = notification;
     state.notificationType = "error";
-    state.notification_expires = 3000;
+    state.notification_expires = 5000;
+  },
+
+  notification_clear(state) {
+    state.notification = "";
   },
 
   modal_set: (state, modal) => {

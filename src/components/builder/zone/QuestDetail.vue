@@ -67,7 +67,7 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
-import ZoneView from "@/components/builder/ZoneView";
+import ZoneView from "@/components/builder/zone/ZoneView";
 import {
   BUILDER_ACTIONS,
   BUILDER_MUTATIONS,

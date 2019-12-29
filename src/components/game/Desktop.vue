@@ -52,7 +52,8 @@ export default class DesktopGame extends Vue {
     }
     return {
       left: 50 + this.lookup.position.left + "px",
-      bottom: window.innerHeight - this.lookup.position.top + "px"
+      bottom: window.innerHeight - this.lookup.position.top + "px",
+      'z-index': '10 !important'
     };
   }
 
@@ -106,6 +107,7 @@ export default class DesktopGame extends Vue {
 
   .desktop-lookup {
     position: absolute;
+    -webkit-transform: translate3d(0,0,0);
   }
 
   #input {

@@ -22,9 +22,9 @@
             <div>{{ item_template.cost }}</div>
           </div>
 
-          <div>
-            <button class="btn-thin edit-mob" @click="editInfo">EDIT INFO</button>
-            <button class="btn-thin delete-mob" @click="deleteItem">DELETE ITEM</button>
+          <div class="info-actions mt-4">
+            <button class="btn-small edit-mob" @click="editInfo">EDIT INFO</button>
+            <button class="btn-small delete-mob delete-template" @click="deleteItem">DELETE ITEM</button>
           </div>
         </div>
 
@@ -85,51 +85,46 @@
     <div class="divider"></div>
 
     <div class="half-panels">
-      <div class="equipment" v-if="item_template.type === 'equippable'">
-        <h3>EQUIPMENT</h3>
-
-        <div class="item-equipment-info">
-          <div>
-            <div>{{ item_template.equipment_type }}</div>
-          </div>
-
-          <div>
-            <div class="field-desc">First person hit</div>
-            <div>You {{ item_template.hit_msg_first }} your target</div>
-          </div>
-
-          <div>
-            <div class="field-desc">Third person hit</div>
-            <div>Someone {{ item_template.hit_msg_third }} their target</div>
-          </div>
-        </div>
-
-        <button class="btn-thin edit-mob" @click="editEquipment">EDIT EQUIPMENT</button>
-      </div>
-
-      <ItemTemplateInventory />
+      <ItemTemplateEquipment v-if="item_template.type === 'equippable'" />
 
       <div class="advanced">
         <h3>ADVANCED</h3>
 
-        <div v-if="item_template.is_persistent">Items spawned by this template will be persistent.</div>
-        <div v-else>Items spawned by this template will not be persistent.</div>
-
         <div v-if="item_template.is_pickable">Item can be picked up.</div>
         <div v-else>Item cannot be picked up.</div>
 
+        <div class="mt-4" v-if="item_template.is_boat">Item allows to go on water.</div>
+
+        <template v-if="$store.state.builder.world.is_multiplayer">
+          <div
+            class="mt-4"
+            v-if="item_template.is_persistent"
+          >Items spawned by this template will persist over reboots even if left on the ground.</div>
+          <div
+            class="mt-4"
+            v-else
+          >Items spawned by this template will not persist over reboots if left on the ground.</div>
+        </template>
+
         <button class="btn-thin edit-advanced" @click="editAdvanced">EDIT ADVANCED SETTINGS</button>
       </div>
+
+      <div v-if="item_template.type !== 'equippable'"></div>
+
+      <ItemTemplateInventory />
+      <ItemTemplateLoads />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue, Mixins } from "vue-property-decorator";
-import WorldView from "@/components/builder/WorldView.ts";
+import WorldView from "@/components/builder/world/WorldView.ts";
 import { BUILDER_FORMS } from "@/core/forms.ts";
 import ItemTemplateStats from "./ItemTemplateStats.vue";
 import ItemTemplateInventory from "./ItemTemplateInventory.vue";
+import ItemTemplateEquipment from "./ItemTemplateEquipment.vue";
+import ItemTemplateLoads from "./ItemTemplateLoads.vue";
 import {
   BUILDER_ACTIONS,
   BUILDER_MUTATIONS,
@@ -140,7 +135,9 @@ import {
 @Component({
   components: {
     ItemTemplateStats,
-    ItemTemplateInventory
+    ItemTemplateInventory,
+    ItemTemplateEquipment,
+    ItemTemplateLoads
   }
 })
 export default class ItemTemplateDetails extends Mixins(WorldView) {
@@ -166,39 +163,31 @@ export default class ItemTemplateDetails extends Mixins(WorldView) {
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
 
-  editEquipment() {
-    const entity = this.item_template;
-    const modal = {
-      title: `Item Template ${entity.id}`,
-      data: entity,
-      schema: BUILDER_FORMS.ITEM_TEMPLATE_EQUIPMENT,
-      action: "builder/worlds/item_template_save"
-    };
-    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
-  }
-
   editAdvanced() {
     const entity = this.item_template;
+    const schema: {}[] = [
+      {
+        attr: "is_pickable",
+        label: "Can be picked up",
+        widget: "checkbox"
+      },
+      {
+        attr: "is_boat",
+        label: "Allows to go on water",
+        widget: "checkbox"
+      }
+    ];
+    if (this.$store.state.builder.world.is_multiplayer) {
+      schema.push({
+        attr: "is_persistent",
+        label: "Is Persistent",
+        widget: "checkbox"
+      });
+    }
     const modal = {
       title: `Item Template ${entity.id}`,
       data: entity,
-      schema: [
-        {
-          attr: "is_persistent",
-          label: "Is Persistent",
-          widget: "checkbox"
-        },
-        {
-          attr: "is_pickable",
-          label: "Can be picked up",
-          widget: "checkbox"
-        },
-        {
-          attr: "is_boat",
-          label: "Allows to go on water",
-          widget: "checkbox"
-        }
-      ],
+      schema: schema,
       action: "builder/worlds/item_template_save"
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
@@ -209,7 +198,7 @@ export default class ItemTemplateDetails extends Mixins(WorldView) {
 
     // Crude confirm dialog
     const c = confirm(
-      `Are you sure you want to delete Mob Template ${item_template_id}?`
+      `Are you sure you want to delete Item Template ${item_template_id}?`
     );
     if (!c) return;
 

@@ -25,13 +25,13 @@
 
       <div class="room-description">
         <div class="description-title">Description</div>
-        <div class="description-content" v-if="room.description">{{ room.description }}</div>
+        <RoomDescription v-if="room.description" :room="room" />
         <div class="description-content no-description" v-else>Room has no description.</div>
         <button class="btn-thin" @click="onEditDescription">EDIT DESCRIPTION</button>
       </div>
     </div>
 
-    <RoomActions/>
+    <RoomActions />
 
     <div class="mt-8" v-if="room.note">
       <h3>ROOM NOTE</h3>
@@ -51,11 +51,13 @@ import { BUILDER_FORMS } from "@/core/forms";
 import { MapRoomClick } from "@/components/builder/Mixins.ts";
 import { BUILDER_ROOM_INDEX } from "@/router";
 import { FormElement } from "@/core/forms";
+import RoomDescription from "@/components/builder/room/RoomDescription.vue";
 
 @Component({
   components: {
     Map,
-    RoomActions
+    RoomActions,
+    RoomDescription
   }
 })
 export default class RoomDetails extends Mixins(MapRoomClick, RoomView) {
@@ -79,10 +81,10 @@ export default class RoomDetails extends Mixins(MapRoomClick, RoomView) {
     if (key === "e") this.editInfo();
   }
 
-  async activated() {
+  async mounted() {
     window.addEventListener("keypress", this.onTypeE);
   }
-  deactivated() {
+  destroyed() {
     let x = 1;
     window.removeEventListener("keypress", this.onTypeE);
   }

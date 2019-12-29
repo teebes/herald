@@ -31,7 +31,7 @@
             <label for="field-faction">Faction</label>
             <select id="field-faction" v-model="faction">
               <option
-                v-for="faction in world.core_factions"
+                v-for="faction in worldFactions"
                 :key="faction.code"
                 :value="faction.code"
               >{{ faction.name }}</option>
@@ -44,13 +44,14 @@
               <option value="warrior">Warrior</option>
               <option value="mage">Mage</option>
               <option value="cleric">Cleric</option>
+              <option value="assassin">Assassin</option>
             </select>
           </div>
         </div>
         <button class="btn-large">CREATE CHARACTER</button>
       </form>
     </div>
-    <div class="cancel-action" @click="$emit('cancelcreate')">cancel</div>
+    <div class="cancel-action" @click="onCancelCreate()">cancel</div>
   </div>
 </template>
 
@@ -59,6 +60,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import axios from "axios";
 import { INTRO_WORLD_ID } from "@/config.ts";
 import SignUp from "@/views/SignUp.vue";
+import _ from "lodash";
 
 @Component({
   components: {
@@ -77,11 +79,22 @@ export default class extends Vue {
 
   constructor() {
     super();
-    if (this.world.core_factions.length) {
-      this.faction = this.world.core_factions[0].code;
+    if (this.worldFactions.length) {
+      this.faction = this.worldFactions[0].code;
     } else {
       this.faction = null;
     }
+  }
+
+  get worldFactions() {
+    const world_factions = this.world.core_factions;
+    const selectable_factions = _.filter(world_factions, faction => {
+      return faction.is_selectable;
+    });
+    const sorted_factions = _.sortBy(selectable_factions, faction => {
+      return !faction.is_default;
+    });
+    return sorted_factions;
   }
 
   get showFactions() {
@@ -102,7 +115,8 @@ export default class extends Vue {
       payload["faction"] = this.faction;
     }
     const resp = await axios.post(
-      `lobby/worlds/${this.$route.params.world_id}/chars/`, payload
+      `lobby/worlds/${this.$route.params.world_id}/chars/`,
+      payload
     );
     if (resp.status === 201) {
       // this.chars.push(resp.data);
@@ -110,6 +124,10 @@ export default class extends Vue {
       this.charname = "";
       this.gender = "female";
     }
+  }
+
+  onCancelCreate() {
+    this.$store.commit("lobby/world_details/create_character_set", false);
   }
 }
 </script>
@@ -120,10 +138,11 @@ export default class extends Vue {
 @import "@/styles/fonts.scss";
 
 .new-character {
+  max-width: 800px;
+  margin: 0 auto;
   margin-bottom: 50px;
   margin-top: 40px;
   flex-basis: 33%;
-  height: 60px;
 
   .wrapper {
     background: $color-background-light;

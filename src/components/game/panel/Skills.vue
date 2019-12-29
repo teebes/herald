@@ -3,18 +3,25 @@
     <div class="skills-view flex flex-col">
       <div class="core-skills-region skills action-boxes" v-if="coreSkills.length">
         <div>
-          <div class="label">Core Skills</div>
+          <div class="label">
+            Core Skills
+            <span
+              class="stance"
+              v-if="$store.state.game.player.archetype === 'assassin'"
+            >{{ $capfirst($store.state.game.player.stance) }}</span>
+          </div>
           <div class="skill-boxes">
             <div class="box-row">
               <div
                 class="box-item no-touch"
+                :class="{ disabled: skill.is_disabled }"
                 v-for="skill in coreSkills"
                 :key="skill.cmd"
                 @click="onClick(skill)"
               >
                 <div class="box-overlay" :ref="skill.cmd + '-overlay'"></div>
-                <span class="box-name">{{ skill.label }}</span>
-                <span class="hotkey">{{ skill.hotKey }}</span>
+                <span class="box-name unselectable">{{ skill.label }}</span>
+                <span class="hotkey unselectable">{{ skill.hotKey }}</span>
               </div>
             </div>
           </div>
@@ -33,8 +40,8 @@
                 @click="onClick(skill)"
               >
                 <div class="box-overlay" :ref="skill.cmd + '-overlay'"></div>
-                <span class="box-name">{{ skill.label }}</span>
-                <span class="hotkey">{{ skill.hotKey }}</span>
+                <span class="box-name unselectable">{{ skill.label }}</span>
+                <span class="hotkey unselectable">{{ skill.hotKey }}</span>
               </div>
             </div>
           </div>
@@ -44,7 +51,7 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { TweenLite, Linear } from "gsap";
 import EventBus from "@/core/eventbus.ts";
@@ -89,6 +96,10 @@ export default class PanelSkills extends Vue {
     for (const skill in cooldowns) {
       if (!this.activeCooldowns[skill]) {
         const overlay = this.$refs[`${skill}-overlay`] as HTMLElement;
+        if (!overlay || overlay[0] === undefined) {
+          return;
+        }
+
         const cooldown: Cooldown = cooldowns[skill];
 
         const current = new Date().getTime();
@@ -114,6 +125,7 @@ export default class PanelSkills extends Vue {
 
   onComplete(skill) {
     const overlay = this.$refs[`${skill}-overlay`] as HTMLElement;
+    if (!overlay || !overlay[0]) return;
     overlay[0].setAttribute("style", "height: 100%");
     overlay[0].classList.add("finished");
 
@@ -164,6 +176,7 @@ export default class PanelSkills extends Vue {
   }
 
   onClick(skill) {
+    if (skill.is_disabled) return;
     this.$store.dispatch("game/cmd", skill.cmd);
   }
 
@@ -173,7 +186,31 @@ export default class PanelSkills extends Vue {
 
   get archetypeSkills() {
     const archetype = this.player.archetype;
-    return this.$store.state.game.world.skills[archetype];
+    let skills = { ...this.$store.state.game.world.skills[archetype] };
+
+    // For assassins, modify the available skills based on stance
+    if (archetype === "assassin") {
+      const core_asn_skills: {}[] = [],
+        stance = this.player.stance;
+      for (const skill_code of skills.core) {
+        const skill = skills[skill_code];
+
+        // Mark the skill disabled if in a disabled stance
+        if (skill.disabled.indexOf(stance) !== -1) {
+          skill.is_disabled = true;
+        } else {
+          skill.is_disabled = false;
+        }
+
+        // If the player's stance is one of the allowed stances
+        if (skill.stances.indexOf(stance) !== -1) {
+          core_asn_skills.push(skill.code);
+        }
+      }
+      skills.core = core_asn_skills;
+    }
+
+    return skills;
   }
 
   get coreSkills() {
@@ -185,11 +222,23 @@ export default class PanelSkills extends Vue {
         skills.push({
           label: skillData.name,
           cmd: skillData.code,
-          hotKey: hotKey
+          hotKey: hotKey,
+          is_disabled: skillData.is_disabled
         });
       }
       hotKey += 1;
     }
+
+    // Hack, insert a disabled box in slot 2 while player is less than level 9
+    if (this.player.archetype === "assassin" && this.player.level < 9) {
+      skills.splice(1, 0, {
+        label: "",
+        cmd: "",
+        hotkey: 2,
+        is_disabled: true
+      });
+    }
+
     return skills;
   }
 
@@ -200,6 +249,7 @@ export default class PanelSkills extends Vue {
       const skillCode = this.player.skills.flex[flexNumber];
       if (skillCode) {
         const skillData = this.archetypeSkills[skillCode];
+        if (!skillData) continue;
         if (this.player.level >= skillData.level) {
           skills.push({
             label: skillData.name,
@@ -232,6 +282,18 @@ export default class PanelSkills extends Vue {
     font-size: 15px;
     line-height: 18px;
     padding-bottom: 2px;
+
+    > span {
+      font-size: inherit;
+      color: $color-text-hex-70;
+    }
+
+    > .stance {
+      text-transform: lowercase;
+      margin-left: 35px;
+      float: right;
+      font-size: 17px;
+    }
   }
 
   .box-row {
@@ -247,11 +309,16 @@ export default class PanelSkills extends Vue {
       text-align: center;
       flex-wrap: wrap;
 
+      color: white;
       background: #828283;
+
+      &.disabled {
+        background: #3c3c3c;
+      }
+
       height: 40px;
       max-width: 50%;
 
-      color: white;
       font-size: 11px;
       line-height: 15px;
 
@@ -265,6 +332,9 @@ export default class PanelSkills extends Vue {
       &.no-touch {
         &:hover {
           cursor: pointer;
+          &.disabled {
+            cursor: default;
+          }
 
           .hotkey {
             display: block;
@@ -276,6 +346,9 @@ export default class PanelSkills extends Vue {
             font-size: 10px;
           }
         }
+      }
+      &.disabled:hover > .hotkey {
+        display: none;
       }
 
       &.cooldown {
@@ -295,6 +368,9 @@ export default class PanelSkills extends Vue {
         height: 100%;
 
         color: white;
+      }
+      &.disabled > .box-name {
+        color: $color-text-hex-50;
       }
 
       .box-overlay {

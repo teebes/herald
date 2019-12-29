@@ -1,9 +1,15 @@
 <template>
   <div class="form-group" :class="{ 'checkbox': elementSchema.widget == 'checkbox' }">
-    <label v-if="elementSchema.widget == 'checkbox'">
-      <input :id="'field-' + elementSchema.attr" type="checkbox" v-model="internalValue" />
-      {{ elementSchema.label }}
-    </label>
+    <!-- Checkbox -->
+    <div class="flex" v-if="elementSchema.widget == 'checkbox'">
+      <label>
+        <input :id="'field-' + elementSchema.attr" type="checkbox" v-model="internalValue" />
+        {{ elementSchema.label }}
+      </label>
+      <div v-if="elementSchema.help && elementSchema.help" class="help-icon">
+        <img alt="help" src="~@/assets/ui/help_icon_2x.png" v-tooltip="tooltip_content" />
+      </div>
+    </div>
 
     <template v-else>
       <label :for="'field-' + elementSchema.attr" :class="{ error: hasFieldError }">
@@ -16,14 +22,18 @@
         </div>
       </label>
 
+      <!-- Textarea -->
       <textarea
         :id="'field-' + elementSchema.attr"
         :placeholder="elementSchema.label"
         v-model="internalValue"
         v-if="elementSchema.widget == 'textarea'"
         @keyup="delete formErrors[elementSchema.attr]"
+        @focus="onFocus"
+        @blur="onBlur"
       ></textarea>
 
+      <!-- Select -->
       <template v-else-if="elementSchema.options">
         <input v-if="readonly" readonly="readonly" :value="internalValue" />
         <select :id="'field-' + elementSchema.attr" v-model="internalValue" v-else>
@@ -35,12 +45,14 @@
         </select>
       </template>
 
+      <!-- Reference -->
       <ReferenceField
         v-else-if="elementSchema.widget == 'reference'"
         :schema="elementSchema"
         v-model="internalValue"
       />
 
+      <!-- Input -->
       <input
         :id="'field-' + elementSchema.attr"
         :placeholder="elementSchema.label"
@@ -97,7 +109,20 @@ export default class FormField extends Vue {
   }
 
   onBlur() {
-    this.$store.commit(UI_MUTATIONS.EDITING_FIELD_CLEAR);
+    setTimeout(() => {
+      this.$store.commit(UI_MUTATIONS.EDITING_FIELD_CLEAR);
+    }, 250);
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.form-group.checkbox {
+  display: flex;
+  align-items: center;
+  img {
+    position: relative;
+    bottom: 6px;
+  }
+}
+</style>

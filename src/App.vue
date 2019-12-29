@@ -17,7 +17,7 @@
 import { Component, Vue } from "vue-property-decorator";
 
 // Third party imports
-import VueAnalytics from 'vue-analytics'
+import VueAnalytics from "vue-analytics";
 import axios from "axios";
 import VTooltip from "v-tooltip";
 import VueClosable from "vue-closable";
@@ -29,9 +29,10 @@ import Header from "./components/Header.vue";
 import Notification from "./components/Notification.vue";
 import Modal from "./components/Modal.vue";
 import store from "@/store";
-import { capfirst } from "@/helpers/utils.ts";
+import { capfirst } from "@/core/utils.ts";
 import { interactive } from "@/core/directives.ts";
-
+import VueCarousel from "vue-carousel";
+import VueClipboard from "vue-clipboard2";
 
 TweenLite.lagSmoothing(0);
 
@@ -39,12 +40,14 @@ Vue.prototype.$capfirst = capfirst;
 Vue.prototype.$http = axios;
 Vue.use(VTooltip);
 Vue.use(VueClosable);
+Vue.use(VueCarousel);
+Vue.use(VueClipboard)
 
 if (ANALYTICS_ID) {
   Vue.use(VueAnalytics, {
     id: ANALYTICS_ID,
     checkDuplicatedScript: true
-  })
+  });
 }
 
 // Custom directives

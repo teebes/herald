@@ -83,7 +83,7 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Mixins } from "vue-property-decorator";
-import ZoneView from "@/components/builder/ZoneView";
+import ZoneView from "@/components/builder/zone/ZoneView";
 import axios from "axios";
 import {
   BUILDER_ACTIONS,
@@ -115,7 +115,7 @@ export default class extends Mixins(ZoneView) {
     return this.$store.state.builder.zones.loader;
   }
 
-  async activated() {
+  async mounted() {
     const world_id = this.$route.params.world_id;
     const loader_id = this.$route.params.loader_id;
 
