@@ -29,7 +29,33 @@
       />
     </div>
 
-    <div class="form-group">
+    <div class="form-subsection">
+      <div class="groups">
+        <div class="form-group">
+          <label for="field-first_name">First Name</label>
+          <input
+            id="field-first_name"
+            name="first_name"
+            class="form-control"
+            placeholder="First Name"
+            v-model="first_name"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="field-last_name">Last Name</label>
+          <input
+            id="field-last_name"
+            name="last_name"
+            class="form-control"
+            placeholder="Last Name"
+            v-model="last_name"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="form-group">
       <label for="field-username">
         Username
         <span>(optional)</span>
@@ -41,7 +67,7 @@
         placeholder="Username"
         v-model="username"
       />
-    </div>
+    </div>-->
 
     <div class="form-group send-newsletter checkbox">
       <label>
@@ -75,15 +101,19 @@ export default class SignUp extends Vue {
   password: string = "";
   send_newsletter: boolean = false;
   username: string = "";
+  first_name: string = "";
+  last_name: string = "";
 
   async saveuser() {
-    const { email, password, send_newsletter, username } = this;
-    await this.$store.dispatch("auth/save", {
-      email,
-      password,
-      send_newsletter,
-      username
-    });
+    const payload = {
+      email: this.email,
+      password: this.password,
+      send_newsletter: this.send_newsletter,
+      username: this.username,
+      first_name: this.first_name,
+      last_name: this.last_name
+    };
+    await this.$store.dispatch("auth/save", payload);
     this.$store.commit(
       UI_MUTATIONS.SET_NOTIFICATION,
       "Account saved and confirmation e-mail sent."
@@ -94,7 +124,7 @@ export default class SignUp extends Vue {
   mounted() {
     const email = this.$refs.email as HTMLElement;
     email.focus();
-  }    
+  }
 }
 </script>
 

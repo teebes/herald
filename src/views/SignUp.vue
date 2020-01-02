@@ -29,7 +29,33 @@
       />
     </div>
 
-    <div class="form-group">
+    <div class="form-subsection">
+      <div class="groups">
+        <div class="form-group">
+          <label for="field-first_name">First Name</label>
+          <input
+            id="field-first_name"
+            name="first_name"
+            class="form-control"
+            placeholder="First Name"
+            v-model="first_name"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="field-last_name">Last Name</label>
+          <input
+            id="field-last_name"
+            name="last_name"
+            class="form-control"
+            placeholder="Last Name"
+            v-model="last_name"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="form-group">
       <label for="field-username">
         Username
         <span>(optional)</span>
@@ -41,7 +67,7 @@
         placeholder="Username"
         v-model="username"
       />
-    </div>
+    </div>-->
 
     <div class="form-group send-newsletter checkbox">
       <label>
@@ -77,15 +103,26 @@ export default class SignUp extends Vue {
   password: string = "";
   send_newsletter: boolean = false;
   username: string = "";
+  first_name: string = "";
+  last_name: string = "";
 
   async signup() {
-    const { email, password, send_newsletter, username } = this;
+    const {
+      email,
+      password,
+      send_newsletter,
+      username,
+      first_name,
+      last_name
+    } = this;
     try {
       const resp = await this.$store.dispatch("auth/signup", {
         email,
         password,
         send_newsletter,
-        username
+        username,
+        first_name,
+        last_name
       });
       if (this.redirect) {
         this.$router.push({

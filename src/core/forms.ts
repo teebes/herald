@@ -21,6 +21,16 @@ export const NAME: FormElement = {
   label: "Name"
 };
 
+export const FIRST_NAME: FormElement = {
+  attr: "first_name",
+  label: "First Name"
+};
+
+export const LAST_NAME: FormElement = {
+  attr: "last_name",
+  label: "Last Name"
+};
+
 export const DESCRIPTION: FormElement = {
   attr: "description",
   label: "Description",

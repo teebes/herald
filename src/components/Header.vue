@@ -34,7 +34,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { AUTH_ACTIONS, AUTH_MUTATIONS } from "@/constants";
 import { mapGetters } from "vuex";
 import { UI_MUTATIONS } from "@/constants";
-import { FormElement } from "@/core/forms";
+import { FormElement, FIRST_NAME, LAST_NAME } from "@/core/forms";
 
 @Component({
   computed: mapGetters(["isAuthenticated"])
@@ -93,6 +93,9 @@ export default class Header extends Vue {
       {
         attr: "name",
         label: "Username"
+      },
+      {
+        children: [FIRST_NAME, LAST_NAME]
       },
       SEND_NEWSLETTER,
       ACCESSIBILITY,
