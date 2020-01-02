@@ -8,6 +8,8 @@
     <div class="info">
       <h2>Basic Info</h2>
       <div>Email: {{ user.email }}</div>
+      <div>First name: {{ user.first_name || "None set" }}</div>
+      <div>Last name: {{ user.last_name || "None set" }}</div>
       <div>Date joined: {{ user.date_joined }}</div>
       <div>Last login: {{ user.last_login }}</div>
       <div>Send newsletter: {{user.send_newsletter}}</div>
@@ -51,7 +53,7 @@
               <router-link :to="player_link(player)">{{ player.name }}</router-link>
             </td>
             <td class="player-room">
-              <router-link :to="world_link(player.world_id)">{{ player.world_name }}</router-link>
+              <router-link :to="world_link(player.root_world_id)">{{ player.world_name }}</router-link>
             </td>
             <td class="player-last-connection-ts color-text-70">{{ player.last_connection_ts }}</td>
           </tr>
@@ -76,11 +78,11 @@ export default class UserInfo extends Vue {
     console.log(this.user);
   }
 
-  world_link(world) {
+  world_link(world_id) {
     return {
       name: BUILDER_WORLD_INDEX,
       params: {
-        world_id: world.id
+        world_id: world_id
       }
     };
   }
