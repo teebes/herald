@@ -1,0 +1,18 @@
+<template>
+  <div>
+    Pay attention...
+    <span
+      v-if="message.data.quest.suggested_level > 1"
+      class="color-text-50 ml-4"
+    >[ Suggested level: {{ message.data.quest.suggested_level }} ]</span>
+  </div>
+</template>
+
+<script lang='ts'>
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+@Component
+export default class Enquire extends Vue {
+  @Prop() message!: any;
+}
+</script>

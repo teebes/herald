@@ -27,6 +27,7 @@ import Cast from "./consoleviews/Cast.vue";
 import Chat from "./consoleviews/Chat.vue";
 import CombatMessage from "./consoleviews/CombatMessage.vue";
 import DeathMessage from "./consoleviews/DeathMessage.vue";
+import Enquire from "./consoleviews/Enquire.vue";
 import Equipment from "./consoleviews/Equipment.vue";
 import Exits from "./consoleviews/Exits.vue";
 import Factions from "./consoleviews/Factions.vue";
@@ -52,6 +53,7 @@ import _ from "lodash";
     Chat,
     CombatMessage,
     DeathMessage,
+    Enquire,
     Equipment,
     Exits,
     Factions,
@@ -123,10 +125,15 @@ export default class Console extends Vue {
       return "Upgrade";
     } else if (message.type === "cmd.who.success") {
       return "Who";
-    } else if (message.type === "notification.cmd.chat.success" || message.type === "cmd.chat.success") {
+    } else if (
+      message.type === "notification.cmd.chat.success" ||
+      message.type === "cmd.chat.success"
+    ) {
       return "Chat";
     } else if (message.type === "notification.death") {
       return "DeathMessage";
+    } else if (message.type === "cmd.enquire.success") {
+      return "Enquire";
     } else if (
       message.type === "notification.combat.attack" ||
       message.type === "notification.combat.healing"
