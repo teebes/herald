@@ -16,9 +16,9 @@
                 <router-link
                   :to="{ name: BUILDER_WORLD_INDEX, params: { world_id: $route.params.world_id }}"
                 >EDIT WORLD</router-link>
-                <span class="divider"></span>
-                <a href @click.prevent="copyShareLink" @click="copyShareLink">SHARE</a>
               </template>
+              <span class="divider"></span>
+              <a href @click.prevent="copyShareLink" @click="copyShareLink">SHARE</a>
             </div>
             <div class="world-description">
               <div class="desc-line" v-for="(line, index) of descLines" :key="index">{{ line }}</div>
