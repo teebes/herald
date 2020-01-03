@@ -2,7 +2,9 @@
   <div class="editable-collection">
     <h2>{{ title.toUpperCase() }}S</h2>
 
-    <slot></slot>
+    <div class="my-4">
+      <slot></slot>
+    </div>
 
     <div v-if="collection" class="collection-element-list">
       <div class="collection-element" v-for="resource in collection" :key="resource.id">

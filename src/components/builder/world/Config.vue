@@ -137,7 +137,6 @@
         <h3>World Builders</h3>
 
         <div>Builders are able to access the editor for a given world. They can be given read-only access.</div>
-        <div>In order to add a user as a builder, they must have created a character in your game.</div>
 
         <router-link
           :to="{name: BUILDER_WORLD_BUILDERS, params: {world_id: $route.params.world_id}}"
