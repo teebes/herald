@@ -1,27 +1,34 @@
 <template>
   <div
-    :class="{ grouped: isGrouped, damageDealt: isDamageDealt, damageTaken: isDamageTaken }"
-  >{{ message.text }}</div>
+    :class="{
+      grouped: isGrouped,
+      damageDealt: isDamageDealt,
+      damageTaken: isDamageTaken
+    }"
+  >
+    {{ message.text }}
+  </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 @Component
 export default class CombatMessage extends Vue {
   @Prop() message!: any;
-  @Prop() previousMessage!: any;
+  //@Prop() previousMessage!: any;
   @Prop() index!: number;
 
   get isGrouped() {
-    const prevMessage = this.previousMessage;
-    if (
-      prevMessage &&
-      prevMessage.data &&
-      prevMessage.data.round_id === this.message.data.round_id
-    ) {
-      return false;
-    }
-    return true;
+    return false;
+    // const prevMessage = this.previousMessage;
+    // if (
+    //   prevMessage &&
+    //   prevMessage.data &&
+    //   prevMessage.data.round_id === this.message.data.round_id
+    // ) {
+    //   return false;
+    // }
+    // return true;
   }
 
   get isDamageTaken() {

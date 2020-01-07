@@ -1,13 +1,12 @@
 <template>
   <div id="console" ref="console" @scroll="onScroll">
-    <div class="buffer" :style="{ height: scrollHeight + 'px'}"></div>
+    <div class="buffer" :style="{ height: scrollHeight + 'px' }"></div>
     <div class="messages">
       <component
         v-for="(message, index) in messages"
         :key="message.receive_ts"
         :is="consoleMessage(message)"
         :message="message"
-        :previousMessage="messages[index - 1]"
         :index="index"
         class="message"
         :class="[message.type]"
@@ -20,7 +19,7 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import EventBus from "@/core/eventbus.ts";
 import Cast from "./consoleviews/Cast.vue";
