@@ -5,7 +5,13 @@
     :endpoint="endpoint"
     :display_component="display_component"
     :schema="schema"
-  />
+  >
+    <slot>
+      <div
+        class="color-text-50"
+      >To add a builder, click 'ADD WORLD BUILDER' and look them up by e-mail address.</div>
+    </slot>
+  </EditableCollection>
 </template>
 
 <script lang='ts'>

@@ -74,12 +74,7 @@ const actions = {
 
   save: async ({ commit }, payload) => {
     try {
-      const resp = await axios.post("auth/save/", {
-        email: payload.email,
-        password: payload.password,
-        send_newsletter: payload.send_newsletter,
-        username: payload.username
-      });
+      const resp = await axios.post("auth/save/", payload);
       commit("auth_set", resp.data.token);
       commit("user_set", resp.data.user);
       return resp;
