@@ -360,8 +360,8 @@ export const GET_MOB_TEMPLATE_INFO = () => {
               label: "Cleric"
             },
             {
-              value: "thief",
-              label: "Thief"
+              value: "assassin",
+              label: "Assassin"
             }
           ]
         }
