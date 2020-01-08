@@ -451,9 +451,18 @@ const actions = {
   }
 };
 
+function uuidv4() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+    let r = (Math.random() * 16) | 0,
+      v = c == "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
 const mutations = {
   message_add: (state, message) => {
     message.receive_ts = new Date().getTime();
+    message.message_id = uuidv4();
 
     if (
       message.type === "cmd.flee.success" ||

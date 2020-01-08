@@ -73,6 +73,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 @Component
 export default class GameFactions extends Vue {
   @Prop() message!: any;
+  @Prop() distanceToBottom!: number;
 
   expanded_factions: {} = {};
 
@@ -81,6 +82,9 @@ export default class GameFactions extends Vue {
       Vue.set(this.expanded_factions, code, true);
     } else {
       Vue.set(this.expanded_factions, code, false);
+    }
+    if (this.distanceToBottom < 5) {
+      this.$emit("scrollDown");
     }
   }
 

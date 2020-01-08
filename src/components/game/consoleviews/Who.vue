@@ -4,16 +4,15 @@
     <div
       v-for="player in message.data.players"
       :key="player.id"
-      :class="{'color-secondary': player.name_recognition}"
+      :class="{ 'color-secondary': player.name_recognition }"
     >
       <span v-if="player.is_immortal">~</span>
-      {{ player.name }} {{ player.title }}
-      ({{ player.level }})
-      <span
-        v-if="player.display_faction"
-      >[{{ player.display_faction }}]</span>
+      {{ player.name }} {{ player.title }} ({{ player.level }})
+      <span v-if="player.display_faction">[{{ player.display_faction }}]</span>
       <span v-if="player.is_idle" class="ml-1 color-text-50">(Idle)</span>
-      <span v-if="player.is_invisible" class="ml-1 color-text-50">[invisible]</span>
+      <span v-if="player.is_invisible" class="ml-1 color-text-50"
+        >[invisible]</span
+      >
     </div>
 
     <template v-if="grapevine_worlds.length">
@@ -29,18 +28,21 @@
             class="gworld-players ml-4"
             v-for="player in world_data.players"
             :key="player"
-          >{{ player }}@{{ world_data.name }}</div>
+          >
+            {{ player }}@{{ world_data.name }}
+          </div>
         </template>
       </div>
     </template>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 @Component
 export default class GameWho extends Vue {
   @Prop() message!: any;
+  @Prop() distanceToBottom!: number;
 
   expanded_worlds: {} = {};
 
@@ -66,6 +68,9 @@ export default class GameWho extends Vue {
     } else {
       Vue.set(this.expanded_worlds, world_name, false);
     }
+    if (this.distanceToBottom < 5) {
+      this.$emit("scrollDown");
+    }
   }
 }
 </script>
@@ -78,4 +83,3 @@ export default class GameWho extends Vue {
   }
 }
 </style>
-
