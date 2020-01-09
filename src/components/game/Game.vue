@@ -1,8 +1,7 @@
 <template>
-  <div
-    id="full-screen-message"
-    v-if="$store.state.game.full_screen_message"
-  >{{ $store.state.game.full_screen_message }}</div>
+  <div id="full-screen-message" v-if="$store.state.game.full_screen_message">
+    {{ $store.state.game.full_screen_message }}
+  </div>
   <div id="game" v-else-if="loaded" class="flex flex-grow">
     <component
       :is="gameComponent"
@@ -16,7 +15,7 @@
   <div v-else>Loading...</div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import axios from "axios";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import AccessibleGame from "./AccessibleGame.vue";
@@ -75,7 +74,6 @@ export default class Game extends Vue {
       this.$router.push({ name: "lobby" });
     }
     this.loaded = true;
-    //this.$store.commit("ui/notification_set", "Connected.");
     window.addEventListener("resize", this.onResize);
   }
 
