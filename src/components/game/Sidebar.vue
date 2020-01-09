@@ -1,5 +1,10 @@
 <template>
   <div id="sidebar">
+    <!-- Focus -->
+    <div class="sidebar-element focus">
+      Focus: {{ player.focus || "none set" }}
+    </div>
+
     <!-- Who list -->
     <div class="sidebar-element who-list">
       <div v-if="who_list && who_list['players']" @click="onClickWho">
@@ -30,6 +35,10 @@ export default class Sidebar extends Vue {
     return this.$store.state.game.who_list;
   }
 
+  get player() {
+    return this.$store.state.game.player;
+  }
+
   onClickWho() {
     if (this.expanded === "who") {
       this.expanded = "";
@@ -50,7 +59,7 @@ export default class Sidebar extends Vue {
   .sidebar-element {
     padding: 15px;
     &:not(:last-child) {
-      margin-bottom: 1px solid $color-background-very-light;
+      border-bottom: 1px solid $color-background-very-light;
     }
   }
 

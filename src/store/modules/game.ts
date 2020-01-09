@@ -96,7 +96,11 @@ const receiveMessage = async ({
   /* Main process for receiving messages */
   const message_data = JSON.parse(event.data);
 
-  const skip_messages = ["notification.shorttic", "notification.longtic"];
+  const skip_messages = [
+    "notification.shorttic",
+    "notification.longtic",
+    "notification.who"
+  ];
 
   // Echo received message to console if not short / long tic
   if (skip_messages.indexOf(message_data.type) == -1) {
