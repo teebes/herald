@@ -80,7 +80,9 @@ const set_initial_state = () => {
     hint: null,
     full_screen_message: null,
     // Key of the last character that's died
-    last_death: null
+    last_death: null,
+
+    who_list: []
   };
 };
 
@@ -127,6 +129,7 @@ const receiveMessage = async ({
     };
     commit("world_set", world_data);
     commit("player_set", message_data.data.actor);
+    commit("who_list_set", message_data.data.who_list);
     commit("full_screen_message_clear");
     router.push({ name: "game" });
     commit("ui/notification_set", "Connected.", { root: true });
@@ -308,6 +311,10 @@ const receiveMessage = async ({
         }
       });
     }
+  }
+
+  if (message_data.type === "notification.who") {
+    commit("who_list_set", message_data.data);
   }
 
   // Target setting
@@ -709,6 +716,10 @@ const mutations = {
 
   current_cast_set: (state, data) => {
     state.current_cast = data;
+  },
+
+  who_list_set: (state, who_list) => {
+    state.who_list = who_list;
   }
 };
 
