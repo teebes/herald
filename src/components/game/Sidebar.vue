@@ -2,19 +2,23 @@
   <div id="sidebar">
     <!-- Focus -->
     <div class="sidebar-element focus">
-      Focus: {{ player.focus || "none set" }}
+      <h3>
+        FOCUS
+        <Help :help="focus_help" />
+      </h3>
+      <div>{{ player.focus || "none set" }}</div>
     </div>
 
     <!-- Who list -->
     <div class="sidebar-element who-list">
-      <div v-if="who_list && who_list['players']" @click="onClickWho">
+      <h3 v-if="who_list && who_list['players']" @click="onClickWho">
         <span v-if="expanded === 'who'">-</span>
         <span v-else>+</span>
         {{ who_list["players"].length }}
         <template v-if="who_list['players'].length == 1">player</template>
         <template v-else>players</template>
         in world
-      </div>
+      </h3>
       <div v-if="expanded === 'who'" class="who-list-detail">
         <div v-for="player in who_list.players" :key="player.key">
           {{ player.name }} ({{ player.level }})
@@ -26,8 +30,13 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import Help from "@/components/Help.vue";
 
-@Component
+@Component({
+  components: {
+    Help
+  }
+})
 export default class Sidebar extends Vue {
   expanded: string = "";
 
@@ -37,6 +46,12 @@ export default class Sidebar extends Vue {
 
   get player() {
     return this.$store.state.game.player;
+  }
+
+  get focus_help() {
+    return `Set an item or character as the focus of another command.<br/>
+    <br/>
+    Enter 'help focus' for more information.`;
   }
 
   onClickWho() {
@@ -60,6 +75,10 @@ export default class Sidebar extends Vue {
     padding: 15px;
     &:not(:last-child) {
       border-bottom: 1px solid $color-background-very-light;
+    }
+
+    h3 {
+      text-transform: uppercase;
     }
   }
 
