@@ -8,7 +8,7 @@
         <Hint v-if="$store.state.game.hint" />
         <Input @input="onInput" />
       </div>
-      <Sidebar v-if="width > 1000" />
+      <Sidebar v-if="width > 1000" class="flex-shrink-0" />
     </div>
 
     <div
