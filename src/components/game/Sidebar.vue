@@ -1,14 +1,5 @@
 <template>
   <div id="sidebar">
-    <!-- Focus -->
-    <div class="sidebar-element focus">
-      <h3>
-        FOCUS
-        <Help :help="focus_help" />
-      </h3>
-      <div>{{ player.focus || "none set" }}</div>
-    </div>
-
     <!-- Who list -->
     <div class="sidebar-element who-list">
       <h3 v-if="who_list && who_list['players']" @click="onClickWho">
@@ -27,13 +18,25 @@
     </div>
 
     <!-- Quest Log -->
-    <div class="sidebar-element quest-log">
-      <h3>VIEW QUEST LOG</h3>
+    <div class="sidebar-element logs">
+      <h3>LOGS</h3>
       <div class="mt-4">
-        <button class="btn-small" @click="onClickQuestLog">
-          OPEN QUEST LOG
+        <button class="btn-small mb-1 button-gray" @click="onClickQuestLog">
+          QUEST LOG
+        </button>
+        <button class="btn-small button-gray" @click="onClickCommunicationLog">
+          COMMUNICATION LOG
         </button>
       </div>
+    </div>
+
+    <!-- Focus -->
+    <div class="sidebar-element focus">
+      <h3>
+        FOCUS
+        <Help :help="focus_help" />
+      </h3>
+      <div>{{ player.focus || "none set" }}</div>
     </div>
   </div>
 </template>
@@ -42,12 +45,14 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Help from "@/components/Help.vue";
 import QuestLog from "@/components/game/QuestLog.vue";
+import ComLog from "@/components/game/sidebar/ComLog.vue";
 import { UI_MUTATIONS } from "@/constants.ts";
 
 @Component({
   components: {
     Help,
-    QuestLog
+    QuestLog,
+    ComLog
   }
 })
 export default class Sidebar extends Vue {
@@ -79,6 +84,11 @@ export default class Sidebar extends Vue {
     const modal = {
       component: QuestLog
     };
+    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
+  }
+
+  onClickCommunicationLog() {
+    const modal = { component: ComLog };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
 }

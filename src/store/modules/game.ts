@@ -82,7 +82,10 @@ const set_initial_state = () => {
     // Key of the last character that's died
     last_death: null,
 
-    who_list: []
+    // Sidebar data
+
+    who_list: [],
+    com_list: []
   };
 };
 
@@ -95,6 +98,16 @@ const receiveMessage = async ({
 }) => {
   /* Main process for receiving messages */
   const message_data = JSON.parse(event.data);
+
+  const com_messages = [
+    "cmd.chat.success",
+    "notification.cmd.chat.success",
+    "cmd.tell.success",
+    "notification.tell"
+  ];
+  if (com_messages.indexOf(message_data.type) != -1) {
+    commit("com_list_add", message_data);
+  }
 
   const skip_messages = [
     "notification.shorttic",
@@ -724,6 +737,10 @@ const mutations = {
 
   who_list_set: (state, who_list) => {
     state.who_list = who_list;
+  },
+
+  com_list_add: (state, com) => {
+    state.com_list.push(com);
   }
 };
 
