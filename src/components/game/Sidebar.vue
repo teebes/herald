@@ -25,16 +25,29 @@
         </div>
       </div>
     </div>
+
+    <!-- Quest Log -->
+    <div class="sidebar-element quest-log">
+      <h3>VIEW QUEST LOG</h3>
+      <div class="mt-4">
+        <button class="btn-small" @click="onClickQuestLog">
+          OPEN QUEST LOG
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Help from "@/components/Help.vue";
+import QuestLog from "@/components/game/QuestLog.vue";
+import { UI_MUTATIONS } from "@/constants.ts";
 
 @Component({
   components: {
-    Help
+    Help,
+    QuestLog
   }
 })
 export default class Sidebar extends Vue {
@@ -60,6 +73,13 @@ export default class Sidebar extends Vue {
     } else {
       this.expanded = "who";
     }
+  }
+
+  onClickQuestLog() {
+    const modal = {
+      component: QuestLog
+    };
+    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
 }
 </script>
