@@ -10,7 +10,10 @@
 
         <div class="top-logo">
           <img src="@/assets/logo/logo-black-tower.svg" class="logo-badge" />
-          <img src="@/assets/logo/written-realms-black.svg" class="logo-title" />
+          <img
+            src="@/assets/logo/written-realms-black.svg"
+            class="logo-title"
+          />
         </div>
 
         <div class="top-actions">
@@ -24,12 +27,17 @@
           </template>
         </div>
 
-        <div class="town" :style="{backgroundPosition: townPos}"></div>
-        <div class="mountains" :style="{backgroundPosition: mountainPos}"></div>
+        <div class="town" :style="{ backgroundPosition: townPos }"></div>
+        <div
+          class="mountains"
+          :style="{ backgroundPosition: mountainPos }"
+        ></div>
         <div class="rocks"></div>
 
         <div class="center">
-          <div class="subtext font-text-light">Immersive text-based adventure games</div>
+          <div class="subtext font-text-light">
+            Immersive text-based adventure games
+          </div>
           <button class="play-demo btn btn-medium" @click="play">PLAY</button>
           <div class="cross-platform">
             <span class="chrome-logo">&nbsp;</span> Works in your browser
@@ -38,26 +46,33 @@
       </div>
 
       <div class="lead">
-        <div
-          class="first-paragraph"
-        >WrittenRealms are interactive fiction games. To play through a small introduction world, click the Play button above. Once you fight your way out of the cave, you will be taken to the multiplayer world, where more adventure awaits.</div>
+        <div class="first-paragraph">
+          WrittenRealms are interactive fiction games. To play through a small
+          introduction world, click the Play button above. Once you fight your
+          way out of the cave, you will be taken to the multiplayer world, where
+          more adventure awaits.
+        </div>
 
         <div class="highlights">
-          <div
-            class="highlight"
-          >Free to play! no ads, no paywalls, no annoying popups. Let yourself get fully immersed in another world.</div>
+          <div class="highlight">
+            Free to play! no ads, no paywalls, no annoying popups. Let yourself
+            get fully immersed in another world.
+          </div>
 
-          <div
-            class="highlight"
-          >Features a rich combat system with three playable classes, each with distinct skills and character customizations.</div>
+          <div class="highlight">
+            Features a rich combat system with three playable classes, each with
+            distinct skills and character customizations.
+          </div>
 
-          <div
-            class="highlight"
-          >Play on any device, anywhere: the game offers a different layout and interface for desktop and mobile.</div>
+          <div class="highlight">
+            Play on any device, anywhere: the game offers a different layout and
+            interface for desktop and mobile.
+          </div>
 
-          <div
-            class="highlight"
-          >Different worlds to progress through, some singleplayer and some multiplayer. You can even build your own.</div>
+          <div class="highlight">
+            Different worlds to progress through, some singleplayer and some
+            multiplayer. You can even build your own.
+          </div>
         </div>
       </div>
 
@@ -66,9 +81,11 @@
       <div class="augmented-ui">
         <div class="aui-title">A powerful augmented text interface</div>
 
-        <div
-          class="aui-subtitle"
-        >Written Realms provides a helpful User Interface that augments the text and makes it more easily interactable via pointer or touch controls.</div>
+        <div class="aui-subtitle">
+          Written Realms provides a helpful User Interface that augments the
+          text and makes it more easily interactable via pointer or touch
+          controls.
+        </div>
       </div>
 
       <div class="features">
@@ -80,7 +97,10 @@
           </div>
 
           <div class="feature-text">
-            <div>Interactive map: find your way across the worlds with a visual map that updates itself everytime you move.</div>
+            <div>
+              Interactive map: find your way across the worlds with a visual map
+              that updates itself everytime you move.
+            </div>
           </div>
         </div>
 
@@ -92,7 +112,10 @@
           </div>
 
           <div class="feature-text">
-            <div>Text popups: hover, click or tap over significant blocks of text to view contextual information and actions.</div>
+            <div>
+              Text popups: hover, click or tap over significant blocks of text
+              to view contextual information and actions.
+            </div>
           </div>
         </div>
 
@@ -104,7 +127,10 @@
           </div>
 
           <div class="feature-text">
-            <div>Assisted combat: use the action bar, aliases or hotkeys to trigger abilities and skills.</div>
+            <div>
+              Assisted combat: use the action bar, aliases or hotkeys to trigger
+              abilities and skills.
+            </div>
           </div>
         </div>
 
@@ -115,7 +141,10 @@
             </div>
           </div>
           <div class="feature-text">
-            <div>Build your own worlds: powerful World Editor interface, no programming needed!</div>
+            <div>
+              Build your own worlds: powerful World Editor interface, no
+              programming needed!
+            </div>
           </div>
         </div>
       </div>
@@ -140,15 +169,26 @@
         <div class="callout-text">Loving Written Realms?</div>
         <div class="patreon-button">
           <a href="https://www.patreon.com/bePatron?u=17624243">
-            <img src="@/assets/patreon/become_a_patron_button@2x.png" width="216px" />
+            <img
+              src="@/assets/patreon/become_a_patron_button@2x.png"
+              width="216px"
+            />
           </a>
         </div>
 
         <div class="current-patrons">
-          <div>Thank you to our generous Patrons, we are immensely grateful for your support:</div>
+          <div>
+            Thank you to our generous Patrons, we are immensely grateful for
+            your support:
+          </div>
           <div class="patrons">
-            <ul v-for="patron_group in patron_groups" :key="patron_groups.indexOf(patron_group)">
-              <li v-for="patron in patron_group" :key="patron.id">{{ patron.name.toUpperCase() }}</li>
+            <ul
+              v-for="patron_group in patron_groups"
+              :key="patron_groups.indexOf(patron_group)"
+            >
+              <li v-for="patron in patron_group" :key="patron.id">
+                {{ getName(patron) }}
+              </li>
             </ul>
           </div>
         </div>
@@ -165,7 +205,10 @@
           <router-link to="/terms">Terms</router-link>
           <router-link to="/privacy">Privacy</router-link>
           <a href="https://twitter.com/Written_Realms">
-            <img src="@/assets/about/Twitter_Social_Icon_Circle_Color.svg" width="16px" />
+            <img
+              src="@/assets/about/Twitter_Social_Icon_Circle_Color.svg"
+              width="16px"
+            />
           </a>
         </div>
       </div>
@@ -273,6 +316,19 @@ export default class Home extends Vue {
   async logout() {
     this.$store.dispatch("auth/logout");
     this.$router.push({ name: "home" });
+  }
+
+  getName(patron) {
+    if (patron.name) {
+      return patron.name.toUpperCase();
+    } else if (patron.first_name) {
+      let name = patron.first_name.toUpperCase();
+      if (patron.last_name) {
+        name += " " + patron.last_name[0].toUpperCase();
+      }
+      return name;
+    }
+    return "ANONYMOUS";
   }
 }
 </script>
