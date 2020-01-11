@@ -144,6 +144,20 @@ body {
 }
 
 body {
+  scrollbar-color: #333;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+}
+::-webkit-scrollbar-track {
+  background: #333;
+}
+::-webkit-scrollbar-thumb {
+  background: #777;
+}
+
+body {
   @include font-text-light;
   font-size: 14px;
   color: $color-text;

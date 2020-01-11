@@ -6,14 +6,17 @@
         <span v-if="expanded === 'who'">-</span>
         <span v-else>+</span>
         {{ who_list["players"].length }}
-        <template v-if="who_list['players'].length == 1">player</template>
+        <template
+          v-if="who_list['players'].length == 1"
+        >player</template>
         <template v-else>players</template>
         in world
       </h3>
       <div v-if="expanded === 'who'" class="who-list-detail">
-        <div v-for="player in who_list.players" :key="player.key">
-          {{ player.name }} ({{ player.level }})
-        </div>
+        <div
+          v-for="player in who_list.players"
+          :key="player.key"
+        >{{ player.name }} ({{ player.level }})</div>
       </div>
     </div>
 
@@ -21,12 +24,8 @@
     <div class="sidebar-element logs">
       <h3>LOGS</h3>
       <div class="mt-4">
-        <button class="btn-small mb-1 button-gray" @click="onClickQuestLog">
-          QUEST LOG
-        </button>
-        <button class="btn-small button-gray" @click="onClickCommunicationLog">
-          COMMUNICATION LOG
-        </button>
+        <button class="btn-small mb-1 button-gray" @click="onClickQuestLog">QUEST LOG</button>
+        <button class="btn-small button-gray" @click="onClickCommunicationLog">COMMUNICATION LOG</button>
       </div>
     </div>
 
@@ -36,7 +35,16 @@
         FOCUS
         <Help :help="focus_help" />
       </h3>
-      <div>{{ player.focus || "none set" }}</div>
+      <!-- <div>{{ player.focus || "none set" }}</div> -->
+      <Focus class="mt-2" />
+    </div>
+
+    <div class="sidebar-element flex-skills">
+      <h3>FLEX SKILLS</h3>
+    </div>
+
+    <div class="sidebar-element flex-skills">
+      <h3>FEATS</h3>
     </div>
   </div>
 </template>
@@ -46,13 +54,15 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Help from "@/components/Help.vue";
 import QuestLog from "@/components/game/QuestLog.vue";
 import ComLog from "@/components/game/sidebar/ComLog.vue";
+import Focus from "@/components/game/sidebar/Focus.vue";
 import { UI_MUTATIONS } from "@/constants.ts";
 
 @Component({
   components: {
     Help,
     QuestLog,
-    ComLog
+    ComLog,
+    Focus
   }
 })
 export default class Sidebar extends Vue {
