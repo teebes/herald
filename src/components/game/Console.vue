@@ -204,7 +204,7 @@ export default class Console extends Vue {
 @import "@/styles/fonts.scss";
 
 #console {
-  //border: 1px solid #444;
+  position: relative;
   padding: 0 20px 8px 20px;
   margin-bottom: 8px;
 
@@ -217,6 +217,11 @@ export default class Console extends Vue {
   -webkit-overflow-scrolling: touch;
 
   .message {
+    overflow-x: hidden;
+    > div {
+      overflow-x: hidden;
+    }
+
     &.echo,
     &.grouped,
     &.room_write,

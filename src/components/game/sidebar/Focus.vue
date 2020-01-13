@@ -2,13 +2,7 @@
   <form @submit.prevent="onSubmit">
     <div class="form-group">
       <input v-if="edit_mode == true" v-model="temp_focus" ref="editEl" />
-      <input
-        v-else
-        readonly="true"
-        :value="focus || 'none set'"
-        @click="onClickReadonly"
-        ref="readonlyEl"
-      />
+      <input v-else readonly="true" :value="focus" @click="onClickReadonly" ref="readonlyEl" />
     </div>
   </form>
 </template>
