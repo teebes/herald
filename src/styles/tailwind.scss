@@ -106,6 +106,8 @@
   margin-bottom: 2rem;
 }
 
+// Right Margin
+
 .mr-1 {
   margin-right: 0.25rem;
 }
@@ -131,6 +133,8 @@
   margin-right: 2rem;
 }
 
+// Left Margin
+
 .ml-1 {
   margin-left: 0.25rem;
 }
@@ -155,6 +159,8 @@
 .ml-8 {
   margin-left: 2rem;
 }
+
+// Vertical margin
 
 .my-1 {
   margin-top: 0.25rem;
@@ -188,6 +194,9 @@
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
+
+// Horizontal margin
+
 .mx-1 {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
@@ -220,6 +229,20 @@
   margin-left: 2rem;
   margin-right: 2rem;
 }
+
+// Left padding
+
+.pl-1 {
+  padding-left: 0.25rem;
+}
+.pl-2 {padding-left: 0.50rem;}
+.pl-3 {padding-left: 0.75rem;}
+.pl-4 {padding-left: 1rem;}
+.pl-5 {padding-left: 1.25rem;}
+.pl-6 {padding-left: 1.50rem;}
+.pl-7 {padding-left: 1.75rem;}
+.pl-8 {padding-left: 2rem;}
+
 .text-xs {
   font-size: 0.75rem;
 }
