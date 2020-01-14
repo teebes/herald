@@ -43,6 +43,9 @@ export default class extends Vue {
   @Prop() title!: string;
   @Prop() endpoint!: string;
   @Prop() schema!: FormElement[];
+  @Prop() action_add!: string;
+  @Prop() action_edit!: string;
+  @Prop() action_delete!: string;
 
   fetched: boolean = false;
 
@@ -74,7 +77,7 @@ export default class extends Vue {
     const modal = {
       data: new_data,
       schema: this.schema,
-      action: `builder/${this.registration_name}/create`,
+      action: this.action_add || `builder/${this.registration_name}/create`,
       title: `Add ${this.title}`
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
@@ -97,14 +100,14 @@ export default class extends Vue {
       title: `EDIT ${this.title}`,
       data: resource,
       schema: schema,
-      action: `builder/${this.registration_name}/edit`
+      action: this.action_edit || `builder/${this.registration_name}/edit`
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
 
   remove(resource) {
     this.$store.dispatch(
-      `builder/${this.registration_name}/delete`,
+      this.action_delete || `builder/${this.registration_name}/delete`,
       resource.id
     );
   }

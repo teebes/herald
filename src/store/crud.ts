@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const makeState = endpoint => {
+export const makeCrud = endpoint => {
   /*
     Create a dynamic state for a resource that will be manipulated in a 
     predictable manner via CRUD.
@@ -23,20 +23,24 @@ export const makeState = endpoint => {
           collection = resp.data;
         }
         commit("set_collection", collection);
+        return resp;
       },
       create: async ({ commit }, payload) => {
         const resp = await axios.post(endpoint, payload);
         commit("add_instance", resp.data);
+        return resp;
       },
       edit: async ({ commit }, payload) => {
         const resp = await axios.put(endpoint + payload.id + "/", payload);
         commit("update_instance", resp.data);
+        return resp;
       },
       delete: async ({ commit }, id) => {
         if (!confirm(`Confirm deletion?`)) return;
 
         const resp = await axios.delete(endpoint + id + "/");
         commit("remove_instance", id);
+        return resp;
       }
     },
     mutations: {
@@ -59,8 +63,6 @@ export const makeState = endpoint => {
     }
   };
 };
-
-//export default makeState;
 
 export const generate_crud_actions = (
   name,
@@ -85,9 +87,7 @@ export const generate_crud_actions = (
     },
     [`${name}_save`]: async ({ commit, state, rootState }, data) => {
       const resp = await axios.put(
-        `/builder/worlds/${rootState.builder.world.id}/${endpoint_token}/${
-          state[name].id
-        }/`,
+        `/builder/worlds/${rootState.builder.world.id}/${endpoint_token}/${state[name].id}/`,
         data
       );
       commit(`${name}_set`, resp.data);
@@ -95,9 +95,7 @@ export const generate_crud_actions = (
     },
     [`${name}_delete`]: async ({ commit, state, rootState }) => {
       const resp = await axios.delete(
-        `/builder/worlds/${rootState.builder.world.id}/${endpoint_token}/${
-          state[name].id
-        }/`
+        `/builder/worlds/${rootState.builder.world.id}/${endpoint_token}/${state[name].id}/`
       );
       commit(`${name}_clear`);
       delete_callback({ rootState });

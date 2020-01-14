@@ -80,7 +80,9 @@ const set_initial_state = () => {
     hint: null,
     full_screen_message: null,
     // Key of the last character that's died
-    last_death: null
+    last_death: null,
+
+    factions: []
   };
 };
 
@@ -629,6 +631,7 @@ const mutations = {
   },
   world_set: (state, world) => {
     state.world = world;
+    state.factions = world.factions;
   },
 
   width_set: (state, width) => {

@@ -69,6 +69,27 @@ export default {
       return resp.data;
     },
 
+    faction_add: async ({ commit, dispatch, rootState }, data) => {
+      const resp = await dispatch("builder/factions/create", data, {
+        root: true
+      });
+      commit("builder/faction_add", resp.data, { root: true });
+    },
+
+    faction_edit: async ({ commit, dispatch }, data) => {
+      const resp = await dispatch("builder/factions/edit", data, {
+        root: true
+      });
+      commit("builder/faction_update", resp.data, { root: true });
+    },
+
+    faction_delete: async ({ commit, dispatch, state }, data) => {
+      const resp = await dispatch("builder/factions/delete", data, {
+        root: true
+      });
+      commit("builder/faction_delete", resp.data, { root: true });
+    },
+
     ...mob_template_actions,
     ...item_template_actions
   },
