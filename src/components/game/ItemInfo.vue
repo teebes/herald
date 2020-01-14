@@ -75,7 +75,13 @@
 
     <div class="color-text-50 mt-2" v-if="item.label">An item label reads: "{{ item.label }}"</div>
 
-    <div v-if="item.cost" class="color-secondary mt-2">Sells for {{ item.cost }} gold.</div>
+    <div v-if="item.cost" class="color-secondary mt-2">
+      Sells for {{ item.cost }} gold.
+      <template v-if="isUpgradable">
+        <br />
+        Can be upgraded for {{ item.upgrade_cost }} gold.
+      </template>
+    </div>
   </div>
 </template>
 
@@ -87,6 +93,18 @@ import { getTargetInGroup } from "@/core/utils.ts";
 export default class ItemInfo extends Vue {
   @Prop() item!: any;
   @Prop({ default: false }) from_lookup!: boolean;
+
+  get isUpgradable() {
+    // Only show upgrade option in workshop rooms
+    if (this.$store.state.game.room.flags.indexOf("workshop") == -1)
+      return false;
+    // Show upgrade price based on whether they can be upgraded
+    if (this.item.quality == "enchanted" && this.item.upgrade_count <= 2)
+      return true;
+    else if (this.item.quality == "imbued" && this.item.upgrade_cost == 0)
+      return true;
+    return false;
+  }
 
   get lines() {
     return this.item.description.split("\n") || [];
