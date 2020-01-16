@@ -8,10 +8,11 @@
         <Hint v-if="$store.state.game.hint" />
         <Input @input="onInput" />
       </div>
-      <Sidebar v-if="width > 1000" class="flex-shrink-0" />
     </div>
 
-    <div
+    <Sidebar v-if="width > 1000" class="flex-shrink-0" />
+
+    <!-- <div
       class="desktop-lookup"
       v-if="lookup"
       v-closable="{ handler: 'closeLookup' }"
@@ -20,7 +21,7 @@
       @mouseover="onMouseOver"
     >
       <Lookup />
-    </div>
+    </div>-->
   </div>
 </template>
 

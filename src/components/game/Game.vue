@@ -1,7 +1,8 @@
 <template>
-  <div id="full-screen-message" v-if="$store.state.game.full_screen_message">
-    {{ $store.state.game.full_screen_message }}
-  </div>
+  <div
+    id="full-screen-message"
+    v-if="$store.state.game.full_screen_message"
+  >{{ $store.state.game.full_screen_message }}</div>
   <div id="game" v-else-if="loaded" class="flex flex-grow">
     <component
       :is="gameComponent"
@@ -108,14 +109,14 @@ export default class Game extends Vue {
   position: relative;
   overflow: hidden;
 
-  .console-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    min-height: 0;
-  }
+  // .console-wrapper {
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   right: 0;
+  //   bottom: 0;
+  //   min-height: 0;
+  // }
 
   .game-frame {
     position: absolute;
