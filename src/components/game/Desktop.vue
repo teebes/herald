@@ -5,14 +5,14 @@
     <div class="flex flex-grow">
       <div class="flex-grow flex flex-col">
         <Console :messages="messages" class="flex-grow" />
-        <Hint v-if="$store.state.game.hint" />
-        <Input @input="onInput" />
+        <Hint v-if="$store.state.game.hint" class="flex-shrink-0" />
+        <Input @input="onInput" class="flex-shrink-0" />
       </div>
     </div>
 
     <Sidebar v-if="width > 1000" class="flex-shrink-0" />
 
-    <!-- <div
+    <div
       class="desktop-lookup"
       v-if="lookup"
       v-closable="{ handler: 'closeLookup' }"
@@ -21,7 +21,7 @@
       @mouseover="onMouseOver"
     >
       <Lookup />
-    </div>-->
+    </div>
   </div>
 </template>
 
