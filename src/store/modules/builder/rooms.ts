@@ -1,4 +1,4 @@
-import { makeState as makeCrud } from "@/store/crud.ts";
+import { makeCrud } from "@/store/crud.ts";
 import root_store from "@/store";
 
 export default {

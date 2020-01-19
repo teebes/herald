@@ -6,6 +6,10 @@
       :endpoint="endpoint"
       :display_component="display_component"
       :schema="schema"
+      action_add="builder/worlds/faction_add"
+      action_edit="builder/worlds/faction_edit"
+      action_delete="builder/worlds/faction_delete"
+      registration_name="factions"
     />
   </div>
 </template>

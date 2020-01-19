@@ -10,11 +10,17 @@
         <router-link
           :to="get_mob_link(quest.mob_template.id)"
           class="reference-link"
-        >{{ quest.mob_template.name }}</router-link>
-.
+        >{{ quest.mob_template.name }}</router-link>.
         <div v-if="quest.level">Suggested level: {{ quest.level }}.</div>
-
         <div v-if="quest.requires_level">Requires level: {{ quest.requires_level }}</div>
+        <div v-if="quest.max_level">Max level: {{ quest.max_level }}</div>
+
+        <div v-if="quest.summary" class="mt-2">
+          Quest Summary:
+          <div v-for="(line, index) in quest.summary.split('\n')" :key="index" class="indented">
+            <div>{{ line }}</div>
+          </div>
+        </div>
 
         <div v-if="quest.requires_quest">
           Requires completion of
@@ -115,12 +121,27 @@ export default class extends Vue {
       label: "Suggested Level"
     };
 
+    const max_level: FormElement = {
+      attr: "max_level",
+      label: "Max Level"
+    };
+
+    const summary: FormElement = {
+      attr: "summary",
+      label: "Quest Summary",
+      widget: "textarea",
+      help: `Condensed version of the quest's instructions. If defined, the quest log will show this instead of the enquire commands.`
+    };
+
     const schema = [
       NAME,
-      MOB_TEMPLATE,
-      ZONE,
-      suggested_level,
-      requires_level,
+      {
+        children: [ZONE, MOB_TEMPLATE]
+      },
+      summary,
+      {
+        children: [suggested_level, requires_level, max_level]
+      },
       requires_quest
     ];
     const modal = {

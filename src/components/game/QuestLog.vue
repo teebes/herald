@@ -17,12 +17,12 @@
               v-if="log_entry.level > 1"
               class="color-text-50"
             >Suggested level: {{ log_entry.level }}</div>
-            <div class="mt-2">Quest given by {{ log_entry.quest_giver }}</div>
-            <div
-              v-for="(line, index) in log_entry.enquire_cmds"
-              :key="index"
-              class="mt-2"
-            >{{ line }}</div>
+            <div class="my-2 color-text-50">Quest given by {{ log_entry.quest_giver }}</div>
+
+            <div v-if="log_entry.summary">
+              <div v-for="(line, index) in log_entry.summary.split('\n')" :key="index">{{ line }}</div>
+            </div>
+            <div v-else v-for="(line, index) in log_entry.enquire_cmds" :key="index">{{ line }}</div>
           </template>
         </div>
       </template>
@@ -51,7 +51,7 @@ export default class QuestLog extends Vue {
   expanded: number = 0;
   fetched: boolean = false;
 
-  async created() {
+  async mounted() {
     const resp = await axios.get("/game/enquiredquests/", {
       headers: { "X-PLAYER-ID": this.$store.state.game.player.id }
     });

@@ -85,7 +85,8 @@ const set_initial_state = () => {
     // Sidebar data
 
     who_list: [],
-    com_list: []
+    com_list: [],
+    factions: []
   };
 };
 
@@ -653,6 +654,7 @@ const mutations = {
   },
   world_set: (state, world) => {
     state.world = world;
+    state.factions = world.factions;
   },
 
   width_set: (state, width) => {

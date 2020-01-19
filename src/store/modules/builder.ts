@@ -20,13 +20,14 @@ import router, {
   BUILDER_ROOM_INDEX
 } from "@/router";
 import { get_room_index_key } from "@/core/map.ts";
+import _ from "lodash";
 
 import builder_rooms from "@/store/modules/builder/rooms/index.ts";
 import builder_world from "@/store/modules/builder/worlds/index.ts";
 import builder_zones from "@/store/modules/builder/zones/index.ts";
 
 import root_store from "@/store";
-import { makeState as makeCrud } from "@/store/crud.ts";
+import { makeCrud } from "@/store/crud.ts";
 
 interface BuilderState {
   world_fetching: boolean;
@@ -43,6 +44,7 @@ interface BuilderState {
   loader: any;
   path: any;
   quest: any;
+  world_factions: {}[];
 }
 
 const initial_state = (): BuilderState => {
@@ -60,7 +62,8 @@ const initial_state = (): BuilderState => {
     loader: null,
     path: null,
     quest: null,
-    showing: "world"
+    showing: "world",
+    world_factions: []
   };
 };
 
@@ -166,7 +169,7 @@ const getters = {
         core_factions.push(faction);
       }
     }
-    if (core_factions.length === 0) return '';
+    if (core_factions.length === 0) return "";
     return core_factions[0].code;
   }
 };
@@ -201,9 +204,11 @@ const actions = {
     commit("world_clear");
   },
 
-  world_update_factions: async({ commit, state }) => {
-    const resp = await axios.get(`/builder/worlds/${state.world.id}/factions?page_size=100`);
-    commit("world_update", resp.data['results']);
+  world_update_factions: async ({ commit, state }) => {
+    const resp = await axios.get(
+      `/builder/worlds/${state.world.id}/factions?page_size=100`
+    );
+    commit("world_update", resp.data["results"]);
   },
 
   // Assumes that a world is in the store
@@ -432,17 +437,41 @@ const mutations = {
 
   world_set: (state, world) => {
     state.world = world;
+    state.world_factions = world.factions;
   },
 
   world_update: (state, new_data) => {
     state.world = {
       ...state.world,
-      ...new_data,
+      ...new_data
+    };
+    if (new_data.factions) {
+      state.world_factions = new_data.factions;
     }
   },
 
   world_clear: (state, world) => {
     state.world = null;
+  },
+
+  factions_set: (state, factions) => {
+    state.world_factions = factions;
+  },
+
+  faction_add: (state, faction) => {
+    state.world_factions.push(faction);
+  },
+
+  faction_update: (state, faction) => {
+    const faction_ids = _.map(state.world_factions, faction => faction.id);
+    const index = faction_ids.indexOf(faction.id);
+    state.world_factions.splice(index, 1, faction);
+  },
+
+  faction_delete: (state, faction) => {
+    const faction_ids = _.map(state.world_factions, faction => faction.id);
+    const index = faction_ids.indexOf(faction.id);
+    state.world_factions.splice(index, 1);
   },
 
   room_set: (state, room) => {

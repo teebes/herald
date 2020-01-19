@@ -179,6 +179,7 @@ import {
   BUILDER_ZONE_PROCESSION_LIST,
   BUILDER_TRANSFORMATION_LIST,
   BUILDER_WORLD_FACTIONS,
+  BUILDER_WORLD_FACTION_RANK_LIST,
   LOBBY_WORLD_DETAIL
 } from "@/router";
 
@@ -289,7 +290,8 @@ export default class WorldFrame extends Vue {
       BUILDER_WORLD_PLAYER_LIST,
       BUILDER_WORLD_PLAYER_DETAIL,
       BUILDER_WORLD_STATUS,
-      BUILDER_WORLD_FACTIONS
+      BUILDER_WORLD_FACTIONS,
+      BUILDER_WORLD_FACTION_RANK_LIST
     ];
     if (this.$store.state.builder.world)
       for (const routeData of this.$route.matched) {
