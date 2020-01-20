@@ -68,6 +68,32 @@ import { UI_MUTATIONS } from "@/constants.ts";
 export default class Sidebar extends Vue {
   expanded: string = "";
 
+  get world_skills() {
+    return this.$store.state.game.world.skills;
+  }
+
+  get player_flex_skils() {
+    const archetype_flex_skill_codes = this.world_skills[this.player.archtype]
+      .flex;
+
+    interface SkillData {
+      code: string;
+      name: string;
+      is_active: boolean;
+    }
+    const skills: SkillData[] = [];
+    for (const skill_code of archetype_flex_skill_codes) {
+    }
+
+    // this.world_skills[this.player.archetype]
+
+    return skills;
+  }
+
+  mounted() {
+    console.log(this.$store.state.game);
+  }
+
   get who_list() {
     return this.$store.state.game.who_list;
   }
