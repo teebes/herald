@@ -2,7 +2,7 @@
   <div id="sidebar">
     <!-- Who list -->
     <div class="sidebar-element who-list">
-      <h3 v-if="who_list && who_list['players']" @click="onClickWho">
+      <h3 v-if="who_list && who_list['players']" @click="onClickExpand('who')" class="hover">
         <span v-if="expanded === 'who'">-</span>
         <span v-else>+</span>
         {{ who_list["players"].length }}
@@ -39,8 +39,25 @@
       <Focus class="mt-2" />
     </div>
 
-    <div class="sidebar-element flex-skills">
-      <h3>FLEX SKILLS</h3>
+    <div class="sidebar-element flex-skills hover">
+      <h3 @click="onClickExpand('skills')">
+        <span v-if="expanded === 'skills'">-</span>
+        <span v-else>+</span>
+        FLEX SKILLS
+      </h3>
+      <div v-if="expanded === 'skills'" class="my-1">
+        <div
+          v-for="skill in player_flex_skills_info.skills"
+          :key="skill.code"
+          class="flex-skill"
+          :class="{ is_active: skill.is_active }"
+          @click="onClickFlexSkill(skill)"
+        >{{ skill.name }}</div>
+      </div>
+      <div
+        v-if="player_flex_skills_info.num_active < player_flex_skills_info.learnable_count"
+        class="color-text-red"
+      >{{ player_flex_skills_info.learnable_count - player_flex_skills_info.num_active }} flex skill slots available</div>
     </div>
 
     <div class="sidebar-element flex-skills">
@@ -56,6 +73,7 @@ import QuestLog from "@/components/game/QuestLog.vue";
 import ComLog from "@/components/game/sidebar/ComLog.vue";
 import Focus from "@/components/game/sidebar/Focus.vue";
 import { UI_MUTATIONS } from "@/constants.ts";
+import { STAFF_PLAYING } from "../../router";
 
 @Component({
   components: {
@@ -66,15 +84,22 @@ import { UI_MUTATIONS } from "@/constants.ts";
   }
 })
 export default class Sidebar extends Vue {
-  expanded: string = "";
+  expanded: "who" | "" | "skills" | "feats" = "";
 
   get world_skills() {
     return this.$store.state.game.world.skills;
   }
 
-  get player_flex_skils() {
-    const archetype_flex_skill_codes = this.world_skills[this.player.archtype]
-      .flex;
+  get player_flex_skills_info() {
+    const archetype_skills = this.world_skills[this.player.archetype];
+    const archetype_flex_skill_codes = archetype_skills.flex;
+    // Remap player skills from {1: skill1, 2: skill3} to [ skill1, skill2]
+    const player_flex_skills: string[] = [];
+    for (const i of [1, 2, 3]) {
+      if (this.player.skills.flex[i]) {
+        player_flex_skills.push(this.player.skills.flex[i]);
+      }
+    }
 
     interface SkillData {
       code: string;
@@ -82,12 +107,41 @@ export default class Sidebar extends Vue {
       is_active: boolean;
     }
     const skills: SkillData[] = [];
+    let num_active = 0;
     for (const skill_code of archetype_flex_skill_codes) {
+      const skill_data = archetype_skills[skill_code];
+
+      if (skill_data.level > this.player.level) continue;
+
+      let is_active = false;
+      if (player_flex_skills.indexOf(skill_data.code) !== -1) {
+        is_active = true;
+        num_active += 1;
+      }
+
+      skills.push({
+        code: skill_data.code,
+        name: skill_data.name,
+        is_active: is_active
+      });
     }
 
-    // this.world_skills[this.player.archetype]
+    // Calculate the number of skills that this player is able to learn
+    let learnable_count = 0;
+    if (this.player.level >= 14) learnable_count = 3;
+    else if (this.player.level >= 10) learnable_count = 2;
+    else if (this.player.level >= 6) learnable_count = 1;
 
-    return skills;
+    return {
+      skills,
+      num_active,
+      learnable_count
+    };
+  }
+
+  onClickFlexSkill(skill) {
+    if (!skill.is_active)
+      this.$store.dispatch("game/cmd", `learn ${skill.code}`);
   }
 
   mounted() {
@@ -108,11 +162,11 @@ export default class Sidebar extends Vue {
     Enter 'help focus' for more information.`;
   }
 
-  onClickWho() {
-    if (this.expanded === "who") {
+  onClickExpand(section) {
+    if (this.expanded == section) {
       this.expanded = "";
     } else {
-      this.expanded = "who";
+      this.expanded = section;
     }
   }
 
@@ -145,20 +199,23 @@ export default class Sidebar extends Vue {
 
     h3 {
       text-transform: uppercase;
+      span {
+        width: 10px;
+        display: inline-block;
+      }
     }
   }
 
-  .who-list {
-    &:hover {
-      cursor: pointer;
+  .flex-skills {
+    .flex-skill {
+      &:not(.is_active) {
+        color: $color-text-hex-50;
+        &:hover {
+          cursor: pointer;
+          color: $color-primary;
+        }
+      }
     }
-    span {
-      width: 10px;
-      display: inline-block;
-    }
-  }
-  .who-list-detail {
-    padding-left: 20px;
   }
 }
 </style>
