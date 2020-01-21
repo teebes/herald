@@ -43,10 +43,6 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 export default class GameFactions extends Vue {
   @Prop() message!: any;
 
-  // mounted() {
-  //   console.log(this.$store.state.game.player);
-  // }
-
   click_feat(code, tier) {
     const player_skills = this.$store.state.game.player.skills;
     if (
@@ -73,7 +69,6 @@ export default class GameFactions extends Vue {
       padding-bottom: 5px;
       @include font-title-regular;
       color: $color-text-hex-80;
-      //color: $color-text;
       font-size: 14px;
       letter-spacing: 1.2px;
       line-height: 15px;

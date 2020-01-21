@@ -39,8 +39,9 @@
       <Focus class="mt-2" />
     </div>
 
-    <div class="sidebar-element flex-skills hover">
-      <h3 @click="onClickExpand('skills')">
+    <!-- Flex Skills -->
+    <div class="sidebar-element flex-skills">
+      <h3 @click="onClickExpand('skills')" class="hover">
         <span v-if="expanded === 'skills'">-</span>
         <span v-else>+</span>
         FLEX SKILLS
@@ -60,8 +61,29 @@
       >{{ player_flex_skills_info.learnable_count - player_flex_skills_info.num_active }} flex skill slots available</div>
     </div>
 
-    <div class="sidebar-element flex-skills">
-      <h3>FEATS</h3>
+    <!-- Feats -->
+    <div class="sidebar-element feats">
+      <h3 @click="onClickExpand('feats')" class="hover">
+        <span v-if="expanded === 'feats'">-</span>
+        <span v-else>+</span>
+        FEATS
+      </h3>
+      <div v-if="expanded === 'feats'" class="my-1">
+        <div v-for="tier in player_feats_info.feats" class="feat-tier" :key="tier.tier_number">
+          <div v-if="tier.tier_number != 1" class="tier-name my-1"></div>
+          <div
+            v-for="feat_data of tier.feats"
+            :key="feat_data.code"
+            :class="{ is_active: feat_data.is_active }"
+            class="feat"
+            @click="onClickFeat(feat_data)"
+          >{{ feat_data.name }}</div>
+        </div>
+      </div>
+      <div
+        v-if="player_feats_info.num_unlearned_feats > 0"
+        class="color-text-red"
+      >{{ player_feats_info.num_unlearned_feats }} unselected feat tiers</div>
     </div>
   </div>
 </template>
@@ -74,6 +96,7 @@ import ComLog from "@/components/game/sidebar/ComLog.vue";
 import Focus from "@/components/game/sidebar/Focus.vue";
 import { UI_MUTATIONS } from "@/constants.ts";
 import { STAFF_PLAYING } from "../../router";
+import _ from "lodash";
 
 @Component({
   components: {
@@ -85,6 +108,79 @@ import { STAFF_PLAYING } from "../../router";
 })
 export default class Sidebar extends Vue {
   expanded: "who" | "" | "skills" | "feats" = "";
+
+  get world_feats() {
+    return this.$store.state.game.world.feats;
+  }
+
+  get player_feats_info() {
+    interface FeatData {
+      code: string;
+      name: string;
+      description: string;
+      is_active: boolean;
+    }
+
+    interface FeatTier {
+      tier_level: number;
+      tier_number: number;
+      feats: FeatData[];
+    }
+
+    // Value being returned by the getter
+    const feats: FeatTier[] = [];
+
+    const archetype_feats = this.world_feats[this.player.archetype];
+
+    interface PlayerFeats {
+      1: string;
+      2: string;
+      3: string;
+    }
+
+    const player_feats: PlayerFeats = this.player.skills.feat;
+
+    const archetype_tiers = _.sortBy(
+      _.map(Object.keys(archetype_feats), tier => Number(tier))
+    );
+
+    let num_learned_feats = 0;
+    for (let tier_level of archetype_tiers) {
+      const tier_number = archetype_tiers.indexOf(tier_level) + 1;
+      tier_level = Number(tier_level);
+
+      if (this.player.level < tier_level) continue;
+
+      const tier_data: FeatTier = {
+        tier_level: tier_level,
+        tier_number: tier_number,
+        feats: []
+      };
+
+      for (const feat_name of Object.keys(archetype_feats[tier_level])) {
+        // Get the feat's details from the world data
+        const world_feat_data: FeatData = {
+          ...archetype_feats[tier_level][feat_name],
+          is_active: false
+        };
+
+        if (player_feats[tier_number] === feat_name) {
+          world_feat_data.is_active = true;
+          num_learned_feats += 1;
+        }
+
+        tier_data.feats.push(world_feat_data);
+      }
+
+      feats.push(tier_data);
+    }
+
+    return {
+      feats,
+      num_learned_feats,
+      num_unlearned_feats: feats.length - num_learned_feats
+    };
+  }
 
   get world_skills() {
     return this.$store.state.game.world.skills;
@@ -144,6 +240,12 @@ export default class Sidebar extends Vue {
       this.$store.dispatch("game/cmd", `learn ${skill.code}`);
   }
 
+  onClickFeat(feat) {
+    if (!feat.is_active) {
+      this.$store.dispatch("game/cmd", `learn ${feat.code}`);
+    }
+  }
+
   mounted() {
     console.log(this.$store.state.game);
   }
@@ -186,6 +288,7 @@ export default class Sidebar extends Vue {
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
+@import "@/styles/fonts.scss";
 #sidebar {
   background: $color-background-light;
   border-left: 2px solid $color-background-very-light;
@@ -204,15 +307,33 @@ export default class Sidebar extends Vue {
         display: inline-block;
       }
     }
-  }
 
-  .flex-skills {
-    .flex-skill {
-      &:not(.is_active) {
-        color: $color-text-hex-50;
-        &:hover {
-          cursor: pointer;
-          color: $color-primary;
+    &.flex-skills {
+      .flex-skill {
+        &:not(.is_active) {
+          color: $color-text-hex-50;
+          &:hover {
+            cursor: pointer;
+            color: $color-primary;
+          }
+        }
+      }
+    }
+
+    &.feats {
+      .feat-tier {
+        .tier-name {
+          border-bottom: 1px solid #333;
+          width: 100%;
+        }
+        .feat {
+          &:not(.is_active) {
+            color: $color-text-hex-50;
+            &:hover {
+              cursor: pointer;
+              color: $color-primary;
+            }
+          }
         }
       }
     }
