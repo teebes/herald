@@ -248,10 +248,6 @@ export default class Sidebar extends Vue {
     }
   }
 
-  mounted() {
-    console.log(this.$store.state.game);
-  }
-
   get who_list() {
     return this.$store.state.game.who_list;
   }
