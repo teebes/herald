@@ -331,8 +331,14 @@ const receiveMessage = async ({
     }
   }
 
+  // Who list update
   if (message_data.type === "notification.who") {
     commit("who_list_set", message_data.data);
+  }
+
+  // Focus update
+  if (message_data.type === "cmd.focus.success") {
+    commit("player_focus_set", message_data.data.focus);
   }
 
   // Target setting
@@ -529,6 +535,13 @@ const mutations = {
       ...state.player,
       ...player
     };
+  },
+
+  player_focus_set: (state, focus) => { 
+    state.player = {
+      ...state.player,
+      focus: focus,
+    }
   },
 
   player_effects_add: (state, effect) => {

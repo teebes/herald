@@ -34,6 +34,7 @@
         <div
           v-for="player in who_list.players"
           :key="player.key"
+          :class="{ 'color-secondary': player.name_recognition }"
         >{{ player.name }} ({{ player.level }})</div>
       </div>
     </div>
@@ -288,15 +289,23 @@ export default class Sidebar extends Vue {
   }
 
   onClickQuestLog() {
-    const modal = {
-      component: QuestLog
+    const modal_data = {
+      component: QuestLog,
+      options: {
+        closeOnOutsideClick: true
+      }
     };
-    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
+    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal_data);
   }
 
   onClickCommunicationLog() {
-    const modal = { component: ComLog };
-    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
+    const modal_data = {
+      component: ComLog,
+      options: {
+        closeOnOutsideClick: true
+      }
+    };
+    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal_data);
   }
 }
 </script>
