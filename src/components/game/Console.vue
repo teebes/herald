@@ -1,20 +1,23 @@
 <template>
-  <div id="console" ref="console" @scroll="onScroll">
-    <div class="buffer" :style="{ height: scrollHeight + 'px' }"></div>
-    <div class="messages">
-      <component
-        v-for="(message, index) in messages"
-        :key="message.message_id"
-        :is="consoleMessage(message)"
-        :message="message"
-        :previousMessage="messages[index - 1]"
-        :index="index"
-        class="message"
-        :class="[message.type]"
-        :distanceToBottom="distanceToBottom"
-        @scrollDown="scrollToBottom"
-      />
+  <div id="console-wrapper">
+    <div id="console" ref="console" @scroll="onScroll">
+      <div class="buffer" :style="{ height: scrollHeight + 'px' }"></div>
+      <div class="messages">
+        <component
+          v-for="(message, index) in messages"
+          :key="message.message_id"
+          :is="consoleMessage(message)"
+          :message="message"
+          :previousMessage="messages[index - 1]"
+          :index="index"
+          class="message"
+          :class="[message.type]"
+          :distanceToBottom="distanceToBottom"
+          @scrollDown="scrollToBottom"
+        />
+      </div>
     </div>
+
     <ScrollTool
       v-if="!$store.state.game.is_mobile && distanceToBottom != 0"
       @clickScrollTool="scrollToBottom"
@@ -203,59 +206,72 @@ export default class Console extends Vue {
 @import "@/styles/colors.scss";
 @import "@/styles/fonts.scss";
 
-#console {
-  //border: 1px solid #444;
-  padding: 0 20px 8px 20px;
-  margin-bottom: 8px;
-
-  flex-grow: 1;
-  overflow-y: auto;
-  min-height: 0;
+#console-wrapper {
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
 
-  -webkit-overflow-scrolling: touch;
+  #console {
+    height: 100%;
+    position: relative;
+    padding: 0 20px 8px 20px;
+    margin-bottom: 8px;
 
-  .message {
-    &.echo,
-    &.grouped,
-    &.room_write,
-    &.affect\.cmd\.look\.success,
-    &.affect\.idle\.timeout,
-    &.notification\.cmd\.say\.success,
-    &.notification\.cmd\.yell\.success,
-    &.notification\.cmd\.chat\.success,
-    &.notification\.tell,
-    &.notification\.cmd\.emote\.success,
-    &.notification\.movement\.enter,
-    &.notification\.movement\.exit,
-    &.notification\.decay,
-    &.notification\.death {
-      margin-top: 1rem;
-    }
+    flex-grow: 1;
+    overflow-y: auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
 
-    &.room_write,
-    &.write\.send,
-    &.write\.sendexcept,
-    &.write\.game,
-    &.write\.zone {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-    }
+    -webkit-overflow-scrolling: touch;
 
-    &.notification\.cmd\.say\.success,
-    &.notification\.cmd\.yell\.success,
-    &.notification\.cmd\.chat\.success,
-    &.cmd\.say\.success,
-    &.cmd\.chat\.success,
-    &.cmd\.yell\.success {
-      color: $color-secondary;
-    }
+    .message {
+      overflow-x: hidden;
+      > div {
+        overflow-x: hidden;
+      }
 
-    &.cmd\.tell\.success,
-    &.notification\.tell,
-    &.cmd\.reply\.success {
-      color: $color-red;
+      &.echo,
+      &.grouped,
+      &.room_write,
+      &.affect\.cmd\.look\.success,
+      &.affect\.idle\.timeout,
+      &.notification\.cmd\.say\.success,
+      &.notification\.cmd\.yell\.success,
+      &.notification\.cmd\.chat\.success,
+      &.notification\.tell,
+      &.notification\.cmd\.emote\.success,
+      &.notification\.movement\.enter,
+      &.notification\.movement\.exit,
+      &.notification\.decay,
+      &.notification\.death {
+        margin-top: 1rem;
+      }
+
+      &.room_write,
+      &.write\.send,
+      &.write\.sendexcept,
+      &.write\.game,
+      &.write\.zone {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      &.notification\.cmd\.say\.success,
+      &.notification\.cmd\.yell\.success,
+      &.notification\.cmd\.chat\.success,
+      &.cmd\.say\.success,
+      &.cmd\.chat\.success,
+      &.cmd\.yell\.success {
+        color: $color-secondary;
+      }
+
+      &.cmd\.tell\.success,
+      &.notification\.tell,
+      &.cmd\.reply\.success {
+        color: $color-red;
+      }
     }
   }
 }

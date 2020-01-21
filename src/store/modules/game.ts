@@ -82,6 +82,10 @@ const set_initial_state = () => {
     // Key of the last character that's died
     last_death: null,
 
+    // Sidebar data
+
+    who_list: [],
+    com_list: [],
     factions: []
   };
 };
@@ -96,7 +100,21 @@ const receiveMessage = async ({
   /* Main process for receiving messages */
   const message_data = JSON.parse(event.data);
 
-  const skip_messages = ["notification.shorttic", "notification.longtic"];
+  const com_messages = [
+    "cmd.chat.success",
+    "notification.cmd.chat.success",
+    "cmd.tell.success",
+    "notification.tell"
+  ];
+  if (com_messages.indexOf(message_data.type) != -1) {
+    commit("com_list_add", message_data);
+  }
+
+  const skip_messages = [
+    "notification.shorttic",
+    "notification.longtic",
+    "notification.who"
+  ];
 
   // Echo received message to console if not short / long tic
   if (skip_messages.indexOf(message_data.type) == -1) {
@@ -129,6 +147,7 @@ const receiveMessage = async ({
     };
     commit("world_set", world_data);
     commit("player_set", message_data.data.actor);
+    commit("who_list_set", message_data.data.who_list);
     commit("full_screen_message_clear");
     router.push({ name: "game" });
     commit("ui/notification_set", "Connected.", { root: true });
@@ -310,6 +329,16 @@ const receiveMessage = async ({
         }
       });
     }
+  }
+
+  // Who list update
+  if (message_data.type === "notification.who") {
+    commit("who_list_set", message_data.data);
+  }
+
+  // Focus update
+  if (message_data.type === "cmd.focus.success") {
+    commit("player_focus_set", message_data.data.focus);
   }
 
   // Target setting
@@ -506,6 +535,13 @@ const mutations = {
       ...state.player,
       ...player
     };
+  },
+
+  player_focus_set: (state, focus) => { 
+    state.player = {
+      ...state.player,
+      focus: focus,
+    }
   },
 
   player_effects_add: (state, effect) => {
@@ -712,6 +748,14 @@ const mutations = {
 
   current_cast_set: (state, data) => {
     state.current_cast = data;
+  },
+
+  who_list_set: (state, who_list) => {
+    state.who_list = who_list;
+  },
+
+  com_list_add: (state, com) => {
+    state.com_list.push(com);
   }
 };
 

@@ -26,9 +26,10 @@
             :key="feat.code"
             class="feat-row"
             :class="{ tier_selected: feat_tier.selected, feat_selected: feat.selected }"
+            @click="click_feat(feat.code, feat_tier.tier)"
           >
             <td class="feat-name">{{ feat.name }}</td>
-            <td class="feat-code" @click="click_feat(feat.code, feat_tier.tier)">{{ feat.code }}</td>
+            <!-- <td class="feat-code" @click="click_feat(feat.code, feat_tier.tier)">{{ feat.code }}</td> -->
             <td class="feat-description">{{ feat.description }}</td>
           </tr>
         </template>
@@ -42,10 +43,6 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 @Component
 export default class GameFactions extends Vue {
   @Prop() message!: any;
-
-  // mounted() {
-  //   console.log(this.$store.state.game.player);
-  // }
 
   click_feat(code, tier) {
     const player_skills = this.$store.state.game.player.skills;
@@ -73,7 +70,6 @@ export default class GameFactions extends Vue {
       padding-bottom: 5px;
       @include font-title-regular;
       color: $color-text-hex-80;
-      //color: $color-text;
       font-size: 14px;
       letter-spacing: 1.2px;
       line-height: 15px;
@@ -88,22 +84,22 @@ export default class GameFactions extends Vue {
     &.tier_selected {
       &:not(.feat_selected) {
         color: $color-text-hex-50;
+        &:hover {
+          cursor: pointer;
+          color: $color-primary;
+        }
       }
     }
 
-    .feat-code {
-      padding: 0 10px;
-      &:hover {
-        cursor: pointer;
-        color: $color-primary;
-      }
+    .feat-name {
+      padding: 0 10px 0 0;
     }
 
     // If a feat is selected, don't show it as a selectable option
-    &.tier_selected.feat_selected > .feat-code {
-      color: inherit;
-      cursor: default;
-    }
+    // &.tier_selected.feat_selected > .feat-code {
+    //   color: inherit;
+    //   cursor: default;
+    // }
   }
 }
 </style>

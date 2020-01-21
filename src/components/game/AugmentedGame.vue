@@ -1,8 +1,13 @@
 <template>
-  <component :is="gameComponent" :messages="messages" @input="onInput"></component>
+  <component
+    :is="gameComponent"
+    :messages="messages"
+    @input="onInput"
+    :width="width"
+  ></component>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import axios from "axios";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 

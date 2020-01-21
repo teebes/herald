@@ -2,16 +2,20 @@
   <div id="augmented-game-desktop" class="flex flex-grow flex-row game-frame">
     <DesktopPanel />
 
-    <div class="flex-grow flex flex-col">
-      <Console :messages="messages" class="flex-grow" />
-      <Hint v-if="$store.state.game.hint" />
-      <Input @input="onInput" />
+    <div class="flex flex-grow">
+      <div class="flex-grow flex flex-col">
+        <Console :messages="messages" class="flex-grow" />
+        <Hint v-if="$store.state.game.hint" class="flex-shrink-0" />
+        <Input @input="onInput" class="flex-shrink-0" />
+      </div>
     </div>
+
+    <Sidebar v-if="width > 1000" class="flex-shrink-0" />
 
     <div
       class="desktop-lookup"
       v-if="lookup"
-      v-closable="{ handler: 'closeLookup'}"
+      v-closable="{ handler: 'closeLookup' }"
       :style="lookupPosition"
       @mouseleave="onMouseOut"
       @mouseover="onMouseOver"
@@ -21,13 +25,14 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Input from "./Input.vue";
 import Console from "./Console.vue";
 import DesktopPanel from "./panel/Desktop.vue";
 import Lookup from "./Lookup.vue";
 import Hint from "./Hint.vue";
+import Sidebar from "./Sidebar.vue";
 import _ from "lodash";
 
 @Component({
@@ -36,11 +41,13 @@ import _ from "lodash";
     DesktopPanel,
     Input,
     Lookup,
-    Hint
+    Hint,
+    Sidebar
   }
 })
 export default class DesktopGame extends Vue {
   @Prop() messages: any;
+  @Prop() width!: number;
 
   get lookup() {
     return this.$store.state.game.lookup;
@@ -53,7 +60,7 @@ export default class DesktopGame extends Vue {
     return {
       left: 50 + this.lookup.position.left + "px",
       bottom: window.innerHeight - this.lookup.position.top + "px",
-      'z-index': '10 !important'
+      "z-index": "10 !important"
     };
   }
 
@@ -94,7 +101,7 @@ export default class DesktopGame extends Vue {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 @import "@/styles/colors.scss";
 @import "@/styles/layout.scss";
 
@@ -107,7 +114,8 @@ export default class DesktopGame extends Vue {
 
   .desktop-lookup {
     position: absolute;
-    -webkit-transform: translate3d(0,0,0);
+    // Safari layering bug
+    -webkit-transform: translate3d(0, 0, 0);
   }
 
   #input {
@@ -115,4 +123,3 @@ export default class DesktopGame extends Vue {
   }
 }
 </style>
-

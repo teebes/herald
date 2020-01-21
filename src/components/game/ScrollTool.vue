@@ -36,7 +36,7 @@ export default class ScrollTool extends Vue {
 .scroll-tool-region {
   width: 100%;
   position: absolute;
-  bottom: 60px;
+  bottom: 8px;
   display: flex;
   flex-direction: column-reverse;
   z-index: 100;
@@ -70,7 +70,7 @@ export default class ScrollTool extends Vue {
       line-height: 12px;
       display: inline;
       position: relative;
-      right: 180px;
+      // right: 180px;
 
       &::before {
         content: "";

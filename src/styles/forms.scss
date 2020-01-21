@@ -194,6 +194,14 @@ a[role="button"].btn-small {
       cursor: default;
     }
   }
+
+  &.button-gray {
+    border-color: $color-text-hex-60;
+    color: $color-text-hex-60;
+    &:hover {
+      background-color: #444;
+    }
+  }
 }
 
 button.btn-medium,

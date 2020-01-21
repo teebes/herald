@@ -16,7 +16,7 @@
   <div v-else>Loading...</div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import axios from "axios";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import AccessibleGame from "./AccessibleGame.vue";
@@ -75,7 +75,6 @@ export default class Game extends Vue {
       this.$router.push({ name: "lobby" });
     }
     this.loaded = true;
-    //this.$store.commit("ui/notification_set", "Connected.");
     window.addEventListener("resize", this.onResize);
   }
 
@@ -110,14 +109,14 @@ export default class Game extends Vue {
   position: relative;
   overflow: hidden;
 
-  .console-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    min-height: 0;
-  }
+  // .console-wrapper {
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   right: 0;
+  //   bottom: 0;
+  //   min-height: 0;
+  // }
 
   .game-frame {
     position: absolute;
