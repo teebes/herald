@@ -1,5 +1,23 @@
 <template>
   <div id="sidebar">
+    <!-- Quest Log -->
+    <div class="sidebar-element logs">
+      <h3>LOGS</h3>
+      <div class="mt-4">
+        <button class="btn-small mb-1 button-gray" @click="onClickQuestLog">QUEST LOG</button>
+        <button class="btn-small button-gray" @click="onClickCommunicationLog">COMMUNICATION LOG</button>
+      </div>
+    </div>
+
+    <!-- Focus -->
+    <div class="sidebar-element focus">
+      <h3>
+        FOCUS
+        <Help :help="focus_help" />
+      </h3>
+      <Focus class="mt-2" />
+    </div>
+
     <!-- Who list -->
     <div class="sidebar-element who-list">
       <h3 v-if="who_list && who_list['players']" @click="onClickExpand('who')" class="hover">
@@ -20,31 +38,13 @@
       </div>
     </div>
 
-    <!-- Quest Log -->
-    <div class="sidebar-element logs">
-      <h3>LOGS</h3>
-      <div class="mt-4">
-        <button class="btn-small mb-1 button-gray" @click="onClickQuestLog">QUEST LOG</button>
-        <button class="btn-small button-gray" @click="onClickCommunicationLog">COMMUNICATION LOG</button>
-      </div>
-    </div>
-
-    <!-- Focus -->
-    <div class="sidebar-element focus">
-      <h3>
-        FOCUS
-        <Help :help="focus_help" />
-      </h3>
-      <!-- <div>{{ player.focus || "none set" }}</div> -->
-      <Focus class="mt-2" />
-    </div>
-
     <!-- Flex Skills -->
     <div class="sidebar-element flex-skills">
       <h3 @click="onClickExpand('skills')" class="hover">
         <span v-if="expanded === 'skills'">-</span>
         <span v-else>+</span>
         FLEX SKILLS
+        <Help :help="flex_skills_help" />
       </h3>
       <div v-if="expanded === 'skills'" class="my-1">
         <div
@@ -67,6 +67,7 @@
         <span v-if="expanded === 'feats'">-</span>
         <span v-else>+</span>
         FEATS
+        <Help :help="feats_help" />
       </h3>
       <div v-if="expanded === 'feats'" class="my-1">
         <div v-for="tier in player_feats_info.feats" class="feat-tier" :key="tier.tier_number">
@@ -262,6 +263,20 @@ export default class Sidebar extends Vue {
     return `Set an item or character as the focus of another command.<br/>
     <br/>
     Enter 'help focus' for more information.`;
+  }
+
+  get flex_skills_help() {
+    return `Each class has access at any given time to 5 core skills and 3 flex skills. The 3 flex skills are learned from a larger pool of available skills.<br/>
+    <br/>
+    Flex skill slots become unlocked reaching higher level, with 1 skill available at level 6, 2 at level 10 and 3 at level 14.<br/>
+    <br/>
+    Enter the 'learn' command to view more information about flex skills.`;
+  }
+
+  get feats_help() {
+    return `Feats are character customizations that affect your stats or your skills. Three feats can be learned, one at level 4, the second at level 8 and the last at level 12.<br/>
+    <br/>
+    Enter the 'feat' command to view more information about feats.`;
   }
 
   onClickExpand(section) {
