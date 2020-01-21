@@ -4,13 +4,13 @@
     <template v-if="log_entries.length">
       <div v-for="(entry, index) in log_entries" :key="index">{{ entry.text }}</div>
     </template>
-    <div v-else>No communication entries. Try chatting something!</div>
+    <div v-else>No communication entries. You can send game-wide messages with the 'chat' command.</div>
 
-    <form @submit.prevent="onSubmit" class="mt-4">
+    <!-- <form @submit.prevent="onSubmit" class="mt-4">
       <div class="form-group">
         <input type="text" v-model="chat_input" />
       </div>
-    </form>
+    </form>-->
   </ModalView>
 </template>
 
@@ -27,7 +27,6 @@ export default class CommunicationLog extends Vue {
   chat_input: string = "";
 
   get log_entries() {
-    console.log(this.$store.state.game.com_list.slice().reverse());
     return this.$store.state.game.com_list.slice().reverse();
   }
 
