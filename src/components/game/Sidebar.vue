@@ -151,7 +151,11 @@ export default class Sidebar extends Vue {
       const tier_number = archetype_tiers.indexOf(tier_level) + 1;
       tier_level = Number(tier_level);
 
-      if (this.player.level < tier_level) continue;
+      if (
+        this.player.level < tier_level ||
+        !Object.keys(archetype_feats[tier_level]).length
+      )
+        continue;
 
       const tier_data: FeatTier = {
         tier_level: tier_level,
