@@ -35,7 +35,7 @@
           v-for="player in who_list.players"
           :key="player.key"
           :class="{ 'color-secondary': player.name_recognition }"
-        > 
+        >
           <span v-if="player.is_immortal">~</span>
           {{ player.name }} ({{ player.level }})
         </div>
@@ -43,7 +43,7 @@
     </div>
 
     <!-- Flex Skills -->
-    <div class="sidebar-element flex-skills">
+    <div class="sidebar-element flex-skills" v-if="player_flex_skills_info.learnable_count">
       <h3 @click="onClickExpand('skills')" class="hover">
         <span v-if="expanded === 'skills'">-</span>
         <span v-else>+</span>
@@ -66,7 +66,7 @@
     </div>
 
     <!-- Feats -->
-    <div class="sidebar-element feats">
+    <div class="sidebar-element feats" v-if="player_feats_info.feats.length">
       <h3 @click="onClickExpand('feats')" class="hover">
         <span v-if="expanded === 'feats'">-</span>
         <span v-else>+</span>
