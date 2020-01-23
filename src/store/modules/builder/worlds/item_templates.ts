@@ -49,6 +49,17 @@ export const item_template_actions = {
     );
     commit("item_template_loads_add", resp.data);
     return resp.data;
+  },
+
+  item_template_quests_fetch: async (
+    { commit },
+    { world_id, item_template_id }
+  ) => {
+    const resp = await axios.get(
+      `/builder/worlds/${world_id}/itemtemplates/${item_template_id}/quests/`
+    );
+    commit("item_template_quests_set", resp.data.quests);
+    return resp.data.quests;
   }
 };
 
@@ -67,5 +78,9 @@ export const item_template_mutations = {
 
   item_template_loads_add: (state, item_template_load) => {
     state.item_template_loads.push(item_template_load);
+  },
+
+  item_template_quests_set: (state, quests) => {
+    state.item_template_quests = quests;
   }
 };

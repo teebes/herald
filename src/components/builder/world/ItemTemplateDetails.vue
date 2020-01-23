@@ -113,6 +113,7 @@
 
       <ItemTemplateInventory />
       <ItemTemplateLoads />
+      <ItemTemplateQuests />
     </div>
   </div>
 </template>
@@ -125,6 +126,7 @@ import ItemTemplateStats from "./ItemTemplateStats.vue";
 import ItemTemplateInventory from "./ItemTemplateInventory.vue";
 import ItemTemplateEquipment from "./ItemTemplateEquipment.vue";
 import ItemTemplateLoads from "./ItemTemplateLoads.vue";
+import ItemTemplateQuests from "./ItemTemplateQuests.vue";
 import {
   BUILDER_ACTIONS,
   BUILDER_MUTATIONS,
@@ -137,7 +139,8 @@ import {
     ItemTemplateStats,
     ItemTemplateInventory,
     ItemTemplateEquipment,
-    ItemTemplateLoads
+    ItemTemplateLoads,
+    ItemTemplateQuests
   }
 })
 export default class ItemTemplateDetails extends Mixins(WorldView) {
