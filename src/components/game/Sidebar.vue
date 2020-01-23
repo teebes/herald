@@ -35,7 +35,10 @@
           v-for="player in who_list.players"
           :key="player.key"
           :class="{ 'color-secondary': player.name_recognition }"
-        >{{ player.name }} ({{ player.level }})</div>
+        > 
+          <span v-if="player.is_immortal">~</span>
+          {{ player.name }} ({{ player.level }})
+        </div>
       </div>
     </div>
 
