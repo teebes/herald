@@ -2,9 +2,7 @@
   <div class="feats indented">
     <div>
       Player Feats
-      <span
-        class="color-text-50 ml-4"
-      >(Click feat to learn name or description to learn it)</span>
+      <span class="color-text-50 ml-4">(Click feat to learn it)</span>
     </div>
 
     <table class="feats-table">
