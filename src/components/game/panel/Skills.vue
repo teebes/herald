@@ -70,12 +70,13 @@ const COOLDOWN_FINISH = 125;
 
 @Component
 export default class PanelSkills extends Vue {
-  activeCooldowns: {} = {};
+  // activeCooldowns: {} = {};
   activeAnimations: {} = {};
   finishedCooldowns: {} = {};
 
   mounted() {
     EventBus.$on("cooldown-adjustment", this.onCooldownAdjustment);
+    EventBus.$on("cooldown-start", this.startCooldowns);
     this.startCooldowns();
   }
 
@@ -86,15 +87,32 @@ export default class PanelSkills extends Vue {
     }
   }
 
-  @Watch("cooldowns")
-  onCooldownsChange(cooldowns) {
-    this.startCooldowns();
+  // @Watch("cooldowns")
+  // onCooldownsChange(cooldowns) {
+  //   console.log("-------- CD change: --------");
+  //   console.log(cooldowns);
+  //   this.startCooldowns();
+  // }
+
+  get cooldowns() {
+    return this.$store.state.game.player_cooldowns;
+  }
+
+  onClick(skill) {
+    if (skill.is_disabled) return;
+    this.$store.dispatch("game/cmd", skill.cmd);
+  }
+
+  get player() {
+    return this.$store.state.game.player;
   }
 
   startCooldowns() {
     const cooldowns = this.cooldowns;
+
     for (const skill in cooldowns) {
-      if (!this.activeCooldowns[skill]) {
+      // if (!this.activeCooldowns[skill]) {
+      if (true) {
         const overlay = this.$refs[`${skill}-overlay`] as HTMLElement;
         if (!overlay || overlay[0] === undefined) {
           return;
@@ -118,9 +136,11 @@ export default class PanelSkills extends Vue {
           ease: Linear.easeNone
         });
         this.activeAnimations[skill] = animation;
+      } else {
+        console.log(`${skill} is already active`);
       }
     }
-    this.activeCooldowns = { ...cooldowns };
+    //this.activeCooldowns = { ...cooldowns };
   }
 
   onComplete(skill) {
@@ -137,8 +157,12 @@ export default class PanelSkills extends Vue {
   }
 
   onCooldownAdjustment(data) {
-    const cd_data = this.activeCooldowns[data.skill],
-      previous_adjustment = cd_data.adjustment || 0,
+    // const cd_data = this.activeCooldowns[data.skill],
+    let cd_data: any = {};
+    if (this.cooldowns[data.skill]) {
+      const cd_data = { ...this.cooldowns[data.skill] };
+    }
+    const previous_adjustment = cd_data.adjustment || 0,
       adjustment = previous_adjustment + data.adjustment,
       current = new Date().getTime(),
       elapsed = current + adjustment * 1000 - cd_data.start,
@@ -171,27 +195,15 @@ export default class PanelSkills extends Vue {
     });
   }
 
-  get cooldowns() {
-    return this.$store.state.game.player_cooldowns;
-  }
-
-  onClick(skill) {
-    if (skill.is_disabled) return;
-    this.$store.dispatch("game/cmd", skill.cmd);
-  }
-
-  get player() {
-    return this.$store.state.game.player;
-  }
-
   get archetypeSkills() {
-    const archetype = this.player.archetype;
+    // const archetype = this.player.archetype;
+    const archetype = this.$store.state.game.player_archetype;
+    let stance = this.$store.state.game.player_stance;
     let skills = { ...this.$store.state.game.world.skills[archetype] };
 
     // For assassins, modify the available skills based on stance
     if (archetype === "assassin") {
-      const core_asn_skills: {}[] = [],
-        stance = this.player.stance;
+      const core_asn_skills: {}[] = [];
       for (const skill_code of skills.core) {
         const skill = skills[skill_code];
 
@@ -214,11 +226,14 @@ export default class PanelSkills extends Vue {
   }
 
   get coreSkills() {
+    const archetype = this.$store.state.game.player_archetype;
+    const player_level = this.$store.state.game.player_level;
+
     let hotKey = 1;
     let skills: {}[] = [];
     for (const skillCode of this.archetypeSkills.core) {
       const skillData = this.archetypeSkills[skillCode];
-      if (this.player.level >= skillData.level) {
+      if (player_level >= skillData.level) {
         skills.push({
           label: skillData.name,
           cmd: skillData.code,
@@ -230,7 +245,7 @@ export default class PanelSkills extends Vue {
     }
 
     // Hack, insert a disabled box in slot 2 while player is less than level 9
-    if (this.player.archetype === "assassin" && this.player.level < 9) {
+    if (archetype === "assassin" && player_level < 9) {
       skills.splice(1, 0, {
         label: "",
         cmd: "",
@@ -238,7 +253,6 @@ export default class PanelSkills extends Vue {
         is_disabled: true
       });
     }
-
     return skills;
   }
 

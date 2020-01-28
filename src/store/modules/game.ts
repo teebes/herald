@@ -39,8 +39,20 @@ const set_initial_state = () => {
 
     // objects
     world: null,
+
+    /*
+       Player data, a lot of which we break out into its own state because if
+       we keep everything in player, any update to it triggers the reaction
+       updates.
+    */
     player: null,
     player_effects: [],
+    player_skills: [],
+    player_level: 0,
+
+    // assassins
+    player_stance: "",
+    player_archetype: "",
 
     // The player target is set by a kill command going through, or by
     // a notification.attack command being received, at which point
@@ -267,6 +279,7 @@ const receiveMessage = async ({
   // Player cooldowns
   if (message_data.type === "skill.cooldown.start") {
     commit("player_cooldown_start", message_data.data);
+    EventBus.$emit("cooldown-start", message_data.data);
     setTimeout(() => {
       commit("player_cooldown_clear", message_data.data.skill);
     }, message_data.data.duration * 1000);
@@ -535,13 +548,31 @@ const mutations = {
       ...state.player,
       ...player
     };
+
+    // Player component updates, only if needed
+
+    if (!_.isEqual(state.player_skills, state.player.skills)) {
+      state.player_skills = state.player.skills;
+    }
+
+    if (player.stance && player.stance != state.player_stance) {
+      state.player_stance = player.stance;
+    }
+
+    if (player.archetype != state.player_archetype) {
+      state.player_archetype = player.archetype;
+    }
+
+    if (player.level != state.player_level) {
+      state.player_level = player.level;
+    }
   },
 
-  player_focus_set: (state, focus) => { 
+  player_focus_set: (state, focus) => {
     state.player = {
       ...state.player,
-      focus: focus,
-    }
+      focus: focus
+    };
   },
 
   player_effects_add: (state, effect) => {
@@ -629,10 +660,7 @@ const mutations = {
 
   player_cooldown_start: (state, message_data) => {
     message_data.start = new Date().getTime();
-    state.player_cooldowns = {
-      ...state.player_cooldowns,
-      [message_data.skill]: message_data
-    };
+    Vue.set(state.player_cooldowns, message_data.skill, message_data);
   },
 
   player_cooldown_adjust: (state, { skill, adjustment }) => {
