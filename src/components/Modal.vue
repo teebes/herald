@@ -150,7 +150,8 @@ export default class Modal extends Vue {
     background: $color-background;
 
     border: 10px solid #020202;
-    padding: 0 15px;
+
+    //padding: 0 15px;
     box-sizing: border-box;
 
     min-width: 300px;
