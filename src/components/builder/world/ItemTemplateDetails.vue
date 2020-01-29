@@ -109,11 +109,12 @@
         <button class="btn-thin edit-advanced" @click="editAdvanced">EDIT ADVANCED SETTINGS</button>
       </div>
 
-      <div v-if="item_template.type !== 'equippable'"></div>
+      <ItemTemplateFood v-if="item_template.type === 'food'" />
+      <div v-else-if="item_template.type !== 'equippable'"></div>
 
-      <ItemTemplateInventory />
       <ItemTemplateLoads />
       <ItemTemplateQuests />
+      <ItemTemplateInventory v-if="item_template.type === 'container'" />
     </div>
   </div>
 </template>
@@ -127,6 +128,7 @@ import ItemTemplateInventory from "./ItemTemplateInventory.vue";
 import ItemTemplateEquipment from "./ItemTemplateEquipment.vue";
 import ItemTemplateLoads from "./ItemTemplateLoads.vue";
 import ItemTemplateQuests from "./ItemTemplateQuests.vue";
+import ItemTemplateFood from "./ItemTemplateFood.vue";
 import {
   BUILDER_ACTIONS,
   BUILDER_MUTATIONS,
@@ -140,7 +142,8 @@ import {
     ItemTemplateInventory,
     ItemTemplateEquipment,
     ItemTemplateLoads,
-    ItemTemplateQuests
+    ItemTemplateQuests,
+    ItemTemplateFood
   }
 })
 export default class ItemTemplateDetails extends Mixins(WorldView) {

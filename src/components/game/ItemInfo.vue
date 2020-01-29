@@ -10,8 +10,13 @@
 
     <div
       class="level-too-high"
-      v-if="is_item_too_high_level"
-    >Can only wear items up to level {{ is_item_too_high_level }}.</div>
+      v-if="item.type === 'equipment' && is_eq_item_too_high_level"
+    >Can only wear items up to level {{ is_eq_item_too_high_level }}.</div>
+
+    <div
+      class="level-too-high"
+      v-if="item.type === 'food' && item.level > this.player.level"
+    >Food is too high level to be consumed.</div>
 
     <div class="description">
       <div class="description-line" v-for="line in lines" :key="lines.indexOf(line)">{{ line }}</div>
@@ -114,7 +119,7 @@ export default class ItemInfo extends Vue {
     return this.$store.state.game.player;
   }
 
-  get is_item_too_high_level() {
+  get is_eq_item_too_high_level() {
     // If the user is allowed to wear the item, return false.
     // If the user cannot wear the item, return the max level
     // they are able to wear equipment at.
