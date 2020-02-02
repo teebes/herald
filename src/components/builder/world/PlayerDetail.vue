@@ -10,6 +10,7 @@
     </div>
     <div v-if="player.title">Title: {{ player.title }}</div>
     <div v-if="player.is_immortal">This is a builder character.</div>
+    <div>Power: {{ Number(player.power).toLocaleString() }}</div>
     <div>Spawn world details: {{ player.world.id }} ({{ player.world.state }})</div>
 
     <div class="mt-4">
@@ -207,7 +208,7 @@ export default class PlayerDetail extends Mixins(WorldView) {
       params: {
         user_id: player.animation_data.user_id
       }
-    }
+    };
   }
 }
 </script>
