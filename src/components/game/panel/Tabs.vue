@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class='tabs-view'>
     <div class="tabs">
       <div
         class="tab-item unselectable"
@@ -73,55 +73,59 @@ export default class MobilePanelTabs extends Vue {
 @import "@/styles/colors.scss";
 @import "@/styles/fonts.scss";
 
-.tabs {
-  display: flex;
-  padding: 0 20px;
-  margin: 10px 0;
-  border-bottom: 1px solid $color-background-light;
-  order: 1;
-
-  @include font-title-light;
-  font-size: 16px;
-  line-height: 18px;
-
-  .tab-item {
-    color: $color-text-hex-30;
-    padding: 10px;
-    position: relative;
-
-    &.activeTab {
-      border: 2px solid $color-background-light;
-      border-bottom: 2px solid $color-background-black;
-      border-radius: 4px 4px 0 0;
-      color: $color-text;
-      top: 1px;
-    }
-    &:not(.activeTab) {
-      top: 3px;
-      padding: 10px 12px;
-    }
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
-}
-
-.tab-contents-region {
-  order: 2;
-  flex: 1 1;
-}
-
-#mobile-panel {
+.tabs-view {
   .tabs {
-    order: 3;
+    display: flex;
+    padding: 0 20px;
+    margin: 10px 0;
+    border-bottom: 1px solid $color-background-light;
+    order: 1;
+
+    @include font-title-light;
+    font-size: 16px;
+    line-height: 18px;
+
+    .tab-item {
+      color: $color-text-hex-30;
+      padding: 10px;
+      position: relative;
+
+      &.activeTab {
+        border: 2px solid $color-background-light;
+        border-bottom: 2px solid $color-background-black;
+        border-radius: 4px 4px 0 0;
+        color: $color-text;
+        top: 1px;
+      }
+      &:not(.activeTab) {
+        top: 3px;
+        padding: 10px 12px;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
+
+  overflow-y: hidden;
   .tab-contents-region {
-    padding: 20px 0 15px 0;
+    order: 2;
+    flex: 1 1;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+  }
+
+  #mobile-panel {
+    .tabs {
+      order: 3;
+    }
+    .tab-contents-region {
+      padding: 20px 0 15px 0;
+    }
   }
 }
-//   .tab-contents-region {
-//     order: 1;
-//   }
-// }
 </style>
