@@ -6,6 +6,7 @@
       <label>
         <input type="checkbox" :checked="flag.value" @input="onChangeFlag(flag.code)" />
         {{ flag.label }}
+        <Help :help="flagHelp[flag.code]" v-if="flagHelp[flag.code]"/>
       </label>
     </div>
   </div>
@@ -15,6 +16,7 @@
 import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 import axios from "axios";
 import RoomView from "@/components/builder/room/RoomView.ts";
+import Help from "@/components/Help.vue";
 
 interface RoomFlag {
   code: string;
@@ -22,7 +24,11 @@ interface RoomFlag {
   value: boolean;
 }
 
-@Component
+@Component({
+  components: {
+    Help
+  }
+})
 export default class RoomFlags extends Mixins(RoomView) {
   flags: RoomFlag[] = [];
 
@@ -46,6 +52,16 @@ export default class RoomFlags extends Mixins(RoomView) {
         flag = resp.data;
       }
     }
+  }
+
+  get flagHelp() {
+    return {
+      workshop:
+        "The 'upgrade' command is available in Workshop rooms, which lets players attempt to upgrade an item's stats.",
+      no_roam:
+        "Rooms flagged as No Roam are excluded from the rooms that a wandering mob might load or move into.",
+      peaceful: "Characters cannot engage in combat in peaceful rooms."
+    };
   }
 }
 </script>
