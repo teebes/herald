@@ -84,7 +84,7 @@
       Sells for {{ item.cost }} gold.
       <template v-if="isUpgradable">
         <br />
-        Can be upgraded for {{ item.upgrade_cost }} gold.
+        Upgrade can be attempted for {{ item.upgrade_cost }} gold.
       </template>
     </div>
   </div>
