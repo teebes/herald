@@ -189,7 +189,7 @@ const receiveMessage = async ({
   // Successful move updates
   if (
     message_data.type === "cmd.move.success" ||
-    message_data.type === "cmd.flee.success" ||
+    message_data.type === "affect.flee.success" ||
     message_data.type === "notification.transport.exit" ||
     message_data.type === "affect.death" ||
     message_data.type === "affect.transfer"
@@ -367,7 +367,7 @@ const receiveMessage = async ({
     if (message_data.data.actor.key === state.player.key) {
       commit("player_target_set", message_data.data.target);
     }
-  } else if (message_data.type === "cmd.flee.success") {
+  } else if (message_data.type === "affect.flee.success") {
     commit("player_target_set", null);
   }
 };
@@ -509,7 +509,7 @@ const mutations = {
     message.message_id = uuidv4();
 
     if (
-      message.type === "cmd.flee.success" ||
+      message.type === "affect.flee.success" ||
       message.type === "cmd.move.success" ||
       message.type === "system.connect.success" ||
       message.type === "affect.death"

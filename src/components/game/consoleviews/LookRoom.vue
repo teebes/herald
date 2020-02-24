@@ -7,7 +7,7 @@
       You have been slain! Rest your weary bones...
     </div>
 
-    <div v-if="message.type === 'cmd.flee.success'" class="mb-4">
+    <div v-if="message.type === 'affect.flee.success'" class="mb-4">
       <span v-if="message.data.is_auto"
         >Your health is too low and you flee {{ message.data.direction }}!</span
       >

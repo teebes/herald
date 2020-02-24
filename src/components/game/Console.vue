@@ -106,7 +106,7 @@ export default class Console extends Vue {
     } else if (
       type === "cmd.look.success" ||
       type === "cmd.move.success" ||
-      type === "cmd.flee.success" ||
+      type === "affect.flee.success" ||
       type === "system.connect.success" ||
       type === "cmd.jump.success" ||
       type === "affect.death"

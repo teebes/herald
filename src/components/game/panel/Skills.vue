@@ -87,13 +87,6 @@ export default class PanelSkills extends Vue {
     }
   }
 
-  // @Watch("cooldowns")
-  // onCooldownsChange(cooldowns) {
-  //   console.log("-------- CD change: --------");
-  //   console.log(cooldowns);
-  //   this.startCooldowns();
-  // }
-
   get cooldowns() {
     return this.$store.state.game.player_cooldowns;
   }
@@ -111,6 +104,9 @@ export default class PanelSkills extends Vue {
     const cooldowns = this.cooldowns;
 
     for (const skill in cooldowns) {
+      // Temporary fix for flee's cooldown
+      if (skill == "flee") continue;
+
       // if (!this.activeCooldowns[skill]) {
       if (true) {
         const overlay = this.$refs[`${skill}-overlay`] as HTMLElement;
