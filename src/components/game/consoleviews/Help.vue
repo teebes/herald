@@ -123,6 +123,8 @@
           <div class="cmd" @click="cmdHelp('sell')">sell</div>
           <div class="cmd" @click="cmdHelp('enquire')">enquire</div>
           <div class="cmd" @click="cmdHelp('complete')">complete</div>
+          <div class="cmd" @click="cmdHelp('order')">order</div>
+
         </div>
       </div>
 
