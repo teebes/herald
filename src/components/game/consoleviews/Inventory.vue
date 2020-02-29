@@ -7,17 +7,21 @@
     <ul class="list">
       <li v-for="(item, index) in stackedInventory(inventory)" :key="index" class="inventory-item">
         <span
+          v-if="isLastMessage"
           v-interactive="{target: item}"
-          class="interactable"
+          class='interactable'
           :class="[item.quality]"
-          :key="item.key"
-          :keyword="item.keyword"
-          @click="onItemClick(item)"
+          :key="item.key + '-interactive'"
+          @click="isLastMessage && onItemClick(item)"
         >{{ item.name }}</span>
-
+        <span
+          :class="[item.quality]"
+          :key="item.key"        
+        >{{ item.name }}</span>
         <span class="item-count" v-if="item.count && item.count > 1">&nbsp;[{{item.count}}]</span>
       </li>
     </ul>
+
     <div class="gold-inv">You have {{ player.gold }} gold.</div>
   </div>
 </template>
@@ -27,6 +31,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { stackedInventory, getTargetInGroup } from "@/core/utils.ts";
 
 interface InventoryMessage {
+  type: string;
   data: {
     inventory: {}[];
   };
@@ -44,6 +49,12 @@ export default class ConsoleInventory extends Vue {
 
   get player() {
     return this.$store.state.game.player;
+  }
+
+  get isLastMessage() {
+    return (
+      this.$store.state.game.last_message[this.message.type] == this.message
+    );
   }
 
   onItemClick(item) {

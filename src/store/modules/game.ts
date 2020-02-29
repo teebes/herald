@@ -34,6 +34,8 @@ const set_initial_state = () => {
     // message interactable (same thing for inventory, equipment etc).
     last_viewed_room_message: null,
 
+    last_message: {},
+
     // Data about the item or mob being displayed in Hover or Modal
     lookup: null,
 
@@ -112,6 +114,7 @@ const receiveMessage = async ({
   /* Main process for receiving messages */
   const message_data = JSON.parse(event.data);
 
+  // Keep track of communication messages for the coms log
   const com_messages = [
     "cmd.chat.success",
     "notification.cmd.chat.success",
@@ -142,6 +145,11 @@ const receiveMessage = async ({
 
   /* Special messages processing */
 
+  // Keep track for each type of message of the last one seen. This is useful
+  // to have advanced actions be available only on the latest of a series of
+  // messages. For example, actions on items in inventory & eq views
+  commit("last_message_set", message_data);
+
   // Initial connection
   if (message_data.type == "system.connect.success") {
     commit("full_screen_message_set", "Loading world...");
@@ -152,6 +160,7 @@ const receiveMessage = async ({
     }
     commit("set_map", map);
     commit("room_set", message_data.data.room);
+    commit("last_viewed_room_message_set", message_data);
     commit("connected_set");
     const world_data = {
       ...state.world,
@@ -196,6 +205,7 @@ const receiveMessage = async ({
   ) {
     commit("map_add", message_data.data.room);
     commit("room_set", message_data.data.room);
+    commit("last_viewed_room_message_set", message_data);
     commit("player_target_set", null);
   } else if (message_data.type === "cmd.jump.success") {
     commit("map_add", message_data.data.target);
@@ -217,10 +227,12 @@ const receiveMessage = async ({
 
   // Room updating on look
   if (
-    message_data.type === "cmd.look.success" &&
-    message_data.data.target_type === "room"
+    message_data.type === "cmd.jump.success" ||
+    (message_data.type === "cmd.look.success" &&
+      message_data.data.target_type === "room")
   ) {
     commit("room_set", message_data.data.target);
+    commit("last_viewed_room_message_set", message_data);
   }
 
   // On death, clear out combat window
@@ -478,6 +490,7 @@ const actions = {
   },
 
   cmd_structured: async ({ dispatch, commit, state }, payload) => {
+    console.log(payload);
     payload.echo = true;
     commit("message_add", payload);
     dispatch("sendWSMessage", payload);
@@ -508,21 +521,6 @@ const mutations = {
     message.receive_ts = new Date().getTime();
     message.message_id = uuidv4();
 
-    if (
-      message.type === "affect.flee.success" ||
-      message.type === "cmd.move.success" ||
-      message.type === "system.connect.success" ||
-      message.type === "affect.death"
-    ) {
-      state.last_viewed_room_message = message;
-    } else if (
-      message.type === "cmd.jump.success" ||
-      (message.type === "cmd.look.success" &&
-        RegExp(/@\d+:room\./).test(message.data.target.key))
-    ) {
-      state.last_viewed_room_message = message;
-    }
-
     state.messages.push(message);
     const messages_length = state.messages.length;
     if (messages_length > MESSAGE_LIMIT) {
@@ -531,6 +529,14 @@ const mutations = {
         messages_length
       );
     }
+  },
+
+  last_viewed_room_message_set: (state, message) => {
+    state.last_viewed_room_message = message;
+  },
+
+  last_message_set: (state, message) => {
+    Vue.set(state.last_message, message.type, message);
   },
 
   messages_clear: state => {

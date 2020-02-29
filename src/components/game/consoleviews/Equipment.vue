@@ -8,11 +8,16 @@
 
           <td class="eq-item">
             <span
+              v-if="isLastMessage"
               v-interactive="{target: slot.slotItem}"
-              class="interactable"
+              :key="slot.slotItem.key + 'interactive'"
+              class='interactable'
               :class="[slot.slotItemQuality]"
-              @click="onItemClick(slot.slotItem)"
+              @click="isLastMessage && onItemClick(slot.slotItem)"
             >{{ slot.slotItemName }}</span>
+            <span v-else
+              :key="slot.slotItem.key"
+              :class="[slot.slotItemQuality]">{{ slot.slotItemName }}</span>
           </td>
         </tr>
       </template>
@@ -41,6 +46,12 @@ export default class ConsoleEquipment extends Vue {
     }
     const target = getTargetInGroup(item, items);
     this.$store.dispatch("game/cmd", `remove ${target}`);
+  }
+
+  get isLastMessage() {
+    return (
+      this.$store.state.game.last_message[this.message.type] == this.message
+    );
   }
 
   get slots() {

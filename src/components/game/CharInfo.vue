@@ -9,8 +9,8 @@
       </template>
     </div>
     <div class="health color-text-50">Health: {{ char.health }} / {{ char.health_max }}</div>
-    <div class="description">{{ char.description }}</div>
-
+    <div class="description" v-if="char.description">{{ char.description }}</div>
+  
     <div class="equipment" v-if="slots && slots.length">
       <div>{{ this.$capfirst(char.name) }} is using:</div>
       <div v-for="(slot, index) in slots" :key="index">
