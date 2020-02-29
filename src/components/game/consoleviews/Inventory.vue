@@ -14,7 +14,7 @@
           :key="item.key + '-interactive'"
           @click="isLastMessage && onItemClick(item)"
         >{{ item.name }}</span>
-        <span
+        <span v-else
           :class="[item.quality]"
           :key="item.key"        
         >{{ item.name }}</span>

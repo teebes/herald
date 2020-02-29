@@ -1,7 +1,7 @@
 <template>
   <div class="look-char indented">
     <CharInfo :char="message.data.target" />
-    <div v-if="isLastMessage && isInRoom && message.data.target.actions.length" class='mt-4'>
+    <div v-if="isLastMessage && isInRoom && hasAction" class='mt-4'>
       <button 
         class="btn-small mr-2" 
         v-if="message.data.target.actions.enquire"
@@ -39,6 +39,10 @@ import { getTargetInGroup } from "@/core/utils.ts";
 })
 export default class LookChar extends Vue {
   @Prop() message!: any;
+
+  hasAction() {
+    return Boolean(this.message.data.target.actions.complete || this.message.data.target.actions.completion_action || this.message.data.target.actions.list || this.message.data.target.actions.offer)
+  }
 
   doAction(char, action) {
     const target = getTargetInGroup(char, this.$store.state.game.room.chars);
