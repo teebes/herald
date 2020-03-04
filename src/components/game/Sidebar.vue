@@ -34,10 +34,14 @@
         <div
           v-for="player in who_list.players"
           :key="player.key"
-          :class="{ 'color-secondary': player.name_recognition }"
+          class='hover'
+          :class="{ 'color-secondary': player.name_recognition, 'color-primary': player.is_immortal }"
+          @click="onClickWhoPlayer(player)"
         >
           <span v-if="player.is_immortal">~</span>
-          {{ player.name }} ({{ player.level }})
+          {{ player.name }} {{ player.title }}
+          <span v-if="player.is_idle" class='ml-1 color-text-50'>(Idle)</span>
+        
         </div>
       </div>
     </div>
@@ -253,6 +257,10 @@ export default class Sidebar extends Vue {
     if (!feat.is_active) {
       this.$store.dispatch("game/cmd", `learn ${feat.code}`);
     }
+  }
+
+  onClickWhoPlayer(player) {
+    this.$store.dispatch("game/cmd", `whois ${player.name}`);
   }
 
   get who_list() {

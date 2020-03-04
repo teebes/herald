@@ -49,6 +49,7 @@ import ScrollTool from "./ScrollTool.vue";
 import Stats from "./consoleviews/Stats.vue";
 import Upgrade from "./consoleviews/Upgrade.vue";
 import Who from "./consoleviews/Who.vue";
+import Whois from "./consoleviews/Whois.vue";
 
 import _ from "lodash";
 
@@ -74,7 +75,8 @@ import _ from "lodash";
     ScrollTool,
     Stats,
     Upgrade,
-    Who
+    Who,
+    Whois
   }
 })
 export default class Console extends Vue {
@@ -130,6 +132,8 @@ export default class Console extends Vue {
       return "Upgrade";
     } else if (message.type === "cmd.who.success") {
       return "Who";
+    } else if (message.type === "cmd.whois.success") {
+      return "Whois";
     } else if (
       message.type === "notification.cmd.chat.success" ||
       message.type === "cmd.chat.success"
