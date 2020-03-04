@@ -4,9 +4,9 @@
     <div
       v-for="player in message.data.players"
       :key="player.id"
-      :class="{ 'color-secondary': player.name_recognition }"
+      :class="{ 'color-secondary': player.name_recognition, 'color-primary': player.is_immortal }"
     >
-      <span v-if="player.is_immortal">~</span>
+      <!-- <span v-if="player.is_immortal">~</span> -->
       {{ player.name }} {{ player.title }} ({{ player.level }})
       <span v-if="player.display_faction">[{{ player.display_faction }}]</span>
       <span v-if="player.is_idle" class="ml-1 color-text-50">(Idle)</span>

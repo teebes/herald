@@ -13,6 +13,7 @@
       </div>
      <div>Player ID: {{ player.id }}</div>
      <div>User ID: {{ player.user_id }}</div>
+     <div>Username: {{ player.username }}</div>
    </div>
   </div>
 </template>

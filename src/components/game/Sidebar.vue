@@ -38,7 +38,7 @@
           :class="{ 'color-secondary': player.name_recognition, 'color-primary': player.is_immortal }"
           @click="onClickWhoPlayer(player)"
         >
-          <span v-if="player.is_immortal">~</span>
+          <!-- <span v-if="player.is_immortal">~</span> -->
           {{ player.name }} {{ player.title }}
           <span v-if="player.is_idle" class='ml-1 color-text-50'>(Idle)</span>
         
