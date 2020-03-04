@@ -28,7 +28,7 @@
             <a href="https://discord.gg/a3u82tR" target="_blank">Chat on Discord</a>
           </div>
           <div class="action">
-            <a href="https://www.patreon.com/writtenrealms">Patreon Page</a>
+            <a href="https://www.patreon.com/writtenrealms">Support Us</a>
           </div>
           <div class="action">
             <a href="#" class="exit-game" @click="onClickExit">Exit World</a>
