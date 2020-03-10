@@ -59,6 +59,16 @@
               class="room-plus-action set-room-exit"
               @click="onClickRoomAction(directionData.direction, 'set_exit')"
             >set room exit</div>
+            <div 
+              class="room-plus-action set-door"
+              @click="onClickRoomAction(directionData.direction, 'set_door')"
+              v-if="directionData.canDisconnect"
+            >set door</div>            
+            <div 
+              class="room-plus-action clear-door"
+              v-if="room.doors[directionData.direction]"
+              @click="onClickRoomAction(directionData.direction, 'clear_door')"
+            >clear door</div>
           </div>
         </div>
       </div>
@@ -76,6 +86,7 @@ import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 import { DIRECTIONS, BUILDER_ACTIONS, UI_MUTATIONS } from "@/constants.ts";
 import { BUILDER_ROOM_INDEX } from "@/router";
 import { OutsideClick } from "@/components/builder/Mixins.ts";
+import { DIRECTION, ITEM_TEMPLATE } from "@/core/forms.ts";
 
 @Component
 export default class extends Mixins(OutsideClick) {
@@ -182,7 +193,7 @@ export default class extends Mixins(OutsideClick) {
             references: "room"
           }
         ],
-        action: BUILDER_ACTIONS.ROOM_SAVE
+        action: "builder/room_save"
       };
       this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
     } else if (action == "goto_exit") {
@@ -194,6 +205,60 @@ export default class extends Mixins(OutsideClick) {
           room_id: exit_room_id
         }
       });
+    } else if (action === "set_door") {
+      let data, title;
+      if (this.room.doors[direction]) {
+        data = this.room.doors[direction];
+        title = `Edit ${direction} Door`;
+      } else {
+        data = this.room.doors[direction] || {
+          name: "door",
+          direction: direction,
+          default_state: "closed",
+          key: null
+        };
+        title = `Add ${direction} Door`;
+      }
+      const modal = {
+        action: "builder/door_set",
+        title: title,
+        data: data,
+        schema: [
+          {
+            attr: "name",
+            label: "Name"
+          },
+          DIRECTION,
+          {
+            attr: "default_state",
+            label: "Default State",
+            options: [
+              {
+                value: "open",
+                label: "Open"
+              },
+              {
+                value: "closed",
+                label: "Closed"
+              },
+              {
+                value: "locked",
+                label: "Locked"
+              }
+            ]
+          },
+          {
+            attr: "key",
+            label: "Door Key",
+            widget: "reference",
+            references: "item_template",
+            context: "key"
+          }
+        ]
+      };
+      this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
+    } else if (action === "clear_door") {
+      this.$store.dispatch("builder/door_clear", direction);
     }
   }
 }

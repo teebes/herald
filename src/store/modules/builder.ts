@@ -9,14 +9,7 @@ import axios from "axios";
 import { Room } from "@/core/interfaces";
 import router, {
   BUILDER_ZONE_PATH_DETAILS,
-  BUILDER_MOB_TEMPLATE_DETAILS,
-  BUILDER_MOB_TEMPLATE_LIST,
-  BUILDER_ITEM_TEMPLATE_DETAILS,
-  BUILDER_ITEM_TEMPLATE_LIST,
-  BUILDER_ZONE_QUEST_DETAIL,
-  BUILDER_ZONE_QUEST_LIST,
   BUILDER_ZONE_INDEX,
-  BUILDER_ZONE_LOADER_DETAILS,
   BUILDER_ROOM_INDEX
 } from "@/router";
 import { get_room_index_key } from "@/core/map.ts";
@@ -387,6 +380,28 @@ const actions = {
     await axios.post(`/builder/worlds/${world_id}/rooms/${room_id}/`);
   },
 
+  door_set: async ({ state, commit }, payload) => {
+    const resp = await axios.post(
+      `/builder/worlds/${state.world.id}/rooms/${state.room.id}/set_door/`,
+      payload
+    );
+    if (resp.status === 201) {
+      commit("room_door_set", payload);
+    }
+  },
+
+  door_clear: async ({ state, commit }, direction) => {
+    const resp = await axios.post(
+      `/builder/worlds/${state.world.id}/rooms/${state.room.id}/clear_door/`,
+      {
+        direction: direction
+      }
+    );
+    if (resp.status === 204) {
+      commit("room_door_clear", direction);
+    }
+  },
+
   path_fetch: async ({ commit }, { world_id, path_id }) => {
     const resp = await axios.get(
       `builder/worlds/${world_id}/paths/${path_id}/`
@@ -557,6 +572,18 @@ const mutations = {
     const index = state.path.rooms.findIndex(_room => room.key == _room.key);
     if (index === -1) return;
     state.path.rooms.splice(index, 1);
+  },
+
+  room_door_set: (state, door_data) => {
+    const room = state.room;
+    room.doors[door_data.direction] = door_data;
+    state.room = room;
+  },
+
+  room_door_clear: (state, direction) => {
+    const room = state.room;
+    delete room.doors[direction];
+    state.room = room;
   }
 };
 

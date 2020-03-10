@@ -31,7 +31,20 @@
       </div>
     </div>
 
-    <RoomActions />
+    <div class='flex actions-and-doors'>
+      <RoomActions />
+
+      <div class='doors' v-if="roomDoors.length">
+        <h3>DOORS</h3>
+        <div v-for="door in roomDoors" :key="door.direction">
+          {{ door.direction }}: {{ door.name || "unnamed" }}
+          [{{ door.default_state }}]
+          <template v-if="door.key"> 
+            - opened by <router-link :to="key_link(door.key)">{{ door.key.name }}</router-link>
+          </template>
+        </div>
+      </div>
+    </div>
 
     <div class="mt-8" v-if="room.note">
       <h3>ROOM NOTE</h3>
@@ -43,13 +56,13 @@
 <script lang='ts'>
 import { Component, Prop, Vue, Mixins, Watch } from "vue-property-decorator";
 import Map from "@/components/Map.vue";
-import { BUILDER_ACTIONS, UI_MUTATIONS } from "@/constants";
+import { BUILDER_ACTIONS, UI_MUTATIONS, DIRECTIONS } from "@/constants";
 import RoomActions from "@/components/builder/room/RoomActions.vue";
 import RoomView from "@/components/builder/room/RoomView";
 import RoomDescriptionModal from "@/components/builder/room/RoomDescriptionModal.vue";
 import { BUILDER_FORMS } from "@/core/forms";
 import { MapRoomClick } from "@/components/builder/Mixins.ts";
-import { BUILDER_ROOM_INDEX } from "@/router";
+import { BUILDER_ROOM_INDEX, BUILDER_ITEM_TEMPLATE_DETAILS } from "@/router";
 import { FormElement } from "@/core/forms";
 import RoomDescription from "@/components/builder/room/RoomDescription.vue";
 
@@ -65,6 +78,17 @@ export default class RoomDetails extends Mixins(MapRoomClick, RoomView) {
     return this.$store.state.builder.room;
   }
 
+  get roomDoors() {
+    if (!this.room.doors) return [];
+    const doors: {}[] = [];
+    for (const direction in DIRECTIONS) {
+      if (this.room.doors[direction]) {
+        doors.push(this.room.doors[direction]);
+      }
+    }
+    return doors;
+  }
+
   get isMapReady() {
     return Boolean(
       this.$store.state.builder.room && this.$store.state.builder.map
@@ -73,6 +97,16 @@ export default class RoomDetails extends Mixins(MapRoomClick, RoomView) {
 
   get room_info_schema() {
     return BUILDER_FORMS.ROOM_INFO;
+  }
+
+  key_link(key) {
+    return {
+      name: BUILDER_ITEM_TEMPLATE_DETAILS,
+      params: {
+        world_id: this.$route.params.world_id,
+        item_template_id: key.id
+      }
+    };
   }
 
   onTypeE(e) {
@@ -183,6 +217,18 @@ export default class RoomDetails extends Mixins(MapRoomClick, RoomView) {
       }
       button {
         margin-top: 8px;
+      }
+    }
+  }
+
+  .actions-and-doors {
+    @media ($mobile-site) {
+      flex-direction: column;
+    }
+    @media ($desktop-site) {
+      .doors {
+        margin-left: 60px;
+        margin-top: 40px;
       }
     }
   }

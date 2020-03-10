@@ -31,7 +31,7 @@ export default class extends Vue {
       class: "description-modal",
       data: this.$store.state.builder.room,
       schema: schema,
-      action: BUILDER_ACTIONS.ROOM_SAVE
+      action: 'builder/room_save',
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
