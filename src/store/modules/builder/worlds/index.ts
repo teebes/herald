@@ -16,7 +16,8 @@ const initial_state = () => {
     mob_template_quests: [],
 
     item_template: null,
-    item_template_quests: []
+    item_template_quests: [],
+    item_template_loads: []
   };
 };
 

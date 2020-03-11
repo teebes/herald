@@ -2,8 +2,8 @@
   <div id="item-loads">
     <h3>ITEM LOADED BY</h3>
 
-    <ul v-for="loader in loaders" :key="loader.id" class="list">
-      <li>
+    <ul class="list" v-if="loaders && loaders.length">
+      <li v-for="loader in loaders" :key="loader.id">
         <router-link :to="loader_link(loader)">{{ loader.name }}</router-link>
       </li>
     </ul>
@@ -37,10 +37,6 @@ export default class ItemTemplateLoads extends Vue {
   }
 
   async mounted() {
-    this.fetch();
-  }
-
-  async fetch() {
     this.$store.dispatch("builder/worlds/item_template_loads_fetch", {
       world_id: this.$route.params.world_id,
       item_template_id: this.$route.params.item_template_id
