@@ -240,6 +240,12 @@ export default class Map {
     const fromCoords = this.getExitCoord(room, dir);
     let toCoords;
 
+    if (
+      room[`${dir}_door_state`] == "closed" ||
+      room[`${dir}_door_state`] == "locked"
+    )
+      return;
+
     var exitRoom = this.renderRooms[exitRoomAttrs.key];
     if (exitRoom && exitRoom.z === room.z) {
       // exit room is in the map, and on the same z-axis

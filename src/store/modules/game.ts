@@ -213,6 +213,14 @@ const receiveMessage = async ({
     commit("player_target_set", null);
   }
 
+  // Open & close messages
+  if (message_data.type === "door.open" || message_data.type === "door.close") {
+    commit("map_add", message_data.data.room);
+    if (message_data.data.exit_room) {
+      commit("map_add", message_data.data.exit_room);
+    }
+  }
+
   // Anything that has an actor who is the connected player
   if (
     message_data.data["actor"] &&

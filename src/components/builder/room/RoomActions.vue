@@ -228,7 +228,7 @@ export default class extends Mixins(OutsideClick) {
             attr: "name",
             label: "Name"
           },
-          DIRECTION,
+          // DIRECTION,
           {
             attr: "default_state",
             label: "Default State",
