@@ -201,7 +201,8 @@ const receiveMessage = async ({
     message_data.type === "affect.flee.success" ||
     message_data.type === "notification.transport.exit" ||
     message_data.type === "affect.death" ||
-    message_data.type === "affect.transfer"
+    message_data.type === "affect.transfer" ||
+    message_data.type === "notification.death"
   ) {
     commit("map_add", message_data.data.room);
     commit("room_set", message_data.data.room);
