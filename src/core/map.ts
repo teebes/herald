@@ -243,8 +243,9 @@ export default class Map {
     if (
       room[`${dir}_door_state`] == "closed" ||
       room[`${dir}_door_state`] == "locked"
-    )
+    ) {
       return;
+    }
 
     var exitRoom = this.renderRooms[exitRoomAttrs.key];
     if (exitRoom && exitRoom.z === room.z) {

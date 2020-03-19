@@ -12,6 +12,7 @@ export interface FormElement {
   tooltip?: ""[];
   help?: string;
   required?: boolean;
+  readonly?: boolean;
 }
 
 // Generic form elements

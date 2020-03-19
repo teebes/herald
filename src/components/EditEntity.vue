@@ -31,6 +31,7 @@
             :formErrors="formErrors"
             :value="formData[element.attr]"
             :elementSchema="element"
+            :readonly="element.readonly || false"
             @update="onFormFieldUpdate"
           />
         </template>

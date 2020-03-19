@@ -79,6 +79,11 @@ export default class FormField extends Vue {
   @Prop() formErrors!: Object;
   @Prop({ default: false }) readonly!: boolean;
 
+  constructor() {
+    super();
+    console.log(this.elementSchema);
+  }
+
   get tooltip_content() {
     return {
       content: this.elementSchema.help,

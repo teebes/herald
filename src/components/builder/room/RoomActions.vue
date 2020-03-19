@@ -219,6 +219,11 @@ export default class extends Mixins(OutsideClick) {
         };
         title = `Add ${direction} Door`;
       }
+
+      // Make the direction element readonly
+      const direction_schema = { ...DIRECTION };
+      direction_schema.readonly = true;
+
       const modal = {
         action: "builder/door_set",
         title: title,
@@ -228,7 +233,7 @@ export default class extends Mixins(OutsideClick) {
             attr: "name",
             label: "Name"
           },
-          // DIRECTION,
+          direction_schema,
           {
             attr: "default_state",
             label: "Default State",
