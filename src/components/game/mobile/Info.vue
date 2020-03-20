@@ -19,12 +19,14 @@ export default class MobileInfo extends Vue {}
 
 #mobile-panel {
   background-color: $color-background-black;
+  padding-bottom: 10px;
 
   .combat-view {
     margin: 0 auto;
   }
 
-  .inventory-view, .equipment-view {
+  .inventory-view,
+  .equipment-view {
     margin-top: auto;
   }
 }

@@ -112,7 +112,7 @@ export default class MobilePanelTabs extends Vue {
   .tab-contents-region {
     order: 2;
     flex: 1 1;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     &::-webkit-scrollbar {
       width: 8px;
