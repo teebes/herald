@@ -102,8 +102,8 @@
           </div>
 
           <div class="stat">
-            <div class="st-label"></div>
-            <div class="st-value"></div>
+            <div class="st-label">Medals</div>
+            <div class="st-value">{{ player.medals }}</div>
           </div>
         </div>
       </div>

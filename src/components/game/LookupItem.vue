@@ -53,7 +53,10 @@ export default class GameLookupItem extends Vue {
         },
         {
           action: "buy",
-          label: "BUY FOR " + this.item.buy_price + " GOLD"
+          //label: "BUY FOR " + this.item.buy_price + " GOLD"
+          label: `BUY FOR ${
+            this.item.buy_price
+          } ${this.item.currency.toUpperCase()}`
         },
         { action: "sell", label: "SELL" },
         { action: "wield", label: "WIELD" },

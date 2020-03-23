@@ -106,6 +106,8 @@
           >Items spawned by this template will not persist over reboots if left on the ground.</div>
         </template>
 
+        <div class='mt-4'>Item currency: {{ item_template.currency }}</div>
+
         <button class="btn-thin edit-advanced" @click="editAdvanced">EDIT ADVANCED SETTINGS</button>
       </div>
 
@@ -190,6 +192,20 @@ export default class ItemTemplateDetails extends Mixins(WorldView) {
         widget: "checkbox"
       });
     }
+    schema.push({
+      attr: "currency",
+      label: "Currency",
+      options: [
+        {
+          value: "gold",
+          label: "Gold"
+        },
+        {
+          value: "medals",
+          label: "Medals"
+        }
+      ]
+    });
     const modal = {
       title: `Item Template ${entity.id}`,
       data: entity,
