@@ -11,16 +11,23 @@
             <div class="world-title">{{ world.name }}</div>
             <div class="world-author">
               By {{ world.built_by }}
+            </div>
+            <div class='world-misc mt-1'>
+              <span class='color-text-50 world-type'>
+                <template v-if="world.is_multiplayer">MULTIPLAYER WORLD</template>
+                <template v-else>SINGLEPLAYER WORLD</template>
+              </span>
+              <span class="divider"></span>
+              <a href @click.prevent="copyShareLink" @click="copyShareLink">SHARE</a>              
               <template v-if="world.can_edit">
-                <span class="divider"></span>
+                <span class="divider"></span>  
                 <router-link
                   :to="{ name: BUILDER_WORLD_INDEX, params: { world_id: $route.params.world_id }}"
-                >EDIT WORLD</router-link>
+                >EDIT</router-link>
               </template>
-              <span class="divider"></span>
-              <a href @click.prevent="copyShareLink" @click="copyShareLink">SHARE</a>
-            </div>
-            <div class="world-description">
+            </div>              
+            
+            <div class="world-description mt-4">
               <div class="desc-line" v-for="(line, index) of descLines" :key="index">{{ line }}</div>
             </div>
           </div>
@@ -259,18 +266,22 @@ export default class WorldLobby extends Vue {
           line-height: 35px;
         }
 
-        .world-author {
+        .world-author,
+        .world-misc {
           @include font-text-light;
           font-size: 15px;
           letter-spacing: -0.5px;
           line-height: 20px;
-          margin-bottom: 1em;
+          // margin-bottom: 1em;
 
-          a {
+          a,
+          .world-type {
             @include font-title-regular;
             font-size: 13px;
             letter-spacing: 0.83px;
             line-height: 16px;
+          }
+          a {
             color: $color-primary;
             &:hover {
               text-decoration: underline;
