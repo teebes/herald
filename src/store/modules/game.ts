@@ -207,6 +207,16 @@ const receiveMessage = async ({
     commit("room_set", message_data.data.room);
     commit("last_viewed_room_message_set", message_data);
     commit("player_target_set", null);
+    if (message_data.data.door_states && message_data.data.door_states.length) {
+      for (const data of message_data.data.door_states) {
+        commit(
+          "map_update_door_state",
+          data.key,
+          data.direction,
+          data.door_state
+        );
+      }
+    }
   } else if (message_data.type === "cmd.jump.success") {
     commit("map_add", message_data.data.target);
     commit("room_set", message_data.data.target);
@@ -214,7 +224,12 @@ const receiveMessage = async ({
   }
 
   // Open & close messages
-  if (message_data.type === "door.open" || message_data.type === "door.close") {
+  if (
+    message_data.type === "door.open" ||
+    message_data.type === "door.close" ||
+    message_data.type === "notification.door.open" ||
+    message_data.type === "notification.door.close"
+  ) {
     commit("map_add", message_data.data.room);
     if (message_data.data.exit_room) {
       commit("map_add", message_data.data.exit_room);
@@ -240,6 +255,7 @@ const receiveMessage = async ({
       message_data.data.target_type === "room")
   ) {
     commit("room_set", message_data.data.target);
+    commit("map_add", message_data.data.target);
     commit("last_viewed_room_message_set", message_data);
   }
 
@@ -498,7 +514,6 @@ const actions = {
   },
 
   cmd_structured: async ({ dispatch, commit, state }, payload) => {
-    console.log(payload);
     payload.echo = true;
     commit("message_add", payload);
     dispatch("sendWSMessage", payload);
@@ -695,8 +710,18 @@ const mutations = {
       ...state.map,
       [room.key]: room
     };
-    //Vue.set(state, .map, room.key, room);
-    //state.map[room.key] = room;
+  },
+  map_update_door_state: (state, room_key, direction, door_state) => {
+    let room = state.map[room_key];
+    if (!room) return;
+    const existing_state = room[`${direction}_door_state`];
+    if (existing_state != door_state) {
+      room[`${direction}_door_state`] = door_state;
+    }
+    state.map = {
+      ...state.map,
+      [room.key]: room
+    };
   },
   set_room_key: (state, room_key) => {
     state.room_key = room_key;
