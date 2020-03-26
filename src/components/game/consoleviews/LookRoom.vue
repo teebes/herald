@@ -207,7 +207,8 @@ export default class LookRoom extends Vue {
   }
 
   onClickDetail(word) {
-    this.$store.dispatch("game/cmd", `l ${word}`);
+    const trimmedWord = word.split(/\W+/)[0];
+    this.$store.dispatch("game/cmd", `l ${trimmedWord}`);
   }
 
   room_char_desc(char) {
