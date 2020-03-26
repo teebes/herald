@@ -160,8 +160,9 @@ export default class LookRoom extends Vue {
 
   isDetail(word) {
     if (!this.room || !this.room.details) return false;
+    const trimmedWord = word.split(/\W+/)[0];
     for (const detail of this.room.details) {
-      if (word.toLowerCase() === detail.toLowerCase()) return true;
+      if (trimmedWord.toLowerCase() === detail.toLowerCase()) return true;
     }
     return false;
   }
