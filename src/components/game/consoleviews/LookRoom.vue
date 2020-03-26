@@ -23,7 +23,7 @@
         v-for="(line, index) in descLines"
         :key="index"
       >
-        <template v-for="(word, word_index) in line.split(/\W+/)">
+        <template v-for="(word, word_index) in line.split(' ')">
           <span
             :key="word_index"
             v-if="isDetail(word)"
