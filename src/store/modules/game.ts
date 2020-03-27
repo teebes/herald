@@ -209,12 +209,11 @@ const receiveMessage = async ({
     commit("player_target_set", null);
     if (message_data.data.door_states && message_data.data.door_states.length) {
       for (const data of message_data.data.door_states) {
-        commit(
-          "map_update_door_state",
-          data.key,
-          data.direction,
-          data.door_state
-        );
+        commit("map_update_door_state", {
+          room_key: data.key,
+          direction: data.direction,
+          door_state: data.door_state
+        });
       }
     }
   } else if (message_data.type === "cmd.jump.success") {
@@ -711,7 +710,7 @@ const mutations = {
       [room.key]: room
     };
   },
-  map_update_door_state: (state, room_key, direction, door_state) => {
+  map_update_door_state: (state, { room_key, direction, door_state }) => {
     let room = state.map[room_key];
     if (!room) return;
     const existing_state = room[`${direction}_door_state`];
