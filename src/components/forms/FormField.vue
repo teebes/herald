@@ -81,7 +81,6 @@ export default class FormField extends Vue {
 
   constructor() {
     super();
-    console.log(this.elementSchema);
   }
 
   get tooltip_content() {

@@ -215,7 +215,8 @@ export default class extends Mixins(OutsideClick) {
           name: "door",
           direction: direction,
           default_state: "closed",
-          key: null
+          key: null,
+          destroy_key: false
         };
         title = `Add ${direction} Door`;
       }
@@ -258,6 +259,11 @@ export default class extends Mixins(OutsideClick) {
             widget: "reference",
             references: "item_template",
             context: "key"
+          },
+          {
+            attr: "destroy_key",
+            label: "Destroy key on use",
+            widget: "checkbox"
           }
         ]
       };
