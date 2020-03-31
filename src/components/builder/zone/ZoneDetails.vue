@@ -64,6 +64,16 @@
         <button class="btn-thin edit-mob" @click="editInfo">EDIT</button>
       </div>
     </div>
+
+    <div class="hlist respawn-frequency mt-8">
+      <div class="hlist-header">
+        <h3>RESPAWN FREQUENCY</h3>
+      </div>
+      <div class="hlist-item">
+        items
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -84,7 +94,7 @@ import {
   BUILDER_MOB_TEMPLATE_DETAILS,
   BUILDER_ITEM_TEMPLATE_DETAILS
 } from "@/router";
-import { BUILDER_FORMS } from "@/core/forms.ts";
+import { BUILDER_FORMS, FormElement } from "@/core/forms.ts";
 
 @Component({
   components: {
@@ -162,7 +172,12 @@ export default class ZoneDetails extends Mixins(ZoneView) {
     const modal = {
       title: `Zone ${entity.id}`,
       data: entity,
-      schema: BUILDER_FORMS.ZONE_INFO,
+      schema: [
+        {
+          attr: "name",
+          label: "Name"
+        }
+      ],
       action: BUILDER_ACTIONS.ZONE_SAVE
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
@@ -254,6 +269,10 @@ export default class ZoneDetails extends Mixins(ZoneView) {
         width: 45%;
       }
     }
+  }
+
+  .respawn-frequency {
+    width: 300px;
   }
 }
 </style>
