@@ -55,6 +55,9 @@ export const getTargetInGroup = (entity, group) => {
   for (const thing of group) {
     if (entity.key === thing.key) {
       found = true;
+      if (entity.key.split(".")[0] === "player") {
+        return entity.name;
+      }
       break;
     }
     const foundIndex = thing.keywords.split(" ").indexOf(entity.keyword);

@@ -11,7 +11,7 @@
           :key="item.key + '-interactable'"
         >{{ item.name }}</span>
         <span v-else :class="[item.quality]" :key="item.key">{{ item.name }}</span>
-        for {{item.cost}} gold
+        for {{item.cost}} {{ item.currency }}
       </li>
     </ol>
 
@@ -29,7 +29,7 @@ export default class GameMerchantInventory extends Vue {
     return (
       this.$store.state.game.last_message[this.message.type] == this.message
     );
-  }  
+  }
 }
 </script>
 

@@ -201,7 +201,8 @@ const receiveMessage = async ({
     message_data.type === "affect.flee.success" ||
     message_data.type === "notification.transport.exit" ||
     message_data.type === "affect.death" ||
-    message_data.type === "affect.transfer"
+    message_data.type === "affect.transfer" ||
+    message_data.type === "notification.death"
   ) {
     commit("map_add", message_data.data.room);
     commit("room_set", message_data.data.room);
@@ -585,7 +586,7 @@ const mutations = {
 
     // Player component updates, only if needed
 
-    if (!_.isEqual(state.player_skills, state.player.skills)) {
+    if (player.skills && !_.isEqual(state.player_skills, state.player.skills)) {
       state.player_skills = state.player.skills;
     }
 
@@ -593,11 +594,11 @@ const mutations = {
       state.player_stance = player.stance;
     }
 
-    if (player.archetype != state.player_archetype) {
+    if (player.archetype && player.archetype != state.player_archetype) {
       state.player_archetype = player.archetype;
     }
 
-    if (player.level != state.player_level) {
+    if (player.level && player.level != state.player_level) {
       state.player_level = player.level;
     }
   },

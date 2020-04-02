@@ -1,7 +1,7 @@
 <template>
   <div
     :class="{ grouped: isGrouped, damageDealt: isDamageDealt, damageTaken: isDamageTaken }"
-  >{{ message.text }}</div>
+  >{{ messageText }}</div>
 </template>
 
 <script lang='ts'>
@@ -11,6 +11,14 @@ export default class CombatMessage extends Vue {
   @Prop() message!: any;
   @Prop() previousMessage!: any;
   @Prop() index!: number;
+
+  get messageText() {
+    let text = this.message.text;
+    if (this.message.data.is_crit_hit) {
+      text = text.slice(0, text.length - 1) + "!";
+    }
+    return text;
+  }
 
   get isGrouped() {
     const prevMessage = this.previousMessage;

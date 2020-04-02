@@ -47,9 +47,14 @@
         </div>
 
         <div class="stat-entry">
+          <div class="label">Medals</div>
+          <div class="value">{{ player.medals }}</div>
+        </div>
+
+        <div class="stat-entry">
           <div class="label">Exp</div>
           <div class="value">{{ player.experience }} - {{ exp_perc_left }}%</div>
-        </div>
+        </div>        
       </div>
 
       <div class="right-side">
@@ -108,7 +113,7 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import { capfirst } from "@/core/utils.ts"
+import { capfirst } from "@/core/utils.ts";
 
 @Component
 export default class extends Vue {
@@ -132,7 +137,7 @@ export default class extends Vue {
     if (world_factions[this.player.factions.core]) {
       return world_factions[this.player.factions.core].name;
     }
-    if (!this.player.factions.core) return '';
+    if (!this.player.factions.core) return "";
     return capfirst(this.player.factions.core);
   }
 }

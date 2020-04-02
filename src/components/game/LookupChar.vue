@@ -59,6 +59,7 @@ export default class GameLookupChar extends Vue {
         // higher the better
         { action: "complete", label: "COMPLETE" },
         { action: "follow", label: "FOLLOW" },
+        { action: "unfollow", label: "UNFOLLOW" },
         { action: "group", label: "GROUP" },
         { action: "list", label: "LIST" },
         { action: "offer", label: "OFFER" },

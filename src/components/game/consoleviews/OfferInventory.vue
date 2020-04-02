@@ -29,6 +29,12 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 @Component
 export default class GameOfferInventory extends Vue {
   @Prop() message!: any;
+
+  get isLastMessage() {
+    return (
+      this.$store.state.game.last_message[this.message.type] == this.message
+    );
+  }
 }
 </script>
 
