@@ -70,7 +70,20 @@
         <h3>RESPAWN FREQUENCY</h3>
       </div>
       <div class="hlist-item">
-        items
+        <label>
+          <input type="checkbox" :checked="respawns" @input="onChangeRespawns" />
+          Respawns
+        </label>
+      
+        <div class="respawn-wait mt-2" v-if="respawns">
+          <div>
+            <span
+              v-if="zone.respawn_wait"
+            >Wait {{ zone.respawn_wait }} seconds before respawning.</span>
+            <span v-else>Respawns immediately.</span>
+          </div>
+          <button class="btn-thin" @click="editRespawns">EDIT</button>
+        </div>
       </div>
     </div>
 
@@ -109,6 +122,23 @@ export default class ZoneDetails extends Mixins(ZoneView) {
 
   BUILDER_MOB_TEMPLATE_DETAILS = BUILDER_MOB_TEMPLATE_DETAILS;
   BUILDER_ITEM_TEMPLATE_DETAILS = BUILDER_ITEM_TEMPLATE_DETAILS;
+
+  get respawns() {
+    return this.$store.state.builder.zone.respawn_wait >= 0;
+  }
+
+  get zone() {
+    return this.$store.state.builder.zone;
+  }
+
+  get isReady() {
+    return Boolean(
+      this.$store.state.builder.map &&
+        this.zone &&
+        this.$store.state.builder.room &&
+        this.zone_rooms.length
+    );
+  }
 
   async mounted() {
     const world_id = this.$route.params.world_id;
@@ -154,19 +184,6 @@ export default class ZoneDetails extends Mixins(ZoneView) {
     this.loaded = true;
   }
 
-  get zone() {
-    return this.$store.state.builder.zone;
-  }
-
-  get isReady() {
-    return Boolean(
-      this.$store.state.builder.map &&
-        this.zone &&
-        this.$store.state.builder.room &&
-        this.zone_rooms.length
-    );
-  }
-
   async editInfo() {
     const entity = this.$store.state.builder.zone;
     const modal = {
@@ -195,6 +212,31 @@ export default class ZoneDetails extends Mixins(ZoneView) {
       UI_MUTATIONS.SET_NOTIFICATION,
       `Deleted Mob Template ${zone_id}`
     );
+  }
+
+  onChangeRespawns(event) {
+    const checked = event.target.checked;
+    let respawn_wait = -1;
+    if (checked) respawn_wait = 300;
+    this.$store.dispatch("builder/zone_save", {
+      respawn_wait: respawn_wait
+    });
+  }
+
+  editRespawns() {
+    const entity = this.zone;
+    const modal = {
+      data: entity,
+      schema: [
+        {
+          attr: "respawn_wait",
+          label: "Respawn Wait",
+          help: "How long to wait before re-running this loader, in seconds."
+        }
+      ],
+      action: "builder/zone_save"
+    };
+    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
 }
 </script>

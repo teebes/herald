@@ -227,7 +227,8 @@ const receiveMessage = async ({
     message_data.type === "door.open" ||
     message_data.type === "door.close" ||
     message_data.type === "notification.door.open" ||
-    message_data.type === "notification.door.close"
+    message_data.type === "notification.door.close" ||
+    message_data.type === "notification.door.reset"
   ) {
     commit("map_add", message_data.data.room);
     if (message_data.data.exit_room) {
@@ -245,6 +246,11 @@ const receiveMessage = async ({
     if (message_data.data.actor && message_data.data.actor.room) {
       commit("set_room_key", message_data.data.actor.room.key);
     }
+  }
+
+  // Inventory affect
+  if (message_data.type === 'affect.inventory.remove') {
+    commit("player_remove_from_inventory", message_data.data.items);
   }
 
   // Room updating on look
@@ -594,6 +600,13 @@ const mutations = {
     if (player.level != state.player_level) {
       state.player_level = player.level;
     }
+  },
+
+  player_remove_from_inventory: (state, items) => {
+    const inv = _.differenceWith(state.player.inventory, items, (a, b) => {
+      return a.key == b.key
+    })
+    Vue.set(state.player, 'inventory', inv);
   },
 
   player_focus_set: (state, focus) => {
