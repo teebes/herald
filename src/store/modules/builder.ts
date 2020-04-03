@@ -575,15 +575,11 @@ const mutations = {
   },
 
   room_door_set: (state, door_data) => {
-    const room = state.room;
-    room.doors[door_data.direction] = door_data;
-    state.room = room;
+    Vue.set(state.room.doors, door_data.direction, door_data);
   },
 
   room_door_clear: (state, direction) => {
-    const room = state.room;
-    delete room.doors[direction];
-    state.room = room;
+    Vue.delete(state.room.doors, direction);
   }
 };
 
