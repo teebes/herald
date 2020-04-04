@@ -59,19 +59,29 @@
             <h3>RESPAWN FREQUENCY</h3>
           </div>
           <div class="hlist-item">
-            <label>
-              <input type="checkbox" :checked="respawns" @input="onChangeRespawns" />
-              Respawns
-            </label>
+            
+            <div class='mb-2'>
+              <label>
+                <input type="checkbox" :checked="loader.inherit_zone_wait" @input="onChangeInherit" />
+                Inherit from Zone ({{ zone_respawn_wait_label }})
+              </label>
+            </div>
 
-            <div class="respawn-wait mt-2" v-if="respawns">
-              <div>
-                <span
-                  v-if="loader.respawn_wait"
-                >Wait {{ loader.respawn_wait }} seconds before respawning.</span>
-                <span v-else>Respawns immediately.</span>
+            <div v-if="!loader.inherit_zone_wait">
+              <label>
+                <input type="checkbox" :checked="respawns" @input="onChangeRespawns" />
+                Respawns
+              </label>
+            
+              <div class="respawn-wait mt-2" v-if="respawns">
+                <div>
+                  <span
+                    v-if="loader.respawn_wait"
+                  >Wait {{ loader.respawn_wait }} seconds before respawning.</span>
+                  <span v-else>Respawns immediately.</span>
+                </div>
+                <button class="btn-thin" @click="editRespawns">EDIT</button>
               </div>
-              <button class="btn-thin" @click="editRespawns">EDIT</button>
             </div>
           </div>
         </div>
@@ -104,8 +114,11 @@ export default class extends Mixins(ZoneView) {
   adding: boolean = false;
   rules: any = null;
 
-  // So that when we re-check the respawns checkbox we return to
-  //
+  // get inherit() {
+  //   console.log(this.$store.state.builder.zones.loader);
+  //   console.log(this.$store.state.builder.zone);
+  //   return this.$store.state.builder.zones.loader.inherit;
+  // }
 
   get respawns() {
     return this.$store.state.builder.zones.loader.respawn_wait >= 0;
@@ -133,6 +146,17 @@ export default class extends Mixins(ZoneView) {
     ]);
 
     this.rules = rules_resp.data.results;
+  }
+
+  get zone_respawn_wait_label() {
+    const zone_wait = this.$store.state.builder.zones.loader.zone_wait;
+    if (!zone_wait) {
+      return "respawn immediately";
+    } else if (zone_wait === -1) {
+      return "never respawn";
+    } else {
+      return `wait ${zone_wait} seconds`;
+    }
   }
 
   editInfo() {
@@ -175,6 +199,12 @@ export default class extends Mixins(ZoneView) {
         respawn_wait: 300
       });
     }
+  }
+
+  onChangeInherit(event) {
+    this.$store.dispatch("builder/zones/loader_save", {
+      inherit_zone_wait: event.target.checked
+    });
   }
 
   onClickAdd() {

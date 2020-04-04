@@ -208,10 +208,33 @@ const receiveMessage = async ({
     commit("room_set", message_data.data.room);
     commit("last_viewed_room_message_set", message_data);
     commit("player_target_set", null);
+    if (message_data.data.door_states && message_data.data.door_states.length) {
+      for (const data of message_data.data.door_states) {
+        commit("map_update_door_state", {
+          room_key: data.key,
+          direction: data.direction,
+          door_state: data.door_state
+        });
+      }
+    }
   } else if (message_data.type === "cmd.jump.success") {
     commit("map_add", message_data.data.target);
     commit("room_set", message_data.data.target);
     commit("player_target_set", null);
+  }
+
+  // Open & close messages
+  if (
+    message_data.type === "door.open" ||
+    message_data.type === "door.close" ||
+    message_data.type === "notification.door.open" ||
+    message_data.type === "notification.door.close" ||
+    message_data.type === "notification.door.reset"
+  ) {
+    commit("map_add", message_data.data.room);
+    if (message_data.data.exit_room) {
+      commit("map_add", message_data.data.exit_room);
+    }
   }
 
   // Anything that has an actor who is the connected player
@@ -226,6 +249,11 @@ const receiveMessage = async ({
     }
   }
 
+  // Inventory affect
+  if (message_data.type === 'affect.inventory.remove') {
+    commit("player_remove_from_inventory", message_data.data.items);
+  }
+
   // Room updating on look
   if (
     message_data.type === "cmd.jump.success" ||
@@ -233,6 +261,7 @@ const receiveMessage = async ({
       message_data.data.target_type === "room")
   ) {
     commit("room_set", message_data.data.target);
+    commit("map_add", message_data.data.target);
     commit("last_viewed_room_message_set", message_data);
   }
 
@@ -491,7 +520,6 @@ const actions = {
   },
 
   cmd_structured: async ({ dispatch, commit, state }, payload) => {
-    console.log(payload);
     payload.echo = true;
     commit("message_add", payload);
     dispatch("sendWSMessage", payload);
@@ -573,6 +601,13 @@ const mutations = {
     if (player.level && player.level != state.player_level) {
       state.player_level = player.level;
     }
+  },
+
+  player_remove_from_inventory: (state, items) => {
+    const inv = _.differenceWith(state.player.inventory, items, (a, b) => {
+      return a.key == b.key
+    })
+    Vue.set(state.player, 'inventory', inv);
   },
 
   player_focus_set: (state, focus) => {
@@ -688,8 +723,18 @@ const mutations = {
       ...state.map,
       [room.key]: room
     };
-    //Vue.set(state, .map, room.key, room);
-    //state.map[room.key] = room;
+  },
+  map_update_door_state: (state, { room_key, direction, door_state }) => {
+    let room = state.map[room_key];
+    if (!room) return;
+    const existing_state = room[`${direction}_door_state`];
+    if (existing_state != door_state) {
+      room[`${direction}_door_state`] = door_state;
+    }
+    state.map = {
+      ...state.map,
+      [room.key]: room
+    };
   },
   set_room_key: (state, room_key) => {
     state.room_key = room_key;
