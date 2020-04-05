@@ -474,6 +474,10 @@ export const BUILDER_FORMS = {
             {
               value: "water",
               label: "Water"
+            },
+            {
+              value: "shallow",
+              label: "Shallow Water",
             }
           ]
         }

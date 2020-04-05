@@ -18,6 +18,7 @@ const ROOMCOLORS = {
   field: "#8e9422",
   mountain: "#7a5b3e",
   water: "#4798c4",
+  shallow: "#4798c4",
   forest: "#207f45",
   desert: "#bf824d",
   trail: "#5a8b73"
