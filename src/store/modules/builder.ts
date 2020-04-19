@@ -251,9 +251,9 @@ const actions = {
     commit("zone_set", resp.data);
   },
 
-  room_action: async ({ state, commit }, payload) => {
+  room_dir_action: async ({ state, commit }, payload) => {
     const resp = await axios.post(
-      `builder/worlds/${state.world.id}/rooms/${state.room.key}/action/`,
+      `builder/worlds/${state.world.id}/rooms/${state.room.key}/dir_action/`,
       payload
     );
     // Save room changes

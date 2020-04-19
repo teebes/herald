@@ -190,6 +190,45 @@ const ROOM_CHECK: FormElement[] = [
   }
 ];
 
+const ROOM_ACTION: FormElement[] = [
+  NAME,
+  {
+    attr: 'actions',
+    label: 'Action',
+    help: `Command to be executed by the player to trigger the action. By using the 'or' operator, several actions may be defined`
+  },
+  {
+    attr: 'display_action_in_room',
+    label: 'Display Action in Room',
+    widget: 'checkbox',
+    default: true,
+    help: `Whether to display a button for this action in the UI when looking at the room`
+  },
+  {
+    attr: 'commands',
+    label: 'Commands',
+    widget: 'textarea',
+    help: `Commands to be executed by the room when the action is triggered by the player. Can enter multiple commands, one per line.`
+  },
+  {
+    attr: 'conditions',
+    label: 'Conditions',
+    help: `Conditions required for the player's action to be valid.`
+  },
+  {
+    attr: 'show_details_on_failure',
+    label: 'Show Failure Message',
+    widget: 'checkbox',
+    default: false,
+    help: `If the condition fails, whether to display a reason message for the failure. If false, the player will receive the same message they would for a command that does not exist.`
+  },
+  {
+    attr: 'failure_message',
+    label: 'Failure Message',
+    help: `If defined, what message to display if the action condition is not met. If 'Show Failure Message' is checked and this message is empty, the game will supply the player with its best guess as for the reason of the failure.`
+  },
+];
+
 export const GET_MOB_TEMPLATE_INFO = () => {
   return [
     {
@@ -409,6 +448,7 @@ export const BUILDER_FORMS = {
   DESCRIPTION,
 
   ROOM_CHECK,
+  ROOM_ACTION,
 
   // Builder screens
 

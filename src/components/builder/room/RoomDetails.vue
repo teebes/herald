@@ -32,7 +32,7 @@
     </div>
 
     <div class='flex actions-and-doors'>
-      <RoomActions />
+      <RoomDirActions />
 
       <div class='doors' v-if="roomDoors.length">
         <h3>DOORS</h3>
@@ -57,7 +57,7 @@
 import { Component, Prop, Vue, Mixins, Watch } from "vue-property-decorator";
 import Map from "@/components/Map.vue";
 import { BUILDER_ACTIONS, UI_MUTATIONS, DIRECTIONS } from "@/constants";
-import RoomActions from "@/components/builder/room/RoomActions.vue";
+import RoomDirActions from "@/components/builder/room/RoomDirActions.vue";
 import RoomView from "@/components/builder/room/RoomView";
 import RoomDescriptionModal from "@/components/builder/room/RoomDescriptionModal.vue";
 import { BUILDER_FORMS } from "@/core/forms";
@@ -69,7 +69,7 @@ import RoomDescription from "@/components/builder/room/RoomDescription.vue";
 @Component({
   components: {
     Map,
-    RoomActions,
+    RoomDirActions,
     RoomDescription
   }
 })
