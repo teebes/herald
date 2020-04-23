@@ -11,11 +11,14 @@
 
     <div class='mt-4' v-if="resource.conditions">
       Conditions: <div class="panel mt-1">{{ resource.conditions }}</div>
-      <div v-if="resource.show_details_on_failure" class='mt-1'>
-        <div v-if="resource.failure_message">Default failure message will be shown if condition fails.</div>
-        <div v-else>
+      <div v-if="resource.show_details_on_failure" class='mt-4'>
+
+        <div v-if="resource.failure_message">
           Custom failure message will be shown if condition fails: 
           <span>{{ resource.failure_message }}</span>
+        </div>
+        <div v-else>
+          Default failure message will be shown if condition fails.
         </div>
       </div>
       
@@ -40,7 +43,7 @@ export default class extends Mixins(RoomView) {
   @Prop() resource!: any;
 
   get commands() {
-    return this.resource.commands.split('\n')
+    return this.resource.commands.split("\n");
   }
 }
 </script>
