@@ -3,7 +3,7 @@
     <h2>ROOM LOADS</h2>
 
     <template v-if="fetched && loaders.length">
-      <div class="loader" v-for="loader_info in loaders" :key="loader_info.loader.id">
+      <div class="loader mb-8" v-for="loader_info in loaders" :key="loader_info.loader.id">
         <h3>{{ loader_info.loader.name }}</h3>
 
         <div v-if="loader_info.room.mobs.length">
