@@ -146,7 +146,7 @@ export default class extends Mixins(OutsideClick) {
 
   async onClickRoomAction(direction, action) {
     this.plusActions = {};
-    const ROOM_ACTION = "builder/room_action";
+    const ROOM_ACTION = "builder/room_dir_action";
 
     if (action == "connect" || action == "two_way") {
       const resp_data = await this.$store.dispatch(ROOM_ACTION, {
@@ -275,7 +275,7 @@ export default class extends Mixins(OutsideClick) {
 }
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 @import "@/styles/colors.scss";
 @import "@/styles/layout.scss";
 @import "@/styles/fonts.scss";

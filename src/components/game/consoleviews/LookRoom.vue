@@ -108,6 +108,10 @@
         >
       </div>
     </div>
+
+    <div class="room-actions mt-2" v-if="isLastMessage && room.actions.length">
+      <button class='btn-small mr-2' v-for="(action, index) in room.actions" :key="index" @click="onClickRoomAction(action)">{{ action.toUpperCase() }}</button>
+    </div>
   </div>
 </template>
 
@@ -209,6 +213,10 @@ export default class LookRoom extends Vue {
   onClickDetail(word) {
     const trimmedWord = word.split(/\W+/)[0];
     this.$store.dispatch("game/cmd", `l ${trimmedWord}`);
+  }
+
+  onClickRoomAction(action) {
+    this.$store.dispatch("game/cmd", action);
   }
 
   room_char_desc(char) {

@@ -116,6 +116,11 @@
             <span v-if="room && room.num_room_checks">({{ room.num_room_checks}})</span>
           </router-link>
 
+          <router-link :to="{name: BUILDER_ROOM_ACTIONS, params: { world_id: $route.params.world_id, room_id: this.$route.params.room_id }}">
+            Actions
+            <span v-if="room && room.num_actions">({{ room.num_actions }})</span>
+          </router-link>
+
           <router-link
             :to="{name: BUILDER_ROOM_FLAGS, params: { world_id: $route.params.world_id, room_id: this.$route.params.room_id}}"
           >Flags</router-link>
@@ -157,6 +162,7 @@ import {
   BUILDER_WORLD_STATUS,
   BUILDER_ROOM_INDEX,
   BUILDER_ROOM_CHECKS,
+  BUILDER_ROOM_ACTIONS,
   BUILDER_ROOM_LOADS,
   BUILDER_ROOM_PATHS,
   BUILDER_ROOM_CONFIG,
@@ -189,6 +195,7 @@ export default class WorldFrame extends Vue {
   BUILDER_ZONE_INDEX: string = BUILDER_ZONE_INDEX;
   BUILDER_ZONE_ROOM_LIST: string = BUILDER_ZONE_ROOM_LIST;
   BUILDER_ROOM_CHECKS: string = BUILDER_ROOM_CHECKS;
+  BUILDER_ROOM_ACTIONS: string = BUILDER_ROOM_ACTIONS;
   BUILDER_ROOM_LOADS: string = BUILDER_ROOM_LOADS;
   BUILDER_ROOM_PATHS: string = BUILDER_ROOM_PATHS;
   BUILDER_ROOM_CONFIG: string = BUILDER_ROOM_CONFIG;
@@ -250,6 +257,7 @@ export default class WorldFrame extends Vue {
       this.$store.state.builder.room &&
         (this.$route.name == BUILDER_ROOM_INDEX ||
           this.$route.name == BUILDER_ROOM_CHECKS ||
+          this.$route.name == BUILDER_ROOM_ACTIONS ||
           this.$route.name == BUILDER_ROOM_LOADS ||
           this.$route.name == BUILDER_ROOM_PATHS ||
           this.$route.name == BUILDER_ROOM_CONFIG ||

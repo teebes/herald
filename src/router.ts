@@ -38,7 +38,6 @@ import ZoneQuestList from "@/components/builder/zone/QuestList.vue";
 import ZoneQuestDetail from "@/components/builder/zone/QuestDetail.vue";
 
 // Room
-import RoomCheckList from "@/components/builder/room/RoomCheckList.vue";
 import RoomLoads from "@/components/builder/room/RoomLoads.vue";
 import RoomFlags from "@/components/builder/room/RoomFlags.vue";
 import RoomDetailList from "@/components/builder/room/RoomDetailList.vue";
@@ -108,6 +107,7 @@ export const BUILDER_WORLD_FACTIONS = "builder_world_factions";
 export const BUILDER_WORLD_FACTION_RANK_LIST = "builder_world_faction_ranks";
 export const BUILDER_ROOM_INDEX = "builder_room_index";
 export const BUILDER_ROOM_CHECKS = "builder_room_checks";
+export const BUILDER_ROOM_ACTIONS = "builder_room_actions";
 export const BUILDER_ROOM_LOADS = "builder_room_loads";
 export const BUILDER_ROOM_PATHS = "builder_room_paths";
 export const BUILDER_ROOM_CONFIG = "builder_room_config";
@@ -388,11 +388,15 @@ const router = new Router({
           component: RoomDetails,
           name: BUILDER_ROOM_INDEX
         },
-
         {
           path: "rooms/:room_id/checks",
           name: BUILDER_ROOM_CHECKS,
-          component: RoomCheckList
+          component: () => import("@/components/builder/room/RoomCheckList.vue")
+        },
+        {
+          path: "rooms/:room_id/actions",
+          name: BUILDER_ROOM_ACTIONS,
+          component: () => import("@/components/builder/room/RoomActionList.vue")
         },
         {
           path: "rooms/:room_id/loads",

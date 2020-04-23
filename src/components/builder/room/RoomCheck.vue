@@ -49,7 +49,6 @@
 <script lang='ts'>
 import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 import RoomView from "@/components/builder/room/RoomView.ts";
-import DisplayEdit from "@/components/DisplayEdit.vue";
 import {
   BUILDER_MOB_TEMPLATE_DETAILS,
   BUILDER_ITEM_TEMPLATE_DETAILS
