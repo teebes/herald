@@ -5,7 +5,11 @@
     :endpoint="endpoint"
     :display_component="display_component"
     :schema="schema"
-  />
+  >
+    <div class="color-text-60">
+      Room actions are custom commands defined per room. For more information, refer to the <a href="https://docs.writtenrealms.com/building/roomactions">documentation page</a>.
+    </div>
+  </EditableCollection>
 </template>
 
 <script lang='ts'>

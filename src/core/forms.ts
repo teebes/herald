@@ -19,44 +19,44 @@ export interface FormElement {
 
 export const NAME: FormElement = {
   attr: "name",
-  label: "Name"
+  label: "Name",
 };
 
 export const FIRST_NAME: FormElement = {
   attr: "first_name",
-  label: "First Name"
+  label: "First Name",
 };
 
 export const LAST_NAME: FormElement = {
   attr: "last_name",
-  label: "Last Name"
+  label: "Last Name",
 };
 
 export const DESCRIPTION: FormElement = {
   attr: "description",
   label: "Description",
-  widget: "textarea"
+  widget: "textarea",
 };
 
 export const ITEM_TEMPLATE: FormElement = {
   attr: "item_template",
   label: "Item Template",
   widget: "reference",
-  references: "item_template"
+  references: "item_template",
 };
 
 export const MOB_TEMPLATE: FormElement = {
   attr: "mob_template",
   label: "Mob Template",
   widget: "reference",
-  references: "mob_template"
+  references: "mob_template",
 };
 
 export const ZONE: FormElement = {
   attr: "zone",
   label: "Zone",
   widget: "reference",
-  references: "zone"
+  references: "zone",
 };
 
 export const DIRECTION: FormElement = {
@@ -65,33 +65,33 @@ export const DIRECTION: FormElement = {
   options: [
     {
       value: "",
-      label: ""
+      label: "",
     },
     {
       value: "north",
-      label: "North"
+      label: "North",
     },
     {
       value: "east",
-      label: "East"
+      label: "East",
     },
     {
       value: "south",
-      label: "South"
+      label: "South",
     },
     {
       value: "west",
-      label: "West"
+      label: "West",
     },
     {
       value: "up",
-      label: "Up"
+      label: "Up",
     },
     {
       value: "down",
-      label: "Down"
-    }
-  ]
+      label: "Down",
+    },
+  ],
 };
 
 // Room Checks
@@ -105,40 +105,40 @@ const ROOM_CHECK: FormElement[] = [
     options: [
       {
         value: "in_inv",
-        label: "In inventory"
+        label: "In inventory",
       },
       {
         value: "not_in_inv",
-        label: "Not in inventory"
+        label: "Not in inventory",
       },
       {
         value: "equipped",
-        label: "Equipped"
+        label: "Equipped",
       },
       {
         value: "not_equipped",
-        label: "Not equipped"
+        label: "Not equipped",
       },
       {
         value: "mob_is_present",
-        label: "Mob is present"
+        label: "Mob is present",
       },
       {
         value: "faction_below",
-        label: "Faction below"
+        label: "Faction below",
       },
       {
         value: "health_below",
-        label: "Health below"
+        label: "Health below",
       },
       {
         value: "quest_complete",
-        label: "Quest complete"
+        label: "Quest complete",
       },
       {
         value: "quest_incomplete",
-        label: "Quest incomplete"
-      }
+        label: "Quest incomplete",
+      },
     ],
     help: `Which check to perform.<br/>
         - in inventory: whether item template id 'argument' is in the actor's inventory.<br/>
@@ -149,7 +149,7 @@ const ROOM_CHECK: FormElement[] = [
         - faction below: whether a character's standing in faction 'argument' is below 'argument2'.<br/>
         - health below: whether a character’s health is below a 'argument' threshold, in % of their max health.<br/>
         - quest complete: whether a character has completed quest id 'argument'.<br/>
-        - quest incomplete: whether a character has not completed quest id 'argument'.<br/>`
+        - quest incomplete: whether a character has not completed quest id 'argument'.<br/>`,
   },
   {
     attr: "prevent",
@@ -158,74 +158,74 @@ const ROOM_CHECK: FormElement[] = [
     options: [
       {
         value: "enter",
-        label: "Enter"
+        label: "Enter",
       },
       {
         value: "exit",
-        label: "Exit"
-      }
+        label: "Exit",
+      },
     ],
     help: `Which action to prevent.<br/>
           - entry: look at the move’s destination room entry checks before allowing the actor to enter it.<br/>
-          - exit: look at the move’s current room exit checks before allowing the actor to exit it.`
+          - exit: look at the move’s current room exit checks before allowing the actor to exit it.`,
   },
   {
     ...DIRECTION,
-    help: `Only applicable for 'exit' prevents. If defined, specifies which exit is blocked by the room check.`
+    help: `Only applicable for 'exit' prevents. If defined, specifies which exit is blocked by the room check.`,
   },
   {
     attr: "argument",
     label: "Argument",
-    help: `Parameter depending on the check. See the 'check' field for details.`
+    help: `Parameter depending on the check. See the 'check' field for details.`,
   },
   {
     attr: "argument2",
     label: "Argument 2",
-    help: `Parameter used for the 'mob_is_absent' and 'faction_below' checks. Only See the 'check' field for details.`
+    help: `Parameter used for the 'mob_is_absent' and 'faction_below' checks. Only See the 'check' field for details.`,
   },
   {
     attr: "failure_msg",
     label: "Failure Message",
-    help: `The message to display if the check was true, meaning the action was prevented.`
-  }
+    help: `The message to display if the check was true, meaning the action was prevented.`,
+  },
 ];
 
 const ROOM_ACTION: FormElement[] = [
   NAME,
   {
-    attr: 'actions',
-    label: 'Action',
-    help: `Command to be executed by the player to trigger the action. By using the 'or' operator, several actions may be defined`
+    attr: "actions",
+    label: "Action",
+    help: `Command to be executed by the player to trigger the action. By using the 'or' operator, several actions may be defined`,
   },
   {
-    attr: 'display_action_in_room',
-    label: 'Display Action in Room',
-    widget: 'checkbox',
+    attr: "display_action_in_room",
+    label: "Display Action in Room",
+    widget: "checkbox",
     default: true,
-    help: `Whether to display a button for this action in the UI when looking at the room`
+    help: `Whether to display a button for this action in the UI when looking at the room`,
   },
   {
-    attr: 'commands',
-    label: 'Commands',
-    widget: 'textarea',
-    help: `Commands to be executed by the room when the action is triggered by the player. Can enter multiple commands, one per line.`
+    attr: "commands",
+    label: "Commands",
+    widget: "textarea",
+    help: `Commands to be executed by the room when the action is triggered by the player. Can enter multiple commands, one per line.`,
   },
   {
-    attr: 'conditions',
-    label: 'Conditions',
-    help: `Conditions required for the player's action to be valid.`
+    attr: "conditions",
+    label: "Conditions",
+    help: `Conditions required for the player's action to be valid. For more information on conditions, view their <a href='https://docs.writtenrealms.com/building/conditions'>doc page</a>.`,
   },
   {
-    attr: 'show_details_on_failure',
-    label: 'Show Failure Message',
-    widget: 'checkbox',
+    attr: "show_details_on_failure",
+    label: "Show Failure Message",
+    widget: "checkbox",
     default: false,
-    help: `If the condition fails, whether to display a reason message for the failure. If false, the player will receive the same message they would for a command that does not exist.`
+    help: `If the condition fails, whether to display a reason message for the failure. If false, the player will receive the same message they would for a command that does not exist.`,
   },
   {
-    attr: 'failure_message',
-    label: 'Failure Message',
-    help: `If defined, what message to display if the action condition is not met. If 'Show Failure Message' is checked and this message is empty, the game will supply the player with its best guess as for the reason of the failure.`
+    attr: "failure_message",
+    label: "Failure Message",
+    help: `If defined, what message to display if the action condition is not met. If 'Show Failure Message' is checked and this message is empty, the game will supply the player with its best guess as for the reason of the failure.`,
   },
 ];
 
@@ -239,13 +239,13 @@ export const GET_MOB_TEMPLATE_INFO = () => {
           help: `If naming a non-proper noun, use a lowercase article to start its name,
               for example 'a rat'. This ensures combat messaged will be properly
               formatted, for example 'You strike a rat.' The article will be
-              auto-capitalized when needed.`
+              auto-capitalized when needed.`,
         },
         {
           attr: "notes",
-          label: "Notes"
-        }
-      ]
+          label: "Notes",
+        },
+      ],
     },
     {
       children: [
@@ -253,7 +253,7 @@ export const GET_MOB_TEMPLATE_INFO = () => {
           attr: "level",
           label: "Level",
           help: `The level of a mob determines how hard it is to kill and how much 
-                experience it gives.`
+                experience it gives.`,
         },
         {
           attr: "gender",
@@ -262,15 +262,15 @@ export const GET_MOB_TEMPLATE_INFO = () => {
           options: [
             {
               value: "female",
-              label: "Female"
+              label: "Female",
             },
             {
               value: "male",
-              label: "Male"
-            }
-          ]
-        }
-      ]
+              label: "Male",
+            },
+          ],
+        },
+      ],
     },
     {
       children: [
@@ -278,7 +278,7 @@ export const GET_MOB_TEMPLATE_INFO = () => {
           attr: "core_faction",
           label: "Core Faction",
           widget: "select",
-          options: store.getters["builder/coreFactionsOptions"]
+          options: store.getters["builder/coreFactionsOptions"],
         },
         {
           attr: "aggression",
@@ -287,20 +287,20 @@ export const GET_MOB_TEMPLATE_INFO = () => {
           options: [
             {
               value: "passive",
-              label: "Passive"
+              label: "Passive",
             },
             {
               value: "normal",
-              label: "Normal"
+              label: "Normal",
             },
             {
               value: "players",
-              label: "Players"
+              label: "Players",
             },
             {
               value: "all",
-              label: "All"
-            }
+              label: "All",
+            },
           ],
           help: `Determines a mob's behavior when you enter its room.
                  <br/><br/>
@@ -308,9 +308,9 @@ export const GET_MOB_TEMPLATE_INFO = () => {
                  * Normal: mob will only attack if their faction is at odds with the entering char.<br/>
                  * Players: mob will attack all players.<br/>
                  * All: mob will attack players & other mobs.
-                `
-        }
-      ]
+                `,
+        },
+      ],
     },
     {
       children: [
@@ -321,61 +321,61 @@ export const GET_MOB_TEMPLATE_INFO = () => {
           options: [
             {
               value: "aberration",
-              label: "Aberration"
+              label: "Aberration",
             },
             {
               value: "beast",
-              label: "Beast"
+              label: "Beast",
             },
             {
               value: "celestial",
-              label: "Celestial"
+              label: "Celestial",
             },
             {
               value: "construct",
-              label: "Construct"
+              label: "Construct",
             },
             {
               value: "dragon",
-              label: "Dragon"
+              label: "Dragon",
             },
             {
               value: "elemental",
-              label: "Elemental"
+              label: "Elemental",
             },
             {
               value: "fey",
-              label: "Fey"
+              label: "Fey",
             },
             {
               value: "fiend",
-              label: "Fiend"
+              label: "Fiend",
             },
             {
               value: "giant",
-              label: "Giant"
+              label: "Giant",
             },
             {
               value: "humanoid",
-              label: "Humanoid"
+              label: "Humanoid",
             },
             {
               value: "monstrosity",
-              label: "Monstrosity"
+              label: "Monstrosity",
             },
             {
               value: "ooze",
-              label: "Ooze"
+              label: "Ooze",
             },
             {
               value: "plant",
-              label: "Plant"
+              label: "Plant",
             },
             {
               value: "undead",
-              label: "Undead"
-            }
-          ]
+              label: "Undead",
+            },
+          ],
         },
         {
           attr: "archetype",
@@ -389,35 +389,35 @@ export const GET_MOB_TEMPLATE_INFO = () => {
           options: [
             {
               value: "warrior",
-              label: "Warrior"
+              label: "Warrior",
             },
             {
               value: "mage",
-              label: "Mage"
+              label: "Mage",
             },
             {
               value: "cleric",
-              label: "Cleric"
+              label: "Cleric",
             },
             {
               value: "assassin",
-              label: "Assassin"
-            }
-          ]
-        }
-      ]
+              label: "Assassin",
+            },
+          ],
+        },
+      ],
     },
     {
       children: [
         {
           attr: "hit_msg_first",
-          label: "Hit Message First Person"
+          label: "Hit Message First Person",
         },
         {
           attr: "hit_msg_third",
-          label: "Hit Message Third Person"
-        }
-      ]
+          label: "Hit Message Third Person",
+        },
+      ],
     },
     // {
     //   attr: "notes",
@@ -428,15 +428,15 @@ export const GET_MOB_TEMPLATE_INFO = () => {
         {
           attr: "is_invisible",
           label: "Is Invisible",
-          widget: "checkbox"
+          widget: "checkbox",
         },
         {
           attr: "fights_back",
           label: "Fights Back",
-          widget: "checkbox"
-        }
-      ]
-    }
+          widget: "checkbox",
+        },
+      ],
+    },
   ];
 };
 
@@ -455,14 +455,14 @@ export const BUILDER_FORMS = {
   ROOM_INFO: [
     {
       attr: "name",
-      label: "Name"
+      label: "Name",
     },
     {
       children: [
         { attr: "x", label: "X" },
         { attr: "y", label: "Y" },
-        { attr: "z", label: "Z" }
-      ]
+        { attr: "z", label: "Z" },
+      ],
     },
     {
       children: [
@@ -481,64 +481,64 @@ export const BUILDER_FORMS = {
           options: [
             {
               value: "road",
-              label: "Road"
+              label: "Road",
             },
             {
               value: "trail",
-              label: "Trail"
+              label: "Trail",
             },
             {
               value: "city",
-              label: "City"
+              label: "City",
             },
             {
               value: "indoor",
-              label: "Indoor"
+              label: "Indoor",
             },
             {
               value: "field",
-              label: "Field"
+              label: "Field",
             },
             {
               value: "mountain",
-              label: "Mountain"
+              label: "Mountain",
             },
             {
               value: "forest",
-              label: "Forest"
+              label: "Forest",
             },
             {
               value: "desert",
-              label: "Desert"
+              label: "Desert",
             },
             {
               value: "water",
-              label: "Water"
+              label: "Water",
             },
             {
               value: "shallow",
               label: "Shallow Water",
-            }
-          ]
-        }
-      ]
+            },
+          ],
+        },
+      ],
     },
     {
       attr: "description",
       label: "Description",
-      widget: "textarea"
+      widget: "textarea",
     },
     {
       attr: "note",
-      label: "Notes"
-    }
+      label: "Notes",
+    },
   ],
 
   ZONE_INFO: [
     {
       attr: "name",
-      label: "Name"
-    }
+      label: "Name",
+    },
   ],
 
   MOB_TEMPLATE_STATS: [
@@ -547,17 +547,17 @@ export const BUILDER_FORMS = {
       children: [
         {
           attr: "health_max",
-          label: "Health"
+          label: "Health",
         },
         {
           attr: "mana_max",
-          label: "Mana"
+          label: "Mana",
         },
         {
           attr: "exp_worth",
-          label: "Experience"
-        }
-      ]
+          label: "Experience",
+        },
+      ],
     },
 
     {
@@ -565,17 +565,17 @@ export const BUILDER_FORMS = {
       children: [
         {
           attr: "attack_power",
-          label: "Attack Power"
+          label: "Attack Power",
         },
         {
           attr: "spell_power",
-          label: "Spell Power"
+          label: "Spell Power",
         },
         {
           attr: "crit",
-          label: "Crit Rating"
-        }
-      ]
+          label: "Crit Rating",
+        },
+      ],
     },
 
     {
@@ -583,18 +583,18 @@ export const BUILDER_FORMS = {
       children: [
         {
           attr: "armor",
-          label: "Armor"
+          label: "Armor",
         },
         {
           attr: "dodge",
-          label: "Dodge"
+          label: "Dodge",
         },
         {
           attr: "resilience",
-          label: "Resilience"
-        }
-      ]
-    }
+          label: "Resilience",
+        },
+      ],
+    },
   ],
 
   MOB_TEMPLATE_INVENTORY: [
@@ -604,18 +604,18 @@ export const BUILDER_FORMS = {
       default: "",
       widget: "reference",
       references: "item_template",
-      required: true
+      required: true,
     },
     {
       attr: "probability",
       label: "Load Chance",
-      default: 100
+      default: 100,
     },
     {
       attr: "num_copies",
       label: "Number of Copies",
-      default: 1
-    }
+      default: 1,
+    },
   ],
 
   MOB_TEMPLATE_MERCHANT_INVENTORY: [
@@ -625,7 +625,7 @@ export const BUILDER_FORMS = {
       default: "",
       widget: "reference",
       references: "item_template",
-      required: true
+      required: true,
     },
     {
       attr: "random_item_profile",
@@ -633,19 +633,19 @@ export const BUILDER_FORMS = {
       default: "",
       widget: "reference",
       references: "random_item_profile",
-      required: true
+      required: true,
     },
     {
       attr: "num",
       label: "Copies",
-      default: 1
-    }
+      default: 1,
+    },
   ],
 
   MOB_TEMPLATE_RANDOM_DROPS: [
     {
       attr: "num_items",
-      label: "Number of Items"
+      label: "Number of Items",
     },
     {
       attr: "load_specification",
@@ -655,52 +655,52 @@ export const BUILDER_FORMS = {
       options: [
         {
           value: "",
-          label: "All"
+          label: "All",
         },
         {
           value: "armor_only",
-          label: "Armor"
+          label: "Armor",
         },
         {
           value: "armor_heavy_only",
-          label: "Heavy Armor"
+          label: "Heavy Armor",
         },
         {
           value: "armor_light_only",
-          label: "Light Armor"
+          label: "Light Armor",
         },
         {
           value: "weapon_only",
-          label: "Weapon"
+          label: "Weapon",
         },
         {
           value: "weapon_1h_only",
-          label: "1H Weapon"
+          label: "1H Weapon",
         },
         {
           value: "weapon_2h_only",
-          label: "2H Weapon"
+          label: "2H Weapon",
         },
         {
           value: "shield_only",
-          label: "Shield"
+          label: "Shield",
         },
         {
           value: "weapon_or_shield",
-          label: "Weapon or Shield"
-        }
-      ]
+          label: "Weapon or Shield",
+        },
+      ],
     },
     {
       attr: "chance_imbued",
       label: "Chance to Drop",
-      help: `Chance that a random item has to load on instances of this template.`
+      help: `Chance that a random item has to load on instances of this template.`,
     },
     {
       attr: "chance_enchanted",
       label: "Chance Enchanted",
-      help: `Enchanted items are 20% stronger than regular imbued random items.`
-    }
+      help: `Enchanted items are 20% stronger than regular imbued random items.`,
+    },
   ],
 
   MOB_TEMPLATE_REACTION: [
@@ -711,36 +711,36 @@ export const BUILDER_FORMS = {
       options: [
         {
           value: "enter",
-          label: "Room is entered"
+          label: "Room is entered",
         },
         {
           value: "say",
-          label: "Something is said"
+          label: "Something is said",
         },
         {
           value: "periodic",
-          label: "Time has elapsed"
+          label: "Time has elapsed",
         },
         {
           value: "load",
-          label: "Mob loads"
+          label: "Mob loads",
         },
         {
           value: "connect",
-          label: "Player connects"
+          label: "Player connects",
         },
         {
           value: "receive",
-          label: "Item is received"
-        }
-      ]
+          label: "Item is received",
+        },
+      ],
     },
     {
       attr: "reaction",
       label: "Reactions",
       widget: "textarea",
       help: `Enter the commands that the mob will respond with, one per line. <br/><br/>
-             The commands should be exactly as a mob would execute them, so they should almost always start with either 'say' or 'emote'.`
+             The commands should be exactly as a mob would execute them, so they should almost always start with either 'say' or 'emote'.`,
     },
     {
       attr: "option",
@@ -752,8 +752,8 @@ export const BUILDER_FORMS = {
               * Item is received: ID of the template of the received item.<br/>
               <br/>
               Does nothing for other event types.
-              `
-    }
+              `,
+    },
   ],
 
   ITEM_TEMPLATE_INFO: [
@@ -765,16 +765,16 @@ export const BUILDER_FORMS = {
           help: `When naming items, use a lowercase article to start its name,
                  for example 'a sword', rather than something like 'Big Sword'.
                  This ensures that the game generates correct sentences with the
-                 item like 'You get a sword from the ground.'`
+                 item like 'You get a sword from the ground.'`,
         },
         {
           attr: "level",
           label: "Level",
           help: `The level of an item represents its power. For weapons, it 
                 determines how much damage is dealt, and for armor how much physical
-                damage it absorbs.`
-        }
-      ]
+                damage it absorbs.`,
+        },
+      ],
     },
     {
       children: [
@@ -785,32 +785,32 @@ export const BUILDER_FORMS = {
           options: [
             {
               value: "equippable",
-              label: "Equippable"
+              label: "Equippable",
             },
             {
               value: "container",
-              label: "Container"
+              label: "Container",
             },
             {
               value: "inert",
-              label: "Inert"
+              label: "Inert",
             },
             {
               value: "trash",
-              label: "Trash"
+              label: "Trash",
             },
             {
               value: "quest",
-              label: "Quest"
+              label: "Quest",
             },
             {
               value: "food",
-              label: "Food"
+              label: "Food",
             },
             {
               value: "key",
-              label: "Key"
-            }
+              label: "Key",
+            },
           ],
           help: `The type of the item.<br/>
             - inert: an item that does nothing special.
@@ -819,20 +819,20 @@ export const BUILDER_FORMS = {
             - trash: a containe items that delete items put into it.
             - quest: an item used as a quest objective.
             - food: an item that restores stamina on consumption.
-            - key: an item that opens a door.`
+            - key: an item that opens a door.`,
         },
         {
           attr: "cost",
           label: "Cost",
-          help: `How much a merchant would buy the item for. Merchants sell items for twice their cost.`
-        }
-      ]
+          help: `How much a merchant would buy the item for. Merchants sell items for twice their cost.`,
+        },
+      ],
     },
     {
       attr: "notes",
       label: "Notes",
-      widget: "text"
-    }
+      widget: "text",
+    },
   ],
 
   ITEM_TEMPLATE_STATS: [
@@ -841,85 +841,85 @@ export const BUILDER_FORMS = {
       children: [
         {
           attr: "health_max",
-          label: "HP Max"
+          label: "HP Max",
         },
         {
           attr: "health_regen",
-          label: "HP Regen"
+          label: "HP Regen",
         },
         {
           attr: "mana_max",
-          label: "Mana Max"
+          label: "Mana Max",
         },
         {
           attr: "mana_regen",
-          label: "Mana Regen"
-        }
-      ]
+          label: "Mana Regen",
+        },
+      ],
     },
     {
       row_name: "Stats",
       children: [
         {
           attr: "strength",
-          label: "Strength"
+          label: "Strength",
         },
         {
           attr: "constitution",
-          label: "Constitution"
+          label: "Constitution",
         },
         {
           attr: "intelligence",
-          label: "Intelligence"
+          label: "Intelligence",
         },
         {
           attr: "dexterity",
-          label: "Dexterity"
-        }
-      ]
+          label: "Dexterity",
+        },
+      ],
     },
     {
       row_name: "Attack Attributes",
       children: [
         {
           attr: "attack_power",
-          label: "Attack Power"
+          label: "Attack Power",
         },
         {
           attr: "spell_power",
-          label: "Spell Power"
+          label: "Spell Power",
         },
         {
           attr: "crit",
-          label: "Crit Rating"
+          label: "Crit Rating",
         },
         {
           attr: "",
-          label: ""
-        }
-      ]
+          label: "",
+        },
+      ],
     },
     {
       row_name: "Defense Attributes",
       children: [
         {
           attr: "resilience",
-          label: "Resilience"
+          label: "Resilience",
         },
         {
           attr: "dodge",
-          label: "Dodge Rating"
+          label: "Dodge Rating",
         },
         {
           attr: "",
-          label: ""
+          label: "",
         },
         {
           attr: "",
-          label: ""
-        }
-      ]
-    }
+          label: "",
+        },
+      ],
+    },
   ],
 
   ZONE_PATH_ROOM: [
@@ -928,34 +928,34 @@ export const BUILDER_FORMS = {
       label: "Room",
       references: "room",
       widget: "reference",
-      context: "zone"
-    }
+      context: "zone",
+    },
   ],
 
   ZONE_PATH_DETAILS: [
     {
       attr: "name",
       label: "Name",
-      widget: "text"
-    }
+      widget: "text",
+    },
   ],
 
   LOADER_INFO: [
     {
       attr: "name",
       label: "Name",
-      widget: "text"
+      widget: "text",
     },
     ZONE,
     {
       attr: "description",
       label: "Description",
-      widget: "textarea"
+      widget: "textarea",
     },
     {
       attr: "loader_condition",
-      label: "Condition"
-    }
+      label: "Condition",
+    },
   ],
 
   LOADER_RULE: {
@@ -965,22 +965,22 @@ export const BUILDER_FORMS = {
         label: "Into Room",
         references: "room",
         widget: "reference",
-        context: "zone"
+        context: "zone",
       },
       path: {
         attr: "target",
         label: "Into Path",
         references: "path",
         widget: "reference",
-        context: "zone"
+        context: "zone",
       },
       rule: {
         attr: "target",
         label: "Into Output of Rule",
         references: "rule",
         widget: "reference",
-        context: "loader"
-      }
+        context: "loader",
+      },
     },
 
     TEMPLATE_TYPE_SCHEMA: {
@@ -990,17 +990,17 @@ export const BUILDER_FORMS = {
       options: [
         {
           value: "mobtemplate",
-          label: "Mob"
+          label: "Mob",
         },
         {
           value: "itemtemplate",
-          label: "Item"
+          label: "Item",
         },
         {
           value: "transformationtemplate",
-          label: "Transformation"
-        }
-      ]
+          label: "Transformation",
+        },
+      ],
     },
 
     TARGET_TYPE_SCHEMA: {
@@ -1010,21 +1010,21 @@ export const BUILDER_FORMS = {
       options: [
         {
           value: "zone",
-          label: "Zone"
+          label: "Zone",
         },
         {
           value: "room",
-          label: "Room"
+          label: "Room",
         },
         {
           value: "path",
-          label: "Path"
+          label: "Path",
         },
         {
           value: "rule",
-          label: "Rule"
-        }
-      ]
+          label: "Rule",
+        },
+      ],
     },
 
     TEMPLATE_SCHEMAS: {
@@ -1032,22 +1032,22 @@ export const BUILDER_FORMS = {
         attr: "template",
         label: "Load Mob",
         references: "mob_template",
-        widget: "reference"
+        widget: "reference",
       },
 
       itemtemplate: {
         attr: "template",
         label: "Load Item",
         references: "item_template",
-        widget: "reference"
+        widget: "reference",
       },
 
       transformationtemplate: {
         attr: "template",
         label: "Apply Transformation",
         references: "transformation_template",
-        widget: "reference"
-      }
-    }
-  }
+        widget: "reference",
+      },
+    },
+  },
 };
