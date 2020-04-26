@@ -227,6 +227,12 @@ const ROOM_ACTION: FormElement[] = [
     label: "Failure Message",
     help: `If defined, what message to display if the action condition is not met. If 'Show Failure Message' is checked and this message is empty, the game will supply the player with its best guess as for the reason of the failure.`,
   },
+  {
+    attr: "gate_delay",
+    label: "Action Cooldown",
+    default: 10,
+    help: `Applies a debounce to the action, so that a player entering the action twice in succession does not trigger the room commands with the second invocation unless the specified amount of time has elapsed.`,
+  },
 ];
 
 export const GET_MOB_TEMPLATE_INFO = () => {
