@@ -14,7 +14,10 @@
       <span v-else>You flee {{ message.data.direction }}!</span>
     </div>
 
-    <div class="room-name">{{ room.name }}</div>
+    <div>
+      <span class='room-name'>{{ room.name }}</span>
+      <span class='room-id ml-2 color-text-50' v-if="$store.state.game.player.is_immortal">[ {{ room.id }} ]</span>
+    </div>
 
     <!-- Description -->
     <template v-if="isLastMessage">
