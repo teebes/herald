@@ -182,14 +182,14 @@
             your support:
           </div>
           <div class="patrons">
-            <ul
+            <div class='patrons-row'
               v-for="patron_group in patron_groups"
               :key="patron_groups.indexOf(patron_group)"
             >
-              <li v-for="patron in patron_group" :key="patron.id">
+              <div class='patron' v-for="patron in patron_group" :key="patron.id">
                 {{ getName(patron) }}
-              </li>
-            </ul>
+              </div>
+            </div>            
           </div>
         </div>
       </div>
@@ -201,9 +201,9 @@
             <img src="@/assets/frontpage/Discord-Logo-Color.svg" width="24px" />
           </a>
           <router-link to="/about">About</router-link>
-          <router-link to="/help">Help</router-link>
-          <router-link to="/terms">Terms</router-link>
-          <router-link to="/privacy">Privacy</router-link>
+          <a href="https://docs.writtenrealms.com">Help</a>
+          <a href="https://blog.writtenrealms.com">Blog</a>
+
           <a href="https://twitter.com/Written_Realms">
             <img
               src="@/assets/about/Twitter_Social_Icon_Circle_Color.svg"
@@ -211,9 +211,13 @@
             />
           </a>
         </div>
+        <div class="bottom-links mt-4">
+          <router-link to="/terms">Terms</router-link>
+          <router-link to="/privacy">Privacy</router-link>          
+        </div>
       </div>
 
-      <div class="copyright">&copy; 2019 Morel Software, LLC</div>
+      <div class="copyright">&copy; 2020 Morel Software, LLC</div>
     </div>
   </div>
 </template>
@@ -263,7 +267,7 @@ export default class Home extends Vue {
       this.patrons = patrons_resp.data.data;
 
       // Create groups of patrons
-      const size = 3;
+      const size = 2;
       for (let i = 0; i < this.patrons.length; i += size) {
         const group: any = this.patrons.slice(i, i + size);
         this.patron_groups.push(group);
@@ -823,23 +827,20 @@ $breakpoint-down-sm: "max-width: 575.98px";
         max-width: 375px;
 
         .patrons {
-          margin-top: 1em;
+          margin-top: 2em;
 
-          ul {
-            margin: 0 0 10px 0;
-            padding: 0;
-
-            li {
-              list-style-type: none;
-              display: inline;
+          .patrons-row {
+            display: flex;
+            justify-content: center;
+            .patron {
               color: $color-secondary;
               @include font-title-regular;
               font-size: 1.2em;
-
               &:not(:first-child):before {
                 content: " \00a0 \25CF \00a0 \00a0";
                 color: $color-text-hex-50;
                 font-size: 1em;
+                margin-left: 0.65em;
               }
             }
           }
