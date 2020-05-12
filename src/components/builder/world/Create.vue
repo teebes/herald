@@ -7,7 +7,16 @@
       v-model="world_name"
       :formErrors="formErrors"
       required="required"
+      class='world-name'
     />
+
+    <FormField
+      v-if="$store.state.auth.user.is_staff || $store.state.auth.user.multiplayer_worlds"
+      :elementSchema="is_multi_schema"
+      v-model="is_multi"
+      :formErrors="formErrors"
+      required="required"
+      class='multiplayer-world'/>
 
     <button class="btn-medium" @click="create">CREATE</button>
   </div>
@@ -26,6 +35,7 @@ import { BUILDER_FORMS, FormElement } from "@/core/forms.ts";
 })
 export default class WorldFrame extends Mixins(Vue) {
   world_name: string = "A New World";
+  is_multi: boolean = false;
   formErrors: {} = {};
 
   get name_schema() {
@@ -36,9 +46,20 @@ export default class WorldFrame extends Mixins(Vue) {
     return schema;
   }
 
+  get is_multi_schema() {
+    const schema: FormElement = {
+      attr: "is_multiplayer",
+      label: "Is Multiplayer",
+      widget: "checkbox",
+      default: false
+    };
+    return schema;
+  }
+
   async create() {
     const world = await this.$store.dispatch("builder/world_create", {
-      name: this.world_name
+      name: this.world_name,
+      is_multiplayer: this.is_multi
     });
     this.$store.commit(
       "ui/notification_set",
@@ -65,12 +86,17 @@ export default class WorldFrame extends Mixins(Vue) {
   margin-bottom: auto;
   padding-bottom: 40px;
 
-  .form-group {
-    margin: 40px 0;
+  .form-group.world-name {
+    margin-top: 40px;
+  }
+
+  .form-group.multiplayer-world {
+    margin: 20px 0 0 0;
   }
 
   button {
     width: 100%;
+    margin-top: 40px;
   }
 }
 </style>

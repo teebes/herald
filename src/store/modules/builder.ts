@@ -180,8 +180,8 @@ const actions = {
     commit("map_set", resp.data.rooms);
   },
 
-  world_create: async ({ commit }, { name }) => {
-    const resp = await axios.post(`/builder/worlds/`, { name });
+  world_create: async ({ commit }, payload) => {
+    const resp = await axios.post(`/builder/worlds/`, payload);
     commit("world_set", resp.data);
     return resp.data;
   },
