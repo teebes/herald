@@ -23,6 +23,10 @@
         class="btn-small mr-2" 
         v-if="message.data.target.actions.offer" 
         @click="doAction(message.data.target, 'offer')">OFFER</button>
+      <button 
+        class="btn-small mr-2" 
+        v-if="message.data.target.actions.craft" 
+        @click="doAction(message.data.target, 'craft')">CRAFT</button>        
     </div>
   </div>
 </template>
@@ -41,15 +45,19 @@ export default class LookChar extends Vue {
   @Prop() message!: any;
 
   hasAction() {
-    return Boolean(this.message.data.target.actions.complete || this.message.data.target.actions.completion_action || this.message.data.target.actions.list || this.message.data.target.actions.offer)
+    return Boolean(
+      this.message.data.target.actions.complete ||
+        this.message.data.target.actions.completion_action ||
+        this.message.data.target.actions.list ||
+        this.message.data.target.actions.offer
+    );
   }
 
   doAction(char, action) {
     const target = getTargetInGroup(char, this.$store.state.game.room.chars);
-    if (target.indexOf('.') === -1)
+    if (target.indexOf(".") === -1)
       this.$store.dispatch("game/cmd", `${action}`);
-    else
-      this.$store.dispatch("game/cmd", `${action} ${target}`);
+    else this.$store.dispatch("game/cmd", `${action} ${target}`);
 
     this.$store.commit("game/lookup_clear");
     this.$store.commit("ui/modal_clear");
@@ -62,7 +70,7 @@ export default class LookChar extends Vue {
   }
 
   get isInRoom() {
-    return this.$store.state.game.room.key === this.message.data.actor.room.key
+    return this.$store.state.game.room.key === this.message.data.actor.room.key;
   }
 }
 </script>
