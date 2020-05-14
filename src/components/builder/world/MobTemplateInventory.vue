@@ -77,14 +77,11 @@ export default class extends Vue {
   }
 
   editRandomDrops() {
-    const entity = this.$store.state.builder.mob_template;
     const modal = {
       title: `random drops`,
       data: this.template,
       schema: BUILDER_FORMS.MOB_TEMPLATE_RANDOM_DROPS,
-      //action: BUILDER_ACTIONS.MOB_TEMPLATE_SAVE
       action: "builder/worlds/mob_template_save"
-      //name: UI_MODALS.MOB_TEMPLATE_INFO
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }

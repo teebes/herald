@@ -40,16 +40,23 @@ interface InventoryMessage {
 @Component
 export default class ConsoleInventory extends Vue {
   @Prop() message!: InventoryMessage;
+  player: any = {};
+
+  constructor() {
+    super();
+    this.player = this.$store.state.game.player;
+  }
 
   stackedInventory = stackedInventory;
 
   get inventory() {
-    return this.message.data.inventory;
+    return this.player.inventory;
+    // return this.message.data.inventory;
   }
 
-  get player() {
-    return this.$store.state.game.player;
-  }
+  // get player() {
+  //   return this.$store.state.game.player;
+  // }
 
   get isLastMessage() {
     return (
@@ -67,7 +74,4 @@ export default class ConsoleInventory extends Vue {
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
-
-.inventory-view {
-}
 </style>

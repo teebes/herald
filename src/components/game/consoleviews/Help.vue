@@ -35,11 +35,7 @@
           <div class="cmd" @click="cmdHelp('alias')">alias</div>
           <div class="cmd" @click="cmdHelp('roll')">roll</div>
           <div class="cmd" @click="cmdHelp('learn')">learn</div>
-          <div
-            class="cmd"
-            @click="cmdHelp('title')"
-            v-if="$store.state.game.world.players_can_set_title"
-          >title</div>
+          <div class="cmd" @click="cmdHelp('title')" v-if="$store.state.game.world.players_can_set_title">title</div>
         </div>
         <div class="cmds">
           <div class="cmd" @click="cmdHelp('follow')">follow</div>
@@ -109,8 +105,11 @@
           <div class="cmd" @click="cmdHelp('wield')">wield</div>
           <div class="cmd" @click="cmdHelp('wear')">wear</div>
           <div class="cmd" @click="cmdHelp('remove')">remove</div>
+        </div>
+        <div class="cmds">
           <div class="cmd" @click="cmdHelp('label')">label</div>
           <div class="cmd" @click="cmdHelp('upgrade')">upgrade</div>
+          <div class="cmd" @click="cmdHelp('craft')">craft</div>
         </div>
       </div>
 

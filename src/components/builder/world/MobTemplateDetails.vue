@@ -109,6 +109,7 @@
       <MobTemplateMerchant class="merchant" />
       <MobTemplateLoads class="loads" />
       <MobTemplateQuests class="quests" />
+      <MobTemplateCrafting class="crafting" />
     </div>
   </div>
 </template>
@@ -130,6 +131,7 @@ import MobTemplateFactions from "./MobTemplateFactions.vue";
 import MobTemplateMerchant from "./MobTemplateMerchant.vue";
 import MobTemplateLoads from "./MobTemplateLoads.vue";
 import MobTemplateQuests from "./MobTemplateQuests.vue";
+import MobTemplateCrafting from "./MobTemplateCrafting.vue";
 import WorldView from "@/components/builder/world/WorldView.ts";
 import { KeepAliveFetch } from "@/components/Mixins.ts";
 
@@ -141,7 +143,8 @@ import { KeepAliveFetch } from "@/components/Mixins.ts";
     MobTemplateFactions,
     MobTemplateMerchant,
     MobTemplateLoads,
-    MobTemplateQuests
+    MobTemplateQuests,
+    MobTemplateCrafting
   }
 })
 export default class MobTemplateDetails extends Mixins(WorldView) {

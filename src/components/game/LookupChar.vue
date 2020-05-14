@@ -58,6 +58,7 @@ export default class GameLookupChar extends Vue {
       actionsPriority = [
         // higher the better
         { action: "complete", label: "COMPLETE" },
+        { action: "craft", label: "CRAFT" },
         { action: "follow", label: "FOLLOW" },
         { action: "unfollow", label: "UNFOLLOW" },
         { action: "group", label: "GROUP" },
