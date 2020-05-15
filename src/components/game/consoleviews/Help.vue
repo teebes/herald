@@ -110,6 +110,7 @@
           <div class="cmd" @click="cmdHelp('label')">label</div>
           <div class="cmd" @click="cmdHelp('upgrade')">upgrade</div>
           <div class="cmd" @click="cmdHelp('craft')">craft</div>
+          <div class="cmd" @click="cmdHelp('compare')">compare</div>
         </div>
       </div>
 

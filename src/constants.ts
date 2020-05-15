@@ -6,7 +6,7 @@ export const DIRECTIONS = {
   south: "south",
   west: "west",
   up: "up",
-  down: "down"
+  down: "down",
 };
 
 export const REVERSE_DIRECTIONS = {
@@ -15,25 +15,25 @@ export const REVERSE_DIRECTIONS = {
   east: "west",
   west: "east",
   up: "down",
-  down: "up"
+  down: "up",
 };
 
 /* Auth */
 
 export const AUTH_ACTIONS = {
   LOGIN: "auth_login",
-  LOGOUT: "auth_logout"
+  LOGOUT: "auth_logout",
 };
 
 export const AUTH_MUTATIONS = {
   SET_AUTH: "auth_set_authenticated",
-  SET_UNAUTH: "auth_set_unauthenticated"
+  SET_UNAUTH: "auth_set_unauthenticated",
 };
 
 /* UI */
 
 export const UI_ACTIONS = {
-  PROCESS_ERROR_RESPONSE: "ui/process_error_response"
+  PROCESS_ERROR_RESPONSE: "ui/process_error_response",
 };
 
 export const UI_MUTATIONS = {
@@ -44,7 +44,7 @@ export const UI_MUTATIONS = {
   MODAL_SET_DATA: "ui/modal_set_extra_data",
   MODAL_CLOSE: "ui/modal_clear",
   EDITING_FIELD_SET: "ui/editing_field_set",
-  EDITING_FIELD_CLEAR: "ui/editing_field_clear"
+  EDITING_FIELD_CLEAR: "ui/editing_field_clear",
 };
 
 export const UI_MODALS = {
@@ -54,7 +54,7 @@ export const UI_MODALS = {
   MOB_TEMPLATE_CREATE: "mob_template_create",
   MOB_TEMPLATE_REACTION_ADD: "mob_template_reaction_add",
   MOB_TEMPLATE_REACTION_EDIT: "mob_template_reaction_edit",
-  LOADER_INFO: "modal_loader_info"
+  LOADER_INFO: "modal_loader_info",
 };
 
 /* Builder */
@@ -97,7 +97,7 @@ export const BUILDER_ACTIONS = {
   QUEST_OBJECTIVE_DELETE: "builder/quest_objective_delete",
   QUEST_REWARD_CREATE: "builder/quest_reward_create",
   QUEST_REWARD_SAVE: "builder/quest_reward_update",
-  QUEST_REWARD_DELETE: "builder/quest_reward_delete"
+  QUEST_REWARD_DELETE: "builder/quest_reward_delete",
 };
 
 export const BUILDER_ACTIONS_NAMESPACED = {};
@@ -137,7 +137,7 @@ export const BUILDER_MUTATIONS = {
   QUEST_OBJECTIVE_DELETE: "builder/quest_objective_remove",
   QUEST_REWARD_ADD: "builder/quest_reward_add",
   QUEST_REWARD_UPDATE: "builder/quest_reward_update",
-  QUEST_REWARD_DELETE: "builder/quest_reward_remove"
+  QUEST_REWARD_DELETE: "builder/quest_reward_remove",
 };
 
 export const BUILDER_MUTATIONS_NAMESPACED = {};
@@ -154,7 +154,6 @@ const EQUIPMENT_SLOT_HANDS = "hands";
 const EQUIPMENT_SLOT_WAIST = "waist";
 const EQUIPMENT_SLOT_LEGS = "legs";
 const EQUIPMENT_SLOT_FEET = "feet";
-const EQUIPMENT_SLOT_SHOULDERS = "shoulders";
 export const EQUIPMENT_SLOT_LIST = [
   EQUIPMENT_SLOT_WEAPON,
   EQUIPMENT_SLOT_OFFHAND,
@@ -164,6 +163,5 @@ export const EQUIPMENT_SLOT_LIST = [
   EQUIPMENT_SLOT_HANDS,
   EQUIPMENT_SLOT_WAIST,
   EQUIPMENT_SLOT_LEGS,
-  EQUIPMENT_SLOT_FEET
-  //EQUIPMENT_SLOT_SHOULDERS
+  EQUIPMENT_SLOT_FEET,
 ];

@@ -31,6 +31,7 @@ import EventBus from "@/core/eventbus.ts";
 import Cast from "./consoleviews/Cast.vue";
 import Chat from "./consoleviews/Chat.vue";
 import CombatMessage from "./consoleviews/CombatMessage.vue";
+import Compare from "./consoleviews/Compare.vue";
 import DeathMessage from "./consoleviews/DeathMessage.vue";
 import Enquire from "./consoleviews/Enquire.vue";
 import Equipment from "./consoleviews/Equipment.vue";
@@ -58,6 +59,7 @@ import _ from "lodash";
     Cast,
     Chat,
     CombatMessage,
+    Compare,
     DeathMessage,
     Enquire,
     Equipment,
@@ -155,6 +157,8 @@ export default class Console extends Vue {
       message.data.duration !== 0
     ) {
       return "Cast";
+    } else if (message.type === "cmd.compare.success") {
+      return "Compare";
     }
     return "Message";
   }
