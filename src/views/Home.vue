@@ -47,9 +47,9 @@
 
       <div class="lead">
         <div class="first-paragraph">
-          WrittenRealms are interactive fiction games. To play through a small
+          WrittenRealms - build and play narrative adventure games. To play through a small
           introduction world, click the Play button above. Once you fight your
-          way out of the cave, you will be taken to the multiplayer world, where
+          way out of the cave, you will be taken to Edeus, the multiplayer world where
           more adventure awaits.
         </div>
 
@@ -60,7 +60,7 @@
           </div>
 
           <div class="highlight">
-            Features a rich combat system with three playable classes, each with
+            Features a rich combat system with four playable classes, each with
             distinct skills and character customizations.
           </div>
 
