@@ -819,12 +819,12 @@ export const BUILDER_FORMS = {
             },
           ],
           help: `The type of the item.<br/>
-            - inert: an item that does nothing special.
-            - equippable: weapons or armor meant that can be worn.
-            - container: bags, chests and items that can contain other items.
-            - trash: a containe items that delete items put into it.
-            - quest: an item used as a quest objective.
-            - food: an item that restores stamina on consumption.
+            - inert: an item that does nothing special.<br/>
+            - equippable: weapons or armor meant that can be worn.<br/>
+            - container: bags, chests and items that can contain other items.<br/>
+            - trash: a containe items that delete items put into it.<br/>
+            - quest: an item used as a quest objective.<br/>
+            - food: an item that restores stamina on consumption.<br/>
             - key: an item that opens a door.`,
         },
         {
