@@ -321,6 +321,30 @@ export default class WorldFrame extends Mixins(WorldView) {
       widget: "checkbox",
       help: `If checked, players can kill other players.`
     };
+    const pvp_mode: FormElement = {
+      attr: "pvp_mode",
+      label: "PvP Mode",
+      widget: "select",
+      options: [
+        {
+          value: "free_for_all",
+          label: "Free for All"
+        },
+        {
+          value: "disabled",
+          label: "Disabled"
+        },
+        {
+          value: "zone",
+          label: "PvP Zones"
+        }
+      ],
+      help: `To what extent PvP is allowed.<br/><br/>
+            Free for All - anyone can attack anyone else, unless in a peace room.<br/>
+            Disabled - no player can attack another player, ever.<br/>
+            PvP Zones - default is no PvP but certain zones can enable it.<br/>
+      `
+    };
     const can_select_faction: FormElement = {
       attr: "can_select_faction",
       label: "Can Select Core Faction",
@@ -356,25 +380,24 @@ export default class WorldFrame extends Mixins(WorldView) {
       data: this.config,
       schema: [
         {
-          children: [starting_gold, death_mode]
+          children: [starting_gold, starting_room]
         },
         {
-          children: [starting_room, death_room]
+          children: [death_mode, death_room]
         },
         {
-          children: [built_by, death_route]
+          children: [pvp_mode, death_route]
         },
         {
-          children: [auto_equip, allow_pvp]
+          children: [allow_combat, auto_equip]
         },
         {
-          children: [can_select_faction, allow_combat]
+          children: [can_select_faction, players_can_set_title]
         },
-        players_can_set_title,
-        // { children: [players_can_set_title, death_route] },
         {
           children: [small_background, large_background]
-        }
+        },
+        built_by
       ],
       action: "builder/worlds/config_save"
     };

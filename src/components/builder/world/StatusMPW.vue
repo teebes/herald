@@ -36,7 +36,6 @@
         <button class="btn btn-small start" :disabled="disableStart" @click="onStart">START</button>
         <button class="btn btn-small stop" :disabled="disableStop" @click="onStop">STOP</button>
         <button
-          v-if="$store.state.auth.user.is_staff"
           class="btn btn-small kill"
           @click="onKill"
         >KILL</button>

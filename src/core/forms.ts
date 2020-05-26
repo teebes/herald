@@ -99,6 +99,11 @@ export const DIRECTION: FormElement = {
 const ROOM_CHECK: FormElement[] = [
   NAME,
   {
+    attr: "conditions",
+    label: "Conditions",
+    help: `Conditions required for the movement to be prevented. For more information on conditions, refer to their <a href='https://docs.writtenrealms.com/building/conditions'>doc page</a>.`,
+  },
+  {
     attr: "check",
     label: "Check",
     default: "in_inv",
@@ -140,7 +145,8 @@ const ROOM_CHECK: FormElement[] = [
         label: "Quest incomplete",
       },
     ],
-    help: `Which check to perform.<br/>
+    help: `Deprecated, please use conditions instead.<br/><br/>
+        Which check to perform.<br/>
         - in inventory: whether item template id 'argument' is in the actor's inventory.<br/>
         - not in inventory: the opposite of in_inv.<br/>
         - equipped: whether item template id 'argument' is equipped by the actor.<br/>
@@ -213,7 +219,7 @@ const ROOM_ACTION: FormElement[] = [
   {
     attr: "conditions",
     label: "Conditions",
-    help: `Conditions required for the player's action to be valid. For more information on conditions, view their <a href='https://docs.writtenrealms.com/building/conditions'>doc page</a>.`,
+    help: `Conditions required for the player's action to be valid. For more information on conditions, refer to their <a href='https://docs.writtenrealms.com/building/conditions'>doc page</a>.`,
   },
   {
     attr: "show_details_on_failure",

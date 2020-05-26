@@ -193,6 +193,12 @@ export default class ZoneDetails extends Mixins(ZoneView) {
         {
           attr: "name",
           label: "Name"
+        },
+        {
+          attr: "pvp_zone",
+          label: "Allows PvP",
+          default: false,
+          widget: "checkbox"
         }
       ],
       action: BUILDER_ACTIONS.ZONE_SAVE
