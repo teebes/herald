@@ -14,8 +14,10 @@
             </div>
             <div class='world-misc mt-1'>
               <span class='color-text-50 world-type'>
-                <template v-if="world.is_multiplayer">MULTIPLAYER WORLD</template>
-                <template v-else>SINGLEPLAYER WORLD</template>
+                <span v-if="world.is_private">PRIVATE</span>
+                <span v-else>PUBLIC</span>
+                <span v-if="world.is_multiplayer">MULTIPLAYER WORLD</span>
+                <span v-else>SINGLEPLAYER WORLD</span>
               </span>
               <span class="divider"></span>
               <a href @click.prevent="copyShareLink" @click="copyShareLink">SHARE</a>              
@@ -279,6 +281,7 @@ export default class WorldLobby extends Vue {
             @include font-title-regular;
             font-size: 13px;
             letter-spacing: 0.83px;
+            word-spacing: 0.5em;
             line-height: 16px;
           }
           a {

@@ -31,40 +31,16 @@
               On death, player will be taken to
               <router-link :to="room_link(config.death_room.id)">{{ config.death_room.name }}</router-link>.
             </li>
-
-            <!-- <li>
-              On death, player's equipment will
-              <template v-if="config.death_mode == 'lose_none'">not</template> transfer to his corpse.
-            </li>-->
-
-            <!-- <li>
-              Players
-              <template v-if="!config.auto_equip">do not</template> automatically wear equipment in available slots.
-            </li>
-
-            <li>
-              Players can
-              <template v-if="config.can_select_faction">not</template> select their starting core faction.
-            </li>
-
-            <li>
-              Players can
-              <template v-if="config.players_can_set_title">not</template> set their own titles.
-            </li>-->
-
             <li>
               Game
               <template v-if="config.allow_combat">
-                allows combat
-                <template v-if="config.allow_pvp">and PvP</template>.
+                allows combat, pvp mode is 
+                <span v-if="config.pvp_mode === 'free_for_all'">Free for All.</span>
+                <span v-else-if="config.pvp_mode === 'zone'">PvP Zones.</span>
+                <span v-else>Disabled.</span>
               </template>
               <template v-else>does not allow combat.</template>
             </li>
-
-            <!-- Consider adding to display:
-          built_by
-          death_route
-            -->
 
             <li v-if="config.small_background || config.large_background">
               <div v-if="config.small_background">
@@ -339,7 +315,7 @@ export default class WorldFrame extends Mixins(WorldView) {
           label: "PvP Zones"
         }
       ],
-      help: `To what extent PvP is allowed.<br/><br/>
+      help: `In multiplayer worlds, to what extent PvP is allowed.<br/><br/>
             Free for All - anyone can attack anyone else, unless in a peace room.<br/>
             Disabled - no player can attack another player, ever.<br/>
             PvP Zones - default is no PvP but certain zones can enable it.<br/>

@@ -186,21 +186,29 @@ export default class ZoneDetails extends Mixins(ZoneView) {
 
   async editInfo() {
     const entity = this.$store.state.builder.zone;
+
+    console.log(this.$store.state);
+
+    const schema: FormElement[] = [
+      {
+        attr: "name",
+        label: "Name"
+      }
+    ];
+
+    if (this.$store.state.builder.world.is_multiplayer) {
+      schema.push({
+        attr: "pvp_zone",
+        label: "Allows PvP",
+        default: false,
+        widget: "checkbox"
+      });
+    }
+
     const modal = {
       title: `Zone ${entity.id}`,
       data: entity,
-      schema: [
-        {
-          attr: "name",
-          label: "Name"
-        },
-        {
-          attr: "pvp_zone",
-          label: "Allows PvP",
-          default: false,
-          widget: "checkbox"
-        }
-      ],
+      schema: schema,
       action: BUILDER_ACTIONS.ZONE_SAVE
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
