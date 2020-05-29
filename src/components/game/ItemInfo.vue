@@ -19,7 +19,7 @@
     >Food is too high level to be consumed.</div>
 
     <div class="description">
-      <div class="description-line" v-for="line in lines" :key="lines.indexOf(line)">{{ line }}</div>
+      <div class="description-line" v-for="(line, index) in lines" :key="index">{{ line }}</div>
     </div>
 
     <template v-if="item.type === 'equippable'">
@@ -158,5 +158,10 @@ export default class ItemInfo extends Vue {
 .level-too-high,
 .cannot-eq-heavy-armor {
   color: $color-red;
+}
+
+.description {
+  max-height: 300px;
+  overflow-y: auto;
 }
 </style>
