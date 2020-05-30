@@ -280,6 +280,10 @@ export const GET_MOB_TEMPLATE_INFO = () => {
               value: "male",
               label: "Male",
             },
+            {
+              value: "non_binary",
+              label: "Non-binary",
+            },
           ],
         },
       ],

@@ -24,6 +24,7 @@
         tab="stats"
         :class="{ activeTab: isSelected('stats')}"
         @click="onClick('stats')"
+        v-if="$store.state.game.world.allow_combat"
       >Stats</div>
     </div>
     <component

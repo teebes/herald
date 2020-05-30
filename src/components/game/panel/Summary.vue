@@ -3,7 +3,7 @@
     <div>
       <div class="name-and-summary">
         <div class="name" :title="{ [player.title]: player.title }">{{ player.name }}</div>
-        <div class="summary">{{ archetype }} level {{ player.level }}</div>
+        <div class="summary"><span v-if="$store.state.game.world.allow_combat">{{ archetype }} level {{ player.level }}</span><span v-else>&nbsp;</span></div>
       </div>
       <div class="experience">
         <div class="exp-gained" :style="{width: expPerc +'%'}"></div>
