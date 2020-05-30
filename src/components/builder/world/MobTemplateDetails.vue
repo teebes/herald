@@ -6,7 +6,10 @@
           <h2 class="entity-title">{{ template.name }}</h2>
 
           <div class="mob-summary mb-2 text-base">
-            Level {{ template.level }} {{ template.type }} {{ template.gender }} {{ template.archetype}}
+            Level {{ template.level }} {{ template.type }} 
+            <template v-if="template.gender == 'non_binary'">non-binary</template> 
+            <template v-else>{{ template.gender }}</template>
+            {{ template.archetype}}
             <span
               v-if="template.is_invisible"
               class="color-text-50 ml-2"

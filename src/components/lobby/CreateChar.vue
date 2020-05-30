@@ -21,9 +21,10 @@
           </div>
           <div class="form-group">
             <label for="field-gender">Gender</label>
-            <select id="field-gender" v-model="gender">
+            <select id="field-gender" v-model="gender" :disabled="!world.can_select_gender" :readonly="!world.can_select_gender">
               <option value="female">Female</option>
               <option value="male">Male</option>
+              <option value="non_binary">Non-Binary</option>
             </select>
           </div>
 
@@ -84,6 +85,8 @@ export default class extends Vue {
     } else {
       this.faction = null;
     }
+
+    this.gender = this.world.default_gender;
   }
 
   get worldFactions() {
@@ -108,7 +111,7 @@ export default class extends Vue {
   get showArchetype() {
     if (
       !this.world.allow_combat ||
-      this.$route.params.world_id != INTRO_WORLD_ID
+      this.$route.params.world_id == INTRO_WORLD_ID
     )
       return false;
     return true;
@@ -128,7 +131,6 @@ export default class extends Vue {
       payload
     );
     if (resp.status === 201) {
-      // this.chars.push(resp.data);
       this.$emit("charcreated", resp.data);
       this.charname = "";
       this.gender = "female";

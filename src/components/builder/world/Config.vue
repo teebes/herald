@@ -39,7 +39,7 @@
                 <span v-else-if="config.pvp_mode === 'zone'">PvP Zones.</span>
                 <span v-else>Disabled.</span>
               </template>
-              <template v-else>does not allow combat.</template>
+              <template v-else>is a narrative world, does not allow combat.</template>
             </li>
 
             <li v-if="config.small_background || config.large_background">
@@ -329,10 +329,9 @@ export default class WorldFrame extends Mixins(WorldView) {
     };
     const allow_combat: FormElement = {
       attr: "allow_combat",
-      label: "Allow Combat",
+      label: "Narrative World",
       widget: "checkbox",
-      help: `A world without combat allowed will disable all kill commands, 
-             combat skills, and will not show combat-related UI elements.`
+      help: `A narrative world disables combat, and will not show combat-related UI elements.`
     };
     const players_can_set_title: FormElement = {
       attr: "players_can_set_title",

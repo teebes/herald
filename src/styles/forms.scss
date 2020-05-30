@@ -68,6 +68,9 @@
     &[readonly="readonly"] {
       background: inherit;
       color: inherit;
+      &:hover {
+        cursor: default;
+      }
     }
 
     &.text-center {

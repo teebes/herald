@@ -1,7 +1,11 @@
 <template>
   <div class='indented'>
    <div>{{ player.name }} {{ player.title }}</div> 
-   <div>Level {{ player.level }} {{ player.gender }} {{ player.core_faction }} {{ player.archetype }}</div>
+   <div>
+     Level {{ player.level }} 
+     <template v-if="player.gender == 'non_binary'">non-binary</template> 
+     <template v-else>{{ player.gender }}</template>
+     {{ player.core_faction }} {{ player.archetype }}</div>
    <div v-for="faction_data in player.factions" :key="faction_data.id" class='color-text-60'>
      {{ faction_data.name }} {{ faction_data.rank}}
    </div>
@@ -26,7 +30,7 @@ export default class Whois extends Vue {
   @Prop() message!: any;
 
   get player() {
-    return this.message.data.player
+    return this.message.data.player;
   }
 }
 </script>
