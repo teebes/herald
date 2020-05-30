@@ -33,7 +33,7 @@
             </li>
             <li>
               Game
-              <template v-if="config.allow_combat">
+              <template v-if="!config.is_narrative">
                 allows combat, pvp mode is 
                 <span v-if="config.pvp_mode === 'free_for_all'">Free for All.</span>
                 <span v-else-if="config.pvp_mode === 'zone'">PvP Zones.</span>
@@ -328,7 +328,7 @@ export default class WorldFrame extends Mixins(WorldView) {
       help: `If unchecked, all players will always start with the default core faction.`
     };
     const allow_combat: FormElement = {
-      attr: "allow_combat",
+      attr: "is_narrative",
       label: "Narrative World",
       widget: "checkbox",
       help: `A narrative world disables combat, and will not show combat-related UI elements.`
