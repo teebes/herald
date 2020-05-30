@@ -14,10 +14,10 @@
             </div>
             <div class='world-misc mt-1'>
               <span class='color-text-50 world-type'>
-                <span v-if="world.is_private">PRIVATE</span>
-                <span v-else>PUBLIC</span>
-                <span v-if="world.is_multiplayer">MULTIPLAYER WORLD</span>
-                <span v-else>SINGLEPLAYER WORLD</span>
+                <template v-if="world.is_private">PRIVATE</template>
+                <template v-else>PUBLIC</template>
+                <template v-if="world.is_multiplayer">MULTIPLAYER WORLD</template>
+                <template v-else>SINGLEPLAYER WORLD</template>
               </span>
               <span class="divider"></span>
               <a href @click.prevent="copyShareLink" @click="copyShareLink">SHARE</a>              
