@@ -14,10 +14,7 @@
             </div>
             <div class='world-misc mt-1'>
               <span class='color-text-50 world-type'>
-                <template v-if="world.is_private">PRIVATE</template>
-                <template v-else>PUBLIC</template>
-                <template v-if="world.is_multiplayer">MULTIPLAYER WORLD</template>
-                <template v-else>SINGLEPLAYER WORLD</template>
+                {{ world_descriptors }}
               </span>
               <span class="divider"></span>
               <a href @click.prevent="copyShareLink" @click="copyShareLink">SHARE</a>              
@@ -161,6 +158,23 @@ export default class WorldLobby extends Vue {
     const url = `${window.location.href}/${slug}`;
     await this.$copyText(url);
     this.$store.commit("ui/notification_set", `World URL copied to clipboard!`);
+  }
+
+  get world_descriptors() {
+    let descriptor = "";
+
+    if (this.world.is_private) {
+      descriptor += "PRIVATE ";
+    }
+
+    if (this.world.is_narrative) {
+      descriptor += "NARRATIVE ";
+    }
+
+    const world_type = this.world.is_multiplayer
+      ? "MULTIPLAYER"
+      : "SINGLEPLAYER";
+    return `${descriptor} ${world_type} WORLD`;
   }
 }
 </script>
