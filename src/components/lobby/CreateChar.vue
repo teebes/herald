@@ -38,7 +38,7 @@
             </select>
           </div>
 
-          <div class="form-group" v-if="$route.params.world_id != INTRO_WORLD_ID">
+          <div class="form-group" v-if="showArchetype">
             <label for="field-archetype">Class</label>
             <select id="field-archetype" v-model="archetype">
               <option value="warrior">Warrior</option>
@@ -103,6 +103,15 @@ export default class extends Vue {
 
   get showSignup() {
     return !this.$store.state.auth.token;
+  }
+
+  get showArchetype() {
+    if (
+      !this.world.allow_combat ||
+      this.$route.params.world_id != INTRO_WORLD_ID
+    )
+      return false;
+    return true;
   }
 
   async createCharacter() {

@@ -10,7 +10,7 @@
     </div>
 
     <!-- Focus -->
-    <div class="sidebar-element focus">
+    <div class="sidebar-element focus" v-if="allow_combat">
       <h3>
         FOCUS
         <Help :help="focus_help" />
@@ -47,7 +47,7 @@
     </div>
 
     <!-- Flex Skills -->
-    <div class="sidebar-element flex-skills" v-if="player_flex_skills_info.learnable_count">
+    <div class="sidebar-element flex-skills" v-if="allow_combat && player_flex_skills_info.learnable_count">
       <h3 @click="onClickExpand('skills')" class="hover">
         <span v-if="expanded === 'skills'">-</span>
         <span v-else>+</span>
@@ -70,7 +70,7 @@
     </div>
 
     <!-- Feats -->
-    <div class="sidebar-element feats" v-if="player_feats_info.feats.length">
+    <div class="sidebar-element feats" v-if="allow_combat && player_feats_info.feats.length">
       <h3 @click="onClickExpand('feats')" class="hover">
         <span v-if="expanded === 'feats'">-</span>
         <span v-else>+</span>
@@ -117,6 +117,10 @@ import _ from "lodash";
 })
 export default class Sidebar extends Vue {
   expanded: "who" | "" | "skills" | "feats" = "";
+
+  get allow_combat() {
+    return this.$store.state.game.world.allow_combat;
+  }
 
   get world_feats() {
     return this.$store.state.game.world.feats;

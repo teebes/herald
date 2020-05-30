@@ -9,7 +9,7 @@
             {{ char.name }}
             <span v-if="char.is_immortal" class="color-text-50 ml-2">[ Builder ]</span>
           </div>
-          <div class="char-info">{{ charInfo(char) }}</div>
+          <div class="char-info" v-if="world.allow_combat">{{ charInfo(char) }}</div>
           <div class="enter-world">
             <button
               class="btn-small play-as"
