@@ -37,7 +37,7 @@
           <UserChars @charcreated="onCharCreated" :chars="chars" :world="world" />
         </div>
 
-        <div class="world-leaderboard" v-if="!$store.state.lobby.world_details.create_character">
+        <div class="world-leaderboard" v-if="world.allow_combat && !$store.state.lobby.world_details.create_character">
           <template v-if="world.id != 217">
             <div class="leaderboard-title">
               <template v-if="world.id == 1">TRAILBLAZERS</template>
