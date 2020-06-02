@@ -255,6 +255,7 @@
             <div class="cmd" @click="cmdHelp('ping')">ping</div>
             <div class="cmd" @click="cmdHelp('jump')">jump</div>
             <div class="cmd" @click="cmdHelp('transfer')">transfer</div>
+            <div class="cmd" @click="cmdHelp('find')">find</div>
           </div>
           <div class="cmds">
             <div class="cmd" @click="cmdHelp('echo')">echo</div>
