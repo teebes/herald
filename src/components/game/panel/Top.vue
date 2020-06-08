@@ -18,9 +18,9 @@
           <!-- should logout -->
         </template>
         <template v-else>
-          <!-- <div class="action">
-            <a href="#" @click="onClickQuestLog">Quest Log</a>
-          </div>-->
+          <div class="action">
+            <a href="#" class='settings' @click.prevent="onClickSettings">Settings</a>
+          </div>
           <div class="action">
             <a href="https://docs.writtenrealms.com" target="_blank">Documentation</a>
           </div>
@@ -45,6 +45,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import QuestLog from "../QuestLog.vue";
 import SaveUser from "@/views/SaveUser.vue";
 import { UI_MUTATIONS } from "@/constants.ts";
+import { FormElement } from "@/core/forms.ts";
 
 @Component
 export default class PanelTop extends Vue {
@@ -68,6 +69,27 @@ export default class PanelTop extends Vue {
       component: QuestLog
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
+  }
+
+  onClickSettings() {
+    /*
+    const schema: FormElement[] = [
+        {
+          attr: 'room_brief',
+          label: 'Room brief mode',
+        },
+        {
+          attr: 'combat_brief',
+          label: 'Combat brief mode',
+        }
+      ];
+    */
+    this.$store.commit("ui/modal_set", {
+      title: `Edit Preferences`,
+      data: this.$store.state.game.player_config,
+      schema: schema,
+      action: "game/save_player_config"
+    });
   }
 
   saveCharacter() {

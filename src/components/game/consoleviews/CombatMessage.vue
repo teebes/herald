@@ -8,22 +8,21 @@
     <div v-else class='brief flex'>
 
       <!-- [ attack ] -->
-      <div class='attack'>
-        [ 
-          {{ message.data.attack }} 
-          
-        ]
-      </div>
-
-      <!-- targeting -->
-      <div class="targeting flex-grow text-center">
-        <!-- Healing format -->
+      <div class='attack flex-grow'>
+        
+          {{ message.data.attack }}  &mdash;
+          <!-- Healing format -->
         <template v-if="message.data.healing_done">
-          <template v-if="isActor && isTarget">self</template>
+          <template v-if="isActor && isTarget">self heal</template>
           <template v-else>
-            {{ message.data.actor.keyword }}
-            <span class='mr-0'>&gt;</span>
-            {{ message.data.target.keyword }}
+            <template v-if="message.data.actor.key === message.data.target.key">
+              {{ message.data.actor.keyword }} heal
+            </template>
+            <template v-else>
+              {{ message.data.actor.keyword }}
+              <span class='mr-0'>&gt;</span>
+              {{ message.data.target.keyword }}
+            </template>
           </template>
         </template>
 
@@ -44,16 +43,17 @@
             <span class='mx-0'>&gt;</span>
             {{ message.data.target.keyword }}</template>
         </template>
+        
       </div>
 
       <!-- Damage and healing done -->
       <div class='damage'>
 
-        <span class='ml-0' v-if="message.data.healing_done">
-          {{ message.data.healing_done }} hps
+        <span class='nowrap' v-if="message.data.healing_done">
+          {{ message.data.healing_done }} &nbsp;hp
         </span>
 
-        <span v-else class='ml-0'>
+        <span v-else class='nowrap'>
           {{ message.data.damage_taken }} dmg 
         </span>        
       </div>
@@ -153,21 +153,18 @@ export default class CombatMessage extends Vue {
 @import "@/styles/colors.scss";
 @import "@/styles/fonts.scss";
 
-div.brief {
-  // word-spacing: 0.5em;
-  // width: 100%;
-  // max-width: 320px;
-  // font-family: "Roboto Mono";
-  // font-size: 0.95em;
-}
-
 .damageTaken {
   color: $color-red;
   //@include font-text-regular;
+  .brief {
+    color: $color-red !important;
+  }
 }
 
 .damageDealt {
-  color: $color-text-70;
   color: $color-green;
+  .brief {
+    color: $color-green !important;
+  }
 }
 </style>
