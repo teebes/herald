@@ -33,6 +33,7 @@ import Chat from "./consoleviews/Chat.vue";
 import CombatMessage from "./consoleviews/CombatMessage.vue";
 import Compare from "./consoleviews/Compare.vue";
 import DeathMessage from "./consoleviews/DeathMessage.vue";
+import Effect from "./consoleviews/Effect.vue";
 import Enquire from "./consoleviews/Enquire.vue";
 import Equipment from "./consoleviews/Equipment.vue";
 import Exits from "./consoleviews/Exits.vue";
@@ -61,6 +62,7 @@ import _ from "lodash";
     CombatMessage,
     Compare,
     DeathMessage,
+    Effect,
     Enquire,
     Equipment,
     Exits,
@@ -150,6 +152,8 @@ export default class Console extends Vue {
       message.type === "notification.combat.healing"
     ) {
       return "CombatMessage";
+    } else if (message.type === "effect.start") {
+      return "Effect";
     } else if (
       message.data &&
       message.data.skill &&
@@ -279,6 +283,15 @@ export default class Console extends Vue {
       &.notification\.tell,
       &.cmd\.reply\.success {
         color: $color-red;
+      }
+
+      .brief {
+        // word-spacing: 0.2em;
+        width: 100%;
+        max-width: 320px;
+        font-family: "Roboto Mono";
+        // font-size: 0.95em;
+        //@include font-text-regular;
       }
     }
   }
