@@ -6,7 +6,7 @@
       :selectedTab="selectedTab"
       @taplook="onTap('look')"
     ></component>
-    <Menu v-if="is_menu_open" v-closable="{ handler: 'closeMenu', exclude: ['footer']}" />
+    <Menu v-if="is_menu_open" v-closable="{ handler: 'closeMenu', exclude: ['footer']}" @closeMenu="closeMenu" />
     <Footer @tap="onTap" :selectedTab="selectedTab" ref="footer" />
   </div>
 </template>

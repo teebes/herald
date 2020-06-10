@@ -45,7 +45,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import QuestLog from "../QuestLog.vue";
 import SaveUser from "@/views/SaveUser.vue";
 import { UI_MUTATIONS } from "@/constants.ts";
-import { FormElement } from "@/core/forms.ts";
+import { GAME_FORMS } from "@/core/forms.ts";
 
 @Component
 export default class PanelTop extends Vue {
@@ -83,24 +83,10 @@ export default class PanelTop extends Vue {
 
   onClickSettings() {
     this.showMenu = false;
-    const schema: FormElement[] = [
-      {
-        attr: "room_brief",
-        label: "Room brief mode",
-        widget: "checkbox",
-        help: `In room brief mode, room descriptions are only shown when using the 'look' command. For other actions, such as moving or fleeing, they will not.`
-      },
-      {
-        attr: "combat_brief",
-        label: "Combat brief mode",
-        widget: "checkbox",
-        help: `In combat brief mode, the combat text is abbreviated so that it can be more quickly, and less ambiguously, parsed.`
-      }
-    ];
     this.$store.commit("ui/modal_set", {
       title: `Edit Preferences`,
       data: this.$store.state.game.player_config,
-      schema: schema,
+      schema: GAME_FORMS.PLAYER_SETTINGS,
       action: "game/save_player_config"
     });
   }

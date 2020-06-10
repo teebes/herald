@@ -1,7 +1,10 @@
 <template>
   <div id="mobilemenu">
     <div class="menu-item">
-      <a href="#" @click="onClickQuestLog">Quest Log</a>
+      <a href="#" @click.prevent="onClickSettings">Settings</a>
+    </div>
+    <div class="menu-item">
+      <a href="#" @click.prevent="onClickQuestLog">Quest Log</a>
     </div>
     <div class="menu-item">
       <a href="https://discord.gg/a3u82tR" target="_blank">Chat on Discord</a>
@@ -19,6 +22,7 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { UI_MUTATIONS } from "@/constants.ts";
 import QuestLog from "../QuestLog.vue";
+import { GAME_FORMS } from "@/core/forms.ts";
 
 @Component
 export default class MobileMenu extends Vue {
@@ -27,6 +31,16 @@ export default class MobileMenu extends Vue {
       component: QuestLog
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
+  }
+
+  onClickSettings() {
+    this.$store.commit("ui/modal_set", {
+      title: `Edit Preferences`,
+      data: this.$store.state.game.player_config,
+      schema: GAME_FORMS.PLAYER_SETTINGS,
+      action: "game/save_player_config"
+    });
+    this.$emit("closeMenu");
   }
 }
 </script>

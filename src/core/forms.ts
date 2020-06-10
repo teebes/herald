@@ -456,6 +456,25 @@ export const GET_MOB_TEMPLATE_INFO = () => {
   ];
 };
 
+// Game desktop / mobile forms
+const PLAYER_SETTINGS: FormElement[] = [
+  {
+    attr: "room_brief",
+    label: "Room brief mode",
+    widget: "checkbox",
+    help: `In room brief mode, room descriptions are only shown when using the 'look' command. For other actions, such as moving or fleeing, they will not.`,
+  },
+  {
+    attr: "combat_brief",
+    label: "Combat brief mode",
+    widget: "checkbox",
+    help: `In combat brief mode, the combat text is abbreviated so that it can be more quickly, and less ambiguously, parsed.`,
+  },
+];
+export const GAME_FORMS = {
+  PLAYER_SETTINGS,
+};
+
 export const BUILDER_FORMS = {
   ITEM_TEMPLATE,
   MOB_TEMPLATE,
