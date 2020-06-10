@@ -538,6 +538,19 @@ const actions = {
     const player_id = resp.data.player.id;
     dispatch("world_enter", { player_id });
   },
+
+  save_player_config: async ({ commit, state }, config) => {
+    state.player_id;
+    const resp = await axios.post("/game/player/config/", config, {
+      headers: { "X-PLAYER-ID": state.player.id },
+    });
+    commit("player_config_set", config);
+    Vue.nextTick(() => {
+      // Though this gets correcly caught by the console, the scroll down does
+      // not actually seem to happen, oddly enough.
+      EventBus.$emit("scroll-down");
+    });
+  },
 };
 
 function uuidv4() {

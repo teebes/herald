@@ -236,7 +236,7 @@ export default class LookRoom extends Vue {
   get showDescription() {
     if (
       this.$store.state.game.player_config.room_brief &&
-      this.message.type === "cmd.move.success"
+      this.message.type !== "cmd.look.success"
     ) {
       return false;
     }

@@ -286,12 +286,21 @@ export default class Console extends Vue {
       }
 
       .brief {
-        // word-spacing: 0.2em;
-        width: 100%;
-        max-width: 375px;
+        /*
+        letter-spacing: 1px;
+        word-spacing: 0.3em;
+        @include font-text-regular;
+        */
+        /*
         font-family: "Roboto Mono";
-        // font-size: 0.95em;
-        //@include font-text-regular;
+        font-size: 0.98em;
+        */
+
+        font-family: "Roboto Mono";
+        font-size: 0.98em;
+
+        width: 100%;
+        max-width: 400px;
         color: $color-text-70;
       }
     }

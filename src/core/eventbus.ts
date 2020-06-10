@@ -10,4 +10,8 @@ export default EventBus;
   - cooldown-adjustment (message_data)
   - new-message (message_data)
   - scroll-down (no args)
+
+  Sample usage:
+  import eventbus from "@/core/eventbus.ts";
+  eventbus.$emit("scroll-down");
 */

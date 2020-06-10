@@ -3,9 +3,9 @@
     <div v-if="$store.state.game.player_config.combat_brief" class='brief flex'>
 
       <div class='effect-code flex-grow'>
-        {{ message.data.code }} &mdash; 
-        <span v-if="message.data.target === player_key">effect start</span>
-        <span v-else>{{ message.data.target_data.keyword }} effect start</span>
+        [ {{ effectLabel }} ]
+        <span v-if="message.data.target === player_key">Effect Start</span>
+        <span v-else>{{ capfirst(message.data.target_data.keyword) }} Effect Start</span>
       </div>
       <div class='duration nowrap mr-2'>{{ message.data.duration}} sec</div>
     </div>
@@ -17,6 +17,8 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { capfirst } from "@/core/utils.ts";
+
 @Component
 export default class EffectMessage extends Vue {
   @Prop() message!: any;
@@ -25,6 +27,8 @@ export default class EffectMessage extends Vue {
 
   player_id: number;
   player_key: string;
+
+  capfirst = capfirst;
 
   constructor() {
     super();
@@ -43,6 +47,10 @@ export default class EffectMessage extends Vue {
       !this.message.data.friendly &&
       this.message.data.target === this.player_key
     );
+  }
+
+  get effectLabel() {
+    return this.$store.state.game.world.labels.effects[this.message.data.code];
   }
 }
 </script>

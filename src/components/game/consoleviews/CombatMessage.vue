@@ -1,55 +1,25 @@
 <template>
   <div
-    :class="{ grouped: isGrouped, damageDealt: isDamageDealt, damageTaken: isDamageTaken }"
+    :class="{ grouped: isGrouped, damageDealt: isPositiveOutcome, damageTaken: isNegativeOutcome }"
   >
 
-    <div v-if="!$store.state.game.player_config.combat_brief">{{ messageText }}</div>
+    <div v-if="!$store.state.game.player_config.combat_brief" class='nonBrief'>{{ messageText }}</div>
 
     <div v-else class='brief flex'>
 
-      <!-- [ attack ] -->
       <div class='attack flex-grow'>
-        
-          {{ message.data.attack }}  &mdash;
-          <!-- Healing format -->
-        <template v-if="message.data.healing_done">
-          <template v-if="isActor && isTarget">self heal</template>
-          <template v-else>
-            <template v-if="message.data.actor.key === message.data.target.key">
-              {{ message.data.actor.keyword }} heal
-            </template>
-            <template v-else>
-              {{ message.data.actor.keyword }}
-              <span class='mr-0'>&gt;</span>
-              {{ message.data.target.keyword }}
-            </template>
-          </template>
-        </template>
-
-        <!-- Damage format -->
-        <template v-else>
-          <template v-if="isActor">
-            self
-            <span class='mx-0'>&gt;</span>
-            {{ message.data.target.keyword }}
-            </template>
-          <template v-else-if="isTarget">
-            {{ message.data.actor.keyword }}
-            <span class='mx-0'>&gt;</span>
-            self
-          </template>
-          <template v-else>
-            {{ message.data.actor.keyword }} 
-            <span class='mx-0'>&gt;</span>
-            {{ message.data.target.keyword }}</template>
-        </template>
-        
+        [ {{ message_type }} ]
+        {{ capfirst(message.data.actor.keyword) }}
+        <span v-if="message.data.outcome === 'dodged'" class='color-text-50'>>|</span>
+        <span v-else class='color-text-50'>&gt;</span>
+        {{ capfirst(message.data.target.keyword) }}
+        <span v-if="message.data.outcome === 'dodged'" class='color-text-30'>(dodge)</span>
       </div>
 
       <!-- Damage and healing done -->
       <div class='damage'>
 
-        <span class='nowrap' v-if="message.data.healing_done">
+        <span class='nowrap' v-if="message.data.is_heal">
           {{ message.data.healing_done }} &nbsp;hp
         </span>
 
@@ -66,6 +36,8 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { capfirst } from "@/core/utils.ts";
+
 @Component
 export default class CombatMessage extends Vue {
   @Prop() message!: any;
@@ -74,6 +46,8 @@ export default class CombatMessage extends Vue {
 
   player_id: number;
   player_key: string;
+
+  capfirst = capfirst;
 
   constructor() {
     super();
@@ -101,14 +75,19 @@ export default class CombatMessage extends Vue {
     return true;
   }
 
-  get isDamageTaken() {
+  get isNegativeOutcome() {
     if (this.message.data.target.key === this.$store.state.game.player.key)
       return true;
     return false;
   }
 
-  get isDamageDealt() {
-    if (this.message.data.actor.key === this.$store.state.game.player.key)
+  get isPositiveOutcome() {
+    if (
+      (this.message.data.actor.key === this.$store.state.game.player.key &&
+        this.message.data.outcome === "hit") ||
+      (this.message.data.target.key === this.$store.state.game.player.key &&
+        this.message.data.outcome === "dodged")
+    )
       return true;
     return false;
   }
@@ -146,6 +125,14 @@ export default class CombatMessage extends Vue {
     }
     return this.message.data.target.keyword;
   }
+
+  get message_type() {
+    if (this.message.data.attack === "attack") return "Attack";
+    return (
+      this.$store.state.game.world.labels.attacks[this.message.data.attack] ||
+      "Special Attack"
+    );
+  }
 }
 </script>
 
@@ -155,7 +142,10 @@ export default class CombatMessage extends Vue {
 
 .damageTaken {
   color: $color-red;
-  //@include font-text-regular;
+
+  .nonBrief {
+    @include font-text-regular;
+  }
   .brief {
     color: $color-red !important;
   }
@@ -163,6 +153,9 @@ export default class CombatMessage extends Vue {
 
 .damageDealt {
   color: $color-green;
+  .nonBrief {
+    @include font-text-regular;
+  }
   .brief {
     color: $color-green !important;
   }

@@ -18,19 +18,19 @@
           <!-- should logout -->
         </template>
         <template v-else>
-          <div class="action">
+          <div class="action" @click="onClickSettings">
             <a href="#" class='settings' @click.prevent="onClickSettings">Settings</a>
           </div>
-          <div class="action">
+          <div class="action" @click="onClickDocumentation">
             <a href="https://docs.writtenrealms.com" target="_blank">Documentation</a>
           </div>
-          <div class="action">
+          <div class="action" @click="onClickChatOnDiscord">
             <a href="https://discord.gg/a3u82tR" target="_blank">Chat on Discord</a>
           </div>
-          <div class="action">
+          <div class="action" @click="onClickPatreon">
             <a href="https://www.patreon.com/writtenrealms">Support Us</a>
           </div>
-          <div class="action">
+          <div class="action" @click="onClickExit">
             <a href="#" class="exit-game" @click="onClickExit">Exit World</a>
           </div>
         </template>
@@ -55,6 +55,16 @@ export default class PanelTop extends Vue {
     return this.$store.state.game.world;
   }
 
+  onClickDocumentation() {
+    window.open("https://docs.writtenrealms.com", "_blank");
+  }
+  onClickChatOnDiscord() {
+    window.open('"https://discord.gg/a3u82tR', "_blank");
+  }
+  onClickPatreon() {
+    window.open("https://www.patreon.com/writtenrealms", "_blank");
+  }
+
   onClickMenu() {
     this.showMenu = !this.showMenu;
   }
@@ -72,18 +82,21 @@ export default class PanelTop extends Vue {
   }
 
   onClickSettings() {
-    /*
+    this.showMenu = false;
     const schema: FormElement[] = [
-        {
-          attr: 'room_brief',
-          label: 'Room brief mode',
-        },
-        {
-          attr: 'combat_brief',
-          label: 'Combat brief mode',
-        }
-      ];
-    */
+      {
+        attr: "room_brief",
+        label: "Room brief mode",
+        widget: "checkbox",
+        help: `In room brief mode, room descriptions are only shown when using the 'look' command. For other actions, such as moving or fleeing, they will not.`
+      },
+      {
+        attr: "combat_brief",
+        label: "Combat brief mode",
+        widget: "checkbox",
+        help: `In combat brief mode, the combat text is abbreviated so that it can be more quickly, and less ambiguously, parsed.`
+      }
+    ];
     this.$store.commit("ui/modal_set", {
       title: `Edit Preferences`,
       data: this.$store.state.game.player_config,
