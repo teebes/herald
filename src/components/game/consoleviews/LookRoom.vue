@@ -20,33 +20,35 @@
     </div>
 
     <!-- Description -->
-    <template v-if="isLastMessage">
-      <div
-        class="room-description"
-        v-for="(line, index) in descLines"
-        :key="index"
-      >
-        <template v-for="(word, word_index) in line.split(' ')">
-          <span
-            :key="word_index"
-            v-if="isDetail(word)"
-            class="interactable"
-            @click="onClickDetail(word)"
-            >{{ word }}</span
-          >
-          <span :key="word_index" v-else>{{ word }}</span>
-          {{ " " }}
-        </template>
-      </div>
-    </template>
-    <template v-else>
-      <div
-        class="room-description"
-        v-for="(line, index) in descLines"
-        :key="index"
-      >
-        {{ line }}
-      </div>
+    <template v-if="showDescription">
+      <template v-if="isLastMessage">
+        <div
+          class="room-description"
+          v-for="(line, index) in descLines"
+          :key="index"
+        >
+          <template v-for="(word, word_index) in line.split(' ')">
+            <span
+              :key="word_index"
+              v-if="isDetail(word)"
+              class="interactable"
+              @click="onClickDetail(word)"
+              >{{ word }}</span
+            >
+            <span :key="word_index" v-else>{{ word }}</span>
+            {{ " " }}
+          </template>
+        </div>
+      </template>
+      <template v-else>
+        <div
+          class="room-description"
+          v-for="(line, index) in descLines"
+          :key="index"
+        >
+          {{ line }}
+        </div>
+      </template>
     </template>
 
     <div class="room-exits" v-if="exits">{{ exits }}</div>
@@ -229,6 +231,16 @@ export default class LookRoom extends Vue {
     }
     desc += ".";
     return desc;
+  }
+
+  get showDescription() {
+    if (
+      this.$store.state.game.player_config.room_brief &&
+      this.message.type !== "cmd.look.success"
+    ) {
+      return false;
+    }
+    return true;
   }
 
   stackedInventory = stackedInventory;

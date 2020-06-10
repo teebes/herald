@@ -1,30 +1,37 @@
-$font-text: 'Roboto Slab';
-$font-title: 'brandon-grotesque';
+$font-text: "Roboto Slab";
+$font-title: "brandon-grotesque";
 
 @mixin font-text-regular {
-    font-family: $font-text, serif;
-    font-weight: 400;
+  font-family: $font-text, serif;
+  font-weight: 400;
 }
 
 @mixin font-text-light {
-    font-weight: 300;
-    font-family: $font-text, serif;
+  font-weight: 300;
+  font-family: $font-text, serif;
 }
 
 @mixin font-title-regular {
-    font-weight: 500;
-    font-family: $font-title, sans-serif;
-    letter-spacing: 1px;
+  font-weight: 500;
+  font-family: $font-title, sans-serif;
+  letter-spacing: 1px;
 }
 
 @mixin font-title-light {
-    font-weight: 300;
-    font-family: $font-title, sans-serif;
-    letter-spacing: 1px;
-
+  font-weight: 300;
+  font-family: $font-title, sans-serif;
+  letter-spacing: 1px;
 }
 
-.font-text-regular { @include font-text-regular; }
-.font-text-light { @include font-text-light; }
-.font-title-regular { @include font-title-regular; }
-.font-title-light { @include font-title-light; }
+.font-text-regular {
+  @include font-text-regular;
+}
+.font-text-light {
+  @include font-text-light;
+}
+.font-title-regular {
+  @include font-title-regular;
+}
+.font-title-light {
+  @include font-title-light;
+}

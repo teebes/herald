@@ -1,7 +1,7 @@
 import router, {
   LOBBY_WORLD_COMPLETE_SIGNUP,
   LOBBY_WORLD_TRANSFER,
-  BUILDER_WORLD_PLAYER_DETAIL
+  BUILDER_WORLD_PLAYER_DETAIL,
 } from "@/router";
 import axios from "axios";
 import { LOBBY_WORLD_DETAIL } from "@/router";
@@ -52,6 +52,8 @@ const set_initial_state = () => {
     player_skills: [],
     player_level: 0,
 
+    player_config: {},
+
     // assassins
     player_stance: "",
     player_archetype: "",
@@ -100,7 +102,7 @@ const set_initial_state = () => {
 
     who_list: [],
     com_list: [],
-    factions: []
+    factions: [],
   };
 };
 
@@ -109,7 +111,7 @@ const receiveMessage = async ({
   rootState,
   state,
   dispatch,
-  commit
+  commit,
 }) => {
   /* Main process for receiving messages */
   const message_data = JSON.parse(event.data);
@@ -119,7 +121,7 @@ const receiveMessage = async ({
     "cmd.chat.success",
     "notification.cmd.chat.success",
     "cmd.tell.success",
-    "notification.tell"
+    "notification.tell",
   ];
   if (com_messages.indexOf(message_data.type) != -1) {
     commit("com_list_add", message_data);
@@ -128,7 +130,7 @@ const receiveMessage = async ({
   const skip_messages = [
     "notification.shorttic",
     "notification.longtic",
-    "notification.who"
+    "notification.who",
   ];
 
   // Echo received message to console if not short / long tic
@@ -164,7 +166,7 @@ const receiveMessage = async ({
     commit("connected_set");
     const world_data = {
       ...state.world,
-      ...message_data.data.world
+      ...message_data.data.world,
     };
     commit("world_set", world_data);
     commit("player_set", message_data.data.actor);
@@ -183,12 +185,12 @@ const receiveMessage = async ({
       dispatch("auth/logout", null, { root: true });
       router.push({
         name: "home",
-        params: { world_id: state.world.context_id }
+        params: { world_id: state.world.context_id },
       });
     } else {
       router.push({
         name: LOBBY_WORLD_DETAIL,
-        params: { world_id: state.world.context_id }
+        params: { world_id: state.world.context_id },
       });
     }
     commit("reset_state");
@@ -213,7 +215,7 @@ const receiveMessage = async ({
         commit("map_update_door_state", {
           room_key: data.key,
           direction: data.direction,
-          door_state: data.door_state
+          door_state: data.door_state,
         });
       }
     }
@@ -250,7 +252,7 @@ const receiveMessage = async ({
   }
 
   // Inventory affect
-  if (message_data.type === 'affect.inventory.remove') {
+  if (message_data.type === "affect.inventory.remove") {
     commit("player_remove_from_inventory", message_data.data.items);
   }
 
@@ -307,13 +309,13 @@ const receiveMessage = async ({
       commit("effects_consume", {
         actor_key: message_data.data.actor.key,
         target_key: message_data.data.target.key,
-        effect_code: "burn"
+        effect_code: "burn",
       });
     } else if (message_data.data.attack === "anathema") {
       commit("effects_consume", {
         actor_key: message_data.data.actor.key,
         target_key: message_data.data.target.key,
-        effect_code: "wrack"
+        effect_code: "wrack",
       });
     }
   }
@@ -357,7 +359,7 @@ const receiveMessage = async ({
     commit("full_screen_message_set", "Resetting...");
     dispatch("world_enter", {
       player_id: state.player.id,
-      world_id: state.world.id
+      world_id: state.world.id,
     });
   }
 
@@ -372,16 +374,16 @@ const receiveMessage = async ({
         name: LOBBY_WORLD_COMPLETE_SIGNUP,
         params: {
           player_id: state.player.id,
-          world_id: state.world.id
-        }
+          world_id: state.world.id,
+        },
       });
     } else {
       router.push({
         name: LOBBY_WORLD_TRANSFER,
         params: {
           player_id: state.player.id,
-          world_id: state.world.id
-        }
+          world_id: state.world.id,
+        },
       });
     }
   }
@@ -424,12 +426,13 @@ const actions = {
     );
     try {
       const resp = await axios.post(`/game/enter/`, {
-        player_key: `player.${player_id}`
+        player_key: `player.${player_id}`,
       });
-      commit("world_set", resp.data);
+      commit("world_set", resp.data.world);
+      commit("player_config_set", resp.data.player_config);
 
       commit("pregame_set", {
-        player_id: player_id
+        player_id: player_id,
       });
       dispatch("openWebSocket");
     } catch (e) {
@@ -442,7 +445,7 @@ const actions = {
         error_message = e.response.data[0];
       }
       commit("ui/notification_set_error", error_message, {
-        root: true
+        root: true,
       });
     }
   },
@@ -453,11 +456,11 @@ const actions = {
     const onopen = () => {
       dispatch("sendWSMessage", {
         type: "system.connect",
-        data: { player_key: "player." + state.player_id }
+        data: { player_key: "player." + state.player_id },
       });
     };
 
-    const onmessage = event => {
+    const onmessage = (event) => {
       receiveMessage({ event, rootState, state, dispatch, commit });
     };
     commit("openWS", { onopen, onmessage });
@@ -534,7 +537,20 @@ const actions = {
     commit("auth/user_set", resp.data.user, { root: true });
     const player_id = resp.data.player.id;
     dispatch("world_enter", { player_id });
-  }
+  },
+
+  save_player_config: async ({ commit, state }, config) => {
+    state.player_id;
+    const resp = await axios.post("/game/player/config/", config, {
+      headers: { "X-PLAYER-ID": state.player.id },
+    });
+    commit("player_config_set", config);
+    Vue.nextTick(() => {
+      // Though this gets correcly caught by the console, the scroll down does
+      // not actually seem to happen, oddly enough.
+      EventBus.$emit("scroll-down");
+    });
+  },
 };
 
 function uuidv4() {
@@ -568,7 +584,7 @@ const mutations = {
     Vue.set(state.last_message, message.type, message);
   },
 
-  messages_clear: state => {
+  messages_clear: (state) => {
     state.messages = [];
   },
 
@@ -581,7 +597,7 @@ const mutations = {
   player_set: (state, player) => {
     state.player = {
       ...state.player,
-      ...player
+      ...player,
     };
 
     // Player component updates, only if needed
@@ -605,15 +621,15 @@ const mutations = {
 
   player_remove_from_inventory: (state, items) => {
     const inv = _.differenceWith(state.player.inventory, items, (a, b) => {
-      return a.key == b.key
-    })
-    Vue.set(state.player, 'inventory', inv);
+      return a.key == b.key;
+    });
+    Vue.set(state.player, "inventory", inv);
   },
 
   player_focus_set: (state, focus) => {
     state.player = {
       ...state.player,
-      focus: focus
+      focus: focus,
     };
   },
 
@@ -626,12 +642,15 @@ const mutations = {
 
     // Filter out the existing effects effects of the same
     // actor & code combination
-    const applied_effects = _.filter(state.player_effects, existing_effect => {
-      return (
-        existing_effect.code !== effect.code ||
-        existing_effect.actor !== effect.actor
-      );
-    });
+    const applied_effects = _.filter(
+      state.player_effects,
+      (existing_effect) => {
+        return (
+          existing_effect.code !== effect.code ||
+          existing_effect.actor !== effect.actor
+        );
+      }
+    );
 
     applied_effects.push(effect);
     state.player_effects = applied_effects;
@@ -647,7 +666,7 @@ const mutations = {
     state.player_effects = kept_effects;
   },
 
-  player_effects_clear: state => {
+  player_effects_clear: (state) => {
     state.player_effects = [];
   },
 
@@ -661,7 +680,7 @@ const mutations = {
       return;
     }
 
-    const applied_effects = _.filter(char_effects, existing_effect => {
+    const applied_effects = _.filter(char_effects, (existing_effect) => {
       return (
         existing_effect.code !== effect.code ||
         existing_effect.actor !== effect.actor
@@ -690,7 +709,7 @@ const mutations = {
     const char_effects = state.effects[target_key];
     if (!char_effects || !char_effects.length) return;
 
-    const kept_effects: {}[] = _.filter(char_effects, effect => {
+    const kept_effects: {}[] = _.filter(char_effects, (effect) => {
       return (
         effect.actor != actor_key &&
         effect.target != target_key &&
@@ -715,13 +734,17 @@ const mutations = {
     Vue.delete(state.player_cooldowns, skill);
   },
 
+  player_config_set: (state, player_config) => {
+    state.player_config = player_config;
+  },
+
   set_map: (state, map) => {
     state.map = map;
   },
   map_add: (state, room) => {
     state.map = {
       ...state.map,
-      [room.key]: room
+      [room.key]: room,
     };
   },
   map_update_door_state: (state, { room_key, direction, door_state }) => {
@@ -733,7 +756,7 @@ const mutations = {
     }
     state.map = {
       ...state.map,
-      [room.key]: room
+      [room.key]: room,
     };
   },
   set_room_key: (state, room_key) => {
@@ -763,11 +786,11 @@ const mutations = {
     state.room = room;
   },
 
-  connected_set: state => {
+  connected_set: (state) => {
     state.is_connected = true;
   },
 
-  connected_clear: state => {
+  connected_clear: (state) => {
     state.is_connected = false;
   },
 
@@ -775,7 +798,7 @@ const mutations = {
     state.lookup = lookup;
   },
 
-  lookup_clear: state => {
+  lookup_clear: (state) => {
     state.lookup = null;
   },
 
@@ -783,7 +806,7 @@ const mutations = {
     state.hint = hint;
   },
 
-  hint_clear: state => {
+  hint_clear: (state) => {
     state.hint = null;
   },
 
@@ -791,11 +814,11 @@ const mutations = {
     state.full_screen_message = message;
   },
 
-  full_screen_message_clear: state => {
+  full_screen_message_clear: (state) => {
     state.full_screen_message = "";
   },
 
-  reset_state: state => {
+  reset_state: (state) => {
     const new_state = set_initial_state();
     for (const attr in new_state) {
       state[attr] = new_state[attr];
@@ -806,7 +829,7 @@ const mutations = {
     state.last_death = key;
   },
 
-  last_death_clear: state => {
+  last_death_clear: (state) => {
     state.last_death = null;
   },
 
@@ -836,15 +859,15 @@ const mutations = {
 
   com_list_add: (state, com) => {
     state.com_list.push(com);
-  }
+  },
 };
 
 const getters = {
-  consoleMessages: state => {
-    return _.filter(state.messages, message => {
+  consoleMessages: (state) => {
+    return _.filter(state.messages, (message) => {
       return message.text || message.type === "system.connect.success";
     });
-  }
+  },
 };
 
 export default {
@@ -852,5 +875,5 @@ export default {
   state: set_initial_state(),
   actions,
   mutations,
-  getters
+  getters,
 };
