@@ -6,6 +6,10 @@
     >
       You have been slain! Rest your weary bones...
     </div>
+    
+    <div v-if="message.data.penalty" class='font-text-regular color-text-red'>
+      {{ message.data.penalty }}
+    </div>
 
     <div v-if="message.type === 'affect.flee.success'" class="mb-4">
       <span v-if="message.data.is_auto"

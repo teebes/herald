@@ -245,11 +245,16 @@ export default class WorldFrame extends Mixins(WorldView) {
         {
           value: "lose_none",
           label: "Lose None"
+        },
+        {
+          value: "lose_gold",
+          label: "Lose Gold"
         }
       ],
       help: `Determines what happens to the player's equipment on death.<br/><br/>
              Lose None: player retains all of their equipment<br/>
-             Lose All: all of the player's equipment goes to their corpse`
+             Lose All: all of the player's equipment goes to their corpse<br/>
+             Lose Gold: player pays 20% of their equipment's value on death`
     };
     const built_by: FormElement = {
       attr: "built_by",

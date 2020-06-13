@@ -858,8 +858,8 @@ export const BUILDER_FORMS = {
         },
         {
           attr: "cost",
-          label: "Cost",
-          help: `How much a merchant would buy the item for. Merchants sell items for twice their cost.`,
+          label: "Value",
+          help: `How much a merchant would buy the item for. Merchants sell items for twice their value.`,
         },
       ],
     },
