@@ -460,15 +460,15 @@ export const GET_MOB_TEMPLATE_INFO = () => {
 const PLAYER_SETTINGS: FormElement[] = [
   {
     attr: "room_brief",
-    label: "Room brief mode",
+    label: "Room Brief Mode",
     widget: "checkbox",
     help: `In room brief mode, room descriptions are only shown when using the 'look' command. For other actions, such as moving or fleeing, they will not.`,
   },
   {
     attr: "combat_brief",
-    label: "Combat brief mode",
+    label: "Combat Brief Mode",
     widget: "checkbox",
-    help: `In combat brief mode, the combat text is abbreviated so that it can be more quickly, and less ambiguously, parsed.`,
+    help: `In combat brief mode, the combat text is abbreviated and indented so that it can be scanned more quickly.`,
   },
 ];
 export const GAME_FORMS = {
