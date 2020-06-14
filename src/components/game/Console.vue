@@ -296,8 +296,7 @@ export default class Console extends Vue {
         font-size: 0.98em;
         */
 
-        font-family: "Roboto Mono";
-        font-size: 0.98em;
+        @include font-mono;
 
         width: 100%;
         max-width: 400px;

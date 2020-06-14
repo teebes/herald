@@ -96,6 +96,11 @@ body > .tooltip {
   max-width: 310px;
 
   .tooltip-inner {
+    // @include font-mono;
+    code {
+      word-spacing: 0.4em;
+    }
+
     //background: black;
     background: $color-background-light;
     border: 3px solid #333;

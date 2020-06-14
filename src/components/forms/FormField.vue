@@ -6,10 +6,13 @@
         <input :id="'field-' + elementSchema.attr" type="checkbox" v-model="internalValue" />
         {{ elementSchema.label }}
       </label>
-      <div v-if="elementSchema.help && elementSchema.help" class="help-icon">
-        <img alt="help" src="~@/assets/ui/help_icon_2x.png" v-tooltip="tooltip_content" />
-      </div>
+      <Help v-if="elementSchema.help" :help="elementSchema.help"></Help>
     </div>
+
+    <component v-else-if="elementSchema.widget == 'custom'"
+      :is="elementSchema.widgetComponent"
+      v-model="internalValue">
+    </component>
 
     <template v-else>
       <label :for="'field-' + elementSchema.attr" :class="{ error: hasFieldError }">
@@ -17,9 +20,8 @@
         <span
           v-if="elementSchema.attr in formErrors"
         >({{ formErrors[elementSchema.attr][0] }})</span>
-        <div v-if="elementSchema.help && elementSchema.help" class="help-icon">
-          <img alt="help" src="~@/assets/ui/help_icon_2x.png" v-tooltip="tooltip_content" />
-        </div>
+
+        <Help v-if="elementSchema.help" :help="elementSchema.help"></Help>
       </label>
 
       <!-- Textarea -->
@@ -71,8 +73,14 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import ReferenceField from "./ReferenceField.vue";
 import { UI_MUTATIONS } from "@/constants";
+import Help from "@/components/Help.vue";
 
-@Component({ components: { ReferenceField } })
+@Component({
+  components: {
+    ReferenceField,
+    Help
+  }
+})
 export default class FormField extends Vue {
   @Prop() elementSchema!: any;
   @Prop() value!: any;
@@ -81,14 +89,6 @@ export default class FormField extends Vue {
 
   constructor() {
     super();
-  }
-
-  get tooltip_content() {
-    return {
-      content: this.elementSchema.help,
-      trigger: "hover click",
-      autoHide: false
-    };
   }
 
   internalValue: any = this.value;

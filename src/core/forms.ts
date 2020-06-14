@@ -1,10 +1,12 @@
 import store from "@/store";
+import Conditions from "@/components/builder/Conditions.vue";
 
 export interface FormElement {
   attr: string;
   label: string;
   references?: string;
-  widget?: "text" | "textarea" | "reference" | "select" | "checkbox";
+  widget?: "text" | "textarea" | "reference" | "select" | "checkbox" | "custom";
+  widgetComponent?: any;
   context?: string;
   options?: { value: string | null; label: string }[];
   default?: string | number | boolean;
@@ -94,14 +96,62 @@ export const DIRECTION: FormElement = {
   ],
 };
 
+export const CONDITIONS: FormElement = {
+  attr: "conditions",
+  label: "Conditions",
+  help: `Conditions required for the movement to be prevented. For more information on conditions, refer to their <a href='https://docs.writtenrealms.com/building/conditions'>doc page</a>.<br/><br/>
+    Quick reference:<br/>
+    <code>
+    - level_above level<br/>
+    - item_in_room template_id<br/>
+    - item_in_inv template_id qty<br/>
+    - mob_in_room template_id<br/>
+    - quest_complete quest_id<br/>
+    - archetype archetype<br/>    
+    - core_faction faction_code<br/>
+    - standing_above faction_code standing<br/>
+    - health_below percentage<br/>
+    - item_in_eq template_id<br/>
+    </code>`,
+};
+// {
+//   attr: "conditions",
+//   label: "Conditions",
+//   widget: "custom",
+//   widgetComponent: Conditions,
+// },
+
 // Room Checks
 
 const ROOM_CHECK: FormElement[] = [
   NAME,
+  CONDITIONS,
   {
-    attr: "conditions",
-    label: "Conditions",
-    help: `Conditions required for the movement to be prevented. For more information on conditions, refer to their <a href='https://docs.writtenrealms.com/building/conditions'>doc page</a>.`,
+    attr: "prevent",
+    label: "Prevent",
+    default: "enter",
+    options: [
+      {
+        value: "enter",
+        label: "Enter",
+      },
+      {
+        value: "exit",
+        label: "Exit",
+      },
+    ],
+    help: `Which action to prevent.<br/>
+          - entry: look at the move’s destination room entry checks before allowing the actor to enter it.<br/>
+          - exit: look at the move’s current room exit checks before allowing the actor to exit it.`,
+  },
+  {
+    ...DIRECTION,
+    help: `Only applicable for 'exit' prevents. If defined, specifies which exit is blocked by the room check.`,
+  },
+  {
+    attr: "failure_msg",
+    label: "Failure Message",
+    help: `The message to display if the check was true, meaning the action was prevented.`,
   },
   {
     attr: "check",
@@ -158,41 +208,14 @@ const ROOM_CHECK: FormElement[] = [
         - quest incomplete: whether a character has not completed quest id 'argument'.<br/>`,
   },
   {
-    attr: "prevent",
-    label: "Prevent",
-    default: "enter",
-    options: [
-      {
-        value: "enter",
-        label: "Enter",
-      },
-      {
-        value: "exit",
-        label: "Exit",
-      },
-    ],
-    help: `Which action to prevent.<br/>
-          - entry: look at the move’s destination room entry checks before allowing the actor to enter it.<br/>
-          - exit: look at the move’s current room exit checks before allowing the actor to exit it.`,
-  },
-  {
-    ...DIRECTION,
-    help: `Only applicable for 'exit' prevents. If defined, specifies which exit is blocked by the room check.`,
-  },
-  {
     attr: "argument",
     label: "Argument",
-    help: `Parameter depending on the check. See the 'check' field for details.`,
+    help: `Deprecated. Parameter depending on the check. See the 'check' field for details.`,
   },
   {
     attr: "argument2",
     label: "Argument 2",
-    help: `Parameter used for the 'mob_is_absent' and 'faction_below' checks. Only See the 'check' field for details.`,
-  },
-  {
-    attr: "failure_msg",
-    label: "Failure Message",
-    help: `The message to display if the check was true, meaning the action was prevented.`,
+    help: `Deprecated. Parameter used for the 'mob_is_absent' and 'faction_below' checks. See the 'check' field for details.`,
   },
 ];
 
@@ -216,11 +239,7 @@ const ROOM_ACTION: FormElement[] = [
     widget: "textarea",
     help: `Commands to be executed by the room when the action is triggered by the player. Can enter multiple commands, one per line.`,
   },
-  {
-    attr: "conditions",
-    label: "Conditions",
-    help: `Conditions required for the player's action to be valid. For more information on conditions, refer to their <a href='https://docs.writtenrealms.com/building/conditions'>doc page</a>.`,
-  },
+  CONDITIONS,
   {
     attr: "show_details_on_failure",
     label: "Show Failure Message",

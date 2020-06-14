@@ -19,7 +19,9 @@ export default class extends Vue {
     return {
       content: this.help,
       trigger: "hover click",
-      autoHide: false
+      autoHide: false,
+      delay: { hide: 200 },
+      classes: "help-tooltip"
     };
   }
 }

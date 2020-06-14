@@ -1,5 +1,6 @@
 $font-text: "Roboto Slab";
 $font-title: "brandon-grotesque";
+$font-mono: "Roboto Mono";
 
 @mixin font-text-regular {
   font-family: $font-text, serif;
@@ -21,6 +22,11 @@ $font-title: "brandon-grotesque";
   font-weight: 300;
   font-family: $font-title, sans-serif;
   letter-spacing: 1px;
+}
+
+@mixin font-mono {
+  font-family: $font-mono;
+  font-size: 0.98em;
 }
 
 .font-text-regular {
