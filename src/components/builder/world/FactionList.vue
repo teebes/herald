@@ -29,7 +29,7 @@ import { FormElement, BUILDER_FORMS } from "@/core/forms.ts";
 })
 export default class WorldFrame extends Mixins(WorldView) {
   get endpoint() {
-    return `/builder/worlds/${this.$route.params.world_id}/factions/`;
+    return `/builder/worlds/${this.$route.params.world_id}/factions/?page_size=50`;
   }
 
   get display_component() {
