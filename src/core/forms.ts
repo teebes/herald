@@ -808,6 +808,7 @@ export const BUILDER_FORMS = {
               Does nothing for other event types.
               `,
     },
+    CONDITIONS,
   ],
 
   ITEM_TEMPLATE_INFO: [
