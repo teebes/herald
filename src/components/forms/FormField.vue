@@ -120,13 +120,12 @@ export default class FormField extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .form-group.checkbox {
   display: flex;
   align-items: center;
-  img {
+  .help-icon > img {
     position: relative;
-    bottom: 6px;
   }
 }
 </style>

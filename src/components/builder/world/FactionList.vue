@@ -65,14 +65,16 @@ export default class WorldFrame extends Mixins(WorldView) {
       attr: "is_default",
       label: "Is Default",
       widget: "checkbox",
-      default: false
+      default: false,
+      help: `Only applicable for core factions. If this is checked and "Can Select Core Faction" is checked in the world's advanced configuration, this faction will be the default selectable faction.`
     };
 
     const is_selectable: FormElement = {
       attr: "is_selectable",
       label: "Is Selectable",
       widget: "checkbox",
-      default: true
+      default: true,
+      help: `Only applicable for core factions. Whether the faction can be selected at character creation screen. Will only be applicable if "Can Select Core Faction" is checked in the world's advanced configuration.`
     };
 
     const death_room: FormElement = {
