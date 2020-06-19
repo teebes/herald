@@ -7,7 +7,10 @@
     <div class="wrapper" v-else>
       <form class @submit.prevent="createCharacter">
         <h1 class="form-title">CREATE NEW CHARACTER</h1>
-        <div class="flex creation-fields" :class="{ selectableFaction: showFactions }">
+        <div
+          class="flex creation-fields"
+          :class="{ selectableFaction: showFactions }"
+        >
           <div class="form-group">
             <label for="field-name">Name</label>
             <input
@@ -21,7 +24,12 @@
           </div>
           <div class="form-group">
             <label for="field-gender">Gender</label>
-            <select id="field-gender" v-model="gender" :disabled="!world.can_select_gender" :readonly="!world.can_select_gender">
+            <select
+              id="field-gender"
+              v-model="gender"
+              :disabled="!world.can_select_gender"
+              :readonly="!world.can_select_gender"
+            >
               <option value="female">Female</option>
               <option value="male">Male</option>
               <option value="non_binary">Non-Binary</option>
@@ -35,7 +43,8 @@
                 v-for="faction in worldFactions"
                 :key="faction.code"
                 :value="faction.code"
-              >{{ faction.name }}</option>
+                >{{ faction.name }}</option
+              >
             </select>
           </div>
 
@@ -56,7 +65,7 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import axios from "axios";
 import { INTRO_WORLD_ID } from "@/config.ts";
@@ -65,8 +74,8 @@ import _ from "lodash";
 
 @Component({
   components: {
-    SignUp
-  }
+    SignUp,
+  },
 })
 export default class extends Vue {
   INTRO_WORLD_ID = INTRO_WORLD_ID;
@@ -91,16 +100,19 @@ export default class extends Vue {
 
   get worldFactions() {
     const world_factions = this.world.core_factions;
-    const selectable_factions = _.filter(world_factions, faction => {
+    const selectable_factions = _.filter(world_factions, (faction) => {
       return faction.is_selectable;
     });
-    const sorted_factions = _.sortBy(selectable_factions, faction => {
+    const sorted_factions = _.sortBy(selectable_factions, (faction) => {
       return !faction.is_default;
     });
     return sorted_factions;
   }
 
   get showFactions() {
+    if (this.world.id == 1 && this.$store.state.auth.user.is_staff) {
+      return true;
+    }
     return this.world.core_factions.length && this.world.can_select_faction;
   }
 
@@ -121,7 +133,7 @@ export default class extends Vue {
     const payload = {
       name: this.charname,
       gender: this.gender,
-      archetype: this.archetype
+      archetype: this.archetype,
     };
     if (this.faction) {
       payload["faction"] = this.faction;
