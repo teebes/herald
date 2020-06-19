@@ -99,18 +99,25 @@
     <div class="room-chars">
       <div class="room-char" v-for="char in chars" :key="char.key">
         <template v-if="isLastMessage">
-          <span
+          <LookRoomChar 
+            v-interactive="{ target: char }"
+            class="interactable"
+            :char="char"
+            @click="onCharClick(char)"/>
+
+          <!-- <span
             v-interactive="{ target: char }"
             class="interactable"
             @click="onCharClick(char)"
           >
             {{ room_char_desc(char) }}
-          </span>
+          </span> -->
         </template>
         <template v-else>
-          <span>
+          <LookRoomChar :char="char"/>
+          <!-- <span>
             {{ room_char_desc(char) }}
-          </span>
+          </span> -->
         </template>
         <span v-if="char.is_invisible" class="ml-2 color-text-50"
           >[invisible]</span
@@ -129,6 +136,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { DIRECTIONS } from "@/constants.ts";
 import { stackedInventory, getTargetInGroup } from "@/core/utils.ts";
 import { capfirst } from "@/core/utils.ts";
+import LookRoomChar from "./LookRoomChar.vue";
 
 interface Char {
   key: string;
@@ -144,7 +152,11 @@ interface Room {
   details: string[];
 }
 
-@Component
+@Component({
+  components: {
+    LookRoomChar
+  }
+})
 export default class LookRoom extends Vue {
   room: Room;
 
@@ -229,7 +241,13 @@ export default class LookRoom extends Vue {
   }
 
   room_char_desc(char) {
-    let desc = `${capfirst(char.name)} is here`;
+    let name = capfirst(char.name);
+    if (char.key.split(".")[0] === "player") {
+      if (char.title) {
+        name += " " + char.title;
+      }
+    }
+    let desc = `${name} is here`;
     if (char.target) {
       desc += `, fighting ${char.target.name}`;
     }

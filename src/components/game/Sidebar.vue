@@ -94,6 +94,20 @@
         class="color-text-red"
       >{{ player_feats_info.num_unlearned_feats }} unselected feat tiers</div>
     </div>
+
+    <!-- Chars -->
+    <div class="sidebar-element chars">
+      <h3 @click="onClickExpand('chars')" class="hover">
+        <span v-if="expanded === 'chars'">-</span>
+        <span v-else>+</span>
+        CHARACTERS IN ROOM
+      </h3>
+      <div v-if="expanded === 'chars'" class="my-1">
+        <Chars/>
+      </div>
+    </div>
+    
+    <!-- News -->
   </div>
 </template>
 
@@ -103,6 +117,7 @@ import Help from "@/components/Help.vue";
 import QuestLog from "@/components/game/QuestLog.vue";
 import ComLog from "@/components/game/sidebar/ComLog.vue";
 import Focus from "@/components/game/sidebar/Focus.vue";
+import Chars from "@/components/game/sidebar/Chars.vue";
 import { UI_MUTATIONS } from "@/constants.ts";
 import { STAFF_PLAYING } from "../../router";
 import _ from "lodash";
@@ -112,11 +127,12 @@ import _ from "lodash";
     Help,
     QuestLog,
     ComLog,
-    Focus
+    Focus,
+    Chars
   }
 })
 export default class Sidebar extends Vue {
-  expanded: "who" | "" | "skills" | "feats" = "";
+  expanded: "who" | "" | "skills" | "feats" | "chars" = "";
 
   get allow_combat() {
     return this.$store.state.game.world.allow_combat;
