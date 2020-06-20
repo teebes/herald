@@ -71,7 +71,7 @@ export default class extends Vue {
       name: this.registration_name,
       endpoint: this.endpoint,
     });
-    const options = {};
+    const options: { page_size: number } = {};
     if (this.page_size) options.page_size = this.page_size;
     await this.$store.dispatch(
       `builder/${this.registration_name}/fetch`,
