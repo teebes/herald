@@ -1,5 +1,5 @@
 <template>
-  <div class="new-character">
+  <div id="lobby-new-character">
     <div class="new-char-signup" v-if="showSignup">
       <SignUp :redirect="$route.fullPath" />
     </div>
@@ -11,6 +11,7 @@
           class="flex creation-fields"
           :class="{ selectableFaction: showFactions }"
         >
+          <!-- Name -->
           <div class="form-group">
             <label for="field-name">Name</label>
             <input
@@ -22,6 +23,8 @@
               required="required"
             />
           </div>
+
+          <!-- Gender -->
           <div class="form-group">
             <label for="field-gender">Gender</label>
             <select
@@ -36,6 +39,7 @@
             </select>
           </div>
 
+          <!-- Factions -->
           <div class="form-group" v-if="showFactions">
             <label for="field-faction">Faction</label>
             <select id="field-faction" v-model="faction">
@@ -48,8 +52,12 @@
             </select>
           </div>
 
+          <!-- Archetype -->
           <div class="form-group" v-if="showArchetype">
-            <label for="field-archetype">Class</label>
+            <div class="flex">
+              <label for="field-archetype">Class</label>
+              <Help v-if="!showFactions" :help="archetypeHelp" />
+            </div>
             <select id="field-archetype" v-model="archetype">
               <option value="warrior">Warrior</option>
               <option value="mage">Mage</option>
@@ -57,7 +65,28 @@
               <option value="assassin">Assassin</option>
             </select>
           </div>
+
+          <!-- Faction Description -->
+          <template v-if="showArchetype && showFactions">
+            <div class="form-group field-description">
+              <div class="inner-description">
+                <div
+                  v-for="(line, index) in factionDescriptionLines"
+                  :key="index"
+                  class="faction-description-line"
+                >
+                  {{ line }}
+                </div>
+              </div>
+            </div>
+            <div class="form-group field-description">
+              <div class="inner-description">
+                {{ archetypeDescription(archetype) }}
+              </div>
+            </div>
+          </template>
         </div>
+
         <button class="btn-large">CREATE CHARACTER</button>
       </form>
     </div>
@@ -71,10 +100,13 @@ import axios from "axios";
 import { INTRO_WORLD_ID } from "@/config.ts";
 import SignUp from "@/views/SignUp.vue";
 import _ from "lodash";
+import { capfirst } from "@/core/utils.ts";
+import Help from "@/components/Help.vue";
 
 @Component({
   components: {
     SignUp,
+    Help,
   },
 })
 export default class extends Vue {
@@ -86,6 +118,8 @@ export default class extends Vue {
   faction: string | null;
 
   @Prop() world!: any;
+
+  capfirst = capfirst;
 
   constructor() {
     super();
@@ -129,6 +163,44 @@ export default class extends Vue {
     return true;
   }
 
+  get factionData() {
+    for (const faction_data of this.world.core_factions) {
+      if (this.faction === faction_data.code) {
+        return faction_data;
+      }
+    }
+    return false;
+  }
+
+  get factionDescriptionLines() {
+    if (this.factionData.description)
+      return this.factionData.description.split("\n");
+    return [];
+  }
+
+  // Eventually, this would come from state instead
+  archetypeDescription(archetype) {
+    if (archetype === "warrior") {
+      return "Warriors are hardened brawlers, smashing their enemies head-on.";
+    } else if (archetype === "mage") {
+      return "Mages are glass cannons, masters of elemental damage.";
+    } else if (archetype === "assassin") {
+      return "Assassins are masters of stealth and violence.";
+    } else if (archetype === "cleric") {
+      return "Clerics are masters of healing and survival.";
+    }
+  }
+
+  get archetypeHelp() {
+    const help = [];
+    for (const archetype of ["warrior", "mage", "assassin", "cleric"]) {
+      help.push(
+        `${capfirst(archetype)} - ${this.archetypeDescription(archetype)}`
+      );
+    }
+    return help.join("<br/><br/>");
+  }
+
   async createCharacter() {
     const payload = {
       name: this.charname,
@@ -155,12 +227,12 @@ export default class extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "@/styles/colors.scss";
 @import "@/styles/layout.scss";
 @import "@/styles/fonts.scss";
 
-.new-character {
+#lobby-new-character {
   max-width: 800px;
   margin: 0 auto;
   margin-bottom: 50px;
@@ -211,6 +283,27 @@ export default class extends Vue {
         }
       }
     }
+
+    // Used for both archetype & faction descriptions
+    .field-description {
+      .field-name {
+        @include font-title-light;
+        color: $color-secondary;
+        font-size: 15px;
+        letter-spacing: 0;
+        padding-bottom: 0.5rem;
+      }
+      .inner-description {
+        .faction-description-line {
+          min-height: 0.6rem;
+        }
+      }
+    }
+
+    .creation-fields .field-description {
+      padding-bottom: 2rem;
+      padding-left: 0.25rem;
+    }
   }
   .cancel-action {
     @include font-text-light;
@@ -219,6 +312,12 @@ export default class extends Vue {
     text-align: center;
     &:hover {
       cursor: pointer;
+    }
+  }
+
+  .form-group {
+    .help-icon > img {
+      bottom: 10px !important;
     }
   }
 }

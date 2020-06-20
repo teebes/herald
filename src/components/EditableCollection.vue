@@ -7,8 +7,16 @@
     </div>
 
     <div v-if="collection" class="collection-element-list">
-      <div class="collection-element" v-for="resource in collection" :key="resource.id">
-        <component class="display-view" :is="display_component" :resource="resource" />
+      <div
+        class="collection-element"
+        v-for="resource in collection"
+        :key="resource.id"
+      >
+        <component
+          class="display-view"
+          :is="display_component"
+          :resource="resource"
+        />
         <div class="actions">
           <div>
             <button class="btn-thin" @click="edit(resource)">EDIT</button>
@@ -22,12 +30,14 @@
     <div v-else-if="fetched">No {{ title.toLowerCase() }}</div>
 
     <div v-if="fetched" class="collection-add">
-      <button class="btn-small add-button" @click="add">ADD {{ title.toUpperCase() }}</button>
+      <button class="btn-small add-button" @click="add">
+        ADD {{ title.toUpperCase() }}
+      </button>
     </div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 /*
     The display-edit component aims to expose a display view
     that is customizable and an edit link done via schema / modal.
@@ -46,6 +56,7 @@ export default class extends Vue {
   @Prop() action_add!: string;
   @Prop() action_edit!: string;
   @Prop() action_delete!: string;
+  @Prop() page_size!: number;
 
   fetched: boolean = false;
 
@@ -58,9 +69,14 @@ export default class extends Vue {
   async mounted() {
     this.$store.commit("builder/register_collection", {
       name: this.registration_name,
-      endpoint: this.endpoint
+      endpoint: this.endpoint,
     });
-    await this.$store.dispatch(`builder/${this.registration_name}/fetch`);
+    const options = {};
+    if (this.page_size) options.page_size = this.page_size;
+    await this.$store.dispatch(
+      `builder/${this.registration_name}/fetch`,
+      options
+    );
     this.fetched = true;
   }
 
@@ -78,7 +94,7 @@ export default class extends Vue {
       data: new_data,
       schema: this.schema,
       action: this.action_add || `builder/${this.registration_name}/create`,
-      title: `Add ${this.title}`
+      title: `Add ${this.title}`,
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
@@ -100,7 +116,7 @@ export default class extends Vue {
       title: `EDIT ${this.title}`,
       data: resource,
       schema: schema,
-      action: this.action_edit || `builder/${this.registration_name}/edit`
+      action: this.action_edit || `builder/${this.registration_name}/edit`,
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
