@@ -192,7 +192,7 @@ export default class extends Vue {
   }
 
   get archetypeHelp() {
-    const help = [];
+    const help: string[] = [];
     for (const archetype of ["warrior", "mage", "assassin", "cleric"]) {
       help.push(
         `${capfirst(archetype)} - ${this.archetypeDescription(archetype)}`
