@@ -32,7 +32,7 @@
 
       <div v-if="quest.completion_action">
         Quest can be completed with the
-        <strong>{{ quest.completion_action }}</strong> command.
+        <strong class='color-secondary'>{{ quest.completion_action }}</strong> command.
       </div>
 
       <div v-if="quest.complete_silently">Quest completes silently.</div>
