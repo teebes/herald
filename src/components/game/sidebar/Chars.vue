@@ -4,9 +4,12 @@
       v-for="char in chars"
       :key="char.key"
       v-interactive="{ target: char, side: 'right' }"
-      :class="{ hostile: isHostile(char) }"
     >
-      {{ char.name }}
+    <span v-if="isHostile(char)">*</span><span :class="{ hostile: isHostile(char) }">{{ char.name }}</span><span v-if="isHostile(char)">*</span>
+    <span v-if="char.target" class='color-text-50'>
+      [ > {{ char.target.keywords.split(' ')[0] }} ]
+    </span>
+      
     </div>
   </div>
 </template>

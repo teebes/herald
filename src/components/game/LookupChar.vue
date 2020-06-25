@@ -2,7 +2,7 @@
   <div class="lookup-desktop lookup-char">
     <CharInfo :char="char" />
 
-    <div class="actions">
+    <div class="actions" v-if="!isSelf">
       <div
         class="action primary"
         v-if="actionsData.primaryAction"
@@ -99,6 +99,11 @@ export default class GameLookupChar extends Vue {
       actions: actions,
       displayActions: true
     };
+  }
+
+  get isSelf() {
+    if (this.char.key === this.$store.state.game.player.key) return true;
+    return false;
   }
 }
 </script>

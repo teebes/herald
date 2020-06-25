@@ -103,6 +103,7 @@ const set_initial_state = () => {
     who_list: [],
     com_list: [],
     factions: [],
+    room_chars: [],
   };
 };
 

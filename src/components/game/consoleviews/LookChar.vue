@@ -1,6 +1,6 @@
 <template>
   <div class="look-char indented">
-    <CharInfo :char="message.data.target" />
+    <CharInfo :char="message.data.target" :isLastMessage="isLastMessage" />
     <div v-if="isLastMessage && isInRoom && hasAction" class='mt-4'>
       <button 
         class="btn-small mr-2" 
