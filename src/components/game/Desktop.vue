@@ -57,8 +57,15 @@ export default class DesktopGame extends Vue {
     if (!this.lookup) {
       return {};
     }
+
+    let left = 50 + this.lookup.position.left;
+
+    if (this.lookup.side === "right") {
+      left -= 355;
+    }
+
     return {
-      left: 50 + this.lookup.position.left + "px",
+      left: left + "px",
       bottom: window.innerHeight - this.lookup.position.top + "px",
       "z-index": "10 !important"
     };

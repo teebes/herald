@@ -13,6 +13,11 @@ export const interactive = {
     // Get the entity being looked up
     const entity = binding.value.target;
 
+    const side = binding.value.side || "left";
+
+    const isLastMessage = binding.value.isLastMessage;
+    if (isLastMessage === false) return;
+
     if (!entity) return;
 
     const onDebouncedMouseover = () => {
@@ -24,12 +29,13 @@ export const interactive = {
       ) {
         store.commit("game/lookup_set", {
           key: entity.key,
+          side: side,
           position: {
             top: rect.top,
             right: rect.right,
             bottom: rect.bottom,
-            left: rect.left
-          }
+            left: rect.left,
+          },
         });
       }
     };
@@ -47,8 +53,8 @@ export const interactive = {
       store.commit("ui/modal_set", {
         component: Lookup,
         options: {
-          closeOnOutsideClick: true
-        }
+          closeOnOutsideClick: true,
+        },
       });
     });
 
@@ -63,5 +69,5 @@ export const interactive = {
       store.commit("game/hover_entity_set", null);
     });
     el.addEventListener("mouseout", _.debounce(onDebouncedMouseout, 150));
-  }
+  },
 };

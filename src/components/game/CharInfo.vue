@@ -17,12 +17,14 @@
 
     <div class="equipment" v-if="slots && slots.length">
       <div>{{ this.$capfirst(char.name) }} is using:</div>
-      <div v-for="(slot, index) in slots" :key="index">
-        <span class="font-text-regular">{{ slot.slotName }}</span
-        >:
-        <span :class="{ ['color-secondary']: slot.slotItemIsMagic }">{{
-          slot.slotItemName
-        }}</span>
+      <div v-for="slot in slots" :key="slot.slotItem.key">
+        <span class="font-text-regular">{{ slot.slotName }}</span>:
+        <span v-if="isLastMessage"
+          :class="{ ['color-secondary']: slot.slotItemIsMagic }"
+          class='interactable'
+          v-interactive="{target: slot.slotItem}"
+        >{{ slot.slotItemName }}</span>
+        <span v-else :class="{ ['color-secondary']: slot.slotItemIsMagic }">{{ slot.slotItemName }}</span>
       </div>
     </div>
   </div>
@@ -36,18 +38,19 @@ import { capfirst } from "@/core/utils.ts";
 @Component
 export default class CharInfo extends Vue {
   @Prop() char!: any;
+  @Prop() message!: any;
+  @Prop() isLastMessage!: any;
 
   get slots() {
     const slots: {}[] = [];
     for (const slot of EQUIPMENT_SLOT_LIST) {
-      //_.each(Constants.EQUIPMENT_SLOTS, function(slot) {
       const eq = this.char.equipment;
-      //var eq = self.model.attributes.equipment;
       if (eq && eq[slot]) {
         slots.push({
           slotName: capfirst(slot),
           slotItemName: eq[slot].name,
           slotItemIsMagic: eq[slot].is_magic,
+          slotItem: eq[slot]
         });
       }
     }

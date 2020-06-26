@@ -38,7 +38,6 @@
           :class="{ 'color-secondary': player.name_recognition, 'color-primary': player.is_immortal }"
           @click="onClickWhoPlayer(player)"
         >
-          <!-- <span v-if="player.is_immortal">~</span> -->
           {{ player.name }} {{ player.title }}
           <span v-if="player.is_idle" class='ml-1 color-text-50'>(Idle)</span>
         
@@ -94,6 +93,25 @@
         class="color-text-red"
       >{{ player_feats_info.num_unlearned_feats }} unselected feat tiers</div>
     </div>
+
+    <!-- Chars -->
+    <div class="sidebar-element chars">
+      <h3 @click="onClickExpand('chars')" class="hover">
+        <span v-if="expanded === 'chars'">-</span>
+        <span v-else>+</span>
+        {{ $store.state.game.room_chars.length }} 
+        <template
+          v-if="$store.state.game.room_chars.length == 1"
+        >CHARACTER</template>
+        <template v-else>CHARACTERS</template>        
+        IN ROOM
+      </h3>
+      <div v-if="expanded === 'chars'" class="my-1">
+        <Chars/>
+      </div>
+    </div>
+    
+    <!-- News -->
   </div>
 </template>
 
@@ -103,6 +121,7 @@ import Help from "@/components/Help.vue";
 import QuestLog from "@/components/game/QuestLog.vue";
 import ComLog from "@/components/game/sidebar/ComLog.vue";
 import Focus from "@/components/game/sidebar/Focus.vue";
+import Chars from "@/components/game/sidebar/Chars.vue";
 import { UI_MUTATIONS } from "@/constants.ts";
 import { STAFF_PLAYING } from "../../router";
 import _ from "lodash";
@@ -112,11 +131,12 @@ import _ from "lodash";
     Help,
     QuestLog,
     ComLog,
-    Focus
+    Focus,
+    Chars
   }
 })
 export default class Sidebar extends Vue {
-  expanded: "who" | "" | "skills" | "feats" = "";
+  expanded: "who" | "" | "skills" | "feats" | "chars" = "";
 
   get allow_combat() {
     return this.$store.state.game.world.allow_combat;

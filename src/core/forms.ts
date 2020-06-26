@@ -106,6 +106,7 @@ export const CONDITIONS: FormElement = {
     - item_in_room template_id<br/>
     - item_in_inv template_id qty<br/>
     - mob_in_room template_id<br/>
+    - player_in_room<br/>
     - quest_complete quest_id<br/>
     - archetype archetype<br/>    
     - core_faction faction_code<br/>

@@ -97,21 +97,15 @@
     </div>
 
     <div class="room-chars">
-      <div class="room-char" v-for="char in chars" :key="char.key">
-        <template v-if="isLastMessage">
-          <span
-            v-interactive="{ target: char }"
-            class="interactable"
-            @click="onCharClick(char)"
-          >
-            {{ room_char_desc(char) }}
-          </span>
-        </template>
-        <template v-else>
-          <span>
-            {{ room_char_desc(char) }}
-          </span>
-        </template>
+      <div class="room-char" v-for="char in chars" :key="char.key + '_' + message.message_id">
+
+        <LookRoomChar 
+            v-interactive="{ target: char, isLastMessage: isLastMessage }"
+            :class="{interactable: isLastMessage}"
+            :char="char"
+            :key="char.key + message.message_id"
+            @click="onCharClick(char)"/>
+
         <span v-if="char.is_invisible" class="ml-2 color-text-50"
           >[invisible]</span
         >
@@ -129,6 +123,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { DIRECTIONS } from "@/constants.ts";
 import { stackedInventory, getTargetInGroup } from "@/core/utils.ts";
 import { capfirst } from "@/core/utils.ts";
+import LookRoomChar from "./LookRoomChar.vue";
 
 interface Char {
   key: string;
@@ -144,7 +139,11 @@ interface Room {
   details: string[];
 }
 
-@Component
+@Component({
+  components: {
+    LookRoomChar
+  }
+})
 export default class LookRoom extends Vue {
   room: Room;
 
@@ -204,7 +203,7 @@ export default class LookRoom extends Vue {
   }
 
   onCharClick(char) {
-    if (this.$store.state.game.is_mobile) return;
+    if (this.$store.state.game.is_mobile || !this.isLastMessage) return;
     const target = getTargetInGroup(char, this.room.chars);
     this.$store.dispatch("game/cmd", `look ${target}`);
   }
@@ -229,7 +228,13 @@ export default class LookRoom extends Vue {
   }
 
   room_char_desc(char) {
-    let desc = `${capfirst(char.name)} is here`;
+    let name = capfirst(char.name);
+    if (char.key.split(".")[0] === "player") {
+      if (char.title) {
+        name += " " + char.title;
+      }
+    }
+    let desc = `${name} is here`;
     if (char.target) {
       desc += `, fighting ${char.target.name}`;
     }
