@@ -226,6 +226,32 @@ const receiveMessage = async ({
     commit("player_target_set", null);
   }
 
+  // Move in notifications
+  if (
+    message_data.type === "notification.movement.enter" ||
+    message_data.type === "notification.cmd.flee.enter" ||
+    message_data.type === "notification.transfer.enter" ||
+    message_data.type === "notification.jump.enter"
+  ) {
+    commit("room_chars_add", message_data.data.actor);
+  }
+
+  // Move out notifications
+  if (
+    message_data.type === "notification.movement.exit" ||
+    message_data.type === "notification.cmd.flee.exit" ||
+    message_data.type === "notification.transfer.exit" ||
+    message_data.type === "notification.jump.exit"
+  ) {
+    commit("room_chars_remove", message_data.data.actor);
+  }
+
+  // Update room chars on attack for state reasons
+  if (message_data.type === "notification.combat.attack") {
+    commit("room_chars_update", message_data.data.actor);
+    commit("room_chars_update", message_data.data.target);
+  }
+
   // Open & close messages
   if (
     message_data.type === "door.open" ||
@@ -785,6 +811,33 @@ const mutations = {
 
   room_set: (state, room) => {
     state.room = room;
+    state.room_chars = room.chars;
+  },
+
+  room_chars_add: (state, char) => {
+    state.room_chars.push(char);
+  },
+
+  room_chars_update: (state, char) => {
+    const room_chars: {}[] = [];
+    for (const existing_char of state.room_chars) {
+      if (existing_char.key === char.key) {
+        room_chars.push(char);
+      } else {
+        room_chars.push(existing_char);
+      }
+    }
+    state.room_chars = room_chars;
+  },
+
+  room_chars_remove: (state, char) => {
+    const room_chars: {}[] = [];
+    for (const existing_char of state.room_chars) {
+      if (existing_char.key != char.key) {
+        room_chars.push(existing_char);
+      }
+    }
+    state.room_chars = room_chars;
   },
 
   connected_set: (state) => {

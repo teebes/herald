@@ -13,12 +13,14 @@
   
     <div class="equipment" v-if="slots && slots.length">
       <div>{{ this.$capfirst(char.name) }} is using:</div>
-      <div v-for="(slot, index) in slots" :key="index">
+      <div v-for="slot in slots" :key="slot.slotItem.key">
         <span class="font-text-regular">{{ slot.slotName }}</span>:
-        <span 
+        <span v-if="isLastMessage"
           :class="{ ['color-secondary']: slot.slotItemIsMagic }"
-          v-interactive="{target: slot.slotItem, isLastMessage: isLastMessage}"
+          class='interactable'
+          v-interactive="{target: slot.slotItem}"
         >{{ slot.slotItemName }}</span>
+        <span v-else :class="{ ['color-secondary']: slot.slotItemIsMagic }">{{ slot.slotItemName }}</span>
       </div>
     </div>
   </div>
@@ -32,7 +34,8 @@ import { capfirst } from "@/core/utils.ts";
 @Component
 export default class CharInfo extends Vue {
   @Prop() char!: any;
-  @Prop() isLastMessage!: boolean;
+  @Prop() message!: any;
+  @Prop() isLastMessage!: any;
 
   get slots() {
     const slots: {}[] = [];

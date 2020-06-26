@@ -97,28 +97,15 @@
     </div>
 
     <div class="room-chars">
-      <div class="room-char" v-for="char in chars" :key="char.key">
-        <template v-if="isLastMessage">
-          <LookRoomChar 
-            v-interactive="{ target: char }"
-            class="interactable"
+      <div class="room-char" v-for="char in chars" :key="char.key + '_' + message.message_id">
+
+        <LookRoomChar 
+            v-interactive="{ target: char, isLastMessage: isLastMessage }"
+            :class="{interactable: isLastMessage}"
             :char="char"
+            :key="char.key + message.message_id"
             @click="onCharClick(char)"/>
 
-          <!-- <span
-            v-interactive="{ target: char }"
-            class="interactable"
-            @click="onCharClick(char)"
-          >
-            {{ room_char_desc(char) }}
-          </span> -->
-        </template>
-        <template v-else>
-          <LookRoomChar :char="char"/>
-          <!-- <span>
-            {{ room_char_desc(char) }}
-          </span> -->
-        </template>
         <span v-if="char.is_invisible" class="ml-2 color-text-50"
           >[invisible]</span
         >
@@ -216,7 +203,7 @@ export default class LookRoom extends Vue {
   }
 
   onCharClick(char) {
-    if (this.$store.state.game.is_mobile) return;
+    if (this.$store.state.game.is_mobile || !this.isLastMessage) return;
     const target = getTargetInGroup(char, this.room.chars);
     this.$store.dispatch("game/cmd", `look ${target}`);
   }

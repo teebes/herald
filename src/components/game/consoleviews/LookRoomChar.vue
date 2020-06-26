@@ -4,9 +4,10 @@
       <span :class="{ hostile: isHostile }">{{ capfirst(char.name) }}</span>
       is here, fighting
       <span v-if="targetsYou">YOU!</span>
-      <span v-if="isHostile">*</span><span v-else :class="{ hostile: isHostile }">{{ char.target.name }}</span><span v-if="isHostile">*</span>
+      <template v-else>
+        <span v-if="isHostile">*</span><span :class="{ hostile: isHostile }">{{ char.target.name }}</span><span v-if="isHostile">*</span>
       .
-      >
+      </template>
     </template>
 
     <template v-else-if="isHostile">

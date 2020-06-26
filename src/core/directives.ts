@@ -15,6 +15,9 @@ export const interactive = {
 
     const side = binding.value.side || "left";
 
+    const isLastMessage = binding.value.isLastMessage;
+    if (isLastMessage === false) return;
+
     if (!entity) return;
 
     const onDebouncedMouseover = () => {

@@ -7,7 +7,7 @@
     >
     <span v-if="isHostile(char)">*</span><span :class="{ hostile: isHostile(char) }">{{ char.name }}</span><span v-if="isHostile(char)">*</span>
     <span v-if="char.target" class='color-text-50'>
-      [ > {{ char.target.keywords.split(' ')[0] }} ]
+      > {{ char.target.keywords.split(' ')[0] }}
     </span>
       
     </div>
@@ -27,6 +27,7 @@ export default class Chars extends Vue {
   }
 
   get chars() {
+    return this.$store.state.game.room_chars;
     return this.$store.state.game.room.chars;
   }
 

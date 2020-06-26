@@ -38,7 +38,6 @@
           :class="{ 'color-secondary': player.name_recognition, 'color-primary': player.is_immortal }"
           @click="onClickWhoPlayer(player)"
         >
-          <!-- <span v-if="player.is_immortal">~</span> -->
           {{ player.name }} {{ player.title }}
           <span v-if="player.is_idle" class='ml-1 color-text-50'>(Idle)</span>
         
@@ -100,7 +99,12 @@
       <h3 @click="onClickExpand('chars')" class="hover">
         <span v-if="expanded === 'chars'">-</span>
         <span v-else>+</span>
-        CHARACTERS IN ROOM
+        {{ $store.state.game.room_chars.length }} 
+        <template
+          v-if="$store.state.game.room_chars.length == 1"
+        >CHARACTER</template>
+        <template v-else>CHARACTERS</template>        
+        IN ROOM
       </h3>
       <div v-if="expanded === 'chars'" class="my-1">
         <Chars/>
