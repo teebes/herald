@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const makeCrud = endpoint => {
+export const makeCrud = (endpoint) => {
   /*
     Create a dynamic state for a resource that will be manipulated in a 
     predictable manner via CRUD.
@@ -8,12 +8,16 @@ export const makeCrud = endpoint => {
   return {
     namespaced: true,
     state: {
-      collection: []
+      collection: [],
     },
 
     actions: {
-      fetch: async ({ commit }, payload) => {
-        const resp = await axios.get(endpoint);
+      fetch: async ({ commit }, options) => {
+        let ep = endpoint;
+        if (options.page_size) {
+          ep += "?page_size=" + options.page_size;
+        }
+        const resp = await axios.get(ep);
         let collection;
         if (resp.data.results) {
           collection = resp.data.results;
@@ -41,7 +45,7 @@ export const makeCrud = endpoint => {
         const resp = await axios.delete(endpoint + id + "/");
         commit("remove_instance", id);
         return resp;
-      }
+      },
     },
     mutations: {
       set_collection: (state, collection) => {
@@ -51,16 +55,18 @@ export const makeCrud = endpoint => {
         state.collection.push(new_instance);
       },
       update_instance: (state, new_instance) => {
-        const index = state.collection.findIndex(i => i.id == new_instance.id);
+        const index = state.collection.findIndex(
+          (i) => i.id == new_instance.id
+        );
         if (index === -1) return;
         state.collection.splice(index, 1, new_instance);
       },
       remove_instance: (state, id) => {
-        const index = state.collection.findIndex(i => i.id == id);
+        const index = state.collection.findIndex((i) => i.id == id);
         if (index === -1) return;
         state.collection.splice(index, 1);
-      }
-    }
+      },
+    },
   };
 };
 
@@ -99,6 +105,6 @@ export const generate_crud_actions = (
       );
       commit(`${name}_clear`);
       delete_callback({ rootState });
-    }
+    },
   };
 };
