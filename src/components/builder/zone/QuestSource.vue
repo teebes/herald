@@ -38,6 +38,10 @@
           >{{ pre_quest.name }}</router-link>
         </div>
 
+        <div v-if="quest.conditions">
+          Conditions: {{ quest.conditions }}
+        </div>
+
         <div v-if="quest.notes">Notes: {{ quest.notes }}</div>
 
         <button class="btn-thin" @click="editSource">EDIT</button>
@@ -79,7 +83,8 @@ import {
   BUILDER_FORMS,
   NAME,
   MOB_TEMPLATE,
-  ZONE
+  ZONE,
+  CONDITIONS
 } from "@/core/forms";
 import EditableElement from "@/components/EditableElement.vue";
 import {
@@ -142,7 +147,8 @@ export default class extends Vue {
       {
         children: [suggested_level, requires_level, max_level]
       },
-      requires_quest
+      requires_quest,
+      CONDITIONS
     ];
     const modal = {
       data: this.quest,

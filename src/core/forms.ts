@@ -115,12 +115,6 @@ export const CONDITIONS: FormElement = {
     - item_in_eq template_id<br/>
     </code>`,
 };
-// {
-//   attr: "conditions",
-//   label: "Conditions",
-//   widget: "custom",
-//   widgetComponent: Conditions,
-// },
 
 // Room Checks
 
