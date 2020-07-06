@@ -52,6 +52,7 @@
         v-else-if="elementSchema.widget == 'reference'"
         :schema="elementSchema"
         v-model="internalValue"
+        @update="onUpdateReference"
       />
 
       <!-- Input -->
@@ -116,6 +117,17 @@ export default class FormField extends Vue {
     setTimeout(() => {
       this.$store.commit(UI_MUTATIONS.EDITING_FIELD_CLEAR);
     }, 250);
+  }
+
+  onUpdateReference(value) {
+    /*
+      Surprising that this is needed given that v-model is supposed to update the
+      value automatically when the component emits update, but for some reason that
+      was not happening when trying to update for null references.
+
+      Works if we include this. Not sure why.
+    */
+    this.$emit("update", this.elementSchema.attr, value);
   }
 }
 </script>

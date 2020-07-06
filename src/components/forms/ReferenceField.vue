@@ -186,6 +186,8 @@ export default class ReferenceField extends Vue {
       this.user_input == this.validated_id
     ) {
       this.edit_mode = false;
+    } else if (!this.user_input) {
+      this.$emit("update", null);
     }
   }
 
