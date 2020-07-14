@@ -244,6 +244,10 @@ const receiveMessage = async ({
     message_data.type === "notification.jump.exit"
   ) {
     commit("room_chars_remove", message_data.data.actor);
+
+    if (state.player_target.key === message_data.data.actor.key) {
+      commit("player_target_set", null);
+    }
   }
 
   // Update room chars on attack for state reasons
