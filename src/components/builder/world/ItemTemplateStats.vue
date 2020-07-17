@@ -91,7 +91,7 @@ export default class extends Vue {
   editStats() {
     const entity = this.template;
     const modal = {
-      title: `Mob Template ${entity.id}`,
+      title: `Item Template ${entity.id}`,
       data: entity,
       schema: BUILDER_FORMS.ITEM_TEMPLATE_STATS,
       action: "builder/worlds/item_template_save"
