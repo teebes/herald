@@ -28,7 +28,7 @@ export default class extends Vue {
       },
       {
         attr: "value",
-        label: "Value",
+        label: "Standing",
         default: "0"
       }
     ];
