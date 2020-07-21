@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class='indented'>
     <div>{{ $capfirst(message.data.merchant.name) }} has for sale:</div>
     <ol class="list mt-4">
       <li class="inventory-item" v-for="item in message.data.inventory" :key="item.key">
@@ -11,7 +11,7 @@
           :key="item.key + '-interactable'"
         >{{ item.name }}</span>
         <span v-else :class="[item.quality]" :key="item.key">{{ item.name }}</span>
-        for {{item.cost}} {{ item.currency }}
+        for {{item.cost}} {{ currencyDisplay(item.currency, item.cost) }}
       </li>
     </ol>
 
@@ -29,6 +29,12 @@ export default class GameMerchantInventory extends Vue {
     return (
       this.$store.state.game.last_message[this.message.type] == this.message
     );
+  }
+
+  currencyDisplay(currency, cost) {
+    if (cost == 1) return currency;
+    if (currency === "gold") return currency;
+    return currency + "s";
   }
 }
 </script>
