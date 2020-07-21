@@ -105,6 +105,7 @@ export const CONDITIONS: FormElement = {
     - level_above level<br/>
     - item_in_room template_id<br/>
     - item_in_inv template_id qty<br/>
+    - item_in_eq template_id<br/>    
     - mob_in_room template_id<br/>
     - player_in_room<br/>
     - quest_complete quest_id<br/>
@@ -112,7 +113,8 @@ export const CONDITIONS: FormElement = {
     - core_faction faction_code<br/>
     - standing_above faction_code standing<br/>
     - health_below percentage<br/>
-    - item_in_eq template_id<br/>
+    - player_in_room<br/>
+    - gold_above<br/>
     </code>`,
 };
 
