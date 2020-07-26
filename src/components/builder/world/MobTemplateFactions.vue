@@ -2,7 +2,11 @@
   <div id="mob_template_factions">
     <h3>MINOR FACTIONS</h3>
 
-    <InColumnList :endpoint="endpoint" :schema="schema" title="MINOR FACTION" />
+    <InColumnList 
+      :endpoint="endpoint" 
+      :endpoint_filters="endpoint_filters"
+      :schema="schema" 
+      title="MINOR FACTION" />
   </div>
 </template>
 
@@ -38,7 +42,11 @@ export default class extends Vue {
   get endpoint() {
     const world_id = this.$route.params.world_id;
     const mob_template_id = this.$route.params.mob_template_id;
-    return `builder/worlds/${world_id}/mobtemplates/${mob_template_id}/factions/?is_core=false`;
+    return `builder/worlds/${world_id}/mobtemplates/${mob_template_id}/factions/`;
+  }
+
+  get endpoint_filters() {
+    return { is_core: false };
   }
 }
 </script>

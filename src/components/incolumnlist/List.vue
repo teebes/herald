@@ -4,6 +4,7 @@
       v-for="(element, index) in elements"
       :key="element.attr"
       :endpoint="endpoint"
+      :endpoint_filters="endpoint_filters"
       :element="element"
       :schema="schema"
       :selected="selected"
@@ -17,6 +18,7 @@
       v-if="adding"
       isNew="true"
       :endpoint="endpoint"
+      :endpoint_filters="endpoint_filters"
       :element="newData"
       :schema="schema"
       @create="onCreate"
@@ -39,7 +41,7 @@ import Element from "./Element.vue";
 })
 export default class InColumnList extends Vue {
   @Prop() endpoint!: string;
-  @Prop() endpoint_filers!: {};
+  @Prop() endpoint_filters!: {};
   @Prop() schema!: Array<any>;
   @Prop() title!: string;
   @Prop() initial_new_data!: {};
@@ -62,7 +64,18 @@ export default class InColumnList extends Vue {
   }
 
   async fetch() {
-    const resp = await axios.get(this.endpoint);
+    let endpoint = this.endpoint;
+
+    let filters: string[] = [];
+    if (this.endpoint_filters) {
+      for (const filter_name in this.endpoint_filters) {
+        const filter_value = this.endpoint_filters[filter_name];
+        filters.push(`${filter_name}=${filter_value}`);
+      }
+      if (filters.length) endpoint += "?" + filters.join("&");
+    }
+
+    const resp = await axios.get(endpoint);
     if (resp.data.data) this.elements = resp.data.data;
     else if (resp.data.results) this.elements = resp.data.results;
     else this.elements = resp.data;

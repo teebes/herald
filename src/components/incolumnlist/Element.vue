@@ -71,6 +71,7 @@ export default class Element extends Vue {
   @Prop() element!: any;
   @Prop() schema!: any;
   @Prop() endpoint!: string;
+  @Prop() endpoint_filters!: {};
   @Prop() selected!: any;
   @Prop() editable!: boolean;
 
@@ -86,7 +87,18 @@ export default class Element extends Vue {
   }
 
   get details_endpoint() {
-    return `${this.endpoint}${this.element.id}/`;
+    let endpoint = `${this.endpoint}${this.element.id}/`;
+
+    let filters: string[] = [];
+    if (this.endpoint_filters) {
+      for (const filter_name in this.endpoint_filters) {
+        const filter_value = this.endpoint_filters[filter_name];
+        filters.push(`${filter_name}=${filter_value}`);
+      }
+      if (filters.length) endpoint += "?" + filters.join("&");
+    }
+
+    return endpoint;
   }
 
   get submit_data() {
@@ -123,8 +135,8 @@ export default class Element extends Vue {
   }
 
   splitLines(element) {
-    if (typeof(element) === 'string') {
-      return element.split('\n');
+    if (typeof element === "string") {
+      return element.split("\n");
     }
     return [];
   }
@@ -135,7 +147,6 @@ export default class Element extends Vue {
     }
 
     if (this.isNew) return this.create();
-    const reaction_id = this.element.id;
 
     try {
       const resp = await axios.put(this.details_endpoint, this.submit_data);
