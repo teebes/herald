@@ -40,23 +40,21 @@
 </template>
 
 <script lang='ts'>
-import { Component, Prop, Vue, Mixins } from "vue-property-decorator";
+import { Component, Prop, Vue, Mixins, Watch } from "vue-property-decorator";
 import { BUILDER_FORMS, FormElement } from "@/core/forms.ts";
 import FormField from "@/components/forms/FormField.vue";
 import axios from "axios";
 
 @Component({
   components: {
-    FormField
-  }
+    FormField,
+  },
 })
 export default class ItemTemplateEquipment extends Vue {
   formErrors: any = {};
-  equipment_type: string;
 
-  constructor() {
-    super();
-    this.equipment_type = this.$store.state.builder.worlds.item_template.equipment_type;
+  get equipment_type() {
+    return this.item_template.equipment_type;
   }
 
   get item_template() {
@@ -77,11 +75,11 @@ export default class ItemTemplateEquipment extends Vue {
   editWeapon() {
     const hit_msg_first: FormElement = {
       attr: "hit_msg_first",
-      label: "First Person"
+      label: "First Person",
     };
     const hit_msg_third: FormElement = {
       attr: "hit_msg_third",
-      label: "Third Person"
+      label: "Third Person",
     };
 
     const weapon_type: FormElement = {
@@ -91,37 +89,37 @@ export default class ItemTemplateEquipment extends Vue {
       options: [
         {
           value: null,
-          label: "None"
+          label: "None",
         },
         {
           value: "sword",
-          label: "Sword"
+          label: "Sword",
         },
         {
           value: "axe",
-          label: "Axe"
+          label: "Axe",
         },
         {
           value: "club",
-          label: "Club"
+          label: "Club",
         },
         {
           value: "staff",
-          label: "Staff"
+          label: "Staff",
         },
         {
           value: "spear",
-          label: "Spear"
+          label: "Spear",
         },
         {
           value: "dagger",
-          label: "Dagger"
+          label: "Dagger",
         },
         {
           value: "polearm",
-          label: "Polearm"
-        }
-      ]
+          label: "Polearm",
+        },
+      ],
     };
 
     const modal = {
@@ -131,10 +129,10 @@ export default class ItemTemplateEquipment extends Vue {
         weapon_type,
         {
           row_name: "hit message",
-          children: [hit_msg_first, hit_msg_third]
-        }
+          children: [hit_msg_first, hit_msg_third],
+        },
       ],
-      action: "builder/worlds/item_template_save"
+      action: "builder/worlds/item_template_save",
     };
     this.$store.commit("ui/modal_set", modal);
   }
@@ -147,19 +145,19 @@ export default class ItemTemplateEquipment extends Vue {
       options: [
         {
           value: "light",
-          label: "Light"
+          label: "Light",
         },
         {
           value: "heavy",
-          label: "Heavy"
-        }
-      ]
+          label: "Heavy",
+        },
+      ],
     };
     const modal = {
       title: `Edit Armor`,
       data: this.item_template,
       schema: [armor_class],
-      action: "builder/worlds/item_template_save"
+      action: "builder/worlds/item_template_save",
     };
     this.$store.commit("ui/modal_set", modal);
   }
@@ -172,45 +170,45 @@ export default class ItemTemplateEquipment extends Vue {
       options: [
         {
           value: "weapon_1h",
-          label: "1H Weapon"
+          label: "1H Weapon",
         },
         {
           value: "weapon_2h",
-          label: "2H Weapon"
+          label: "2H Weapon",
         },
         {
           value: "shield",
-          label: "Shield"
+          label: "Shield",
         },
         {
           value: "head",
-          label: "Head"
+          label: "Head",
         },
         {
           value: "body",
-          label: "Body"
+          label: "Body",
         },
         {
           value: "arms",
-          label: "Arms"
+          label: "Arms",
         },
         {
           value: "hands",
-          label: "Hands"
+          label: "Hands",
         },
         {
           value: "waist",
-          label: "Waist"
+          label: "Waist",
         },
         {
           value: "legs",
-          label: "Legs"
+          label: "Legs",
         },
         {
           value: "feet",
-          label: "Feet"
-        }
-      ]
+          label: "Feet",
+        },
+      ],
     };
     return equipmentType;
   }
@@ -219,11 +217,10 @@ export default class ItemTemplateEquipment extends Vue {
     const resp = await axios.patch(
       `builder/worlds/${this.$store.state.builder.world.id}/itemtemplates/${this.item_template.id}/`,
       {
-        equipment_type: value
+        equipment_type: value,
       }
     );
     this.$store.commit("builder/worlds/item_template_set", resp.data);
-    this.equipment_type = value;
   }
 }
 </script>
