@@ -522,6 +522,26 @@ const actions = {
       }
     }
 
+    cmd = cmd.toLowerCase();
+
+    // Special focus processing
+    if (
+      state.player.focus &&
+      (cmd === "k" || cmd === "ki" || cmd === "kil" || cmd === "kill")
+    ) {
+      // Kill with no arguments
+      cmd = `${cmd} ${state.player.focus}`;
+    } else {
+      // F commands
+      const cmd_tokens = cmd.split(" ");
+      if (cmd_tokens.length === 2) {
+        const arg = cmd_tokens[1];
+        if (new RegExp(arg).exec("focus")) {
+          cmd = `${cmd_tokens[0]} ${state.player.focus}`;
+        }
+      }
+    }
+
     const message = { type: "cmd.text", text: cmd, echo: true };
 
     // Echo user input back to console
