@@ -144,7 +144,12 @@ export default class extends Vue {
   }
 
   get showFactions() {
-    if (this.world.id == 1 && this.$store.state.auth.user.is_staff) {
+    if (
+      this.world.id == 1 &&
+      (this.$store.state.auth.user.is_staff ||
+        this.$store.state.auth.user.id === "11216" ||
+        this.$store.state.auth.user.id === "688")
+    ) {
       return true;
     }
     return this.world.core_factions.length && this.world.can_select_faction;
