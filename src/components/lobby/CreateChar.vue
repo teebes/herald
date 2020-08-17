@@ -148,7 +148,8 @@ export default class extends Vue {
       this.world.id == 1 &&
       (this.$store.state.auth.user.is_staff ||
         this.$store.state.auth.user.id === 11216 ||
-        this.$store.state.auth.user.id === 688)
+        this.$store.state.auth.user.id === 688 ||
+        this.$store.state.auth.user.id === 819)
     ) {
       return true;
     }
