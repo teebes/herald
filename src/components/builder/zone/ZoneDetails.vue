@@ -23,7 +23,8 @@
             <div v-for="mob in zone_mobs" :key="mob.id">
               <router-link
                 :to="{name: BUILDER_MOB_TEMPLATE_DETAILS, params: {world_id: $route.params.world_id, mob_template_id: mob.id}}"
-              >{{ mob.name }}</router-link>
+              >{{ mob.level }} - {{ mob.name }}</router-link>
+              <span class='color-text-50' v-if="mob.is_elite">[elite]</span>
             </div>
             <div v-if="!zone_mobs">None.</div>
           </div>
@@ -96,7 +97,7 @@ import {
   BUILDER_ACTIONS,
   BUILDER_MUTATIONS,
   UI_MUTATIONS,
-  UI_MODALS
+  UI_MODALS,
 } from "@/constants";
 import { Room } from "@/core/interfaces";
 import Map from "@/components/Map.vue";
@@ -105,14 +106,14 @@ import ZoneView from "@/components/builder/zone/ZoneView";
 import {
   BUILDER_ZONE_INDEX,
   BUILDER_MOB_TEMPLATE_DETAILS,
-  BUILDER_ITEM_TEMPLATE_DETAILS
+  BUILDER_ITEM_TEMPLATE_DETAILS,
 } from "@/router";
 import { BUILDER_FORMS, FormElement } from "@/core/forms.ts";
 
 @Component({
   components: {
-    Map
-  }
+    Map,
+  },
 })
 export default class ZoneDetails extends Mixins(ZoneView) {
   zone_rooms: Array<Room> = [];
@@ -155,7 +156,7 @@ export default class ZoneDetails extends Mixins(ZoneView) {
       BUILDER_ACTIONS.ZONE_ROOMS_FETCH,
       {
         world_id: world_id,
-        zone_id: zone_id
+        zone_id: zone_id,
       }
     );
 
@@ -164,17 +165,17 @@ export default class ZoneDetails extends Mixins(ZoneView) {
       BUILDER_ACTIONS.ZONE_FETCH,
       {
         world_id: this.$route.params.world_id,
-        zone_id: zone_id
+        zone_id: zone_id,
       }
     );
 
     const [
       zone_loads_resp,
-      zone_rooms_resp
+      zone_rooms_resp,
       //zone_details_resp
     ] = await Promise.all([
       zone_loads_promise,
-      zone_rooms_promise
+      zone_rooms_promise,
       //zone_details_promise
     ]);
 
@@ -192,8 +193,8 @@ export default class ZoneDetails extends Mixins(ZoneView) {
     const schema: FormElement[] = [
       {
         attr: "name",
-        label: "Name"
-      }
+        label: "Name",
+      },
     ];
 
     if (this.$store.state.builder.world.is_multiplayer) {
@@ -201,7 +202,7 @@ export default class ZoneDetails extends Mixins(ZoneView) {
         attr: "pvp_zone",
         label: "Allows PvP",
         default: false,
-        widget: "checkbox"
+        widget: "checkbox",
       });
     }
 
@@ -209,7 +210,7 @@ export default class ZoneDetails extends Mixins(ZoneView) {
       title: `Zone ${entity.id}`,
       data: entity,
       schema: schema,
-      action: BUILDER_ACTIONS.ZONE_SAVE
+      action: BUILDER_ACTIONS.ZONE_SAVE,
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
@@ -233,7 +234,7 @@ export default class ZoneDetails extends Mixins(ZoneView) {
     let respawn_wait = -1;
     if (checked) respawn_wait = 300;
     this.$store.dispatch("builder/zone_save", {
-      respawn_wait: respawn_wait
+      respawn_wait: respawn_wait,
     });
   }
 
@@ -245,10 +246,10 @@ export default class ZoneDetails extends Mixins(ZoneView) {
         {
           attr: "respawn_wait",
           label: "Respawn Wait",
-          help: "How long to wait before re-running this loader, in seconds."
-        }
+          help: "How long to wait before re-running this loader, in seconds.",
+        },
       ],
-      action: "builder/zone_save"
+      action: "builder/zone_save",
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
