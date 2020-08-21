@@ -522,12 +522,12 @@ const actions = {
       }
     }
 
-    cmd = cmd.toLowerCase();
+    const lcmd = cmd.toLowerCase();
 
     // Special focus processing
     if (
       state.player.focus &&
-      (cmd === "k" || cmd === "ki" || cmd === "kil" || cmd === "kill")
+      (lcmd === "k" || lcmd === "ki" || lcmd === "kil" || lcmd === "kill")
     ) {
       // Kill with no arguments
       cmd = `${cmd} ${state.player.focus}`;
