@@ -536,7 +536,7 @@ const actions = {
       const cmd_tokens = cmd.split(" ");
       if (cmd_tokens.length === 2) {
         const arg = cmd_tokens[1];
-        if (new RegExp(arg).exec("focus")) {
+        if (new RegExp("^" + arg).exec("focus")) {
           cmd = `${cmd_tokens[0]} ${state.player.focus}`;
         }
       }
