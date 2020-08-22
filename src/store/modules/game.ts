@@ -523,6 +523,7 @@ const actions = {
     }
 
     const lcmd = cmd.toLowerCase();
+    const lfirst_token = lcmd.split(" ")[0];
 
     // Special focus processing
     if (
@@ -531,7 +532,8 @@ const actions = {
     ) {
       // Kill with no arguments
       cmd = `${cmd} ${state.player.focus}`;
-    } else {
+    } else if (!new RegExp("^" + lfirst_token).exec("help")) {
+      // exclude 'help' from focus processing
       // F commands
       const cmd_tokens = cmd.split(" ");
       if (cmd_tokens.length === 2) {
