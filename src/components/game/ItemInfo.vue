@@ -10,7 +10,7 @@
 
     <div
       class="level-too-high"
-      v-if="item.type === 'equipment' && is_eq_item_too_high_level"
+      v-if="item.type === 'equippable' && is_eq_item_too_high_level"
     >Can only wear items up to level {{ is_eq_item_too_high_level }}.</div>
 
     <div
