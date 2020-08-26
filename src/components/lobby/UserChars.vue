@@ -8,6 +8,7 @@
           <div class="char-name">
             {{ char.name }}
             <span v-if="char.is_immortal" class="color-text-50 ml-2">[ Builder ]</span>
+            <span v-if="world.is_multiplayer && !char.world_is_multi" class='color-text-50 ml-2'>[ SPW ]</span>
           </div>
           <div class="char-info" v-if="world.allow_combat">{{ charInfo(char) }}</div>
           <div class="enter-world">
@@ -33,10 +34,10 @@ import { LOBBY_WORLD_TRANSFER } from "@/router.ts";
 
 @Component({
   components: {
-    CreateChar
-  }
+    CreateChar,
+  },
 })
-export default class extends Vue {
+export default class UserChars extends Vue {
   @Prop() chars!: {}[];
   @Prop() world!: {};
 
@@ -67,7 +68,7 @@ export default class extends Vue {
   async onEnter(char) {
     this.$store.dispatch("game/world_enter", {
       player_id: char.id,
-      world_id: this.$route.params.world_id
+      world_id: this.$route.params.world_id,
     });
   }
 
@@ -76,8 +77,8 @@ export default class extends Vue {
       name: LOBBY_WORLD_TRANSFER,
       params: {
         player_id: char.id,
-        world_id: this.$route.params.world_id
-      }
+        world_id: this.$route.params.world_id,
+      },
     });
   }
 
