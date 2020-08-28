@@ -41,6 +41,7 @@
           <div class="cmd" @click="cmdHelp('follow')">follow</div>
           <div class="cmd" @click="cmdHelp('unfollow')">unfollow</div>
           <div class="cmd" @click="cmdHelp('group')">group</div>
+          <div class="cmd" @click="cmdHelp('ungroup')">ungroup</div>
         </div>
       </div>
 
