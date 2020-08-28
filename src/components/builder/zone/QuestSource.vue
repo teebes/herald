@@ -44,6 +44,8 @@
 
         <div v-if="quest.notes">Notes: {{ quest.notes }}</div>
 
+        <div v-if="quest.is_setup">Setup Quest</div>
+
         <button class="btn-thin" @click="editSource">EDIT</button>
         <button class="btn-thin" @click="deleteQuest">DELETE</button>
       </div>
@@ -84,12 +86,12 @@ import {
   NAME,
   MOB_TEMPLATE,
   ZONE,
-  CONDITIONS
+  CONDITIONS,
 } from "@/core/forms";
 import EditableElement from "@/components/EditableElement.vue";
 import {
   BUILDER_ZONE_QUEST_DETAIL,
-  BUILDER_MOB_TEMPLATE_DETAILS
+  BUILDER_MOB_TEMPLATE_DETAILS,
 } from "@/router";
 
 @Component
@@ -113,47 +115,55 @@ export default class extends Vue {
       attr: "requires_quest",
       label: "Requires Quest",
       widget: "reference",
-      references: "quest"
+      references: "quest",
     };
 
     const requires_level: FormElement = {
       attr: "requires_level",
-      label: "Requires Level"
+      label: "Requires Level",
     };
 
     const suggested_level: FormElement = {
       attr: "level",
-      label: "Suggested Level"
+      label: "Suggested Level",
     };
 
     const max_level: FormElement = {
       attr: "max_level",
-      label: "Max Level"
+      label: "Max Level",
     };
 
     const summary: FormElement = {
       attr: "summary",
       label: "Quest Summary",
       widget: "textarea",
-      help: `Condensed version of the quest's instructions. If defined, the quest log will show this instead of the enquire commands.`
+      help: `Condensed version of the quest's instructions. If defined, the quest log will show this instead of the enquire commands.`,
+    };
+
+    const is_setup: FormElement = {
+      attr: "is_setup",
+      label: "Is Setup Quest",
+      widget: "checkbox",
+      help: `A setup quest required by an active quest will have its summary or completion commands shown in the quest log.`,
     };
 
     const schema = [
       NAME,
       {
-        children: [ZONE, MOB_TEMPLATE]
+        children: [ZONE, MOB_TEMPLATE],
       },
       summary,
       {
-        children: [suggested_level, requires_level, max_level]
+        children: [suggested_level, requires_level, max_level],
       },
       requires_quest,
-      CONDITIONS
+      CONDITIONS,
+      is_setup,
     ];
     const modal = {
       data: this.quest,
       schema: schema,
-      action: "builder/zones/quest_save"
+      action: "builder/zones/quest_save",
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
@@ -178,10 +188,10 @@ export default class extends Vue {
       schema: [
         {
           attr: "repeatable_after",
-          label: "Repeatable After"
-        }
+          label: "Repeatable After",
+        },
       ],
-      action: "builder/zones/quest_save"
+      action: "builder/zones/quest_save",
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
@@ -190,11 +200,11 @@ export default class extends Vue {
     const checked = event.target.checked;
     if (!checked) {
       this.$store.dispatch("builder/zones/quest_save", {
-        repeatable_after: -1
+        repeatable_after: -1,
       });
     } else {
       this.$store.dispatch("builder/zones/quest_save", {
-        repeatable_after: 300
+        repeatable_after: 300,
       });
     }
   }
@@ -205,8 +215,8 @@ export default class extends Vue {
       params: {
         world_id: this.$route.params.world_id,
         zone_id: this.$route.params.zone_id,
-        quest_id: quest_id
-      }
+        quest_id: quest_id,
+      },
     };
   }
 
@@ -215,8 +225,8 @@ export default class extends Vue {
       name: BUILDER_MOB_TEMPLATE_DETAILS,
       params: {
         world_id: this.$route.params.world_id,
-        mob_template_id: mob_template_id
-      }
+        mob_template_id: mob_template_id,
+      },
     };
   }
 }
