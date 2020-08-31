@@ -4,7 +4,7 @@
       <span aria-hidden="true">&#10006;</span>
     </div>
 
-    <div class="my-4">
+    <div :class="{'my-4': !nomargin}">
       <slot></slot>
     </div>
   </div>
@@ -16,6 +16,8 @@ import axios from "axios";
 
 @Component
 export default class ModalView extends Vue {
+  @Prop() nomargin!: boolean;
+
   closeModal() {
     this.$store.commit("ui/modal_clear");
   }

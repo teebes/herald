@@ -21,6 +21,9 @@
           <div class="action" @click="onClickSettings">
             <a href="#" class='settings' @click.prevent="onClickSettings">Settings</a>
           </div>
+          <div class="action" v-if="world.id === 2">
+            <a href="#" @click.prevent="onClickMap">World Map</a>
+          </div>
           <div class="action" @click="onClickDocumentation">
             <a href="https://docs.writtenrealms.com" target="_blank">Documentation</a>
           </div>
@@ -43,6 +46,7 @@
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import QuestLog from "../QuestLog.vue";
+import WorldMap from "../WorldMap.vue";
 import SaveUser from "@/views/SaveUser.vue";
 import { UI_MUTATIONS } from "@/constants.ts";
 import { GAME_FORMS } from "@/core/forms.ts";
@@ -76,7 +80,7 @@ export default class PanelTop extends Vue {
   onClickQuestLog() {
     this.showMenu = false;
     const modal = {
-      component: QuestLog
+      component: QuestLog,
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
@@ -87,16 +91,22 @@ export default class PanelTop extends Vue {
       title: `Edit Preferences`,
       data: this.$store.state.game.player_config,
       schema: GAME_FORMS.PLAYER_SETTINGS,
-      action: "game/save_player_config"
+      action: "game/save_player_config",
     });
+  }
+
+  onClickMap() {
+    this.showMenu = false;
+    const modal = { component: WorldMap };
+    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
 
   saveCharacter() {
     const modal = {
       component: SaveUser,
       options: {
-        overlayClasses: ["save_user"]
-      }
+        overlayClasses: ["save_user"],
+      },
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
     this.showMenu = false;
