@@ -44,10 +44,8 @@
               <ul>
                 <li class="world-leader" v-for="leader in leaders" :key="leader.id">
                   <span class="index">{{ leaders.indexOf(leader) + 1 }}</span>
-                  {{ leader.name }} {{ leader.title }}
-                  <span
-                    v-if="leader.display_faction"
-                  >[{{ leader.display_faction}}]</span>
+                  {{ leader.name }} 
+                  <span class='ml-4 color-text-50'>[ {{ capfirst(leader.core_faction) }} {{ capfirst(leader.archetype) }} ]</span>
                 </li>
               </ul>
             </div>
@@ -65,11 +63,12 @@ import { BUILDER_WORLD_INDEX } from "@/router";
 import { LOBBY_WORLD_DETAIL } from "@/router.ts";
 import { INTRO_WORLD_ID } from "@/config.ts";
 import UserChars from "./UserChars.vue";
+import { capfirst } from "@/core/utils.ts";
 
 @Component({
   components: {
-    UserChars
-  }
+    UserChars,
+  },
 })
 export default class WorldLobby extends Vue {
   BUILDER_WORLD_INDEX = BUILDER_WORLD_INDEX;
@@ -78,6 +77,8 @@ export default class WorldLobby extends Vue {
   chars: {}[] = [];
   world: any = null;
   leaders: {}[] = [];
+
+  capfirst = capfirst;
 
   onCharCreated(new_character) {
     this.chars.splice(0, 0, new_character);
@@ -106,7 +107,7 @@ export default class WorldLobby extends Vue {
       imageUrl = `/ui/lobby/world-home-bg.jpg`;
     }
     return {
-      backgroundImage: `url(${imageUrl})`
+      backgroundImage: `url(${imageUrl})`,
     };
   }
 
@@ -115,8 +116,8 @@ export default class WorldLobby extends Vue {
       this.$router.push({
         name: LOBBY_WORLD_DETAIL,
         params: {
-          world_id: INTRO_WORLD_ID
-        }
+          world_id: INTRO_WORLD_ID,
+        },
       });
     }
 
@@ -138,7 +139,7 @@ export default class WorldLobby extends Vue {
     const [world_resp, user_chars_resp, leaderboard_resp] = await Promise.all([
       worldFetchPromise,
       userCharsPromise,
-      leaderboardPromise
+      leaderboardPromise,
     ]);
 
     this.chars = user_chars_resp.data.results;
@@ -151,10 +152,7 @@ export default class WorldLobby extends Vue {
   }
 
   async copyShareLink() {
-    const slug = this.world.name
-      .toLowerCase()
-      .split(/\W+/)
-      .join("-");
+    const slug = this.world.name.toLowerCase().split(/\W+/).join("-");
     const url = `${window.location.href}/${slug}`;
     await this.$copyText(url);
     this.$store.commit("ui/notification_set", `World URL copied to clipboard!`);
