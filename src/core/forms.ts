@@ -781,6 +781,10 @@ export const BUILDER_FORMS = {
           label: "Player connects",
         },
         {
+          value: "death",
+          label: "Mob dies",
+        },
+        {
           value: "receive",
           label: "Item is received",
         },
