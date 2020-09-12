@@ -136,7 +136,7 @@ const receiveMessage = async ({
 
   // Echo received message to console if not short / long tic
   if (skip_messages.indexOf(message_data.type) == -1) {
-    const cloned_message_data = _.deepClone(message_data);
+    const cloned_message_data = _.cloneDeep(message_data);
     console.log(`RECV ${cloned_message_data.type}`);
     console.log(cloned_message_data);
   }
