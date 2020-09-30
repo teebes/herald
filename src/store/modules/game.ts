@@ -927,7 +927,9 @@ const mutations = {
   },
 
   player_target_set: (state, target) => {
-    state.player_target = target;
+    if (target.key != state.player.key) {
+      state.player_target = target;
+    }
   },
 
   current_cast_set: (state, data) => {
