@@ -17,8 +17,8 @@ import Mobile from "./mobile/Index.vue";
 @Component({
   components: {
     Desktop,
-    Mobile
-  }
+    Mobile,
+  },
 })
 export default class AugmentedGame extends Vue {
   @Prop() messages: any;
@@ -29,7 +29,7 @@ export default class AugmentedGame extends Vue {
   }
 
   get gameComponent() {
-    if (this.width < 768) {
+    if (this.width <= 768) {
       return "Mobile";
     }
     return "Desktop";

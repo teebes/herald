@@ -104,7 +104,7 @@ export const CONDITIONS: FormElement = {
     <code>
     - level_above level<br/>
     - item_in_room template_id<br/>
-    - item_in_inv template_id qty<br/>
+    - item_in_inv template_id<br/>
     - item_in_eq template_id<br/>    
     - mob_in_room template_id<br/>
     - player_in_room<br/>
