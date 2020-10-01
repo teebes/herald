@@ -829,7 +829,7 @@ const mutations = {
 
   width_set: (state, width) => {
     state.width = width;
-    if (width >= 768) {
+    if (width > 768) {
       state.is_mobile = false;
     } else {
       state.is_mobile = true;
