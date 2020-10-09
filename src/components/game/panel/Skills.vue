@@ -43,6 +43,11 @@
                 <span class="box-name unselectable">{{ skill.label }}</span>
                 <span class="hotkey unselectable">{{ skill.hotKey }}</span>
               </div>
+              <div v-if="featSkill" class='box-item no-touch' @click="onClick(featSkill)">
+                <div class="box-overlay" :ref="featSkill.cmd + '-overlay'"></div>
+                <span class="box-name unselectable">{{ featSkill.label }}</span>
+                <span class="hotkey unselectable">{{ featSkill.hotKey }}</span>                
+              </div>
             </div>
           </div>
         </div>
@@ -129,14 +134,11 @@ export default class PanelSkills extends Vue {
           height: "0%",
           onComplete: this.onComplete,
           onCompleteParams: [skill],
-          ease: Linear.easeNone
+          ease: Linear.easeNone,
         });
         this.activeAnimations[skill] = animation;
-      } else {
-        console.log(`${skill} is already active`);
       }
     }
-    //this.activeCooldowns = { ...cooldowns };
   }
 
   onComplete(skill) {
@@ -177,7 +179,7 @@ export default class PanelSkills extends Vue {
         remaining_time / 1000,
         {
           height: "0%",
-          ease: Linear.easeNone
+          ease: Linear.easeNone,
         }
       );
     } else {
@@ -187,7 +189,7 @@ export default class PanelSkills extends Vue {
 
     this.$store.commit("game/player_cooldown_adjust", {
       skill: data.skill,
-      adjustment: adjustment
+      adjustment: adjustment,
     });
   }
 
@@ -234,7 +236,7 @@ export default class PanelSkills extends Vue {
           label: skillData.name,
           cmd: skillData.code,
           hotKey: hotKey,
-          is_disabled: skillData.is_disabled
+          is_disabled: skillData.is_disabled,
         });
       }
       hotKey += 1;
@@ -246,7 +248,7 @@ export default class PanelSkills extends Vue {
         label: "",
         cmd: "",
         hotkey: 2,
-        is_disabled: true
+        is_disabled: true,
       });
     }
     return skills;
@@ -264,13 +266,27 @@ export default class PanelSkills extends Vue {
           skills.push({
             label: skillData.name,
             cmd: skillData.code,
-            hotKey: hotKey
+            hotKey: hotKey,
           });
         }
       }
       hotKey += 1;
     }
     return skills;
+  }
+
+  get featSkill() {
+    const tier4_selection = this.player.skills.feat["4"];
+    if (tier4_selection) {
+      const skillData = this.archetypeSkills[tier4_selection];
+      if (!skillData) return false;
+      return {
+        label: skillData.name,
+        cmd: skillData.code,
+        hotKey: 9,
+      };
+    }
+    return false;
   }
 }
 </script>

@@ -132,8 +132,8 @@ import _ from "lodash";
     QuestLog,
     ComLog,
     Focus,
-    Chars
-  }
+    Chars,
+  },
 })
 export default class Sidebar extends Vue {
   expanded: "who" | "" | "skills" | "feats" | "chars" = "";
@@ -174,7 +174,7 @@ export default class Sidebar extends Vue {
     const player_feats: PlayerFeats = this.player.skills.feat;
 
     const archetype_tiers = _.sortBy(
-      _.map(Object.keys(archetype_feats), tier => Number(tier))
+      _.map(Object.keys(archetype_feats), (tier) => Number(tier))
     );
 
     let num_learned_feats = 0;
@@ -191,14 +191,14 @@ export default class Sidebar extends Vue {
       const tier_data: FeatTier = {
         tier_level: tier_level,
         tier_number: tier_number,
-        feats: []
+        feats: [],
       };
 
       for (const feat_name of Object.keys(archetype_feats[tier_level])) {
         // Get the feat's details from the world data
         const world_feat_data: FeatData = {
           ...archetype_feats[tier_level][feat_name],
-          is_active: false
+          is_active: false,
         };
 
         if (player_feats[tier_number] === feat_name) {
@@ -212,11 +212,18 @@ export default class Sidebar extends Vue {
       feats.push(tier_data);
     }
 
-    return {
+    // return {
+    //   feats,
+    //   num_learned_feats,
+    //   num_unlearned_feats: feats.length - num_learned_feats
+    // };
+
+    const final = {
       feats,
       num_learned_feats,
-      num_unlearned_feats: feats.length - num_learned_feats
+      num_unlearned_feats: feats.length - num_learned_feats,
     };
+    return final;
   }
 
   get world_skills() {
@@ -255,7 +262,7 @@ export default class Sidebar extends Vue {
       skills.push({
         code: skill_data.code,
         name: skill_data.name,
-        is_active: is_active
+        is_active: is_active,
       });
     }
 
@@ -268,7 +275,7 @@ export default class Sidebar extends Vue {
     return {
       skills,
       num_active,
-      learnable_count
+      learnable_count,
     };
   }
 
@@ -327,8 +334,8 @@ export default class Sidebar extends Vue {
     const modal_data = {
       component: QuestLog,
       options: {
-        closeOnOutsideClick: true
-      }
+        closeOnOutsideClick: true,
+      },
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal_data);
   }
@@ -337,8 +344,8 @@ export default class Sidebar extends Vue {
     const modal_data = {
       component: ComLog,
       options: {
-        closeOnOutsideClick: true
-      }
+        closeOnOutsideClick: true,
+      },
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal_data);
   }
