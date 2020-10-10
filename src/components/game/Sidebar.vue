@@ -146,6 +146,30 @@ export default class Sidebar extends Vue {
     return this.$store.state.game.world.feats;
   }
 
+  get world_skills() {
+    return this.$store.state.game.world.skills;
+  }
+
+  get who_list() {
+    return this.$store.state.game.who_list;
+  }
+
+  get player() {
+    return this.$store.state.game.player;
+  }
+
+  get player_archetype() {
+    return this.$store.state.game.player_archetype;
+  }
+
+  get player_skills() {
+    return this.$store.state.game.player_skills;
+  }
+
+  get player_level() {
+    return this.$store.state.game.player_level;
+  }
+
   get player_feats_info() {
     interface FeatData {
       code: string;
@@ -163,7 +187,7 @@ export default class Sidebar extends Vue {
     // Value being returned by the getter
     const feats: FeatTier[] = [];
 
-    const archetype_feats = this.world_feats[this.player.archetype];
+    const archetype_feats = this.world_feats[this.player_archetype];
 
     interface PlayerFeats {
       1: string;
@@ -171,7 +195,7 @@ export default class Sidebar extends Vue {
       3: string;
     }
 
-    const player_feats: PlayerFeats = this.player.skills.feat;
+    const player_feats: PlayerFeats = this.player_skills.feat;
 
     const archetype_tiers = _.sortBy(
       _.map(Object.keys(archetype_feats), (tier) => Number(tier))
@@ -183,7 +207,7 @@ export default class Sidebar extends Vue {
       tier_level = Number(tier_level);
 
       if (
-        this.player.level < tier_level ||
+        this.player_level < tier_level ||
         !Object.keys(archetype_feats[tier_level]).length
       )
         continue;
@@ -226,18 +250,14 @@ export default class Sidebar extends Vue {
     return final;
   }
 
-  get world_skills() {
-    return this.$store.state.game.world.skills;
-  }
-
   get player_flex_skills_info() {
-    const archetype_skills = this.world_skills[this.player.archetype];
+    const archetype_skills = this.world_skills[this.player_archetype];
     const archetype_flex_skill_codes = archetype_skills.flex;
-    // Remap player skills from {1: skill1, 2: skill3} to [ skill1, skill2]
+    // Remap player skills from {1: skill1, 2: skill3} to [ skill1, skill2 ]
     const player_flex_skills: string[] = [];
     for (const i of [1, 2, 3]) {
-      if (this.player.skills.flex[i]) {
-        player_flex_skills.push(this.player.skills.flex[i]);
+      if (this.player_skills.flex[i]) {
+        player_flex_skills.push(this.player_skills.flex[i]);
       }
     }
 
@@ -251,7 +271,7 @@ export default class Sidebar extends Vue {
     for (const skill_code of archetype_flex_skill_codes) {
       const skill_data = archetype_skills[skill_code];
 
-      if (skill_data.level > this.player.level) continue;
+      if (skill_data.level > this.player_level) continue;
 
       let is_active = false;
       if (player_flex_skills.indexOf(skill_data.code) !== -1) {
@@ -268,9 +288,9 @@ export default class Sidebar extends Vue {
 
     // Calculate the number of skills that this player is able to learn
     let learnable_count = 0;
-    if (this.player.level >= 14) learnable_count = 3;
-    else if (this.player.level >= 10) learnable_count = 2;
-    else if (this.player.level >= 6) learnable_count = 1;
+    if (this.player_level >= 14) learnable_count = 3;
+    else if (this.player_level >= 10) learnable_count = 2;
+    else if (this.player_level >= 6) learnable_count = 1;
 
     return {
       skills,
@@ -292,14 +312,6 @@ export default class Sidebar extends Vue {
 
   onClickWhoPlayer(player) {
     this.$store.dispatch("game/cmd", `whois ${player.name}`);
-  }
-
-  get who_list() {
-    return this.$store.state.game.who_list;
-  }
-
-  get player() {
-    return this.$store.state.game.player;
   }
 
   get focus_help() {
