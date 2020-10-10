@@ -43,10 +43,15 @@
                 <span class="box-name unselectable">{{ skill.label }}</span>
                 <span class="hotkey unselectable">{{ skill.hotKey }}</span>
               </div>
-              <div v-if="featSkill" class='box-item no-touch' @click="onClick(featSkill)">
-                <div class="box-overlay" :ref="featSkill.cmd + '-overlay'"></div>
-                <span class="box-name unselectable">{{ featSkill.label }}</span>
-                <span class="hotkey unselectable">{{ featSkill.hotKey }}</span>                
+              <div
+                class="box-item no-touch"
+                v-for="skill in [featSkill]"
+                :key="skill.cmd"
+                @click="onClick(skill)"
+              >
+                <div class="box-overlay" :ref="skill.cmd + '-overlay'"></div>
+                <span class="box-name unselectable">{{ skill.label }}</span>
+                <span class="hotkey unselectable">{{ skill.hotKey }}</span>
               </div>
             </div>
           </div>
@@ -109,35 +114,31 @@ export default class PanelSkills extends Vue {
     const cooldowns = this.cooldowns;
 
     for (const skill in cooldowns) {
-      // Temporary fix for flee's cooldown
+      // Fix for flee's cooldown
       if (skill == "flee") continue;
 
-      // if (!this.activeCooldowns[skill]) {
-      if (true) {
-        const overlay = this.$refs[`${skill}-overlay`] as HTMLElement;
-        if (!overlay || overlay[0] === undefined) {
-          return;
-        }
-
-        const cooldown: Cooldown = cooldowns[skill];
-
-        const current = new Date().getTime();
-        const adjustment = cooldown.adjustment || 0;
-        const elapsed = current + adjustment * 1000 - cooldown.start;
-        const duration = cooldown.duration * 1000;
-        const remaining_time = duration - elapsed - COOLDOWN_FINISH;
-        const remaining_perc =
-          100 - Math.round((100 * elapsed) / duration) + "%";
-
-        overlay[0].setAttribute("style", `height: ${remaining_perc}`);
-        const animation = TweenLite.to(overlay, remaining_time / 1000, {
-          height: "0%",
-          onComplete: this.onComplete,
-          onCompleteParams: [skill],
-          ease: Linear.easeNone,
-        });
-        this.activeAnimations[skill] = animation;
+      const overlay = this.$refs[`${skill}-overlay`] as HTMLElement;
+      if (!overlay || overlay[0] === undefined) {
+        return;
       }
+
+      const cooldown: Cooldown = cooldowns[skill];
+
+      const current = new Date().getTime();
+      const adjustment = cooldown.adjustment || 0;
+      const elapsed = current + adjustment * 1000 - cooldown.start;
+      const duration = cooldown.duration * 1000;
+      const remaining_time = duration - elapsed - COOLDOWN_FINISH;
+      const remaining_perc = 100 - Math.round((100 * elapsed) / duration) + "%";
+
+      overlay[0].setAttribute("style", `height: ${remaining_perc}`);
+      const animation = TweenLite.to(overlay, remaining_time / 1000, {
+        height: "0%",
+        onComplete: this.onComplete,
+        onCompleteParams: [skill],
+        ease: Linear.easeNone,
+      });
+      this.activeAnimations[skill] = animation;
     }
   }
 
