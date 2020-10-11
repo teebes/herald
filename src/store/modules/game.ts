@@ -51,12 +51,12 @@ const set_initial_state = () => {
     player_effects: [],
     player_skills: [],
     player_level: 0,
+    player_archetype: "",
 
     player_config: {},
 
     // assassins
     player_stance: "",
-    player_archetype: "",
 
     // The player target is set by a kill command going through, or by
     // a notification.attack command being received, at which point
