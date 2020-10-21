@@ -43,6 +43,16 @@
                 <span class="box-name unselectable">{{ skill.label }}</span>
                 <span class="hotkey unselectable">{{ skill.hotKey }}</span>
               </div>
+              <div
+                class="box-item no-touch"
+                v-for="skill in [featSkill]"
+                :key="skill.cmd"
+                @click="onClick(skill)"
+              >
+                <div class="box-overlay" :ref="skill.cmd + '-overlay'"></div>
+                <span class="box-name unselectable">{{ skill.label }}</span>
+                <span class="hotkey unselectable">{{ skill.hotKey }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -104,39 +114,32 @@ export default class PanelSkills extends Vue {
     const cooldowns = this.cooldowns;
 
     for (const skill in cooldowns) {
-      // Temporary fix for flee's cooldown
+      // Fix for flee's cooldown
       if (skill == "flee") continue;
 
-      // if (!this.activeCooldowns[skill]) {
-      if (true) {
-        const overlay = this.$refs[`${skill}-overlay`] as HTMLElement;
-        if (!overlay || overlay[0] === undefined) {
-          return;
-        }
-
-        const cooldown: Cooldown = cooldowns[skill];
-
-        const current = new Date().getTime();
-        const adjustment = cooldown.adjustment || 0;
-        const elapsed = current + adjustment * 1000 - cooldown.start;
-        const duration = cooldown.duration * 1000;
-        const remaining_time = duration - elapsed - COOLDOWN_FINISH;
-        const remaining_perc =
-          100 - Math.round((100 * elapsed) / duration) + "%";
-
-        overlay[0].setAttribute("style", `height: ${remaining_perc}`);
-        const animation = TweenLite.to(overlay, remaining_time / 1000, {
-          height: "0%",
-          onComplete: this.onComplete,
-          onCompleteParams: [skill],
-          ease: Linear.easeNone
-        });
-        this.activeAnimations[skill] = animation;
-      } else {
-        console.log(`${skill} is already active`);
+      const overlay = this.$refs[`${skill}-overlay`] as HTMLElement;
+      if (!overlay || overlay[0] === undefined) {
+        return;
       }
+
+      const cooldown: Cooldown = cooldowns[skill];
+
+      const current = new Date().getTime();
+      const adjustment = cooldown.adjustment || 0;
+      const elapsed = current + adjustment * 1000 - cooldown.start;
+      const duration = cooldown.duration * 1000;
+      const remaining_time = duration - elapsed - COOLDOWN_FINISH;
+      const remaining_perc = 100 - Math.round((100 * elapsed) / duration) + "%";
+
+      overlay[0].setAttribute("style", `height: ${remaining_perc}`);
+      const animation = TweenLite.to(overlay, remaining_time / 1000, {
+        height: "0%",
+        onComplete: this.onComplete,
+        onCompleteParams: [skill],
+        ease: Linear.easeNone,
+      });
+      this.activeAnimations[skill] = animation;
     }
-    //this.activeCooldowns = { ...cooldowns };
   }
 
   onComplete(skill) {
@@ -177,7 +180,7 @@ export default class PanelSkills extends Vue {
         remaining_time / 1000,
         {
           height: "0%",
-          ease: Linear.easeNone
+          ease: Linear.easeNone,
         }
       );
     } else {
@@ -187,7 +190,7 @@ export default class PanelSkills extends Vue {
 
     this.$store.commit("game/player_cooldown_adjust", {
       skill: data.skill,
-      adjustment: adjustment
+      adjustment: adjustment,
     });
   }
 
@@ -234,7 +237,7 @@ export default class PanelSkills extends Vue {
           label: skillData.name,
           cmd: skillData.code,
           hotKey: hotKey,
-          is_disabled: skillData.is_disabled
+          is_disabled: skillData.is_disabled,
         });
       }
       hotKey += 1;
@@ -246,7 +249,7 @@ export default class PanelSkills extends Vue {
         label: "",
         cmd: "",
         hotkey: 2,
-        is_disabled: true
+        is_disabled: true,
       });
     }
     return skills;
@@ -264,13 +267,27 @@ export default class PanelSkills extends Vue {
           skills.push({
             label: skillData.name,
             cmd: skillData.code,
-            hotKey: hotKey
+            hotKey: hotKey,
           });
         }
       }
       hotKey += 1;
     }
     return skills;
+  }
+
+  get featSkill() {
+    const tier4_selection = this.player.skills.feat["4"];
+    if (tier4_selection) {
+      const skillData = this.archetypeSkills[tier4_selection];
+      if (!skillData) return false;
+      return {
+        label: skillData.name,
+        cmd: skillData.code,
+        hotKey: 9,
+      };
+    }
+    return false;
   }
 }
 </script>
