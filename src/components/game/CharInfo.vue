@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="name">{{ this.$capfirst(char.name) }}</div>
-    <div class="summary">
+    <div class="summary" v-if="world.allow_combat">
       Level {{ char.level }} {{ gender }} {{ char.archetype }}
       <template v-if="char.is_elite">
         &nbsp;[&nbsp;
         <span class="color-primary">elite</span>&nbsp;]
       </template>
     </div>
-    <div class="health color-text-50">
+    <div class="health color-text-50" v-if="world.allow_combat">
       Health: {{ char.health }} / {{ char.health_max }}
     </div>
     <div class="description" v-if="char.description">
@@ -50,7 +50,7 @@ export default class CharInfo extends Vue {
           slotName: capfirst(slot),
           slotItemName: eq[slot].name,
           slotItemIsMagic: eq[slot].is_magic,
-          slotItem: eq[slot]
+          slotItem: eq[slot],
         });
       }
     }
@@ -60,6 +60,10 @@ export default class CharInfo extends Vue {
   get gender() {
     if (this.char.gender == "non_binary") return "non-binary";
     return this.char.gender;
+  }
+
+  get world() {
+    return this.$store.state.game.world;
   }
 }
 </script>
