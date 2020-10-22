@@ -43,16 +43,18 @@
                 <span class="box-name unselectable">{{ skill.label }}</span>
                 <span class="hotkey unselectable">{{ skill.hotKey }}</span>
               </div>
-              <div
-                class="box-item no-touch"
-                v-for="skill in [featSkill]"
-                :key="skill.cmd"
-                @click="onClick(skill)"
-              >
-                <div class="box-overlay" :ref="skill.cmd + '-overlay'"></div>
-                <span class="box-name unselectable">{{ skill.label }}</span>
-                <span class="hotkey unselectable">{{ skill.hotKey }}</span>
-              </div>
+              <template v-if="featSkill">
+                <div
+                  class="box-item no-touch"
+                  v-for="skill in [featSkill]"
+                  :key="skill.cmd"
+                  @click="onClick(skill)"
+                >
+                  <div class="box-overlay" :ref="skill.cmd + '-overlay'"></div>
+                  <span class="box-name unselectable">{{ skill.label }}</span>
+                  <span class="hotkey unselectable">{{ skill.hotKey }}</span>
+                </div>
+              </template>
             </div>
           </div>
         </div>
@@ -259,7 +261,7 @@ export default class PanelSkills extends Vue {
     let hotKey = 6;
     let skills: {}[] = [];
     for (const flexNumber of [1, 2, 3]) {
-      const skillCode = this.player.skills.flex[flexNumber];
+      const skillCode = this.$store.state.game.player_skills.flex[flexNumber];
       if (skillCode) {
         const skillData = this.archetypeSkills[skillCode];
         if (!skillData) continue;
@@ -277,7 +279,7 @@ export default class PanelSkills extends Vue {
   }
 
   get featSkill() {
-    const tier4_selection = this.player.skills.feat["4"];
+    const tier4_selection = this.$store.state.game.player_skills.feat["4"];
     if (tier4_selection) {
       const skillData = this.archetypeSkills[tier4_selection];
       if (!skillData) return false;
