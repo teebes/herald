@@ -163,7 +163,7 @@ const router = new Router({
     {
       path: "/",
       name: "home",
-      component: Home
+      component: Home,
     },
 
     {
@@ -172,57 +172,57 @@ const router = new Router({
       // they are logged in.
       path: "/home",
       name: "homedirect",
-      component: Home
+      component: Home,
     },
 
     {
       path: "/test",
       name: "test",
-      component: Test
+      component: Test,
     },
 
     {
       path: "/game",
       name: "game",
       component: Game,
-      beforeEnter: ifAuthenticated
+      beforeEnter: ifAuthenticated,
     },
 
     {
       path: "/lobby",
       name: LOBBY,
       component: Lobby,
-      beforeEnter: ifAuthenticated
+      beforeEnter: ifAuthenticated,
     },
 
     {
       path: "/login",
       name: "login",
-      component: Login
+      component: Login,
     },
 
     {
       path: "/signup",
       name: "signup",
-      component: SignUp
+      component: SignUp,
     },
 
     {
       path: "/forgot-password",
       name: FORGOTPASSWORD,
-      component: ForgotPassword
+      component: ForgotPassword,
     },
 
     {
       path: "/reset-password/:code",
       name: RESETPASSWORD,
-      component: ResetPassword
+      component: ResetPassword,
     },
 
     {
       path: "/emailconfirm/:code",
       name: CONFIRMEMAIL,
-      component: ConfirmEmail
+      component: ConfirmEmail,
     },
 
     {
@@ -234,55 +234,61 @@ const router = new Router({
         {
           path: "playing",
           name: STAFF_PLAYING,
-          component: () => import("@/components/staff/Playing.vue")
+          component: () => import("@/components/staff/Playing.vue"),
         },
         {
           path: "signups",
           name: STAFF_SIGNUPS,
-          component: () => import("@/components/staff/SignUps.vue")
+          component: () => import("@/components/staff/SignUps.vue"),
         },
         {
           path: "worlds",
           name: STAFF_WORLDS,
-          component: () => import("@/components/staff/Worlds.vue")
+          component: () => import("@/components/staff/Worlds.vue"),
         },
         {
           path: "activity",
           name: STAFF_ACTIVITY,
-          component: () => import("@/components/staff/Activity.vue")
+          component: () => import("@/components/staff/Activity.vue"),
         },
         {
           path: "users/:user_id",
           name: STAFF_USER_INFO,
-          component: () => import("@/components/staff/UserInfo.vue")
-        }
-      ]
+          component: () => import("@/components/staff/UserInfo.vue"),
+        },
+      ],
+    },
+
+    {
+      path: "/worlds/1/uniques",
+      component: () => import("@/components/lobby/EdeusUniques.vue"),
+      name: "edeus_unique_bearers",
     },
 
     {
       path: "/worlds/:world_id/:slug?",
       component: WorldLobby,
-      name: LOBBY_WORLD_DETAIL
+      name: LOBBY_WORLD_DETAIL,
     },
 
     {
       path: "/worlds/:world_id/complete/:player_id",
       component: CompleteSignup,
       name: LOBBY_WORLD_COMPLETE_SIGNUP,
-      beforeEnter: ifAuthenticated
+      beforeEnter: ifAuthenticated,
     },
 
     {
       path: "/worlds/transfer/:player_id",
       component: Transfer,
       name: LOBBY_WORLD_TRANSFER,
-      beforeEnter: ifAuthenticated
+      beforeEnter: ifAuthenticated,
     },
 
     {
       path: "/create/",
       component: WorldCreate,
-      name: BUILDER_WORLD_CREATE
+      name: BUILDER_WORLD_CREATE,
     },
 
     {
@@ -294,14 +300,14 @@ const router = new Router({
         {
           path: "formulas",
           component: HelpFormulas,
-          name: "help_formulas"
+          name: "help_formulas",
         },
         {
           path: "classes",
           component: HelpClasses,
-          name: "help_classes"
-        }
-      ]
+          name: "help_classes",
+        },
+      ],
     },
 
     {
@@ -312,73 +318,74 @@ const router = new Router({
         {
           path: "",
           name: BUILDER_WORLD_INDEX,
-          component: WorldIndex
+          component: WorldIndex,
         },
         {
           path: "config",
           component: WorldConfig,
-          name: BUILDER_WORLD_CONFIG
+          name: BUILDER_WORLD_CONFIG,
         },
         {
           path: "randomprofiles",
           component: RandomItemProfiles,
-          name: BUILDER_WORLD_RANDOM_PROFILES
+          name: BUILDER_WORLD_RANDOM_PROFILES,
         },
 
         {
           path: "mobs",
           component: MobTemplateList,
-          name: BUILDER_MOB_TEMPLATE_LIST
+          name: BUILDER_MOB_TEMPLATE_LIST,
         },
         {
           path: "mobs/:mob_template_id",
           component: MobTemplateDetails,
-          name: BUILDER_MOB_TEMPLATE_DETAILS
+          name: BUILDER_MOB_TEMPLATE_DETAILS,
         },
         {
           path: "items",
           component: ItemTemplateList,
-          name: BUILDER_ITEM_TEMPLATE_LIST
+          name: BUILDER_ITEM_TEMPLATE_LIST,
         },
         {
           path: "items/:item_template_id",
           component: ItemTemplateDetails,
-          name: BUILDER_ITEM_TEMPLATE_DETAILS
+          name: BUILDER_ITEM_TEMPLATE_DETAILS,
         },
 
         {
           path: "transformations/",
           component: TransformationTemplateList,
-          name: BUILDER_WORLD_TRANSFORMATION_TEMPLATE_LIST
+          name: BUILDER_WORLD_TRANSFORMATION_TEMPLATE_LIST,
         },
         {
           path: "builders/",
           component: BuilderList,
-          name: BUILDER_WORLD_BUILDERS
+          name: BUILDER_WORLD_BUILDERS,
         },
 
         {
           path: "players/",
           name: BUILDER_WORLD_PLAYER_LIST,
-          component: BuilderWorldPlayerList
+          component: BuilderWorldPlayerList,
         },
 
         {
           path: "players/:player_id",
           name: BUILDER_WORLD_PLAYER_DETAIL,
-          component: BuilderWorldPlayerDetail
+          component: BuilderWorldPlayerDetail,
         },
 
         {
           path: "factions/",
           name: BUILDER_WORLD_FACTIONS,
-          component: () => import("@/components/builder/world/FactionList.vue")
+          component: () => import("@/components/builder/world/FactionList.vue"),
         },
 
         {
           path: "factions/:faction_id/ranks/",
           name: BUILDER_WORLD_FACTION_RANK_LIST,
-          component: () => import("@/components/builder/world/FactionRankList.vue")
+          component: () =>
+            import("@/components/builder/world/FactionRankList.vue"),
         },
 
         { path: "status", name: BUILDER_WORLD_STATUS, component: WorldStatus },
@@ -386,149 +393,151 @@ const router = new Router({
         {
           path: "rooms/:room_id",
           component: RoomDetails,
-          name: BUILDER_ROOM_INDEX
+          name: BUILDER_ROOM_INDEX,
         },
         {
           path: "rooms/:room_id/checks",
           name: BUILDER_ROOM_CHECKS,
-          component: () => import("@/components/builder/room/RoomCheckList.vue")
+          component: () =>
+            import("@/components/builder/room/RoomCheckList.vue"),
         },
         {
           path: "rooms/:room_id/actions",
           name: BUILDER_ROOM_ACTIONS,
-          component: () => import("@/components/builder/room/RoomActionList.vue")
+          component: () =>
+            import("@/components/builder/room/RoomActionList.vue"),
         },
         {
           path: "rooms/:room_id/loads",
           name: BUILDER_ROOM_LOADS,
-          component: RoomLoads
+          component: RoomLoads,
         },
         {
           path: "rooms/:room_id/paths",
           name: BUILDER_ROOM_PATHS,
-          component: RoomPaths
+          component: RoomPaths,
         },
         {
           path: "rooms/:room_id/config",
           name: BUILDER_ROOM_CONFIG,
-          component: RoomConfig
+          component: RoomConfig,
         },
         {
           path: "rooms/:room_id/flags",
           name: BUILDER_ROOM_FLAGS,
-          component: RoomFlags
+          component: RoomFlags,
         },
         {
           path: "rooms/:room_id/details",
           name: BUILDER_ROOM_DETAIL_LIST,
-          component: RoomDetailList
+          component: RoomDetailList,
         },
 
         {
           path: "zones/:zone_id",
           component: ZoneDetails,
-          name: BUILDER_ZONE_INDEX
+          name: BUILDER_ZONE_INDEX,
         },
         {
           path: "zones",
           component: ZoneList,
-          name: BUILDER_ZONE_LIST
+          name: BUILDER_ZONE_LIST,
         },
 
         {
           path: "zones/:zone_id/rooms",
           component: RoomList,
-          name: BUILDER_ZONE_ROOM_LIST
+          name: BUILDER_ZONE_ROOM_LIST,
         },
 
         {
           path: "zones/:zone_id/paths",
           component: ZonePathList,
-          name: BUILDER_ZONE_PATH_LIST
+          name: BUILDER_ZONE_PATH_LIST,
         },
 
         {
           path: "zones/:zone_id/paths/:path_id",
           component: ZonePathDetails,
-          name: BUILDER_ZONE_PATH_DETAILS
+          name: BUILDER_ZONE_PATH_DETAILS,
         },
 
         {
           path: "zones/:zone_id/loaders",
           component: ZoneLoaderList,
-          name: BUILDER_ZONE_LOADER_LIST
+          name: BUILDER_ZONE_LOADER_LIST,
         },
 
         {
           path: "zones/:zone_id/loaders/:loader_id",
           component: ZoneLoaderDetails,
-          name: BUILDER_ZONE_LOADER_DETAILS
+          name: BUILDER_ZONE_LOADER_DETAILS,
         },
 
         {
           path: "zones/:zone_id/quests",
           component: ZoneQuestList,
-          name: BUILDER_ZONE_QUEST_LIST
+          name: BUILDER_ZONE_QUEST_LIST,
         },
 
         {
           path: "zones/:zone_id/quests/:quest_id",
           component: ZoneQuestDetail,
-          name: BUILDER_ZONE_QUEST_DETAIL
+          name: BUILDER_ZONE_QUEST_DETAIL,
         },
 
         {
           path: "zones/:zone_id/config",
           component: () => import("@/components/builder/zone/ZoneConfig.vue"),
-          name: BUILDER_ZONE_CONFIG
+          name: BUILDER_ZONE_CONFIG,
         },
 
         {
           path: "zones/:zone_id/processions",
           component: () =>
             import("@/components/builder/zone/ZoneProcessionList.vue"),
-          name: BUILDER_ZONE_PROCESSION_LIST
+          name: BUILDER_ZONE_PROCESSION_LIST,
         },
 
         {
           path: "zones/:zone_id/processions/:procession_id",
           component: () =>
             import("@/components/builder/zone/ZoneProcessionDetail.vue"),
-          name: BUILDER_ZONE_PROCESSION_DETAIL
-        }
-      ]
+          name: BUILDER_ZONE_PROCESSION_DETAIL,
+        },
+      ],
     },
 
     {
       path: "/styleguide",
       name: "styleguide",
-      component: Styleguide
+      component: Styleguide,
     },
 
     {
       path: "/about",
       name: ABOUT,
-      component: About
+      component: About,
     },
 
     {
       path: "/terms",
       name: TERMS,
-      component: Terms
+      component: Terms,
     },
 
     {
       path: "/privacy",
       name: PRIVACY,
-      component: Privacy
+      component: Privacy,
     },
     {
       path: "/404",
       name: "404",
-      component: () => import("@/views/NotFound.vue")
+      component: () => import("@/views/NotFound.vue"),
     },
-    { path: "*", redirect: "/404" }
-  ]
+    { path: "*", redirect: "/404" },
+  ],
 });
 
 router.afterEach(async () => {
