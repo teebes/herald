@@ -267,6 +267,8 @@
             <div class="cmd" @click="cmdHelp('zecho')">zecho</div>
             <div class="cmd" @click="cmdHelp('send')">send</div>
             <div class="cmd" @click="cmdHelp('sendexcept')">sendexcept</div>
+            <div class="cmd" @click="cmdHelp('setfact')">setfact</div>
+            <div class="cmd" @click="cmdHelp('clearfact')">clearfact</div>
           </div>
         </div>
       </template>

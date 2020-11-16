@@ -51,7 +51,7 @@
             </div>
           </template>
 
-          <div class="mt-6" v-if="world.id=1">
+          <div class="mt-6" v-if="world.id == 1">
             <span class='mr-1 color-primary'>&#x2606;</span>
             <router-link er-link :to="{'name': 'edeus_unique_bearers'}">Unique Bearers</router-link>
           </div>

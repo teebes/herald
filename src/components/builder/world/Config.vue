@@ -136,6 +136,14 @@
 
         <router-link :to="world_factions_link">manage</router-link>
       </div>
+
+      <div class="world-factions">
+        <h3>Worlds Facts</h3>
+
+        <div>Facts are data points about your world that can be set by builders, mobs and a fact schedule. Conditions can then look at those facts to determine which loaders, room actions, quests and reactions should be considered active.</div>
+
+        <router-link :to="world_facts_link">manage</router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -151,7 +159,8 @@ import {
   BUILDER_ROOM_INDEX,
   BUILDER_WORLD_STATUS,
   BUILDER_WORLD_FACTIONS,
-  LOBBY
+  BUILDER_WORLD_FACTS,
+  LOBBY,
 } from "@/router";
 import { BUILDER_FORMS, FormElement } from "@/core/forms";
 import { UI_MUTATIONS } from "@/constants";
@@ -159,8 +168,8 @@ import WorldView from "@/components/builder/world/WorldView.ts";
 
 @Component({
   components: {
-    ElementList
-  }
+    ElementList,
+  },
 })
 export default class WorldFrame extends Mixins(WorldView) {
   BUILDER_WORLD_RANDOM_PROFILES = BUILDER_WORLD_RANDOM_PROFILES;
@@ -173,8 +182,8 @@ export default class WorldFrame extends Mixins(WorldView) {
       name: BUILDER_ROOM_INDEX,
       params: {
         world_id: this.world.id,
-        room_id: id
-      }
+        room_id: id,
+      },
     };
   }
 
@@ -196,10 +205,10 @@ export default class WorldFrame extends Mixins(WorldView) {
         {
           attr: "is_public",
           label: "Is Public",
-          widget: "checkbox"
-        }
+          widget: "checkbox",
+        },
       ],
-      action: "builder/world_save"
+      action: "builder/world_save",
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
@@ -207,21 +216,21 @@ export default class WorldFrame extends Mixins(WorldView) {
   async fetch() {
     this.$store.commit("builder/worlds/config_clear");
     await this.$store.dispatch("builder/worlds/config_fetch", {
-      world_id: this.world.id
+      world_id: this.world.id,
     });
   }
 
   async editAdvancedConfig() {
     const starting_gold: FormElement = {
       attr: "starting_gold",
-      label: "Starting Gold"
+      label: "Starting Gold",
     };
     const death_room: FormElement = {
       attr: "death_room",
       label: "Death Room",
       widget: "reference",
       references: "room",
-      required: true
+      required: true,
     };
     const starting_room: FormElement = {
       attr: "starting_room",
@@ -231,7 +240,7 @@ export default class WorldFrame extends Mixins(WorldView) {
       required: true,
       help: `Which room a new player starts in by default.<br/><br/>
              A starting room can also be defined at the Faction level, 
-             which will take precendence over this default starting room.`
+             which will take precendence over this default starting room.`,
     };
     const death_mode: FormElement = {
       attr: "death_mode",
@@ -240,26 +249,26 @@ export default class WorldFrame extends Mixins(WorldView) {
       options: [
         {
           value: "lose_all",
-          label: "Lose All"
+          label: "Lose All",
         },
         {
           value: "lose_none",
-          label: "Lose None"
+          label: "Lose None",
         },
         {
           value: "lose_gold",
-          label: "Lose Gold"
-        }
+          label: "Lose Gold",
+        },
       ],
       help: `Determines what happens to the player's equipment on death.<br/><br/>
              Lose None: player retains all of their equipment<br/>
              Lose All: all of the player's equipment goes to their corpse<br/>
-             Lose Gold: player pays 20% of their equipment's value on death`
+             Lose Gold: player pays 20% of their equipment's value on death`,
     };
     const built_by: FormElement = {
       attr: "built_by",
       label: "Built By",
-      help: `What to show in the 'built by' field of the World Lobby. If missing, will default to the author's username.`
+      help: `What to show in the 'built by' field of the World Lobby. If missing, will default to the author's username.`,
     };
     const death_route: FormElement = {
       attr: "death_route",
@@ -268,39 +277,39 @@ export default class WorldFrame extends Mixins(WorldView) {
       options: [
         {
           value: "top_faction",
-          label: "Top Faction"
+          label: "Top Faction",
         },
         {
           value: "near_room",
-          label: "Nearest Room"
+          label: "Nearest Room",
         },
         {
           value: "far_room",
-          label: "Furthest Room"
+          label: "Furthest Room",
         },
         {
           value: "nearest_in_zone",
-          label: "Nearest in Zone"
-        }
+          label: "Nearest in Zone",
+        },
       ],
       help: `Where players go on death.<br/><br/>
              Top Faction: the nearest procession room of the faction you have highest standing with.<br/>
              Nearest Room: the procession room nearest where you died.<br/>
              Furthest Room: the procession room furthest from where you died.<br/>
-             Nearest in Zone: the procession room closest to you in your current zone.`
+             Nearest in Zone: the procession room closest to you in your current zone.`,
     };
     const auto_equip: FormElement = {
       attr: "auto_equip",
       label: "Auto Equip Items",
       widget: "checkbox",
       help: `If checked, items acquired to the player's inventory will
-             automatically equip if the corresponding slot is empty.`
+             automatically equip if the corresponding slot is empty.`,
     };
     const allow_pvp: FormElement = {
       attr: "allow_pvp",
       label: "Allow PvP",
       widget: "checkbox",
-      help: `If checked, players can kill other players.`
+      help: `If checked, players can kill other players.`,
     };
     const pvp_mode: FormElement = {
       attr: "pvp_mode",
@@ -309,50 +318,50 @@ export default class WorldFrame extends Mixins(WorldView) {
       options: [
         {
           value: "free_for_all",
-          label: "Free for All"
+          label: "Free for All",
         },
         {
           value: "disabled",
-          label: "Disabled"
+          label: "Disabled",
         },
         {
           value: "zone",
-          label: "PvP Zones"
-        }
+          label: "PvP Zones",
+        },
       ],
       help: `In multiplayer worlds, to what extent PvP is allowed.<br/><br/>
             Free for All - anyone can attack anyone else, unless in a peace room.<br/>
             Disabled - no player can attack another player, ever.<br/>
             PvP Zones - default is no PvP but certain zones can enable it.<br/>
-      `
+      `,
     };
     const can_select_faction: FormElement = {
       attr: "can_select_faction",
       label: "Can Select Core Faction",
       widget: "checkbox",
-      help: `If unchecked, all players will always start with the default core faction.`
+      help: `If unchecked, all players will always start with the default core faction.`,
     };
     const allow_combat: FormElement = {
       attr: "is_narrative",
       label: "Narrative World",
       widget: "checkbox",
-      help: `A narrative world disables combat, and will not show combat-related UI elements.`
+      help: `A narrative world disables combat, and will not show combat-related UI elements.`,
     };
     const players_can_set_title: FormElement = {
       attr: "players_can_set_title",
       label: "Players Can Set Title",
       widget: "checkbox",
-      help: `Whether players are allowed to change their own title.`
+      help: `Whether players are allowed to change their own title.`,
     };
     const small_background: FormElement = {
       attr: "small_background",
       label: "740 x 332 Card URL",
-      help: `Image displayed in the general lobby`
+      help: `Image displayed in the general lobby`,
     };
     const large_background: FormElement = {
       attr: "large_background",
       label: "2300 x 598 Banner URL",
-      help: `Image displayed in the world lobby`
+      help: `Image displayed in the world lobby`,
     };
 
     const modal = {
@@ -360,26 +369,26 @@ export default class WorldFrame extends Mixins(WorldView) {
       data: this.config,
       schema: [
         {
-          children: [starting_gold, starting_room]
+          children: [starting_gold, starting_room],
         },
         {
-          children: [death_mode, death_room]
+          children: [death_mode, death_room],
         },
         {
-          children: [pvp_mode, death_route]
+          children: [pvp_mode, death_route],
         },
         {
-          children: [allow_combat, auto_equip]
+          children: [allow_combat, auto_equip],
         },
         {
-          children: [can_select_faction, players_can_set_title]
+          children: [can_select_faction, players_can_set_title],
         },
         {
-          children: [small_background, large_background]
+          children: [small_background, large_background],
         },
-        built_by
+        built_by,
       ],
-      action: "builder/worlds/config_save"
+      action: "builder/worlds/config_save",
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
@@ -404,14 +413,21 @@ export default class WorldFrame extends Mixins(WorldView) {
   get world_status_link() {
     return {
       name: BUILDER_WORLD_STATUS,
-      params: { world_id: this.world.id }
+      params: { world_id: this.world.id },
     };
   }
 
   get world_factions_link() {
     return {
       name: BUILDER_WORLD_FACTIONS,
-      params: { world_id: this.world.id }
+      params: { world_id: this.world.id },
+    };
+  }
+
+  get world_facts_link() {
+    return {
+      name: BUILDER_WORLD_FACTS,
+      params: { world_id: this.world.id },
     };
   }
 

@@ -160,6 +160,7 @@ import {
   BUILDER_WORLD_PLAYER_LIST,
   BUILDER_WORLD_PLAYER_DETAIL,
   BUILDER_WORLD_STATUS,
+  BUILDER_WORLD_FACTS,
   BUILDER_ROOM_INDEX,
   BUILDER_ROOM_CHECKS,
   BUILDER_ROOM_ACTIONS,
@@ -186,7 +187,7 @@ import {
   BUILDER_TRANSFORMATION_LIST,
   BUILDER_WORLD_FACTIONS,
   BUILDER_WORLD_FACTION_RANK_LIST,
-  LOBBY_WORLD_DETAIL
+  LOBBY_WORLD_DETAIL,
 } from "@/router";
 
 @Component
@@ -299,7 +300,8 @@ export default class WorldFrame extends Vue {
       BUILDER_WORLD_PLAYER_DETAIL,
       BUILDER_WORLD_STATUS,
       BUILDER_WORLD_FACTIONS,
-      BUILDER_WORLD_FACTION_RANK_LIST
+      BUILDER_WORLD_FACTION_RANK_LIST,
+      BUILDER_WORLD_FACTS,
     ];
     if (this.$store.state.builder.world)
       for (const routeData of this.$route.matched) {
@@ -319,14 +321,14 @@ export default class WorldFrame extends Vue {
   get world_status_link() {
     return {
       name: BUILDER_WORLD_STATUS,
-      params: { world_id: this.$route.params.world_id }
+      params: { world_id: this.$route.params.world_id },
     };
   }
 
   get world_factions_link() {
     return {
       name: BUILDER_WORLD_FACTIONS,
-      params: { world_id: this.$route.params.world_id }
+      params: { world_id: this.$route.params.world_id },
     };
   }
 }

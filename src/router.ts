@@ -105,6 +105,7 @@ export const BUILDER_WORLD_PLAYER_DETAIL = "builder_world_player_detail";
 export const BUILDER_WORLD_STATUS = "builder_world_status";
 export const BUILDER_WORLD_FACTIONS = "builder_world_factions";
 export const BUILDER_WORLD_FACTION_RANK_LIST = "builder_world_faction_ranks";
+export const BUILDER_WORLD_FACTS = "builder_world_facts";
 export const BUILDER_ROOM_INDEX = "builder_room_index";
 export const BUILDER_ROOM_CHECKS = "builder_room_checks";
 export const BUILDER_ROOM_ACTIONS = "builder_room_actions";
@@ -329,6 +330,12 @@ const router = new Router({
           path: "randomprofiles",
           component: RandomItemProfiles,
           name: BUILDER_WORLD_RANDOM_PROFILES,
+        },
+
+        {
+          path: "facts",
+          component: () => import("@/components/builder/world/Facts.vue"),
+          name: BUILDER_WORLD_FACTS,
         },
 
         {
