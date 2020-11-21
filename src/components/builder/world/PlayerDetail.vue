@@ -31,6 +31,11 @@
           <div>Item count: {{ player.instance_details.item_count }}</div>
         </div>
 
+        <div class="facts" v-if="!player.world.is_multiplayer">
+          <h3>Facts</h3>
+          <CurrentFacts :world_id="player.world.id"/>
+        </div>
+
         <div class="factions">
           <h3>Factions</h3>
           <div>core: {{ player.animation_data.factions.core }}</div>
@@ -93,6 +98,7 @@
 import { Component, Prop, Vue, Mixins } from "vue-property-decorator";
 import WorldView from "@/components/builder/world/WorldView.ts";
 import Map from "@/components/Map.vue";
+import CurrentFacts from "@/components/builder/world/CurrentFacts.vue";
 import { Room } from "@/core/interfaces.ts";
 import { EQUIPMENT_SLOT_LIST } from "@/constants";
 import { BUILDER_WORLD_PLAYER_LIST, STAFF_USER_INFO } from "@/router";
@@ -100,8 +106,9 @@ import { UI_MUTATIONS } from "@/constants";
 
 @Component({
   components: {
-    Map
-  }
+    Map,
+    CurrentFacts,
+  },
 })
 export default class PlayerDetail extends Mixins(WorldView) {
   fetched: Boolean = false;
@@ -115,7 +122,7 @@ export default class PlayerDetail extends Mixins(WorldView) {
   async mounted() {
     const player = await this.$store.dispatch("builder/worlds/player_fetch", {
       world_id: this.$route.params.world_id,
-      player_id: this.$route.params.player_id
+      player_id: this.$route.params.player_id,
     });
     this.fetched = true;
     this.center_key = player.room.key;
@@ -130,10 +137,10 @@ export default class PlayerDetail extends Mixins(WorldView) {
         {
           attr: "is_immortal",
           label: "Is Builder",
-          widget: "checkbox"
-        }
+          widget: "checkbox",
+        },
       ],
-      action: "builder/worlds/player_set"
+      action: "builder/worlds/player_set",
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
@@ -148,8 +155,8 @@ export default class PlayerDetail extends Mixins(WorldView) {
     this.$router.push({
       name: BUILDER_WORLD_PLAYER_LIST,
       params: {
-        world_id: this.$route.params.world_id
-      }
+        world_id: this.$route.params.world_id,
+      },
     });
   }
 
@@ -172,13 +179,13 @@ export default class PlayerDetail extends Mixins(WorldView) {
     return {
       name: BUILDER_WORLD_PLAYER_LIST,
       params: {
-        world_id: this.$route.params.world_id
-      }
+        world_id: this.$route.params.world_id,
+      },
     };
   }
 
   onMapClickRoom(room) {
-    const index = this.player_rooms.findIndex(_room => room.key == _room.key);
+    const index = this.player_rooms.findIndex((_room) => room.key == _room.key);
     if (index !== -1) this.center_key = room.key;
   }
 
@@ -195,7 +202,7 @@ export default class PlayerDetail extends Mixins(WorldView) {
     }
 
     if (
-      player_rooms.findIndex(_room => this.player.room.key == _room.key) !== 1
+      player_rooms.findIndex((_room) => this.player.room.key == _room.key) !== 1
     )
       player_rooms.push(this.player.room);
 
@@ -206,8 +213,8 @@ export default class PlayerDetail extends Mixins(WorldView) {
     return {
       name: STAFF_USER_INFO,
       params: {
-        user_id: player.animation_data.user_id
-      }
+        user_id: player.animation_data.user_id,
+      },
     };
   }
 }

@@ -137,7 +137,7 @@
         <router-link :to="world_factions_link">manage</router-link>
       </div>
 
-      <div class="world-facts" v-if="world.is_multiplayer">
+      <div class="world-facts">
         <h3>Worlds Facts</h3>
 
         <div>Facts are data points about your world that can be set by builders, mobs and a fact schedule. Conditions can then look at those facts to determine which loaders, room actions, quests and reactions should be considered active.</div>

@@ -1,37 +1,18 @@
 <template>
   <div class='w-screen'>
-    <h2>{{ this.$store.state.builder.world.name.toUpperCase() }} FACTS</h2>
+  <h2>{{ this.$store.state.builder.world.name.toUpperCase() }} FACTS</h2>
 
-  <table class='facts-table my-4'>
-    <thead>
-      <tr>
-        <th>Fact</th>
-        <th>Value</th>
-      </tr>
-    </thead>
-    <tbody>
-      <template v-if="facts.length">
-        <tr v-for="fact_value in facts" :key="fact_value.fact">
-        <td>{{ fact_value.fact }}</td>
-        <td>{{ fact_value.value }}</td>
-      </tr>
-      </template>
-      <template v-else>
-        <tr>
-          <td colspan=2>No facts set</td>
-        </tr>
-      </template>
-    </tbody>
-  </table>
+  <CurrentFacts :world_id="world.id" v-if="world.is_multiplayer"/>
+  <div v-else>Facts values for single player worlds are displayed in the player details page.</div>
     
-    <EditableCollection
-      class='mt-8'
-      title="Fact Schedule"
-      name="fact_schedule"
-      :endpoint="endpoint"
-      :display_component="display_component"
-      :schema="schema"
-    />
+  <EditableCollection
+    class='mt-8'
+    title="Fact Schedule"
+    name="fact_schedule"
+    :endpoint="endpoint"
+    :display_component="display_component"
+    :schema="schema"
+  />
 
   </div>
 </template>
@@ -40,34 +21,18 @@
 <script lang='ts'>
 import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 import axios from "axios";
+import CurrentFacts from "@/components/builder/world/CurrentFacts.vue";
 import FactSchedule from "@/components/builder/world/FactSchedule.vue";
 import EditableCollection from "@/components/EditableCollection.vue";
 import { FormElement, BUILDER_FORMS } from "@/core/forms.ts";
 
 @Component({
   components: {
+    CurrentFacts,
     EditableCollection,
   },
 })
 export default class WorldFacts extends Vue {
-  facts: {}[] = [];
-  interval: any;
-
-  async update_facts() {
-    const resp = await axios.get(`builder/worlds/${this.world.id}/facts/`);
-    this.facts = resp.data;
-  }
-
-  async mounted() {
-    this.update_facts();
-    this.interval = setInterval(() => {
-      this.update_facts();
-    }, 30000);
-    // const resp = await axios.get(`builder/worlds/${this.world.id}/facts`);
-    // this.facts = resp.data;
-    // console.log(this.facts);
-  }
-
   get world() {
     return this.$store.state.builder.world;
   }
