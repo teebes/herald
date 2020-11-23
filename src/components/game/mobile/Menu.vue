@@ -22,23 +22,51 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { UI_MUTATIONS } from "@/constants.ts";
 import QuestLog from "../QuestLog.vue";
-import { GAME_FORMS } from "@/core/forms.ts";
+import { FormElement } from "@/core/forms.ts";
 
 @Component
 export default class MobileMenu extends Vue {
+  get world() {
+    return this.$store.state.game.world;
+  }
+
   onClickQuestLog() {
     const modal = {
-      component: QuestLog
+      component: QuestLog,
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
 
   onClickSettings() {
+    const schema: FormElement[] = [
+      {
+        attr: "room_brief",
+        label: "Room Brief Mode",
+        widget: "checkbox",
+        help: `In room brief mode, room descriptions are only shown when using the 'look' command. For other actions, such as moving or fleeing, they will not.`,
+      },
+      {
+        attr: "combat_brief",
+        label: "Combat Brief Mode",
+        widget: "checkbox",
+        help: `In combat brief mode, the combat text is abbreviated and indented so that it can be scanned more quickly.`,
+      },
+    ];
+
+    if (this.world.is_multiplayer) {
+      schema.push({
+        attr: "idle_logout",
+        label: "Idle Auto-Logout",
+        widget: "checkbox",
+        help: `Whether to automatically log out after 10 minutes of inactivity.`,
+      });
+    }
+
     this.$store.commit("ui/modal_set", {
       title: `Edit Preferences`,
       data: this.$store.state.game.player_config,
-      schema: GAME_FORMS.PLAYER_SETTINGS,
-      action: "game/save_player_config"
+      schema: schema,
+      action: "game/save_player_config",
     });
     this.$emit("closeMenu");
   }
