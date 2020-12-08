@@ -153,7 +153,7 @@
         <div class="cave">
           <div class="cave-text">Try it</div>
           <div>
-            <button class="play-demo btn btn-medium">PLAY</button>
+            <button class="play-demo btn btn-medium" @click="play">PLAY</button>
           </div>
         </div>
       </div>
