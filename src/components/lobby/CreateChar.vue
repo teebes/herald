@@ -157,6 +157,7 @@ export default class extends Vue {
   get showArchetype() {
     if (
       !this.world.allow_combat ||
+      this.world.classless ||
       this.$route.params.world_id == INTRO_WORLD_ID
     )
       return false;
@@ -205,8 +206,13 @@ export default class extends Vue {
     const payload = {
       name: this.charname,
       gender: this.gender,
-      archetype: this.archetype,
+      archetype: '',
     };
+
+    if (!this.world.classless) {
+      payload.archetype = this.archetype;
+    }
+
     if (this.faction) {
       payload["faction"] = this.faction;
     }

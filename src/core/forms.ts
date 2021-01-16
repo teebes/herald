@@ -848,6 +848,10 @@ export const BUILDER_FORMS = {
               value: "key",
               label: "Key",
             },
+            {
+              value: "ammunition",
+              label: "Ammunition",
+            },
           ],
           help: `The type of the item.<br/>
             - inert: an item that does nothing special.<br/>

@@ -1,5 +1,5 @@
 <template>
-  <div class="skills-region flex flex-col">
+  <div class="skills-region flex flex-col" v-if="!world.classless">
     <div class="skills-view flex flex-col">
       <div class="core-skills-region skills action-boxes" v-if="coreSkills.length">
         <div>
@@ -61,12 +61,47 @@
       </div>
     </div>
   </div>
+  <div class="skills-region flex flex-col" v-else>
+    <div class="skills-view flex flex-col">
+      <div class="core-skills-region skills action-boxes" v-if="customSkills1">
+        <div class="skill-boxes">
+            <div class="box-row">
+              <div
+                class="box-item no-touch"
+                :class="{ disabled: skill.is_disabled }"
+                v-for="skill in customSkills1"
+                :key="skill.cmd"
+                @click="onClick(skill)"
+              >
+                <div class="box-overlay" :ref="skill.cmd + '-overlay'"></div>
+                <span class="box-name unselectable">{{ skill.label }}</span>
+                <span class="hotkey unselectable">{{ skill.hotKey }}</span>
+              </div>
+            </div>
+            <div class="box-row">
+              <div
+                class="box-item no-touch"
+                :class="{ disabled: skill.is_disabled }"
+                v-for="skill in customSkills2"
+                :key="skill.cmd"
+                @click="onClick(skill)"
+              >
+                <div class="box-overlay" :ref="skill.cmd + '-overlay'"></div>
+                <span class="box-name unselectable">{{ skill.label }}</span>
+                <span class="hotkey unselectable">{{ skill.hotKey }}</span>
+              </div>
+            </div>
+          </div>        
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { TweenLite, Linear } from "gsap";
 import EventBus from "@/core/eventbus.ts";
+import { capitalize } from "@/core/utils";
 
 interface Cooldown {
   actor: string;
@@ -196,6 +231,10 @@ export default class PanelSkills extends Vue {
     });
   }
 
+  get world() {
+    return this.$store.state.game.world;
+  }
+
   get archetypeSkills() {
     // const archetype = this.player.archetype;
     const archetype = this.$store.state.game.player_archetype;
@@ -290,6 +329,54 @@ export default class PanelSkills extends Vue {
       };
     }
     return false;
+  }
+
+  get playerCustomSkills() {
+    return this.$store.state.game.player_skills.custom || {};
+  }
+
+  get worldCustomSkills() {
+    return this.world.skills.custom.definitions || {};
+  }
+
+  get customSkills1() {
+    const skills: {}[] = [];
+    const skill_keys = Object.keys(this.playerCustomSkills);
+    const first_half = skill_keys.slice(0, Math.ceil(skill_keys.length / 2))
+
+    for (const skillNumber of first_half) {
+      const skillCode = this.playerCustomSkills[skillNumber]
+      if (skillCode) {
+        const skill = this.worldCustomSkills[skillCode];
+        skills.push({
+          label: skill.name || capitalize(skill.skill),
+          cmd: skill.skill,
+          hotKey: skillNumber,
+        })
+      }
+    }
+
+    return skills;
+  }
+
+  get customSkills2() {
+    const skills: {}[] = [];
+    const skill_keys = Object.keys(this.playerCustomSkills);
+    const second_half = skill_keys.slice(Math.ceil(skill_keys.length / 2))
+
+    for (const skillNumber of second_half) {
+      const skillCode = this.playerCustomSkills[skillNumber]
+      if (skillCode) {
+        const skill = this.worldCustomSkills[skillCode];
+        skills.push({
+          label: skill.name || capitalize(skill.skill),
+          cmd: skill.skill,
+          hotKey: skillNumber,
+        })
+      }
+    }
+
+    return skills;
   }
 }
 </script>
