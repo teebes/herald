@@ -69,7 +69,7 @@
     </div>
 
     <!-- Feats -->
-    <div class="sidebar-element feats" v-if="allow_combat && player_feats_info.feats.length">
+    <div class="sidebar-element feats" v-if="!is_classless && allow_combat && player_feats_info.feats.length">
       <h3 @click="onClickExpand('feats')" class="hover">
         <span v-if="expanded === 'feats'">-</span>
         <span v-else>+</span>
@@ -137,6 +137,11 @@ import _ from "lodash";
 })
 export default class Sidebar extends Vue {
   expanded: "who" | "" | "skills" | "feats" | "chars" = "";
+
+  get is_classless() {
+    return !this.$store.state.game.player.archetype;
+    // return this.$store.state.game.world.classless;
+  }
 
   get allow_combat() {
     return this.$store.state.game.world.allow_combat;
@@ -251,6 +256,15 @@ export default class Sidebar extends Vue {
   }
 
   get player_flex_skills_info() {
+    // Given that there are no flex skills in classlessworlds, return empty structures.
+    if (this.is_classless) {
+      return {
+        skills: [],
+        num_active: 0,
+        learnable_count: 0,
+      }
+    }
+
     const archetype_skills = this.world_skills[this.player_archetype];
     const archetype_flex_skill_codes = archetype_skills.flex;
     // Remap player skills from {1: skill1, 2: skill3} to [ skill1, skill2 ]

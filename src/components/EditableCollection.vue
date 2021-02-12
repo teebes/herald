@@ -87,8 +87,16 @@ export default class extends Vue {
   add() {
     let new_data = {};
     for (const field of this.schema) {
-      if (field.default !== undefined) new_data[field.attr] = field.default;
-      else new_data[field.attr] = "";
+      if (field.children) {
+        for (const child of field.children) {
+          if (child.default !== undefined) new_data[child.attr] = child.default;
+          else new_data[child.attr] = "";  
+        }
+      }
+      else {
+        if (field.default !== undefined) new_data[field.attr] = field.default;
+        else new_data[field.attr] = "";
+      }
     }
     const modal = {
       data: new_data,

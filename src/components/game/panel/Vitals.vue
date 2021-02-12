@@ -73,6 +73,10 @@ export default class PanelVitals extends Vue {
     return this.$store.state.game.player;
   }
 
+  get world() {
+    return this.$store.state.game.world;
+  }
+
   get healthPerc() {
     return (this.player.health / this.player.health_max) * 100 + "%";
   }
@@ -86,7 +90,7 @@ export default class PanelVitals extends Vue {
   }
 
   get hasMana() {
-    if (this.player.archetype == "mage" || this.player.archetype == "cleric")
+    if (this.player.archetype == "mage" || this.player.archetype == "cleric" || this.world.classless)
       return true;
     return false;
   }

@@ -144,6 +144,15 @@
 
         <router-link :to="world_facts_link">manage</router-link>
       </div>
+
+      <div class='world-skills'>
+        <h3>Custom Skills</h3>
+
+        <div>Builders can create skills, usable by players and mobs that do not have an archetype. To enable the creation of players that do not have an archetype, check the "Classless Players" checkbox under Advanced Config.</div>
+
+        <router-link :to="world_skills_link">manage</router-link>
+
+      </div>
     </div>
   </div>
 </template>
@@ -160,6 +169,7 @@ import {
   BUILDER_WORLD_STATUS,
   BUILDER_WORLD_FACTIONS,
   BUILDER_WORLD_FACTS,
+  BUILDER_WORLD_SKILLS,
   LOBBY,
 } from "@/router";
 import { BUILDER_FORMS, FormElement } from "@/core/forms";
@@ -363,6 +373,12 @@ export default class WorldFrame extends Mixins(WorldView) {
       label: "2300 x 598 Banner URL",
       help: `Image displayed in the world lobby`,
     };
+    const is_classless: FormElement = {
+      attr: "is_classless",
+      label: "Classless Players",
+      widget: "checkbox",
+      help: `If this option is checked, no player will have a starting archetype, or its associated skills. Builders will have to create all the skills that players can learn.`
+    };
 
     const modal = {
       title: `Edit World Config`,
@@ -382,6 +398,9 @@ export default class WorldFrame extends Mixins(WorldView) {
         },
         {
           children: [can_select_faction, players_can_set_title],
+        },
+        {
+          children: [is_classless]
         },
         {
           children: [small_background, large_background],
@@ -429,6 +448,13 @@ export default class WorldFrame extends Mixins(WorldView) {
       name: BUILDER_WORLD_FACTS,
       params: { world_id: this.world.id },
     };
+  }
+
+  get world_skills_link() {
+    return {
+      name: BUILDER_WORLD_SKILLS,
+      params: { world_id: this.world.id }
+    }
   }
 
   get descLines() {
