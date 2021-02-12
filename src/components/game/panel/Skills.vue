@@ -1,5 +1,5 @@
 <template>
-  <div class="skills-region flex flex-col" v-if="!world.classless">
+  <div class="skills-region flex flex-col" v-if="$store.state.game.player.archetype">
     <div class="skills-view flex flex-col">
       <div class="core-skills-region skills action-boxes" v-if="coreSkills.length">
         <div>

@@ -157,7 +157,7 @@ export default class extends Vue {
   get showArchetype() {
     if (
       !this.world.allow_combat ||
-      this.world.classless ||
+      this.world.is_classless ||
       this.$route.params.world_id == INTRO_WORLD_ID
     )
       return false;
@@ -209,13 +209,14 @@ export default class extends Vue {
       archetype: '',
     };
 
-    if (!this.world.classless) {
+    if (!this.world.is_classless) {
       payload.archetype = this.archetype;
     }
 
     if (this.faction) {
       payload["faction"] = this.faction;
     }
+
     const resp = await axios.post(
       `lobby/worlds/${this.$route.params.world_id}/chars/`,
       payload

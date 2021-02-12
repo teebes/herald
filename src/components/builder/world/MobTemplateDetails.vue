@@ -113,6 +113,13 @@
       <MobTemplateLoads class="loads" />
       <MobTemplateQuests class="quests" />
       <MobTemplateCrafting class="crafting" />
+      <div id="mob-teaching">
+        <h3>SKILLS</h3>
+        <div class="color-text-70">
+          Mobs can use skills, as well as teach skills to players.
+        </div>
+        <button class="btn-thin" @click="editTeaching">EDIT</button>
+      </div>
     </div>
   </div>
 </template>
@@ -135,6 +142,7 @@ import MobTemplateMerchant from "./MobTemplateMerchant.vue";
 import MobTemplateLoads from "./MobTemplateLoads.vue";
 import MobTemplateQuests from "./MobTemplateQuests.vue";
 import MobTemplateCrafting from "./MobTemplateCrafting.vue";
+import MobTemplateTeaching from "./MobTemplateTeaching.vue";
 import WorldView from "@/components/builder/world/WorldView.ts";
 import { KeepAliveFetch } from "@/components/Mixins.ts";
 
@@ -147,7 +155,7 @@ import { KeepAliveFetch } from "@/components/Mixins.ts";
     MobTemplateMerchant,
     MobTemplateLoads,
     MobTemplateQuests,
-    MobTemplateCrafting
+    MobTemplateCrafting,
   }
 })
 export default class MobTemplateDetails extends Mixins(WorldView) {
@@ -240,6 +248,38 @@ export default class MobTemplateDetails extends Mixins(WorldView) {
       ],
       action: "builder/worlds/mob_template_save"
     };
+    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
+  }
+
+  editTeaching() {
+    const modal = {
+      data: this.template,
+      schema: [
+        {
+          children: [
+            {
+              attr: "teaches",
+              label: "Teaches Skills"
+            },
+            {
+              attr: "teaching_conditions",
+              label: "Teaching Conditions",
+            }
+          ],
+        },
+        {
+          attr: "use_abilities",
+          label: "Use Abilities",
+          widget: "checkbox"
+        },
+        {
+          attr: "combat_script",
+          label: "Combat Script",
+          widget: "textarea"
+        }
+      ],
+      action: "builder/worlds/mob_template_save"
+    }
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
 }

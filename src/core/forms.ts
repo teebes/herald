@@ -15,6 +15,7 @@ export interface FormElement {
   help?: string;
   required?: boolean;
   readonly?: boolean;
+  children?: FormElement[];
 }
 
 // Generic form elements
@@ -434,6 +435,10 @@ export const GET_MOB_TEMPLATE_INFO = () => {
             {
               value: "assassin",
               label: "Assassin",
+            },
+            {
+              value: "",
+              label: "Classless"
             },
           ],
         },

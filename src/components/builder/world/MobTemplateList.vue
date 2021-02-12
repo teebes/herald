@@ -124,6 +124,8 @@ export default class MobTemplateList extends Vue {
   }
 
   async onClickAdd() {
+    //console.log(this.$store.state.builder.world.is_classless);
+    const default_archetype = this.$store.state.builder.world.is_classless ? "" : "warrior";
     const new_mob_template = {
       name: "an unnamed mob",
       level: 1,
@@ -132,7 +134,7 @@ export default class MobTemplateList extends Vue {
       room_description: "",
       keywords: "",
       type: "humanoid",
-      archetype: "warrior",
+      archetype: default_archetype,
       hit_msg_first: "hit",
       hit_msg_third: "hits",
       aggression: "normal",

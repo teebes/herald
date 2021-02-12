@@ -139,7 +139,8 @@ export default class Sidebar extends Vue {
   expanded: "who" | "" | "skills" | "feats" | "chars" = "";
 
   get is_classless() {
-    return this.$store.state.game.world.classless;
+    return !this.$store.state.game.player.archetype;
+    // return this.$store.state.game.world.classless;
   }
 
   get allow_combat() {
