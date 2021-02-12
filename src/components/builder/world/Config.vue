@@ -148,7 +148,7 @@
       <div class='world-skills'>
         <h3>Custom Skills</h3>
 
-        <div></div>
+        <div>Builders can create skills, usable by players and mobs that do not have an archetype. To enable the creation of players that do not have an archetype, check the "Classless Players" checkbox under Advanced Config.</div>
 
         <router-link :to="world_skills_link">manage</router-link>
 
