@@ -2,6 +2,7 @@
   <EditableCollection
     title="Room Action"
     name="room_actions"
+    registration_name="room_actions"
     :endpoint="endpoint"
     :display_component="display_component"
     :schema="schema"

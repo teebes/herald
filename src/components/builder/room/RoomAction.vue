@@ -1,6 +1,10 @@
 <template>
   <div v-if="resource">
-    <h3 class="name" v-if="resource.name">{{ resource.name.toUpperCase() }}</h3>
+    <div class='flex justify-between'>
+      <h3 class="name inline-block" v-if="resource.name">{{ resource.name.toUpperCase() }}</h3>
+      <button class="btn-thin clone" @click="clone(resource)">CLONE</button>
+    </div>
+
     <div>Action:</div>
     <div class="panel mt-1">{{ resource.actions }}</div>
 
@@ -21,8 +25,6 @@
           Default failure message will be shown if condition fails.
         </div>
       </div>
-      
-      
     </div>
 
     <div class="mt-2">
@@ -32,6 +34,7 @@
 </template>
 
 <script lang='ts'>
+import axios from "axios";
 import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 import RoomView from "@/components/builder/room/RoomView.ts";
 import DisplayEdit from "@/components/DisplayEdit.vue";
@@ -45,6 +48,16 @@ export default class extends Mixins(RoomView) {
   get commands() {
     return this.resource.commands.split("\n");
   }
+
+  async clone(resource) {
+    if (!confirm(`Clone this room action?`)) return;
+    const world_id = this.$route.params.world_id;
+    const room_id = this.$route.params.room_id;
+    const action_id = resource.id;
+    const endpoint = `/builder/worlds/${world_id}/rooms/${room_id}/actions/${action_id}/clone/`;
+    const resp = await axios.post(endpoint);
+    this.$emit('addToCollection', resp.data);
+  }
 }
 </script>
 
@@ -52,11 +65,15 @@ export default class extends Mixins(RoomView) {
 @import "@/styles/colors.scss";
 .name {
   margin-bottom: 10px;
+  align-content: space-between;
 }
 button.add-button {
   margin-bottom: 20px;
 }
 .resource-link > a {
   color: $color-secondary;
+}
+button.clone {
+  margin-bottom: 1px;
 }
 </style>

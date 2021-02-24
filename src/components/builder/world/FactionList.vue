@@ -60,6 +60,7 @@ export default class WorldFrame extends Mixins(WorldView) {
       label: "Starting Room",
       widget: "reference",
       references: "room",
+      help: `Only applicable for core factions.`
     };
 
     const is_default: FormElement = {

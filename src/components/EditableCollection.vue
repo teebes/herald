@@ -16,6 +16,7 @@
           class="display-view"
           :is="display_component"
           :resource="resource"
+          @addToCollection="addToCollection"
         />
         <div class="actions">
           <div>
@@ -105,6 +106,10 @@ export default class extends Vue {
       title: `Add ${this.title}`,
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
+  }
+
+  addToCollection(resource) {
+    this.$store.commit(`builder/${this.registration_name}/add_instance`, resource);
   }
 
   edit(resource) {
