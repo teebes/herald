@@ -78,11 +78,11 @@ export default class UserInfo extends Vue {
     console.log(this.user);
   }
 
-  world_link(world_id) {
+  world_link(world) {
     return {
       name: BUILDER_WORLD_INDEX,
       params: {
-        world_id: world_id
+        world_id: world.id
       }
     };
   }
