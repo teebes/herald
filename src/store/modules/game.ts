@@ -181,6 +181,7 @@ const receiveMessage = async ({
   // Disconection
   if (message_data.type === "system.disconnect.success") {
     if (
+      message_data.data.context && 
       message_data.data.context.split(".")[1] === INTRO_WORLD_ID &&
       rootState.auth.user.is_temporary
     ) {
@@ -190,9 +191,10 @@ const receiveMessage = async ({
         params: { world_id: state.world.context_id },
       });
     } else {
+      const world_id = message_data.data.exit_to || state.world.context_id;
       router.push({
         name: LOBBY_WORLD_DETAIL,
-        params: { world_id: state.world.context_id },
+        params: { world_id: world_id },
       });
     }
     commit("reset_state");
@@ -418,6 +420,22 @@ const receiveMessage = async ({
         },
       });
     }
+  }
+
+  // Enter Instance
+  if (message_data.type === 'cmd.enter.success') {
+    commit("full_screen_message_set", "Entering Instance...")
+    dispatch("world_enter", {
+      player_id: state.player.id,
+    })
+  }
+
+  // Exit Instance
+  if (message_data.type === 'cmd.leave.success') { 
+    commit("full_screen_message_set", "Exiting Instance...")
+    dispatch("world_enter", {
+      player_id: state.player.id,
+    })
   }
 
   // Who list update
