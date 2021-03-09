@@ -123,7 +123,8 @@ export default class LoaderRule extends Vue {
   num_copies: number = 1;
   template_type: string = "mobtemplate";
   template_data: Entity | null = null;
-  target_type: string = "zone";
+  // target_type: string = "zone";
+  target_type: string = "room";
   target_data: Entity | null = null;
   formErrors: {} = {};
 
@@ -134,8 +135,13 @@ export default class LoaderRule extends Vue {
       if (this.rules.length === 0) this.order = 1;
       else this.order = this.rules[this.rules.length - 1].order + 1;
       this.num_copies = 1;
+
       // Since we know the default is a zone, set target_data to the zone
-      this.target_data = this.$store.state.builder.zone;
+      // this.target_data = this.$store.state.builder.zone;
+
+      // Since we know the default is a room, set target_data to the room
+      this.target_data = this.$store.state.builder.room;
+
     } else if (this.rule) {
       this.num_copies = this.rule.num_copies;
       this.order = this.rule.order;
