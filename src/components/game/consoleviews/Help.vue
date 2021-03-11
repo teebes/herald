@@ -272,6 +272,8 @@
             <div class="cmd" @click="cmdHelp('facts')">facts</div>
             <div class="cmd" @click="cmdHelp('setfact')">setfact</div>
             <div class="cmd" @click="cmdHelp('clearfact')">clearfact</div>
+            <div class="cmd" @click="cmdHelp('mark')">mark</div>
+            <div class="cmd" @click="cmdHelp('unmark')">unmark</div>
           </div>
         </div>
       </template>
