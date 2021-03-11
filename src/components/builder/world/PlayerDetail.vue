@@ -75,8 +75,13 @@
             :key="mob_template_id"
           >{{ player.trophy[mob_template_id]['mob_template']['name']}}: {{ player.trophy[mob_template_id]['count']}}</div>
         </div>
-      </div>
 
+        <div class="marks">
+          <h3>Marks</h3>
+          <div v-for="mark in player.marks" :key="mark.name">{{ mark.name }}: {{ mark.value }}</div>
+        </div>
+      </div>
+      
       <div class="player-map">
         <h3>Map</h3>
         <div class="player-room">{{ player.room.name }}</div>
