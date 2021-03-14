@@ -56,7 +56,11 @@
 
           <div class="look-description">
             <h3>LOOK DESCRIPTION</h3>
-            <div v-if="template.description">{{ template.description }}</div>
+            <div v-if="template.description">
+              <div v-for="(line, index) in template.description.split('\n')" :key="index">
+                {{ line || "&nbsp;" }}
+              </div>
+            </div>
             <div v-else class="color-text-70">
               <div>
                 A look description is what a character sees when they look

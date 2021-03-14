@@ -6,7 +6,7 @@
         <router-link :to="loader_link(loader)">{{ loader.name }}</router-link>
       </li>
     </ul>
-    <button class="btn-add" @click="onAddLoad">LOAD MOB IN ROOM</button>
+    <button class="btn-add" @click="onAddLoad">LOAD MOB IN {{ $store.state.builder.room.name.toUpperCase() }}</button>
   </div>
 </template>
 
