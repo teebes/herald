@@ -116,6 +116,8 @@ export const CONDITIONS: FormElement = {
     - health_below percentage<br/>
     - player_in_room<br/>
     - gold_above<br/>
+    - fact_check<br/>
+    - marked<br/>
     </code>`,
 };
 
@@ -745,6 +747,7 @@ export const BUILDER_FORMS = {
       attr: "event",
       label: "Event",
       widget: "select",
+      default: "enter",
       options: [
         {
           value: "enter",
