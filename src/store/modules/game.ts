@@ -248,7 +248,8 @@ const receiveMessage = async ({
   ) {
     commit("room_chars_remove", message_data.data.actor);
 
-    if (state.player_target.key === message_data.data.actor.key) {
+    if (state.player_target &&
+        state.player_target.key === message_data.data.actor.key) {
       commit("player_target_set", null);
     }
   }

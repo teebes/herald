@@ -118,6 +118,10 @@ export const CONDITIONS: FormElement = {
     - gold_above<br/>
     - fact_check<br/>
     - marked<br/>
+    - in_combat<br/>
+    - has_weapon<br/>
+    - has_shield<br/>
+    - wields_weapon_type weapon_type
     </code>`,
 };
 

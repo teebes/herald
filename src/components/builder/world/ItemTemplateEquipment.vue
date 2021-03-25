@@ -119,6 +119,14 @@ export default class ItemTemplateEquipment extends Vue {
           value: "polearm",
           label: "Polearm",
         },
+        {
+          value: "bow",
+          label: "Bow",
+        },
+        {
+          value: "gun",
+          label: "Gun",
+        },
       ],
     };
 
