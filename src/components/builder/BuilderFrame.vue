@@ -162,6 +162,7 @@ import {
   BUILDER_WORLD_STATUS,
   BUILDER_WORLD_FACTS,
   BUILDER_WORLD_SKILLS,
+  BUILDER_WORLD_STARTING_EQ,
   BUILDER_ROOM_INDEX,
   BUILDER_ROOM_CHECKS,
   BUILDER_ROOM_ACTIONS,
@@ -304,6 +305,7 @@ export default class WorldFrame extends Vue {
       BUILDER_WORLD_FACTION_RANK_LIST,
       BUILDER_WORLD_FACTS,
       BUILDER_WORLD_SKILLS,
+      BUILDER_WORLD_STARTING_EQ,
     ];
     if (this.$store.state.builder.world)
       for (const routeData of this.$route.matched) {

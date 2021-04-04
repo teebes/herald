@@ -151,7 +151,14 @@
         <div>Builders can create skills, usable by players and mobs that do not have an archetype. To enable the creation of players that do not have an archetype, check the "Classless Players" checkbox under Advanced Config.</div>
 
         <router-link :to="world_skills_link">manage</router-link>
+      </div>
 
+      <div class="world-starting-eq">
+        <h3>Starting EQ</h3>
+
+        <div>Define the items that a player starts with.</div>
+
+        <router-link :to="world_starting_eq_link">manage</router-link>
       </div>
     </div>
   </div>
@@ -170,6 +177,7 @@ import {
   BUILDER_WORLD_FACTIONS,
   BUILDER_WORLD_FACTS,
   BUILDER_WORLD_SKILLS,
+  BUILDER_WORLD_STARTING_EQ,
   LOBBY,
 } from "@/router";
 import { BUILDER_FORMS, FormElement } from "@/core/forms";
@@ -453,6 +461,13 @@ export default class WorldFrame extends Mixins(WorldView) {
   get world_skills_link() {
     return {
       name: BUILDER_WORLD_SKILLS,
+      params: { world_id: this.world.id }
+    }
+  }
+
+  get world_starting_eq_link() {
+    return {
+      name: BUILDER_WORLD_STARTING_EQ,
       params: { world_id: this.world.id }
     }
   }
