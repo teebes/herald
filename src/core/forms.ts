@@ -9,7 +9,7 @@ export interface FormElement {
   widgetComponent?: any;
   context?: string;
   options?: { value: string | null; label: string }[];
-  default?: string | number | boolean;
+  default?: string | number | boolean | null;
   create_only?: boolean;
   tooltip?: ""[];
   help?: string;
