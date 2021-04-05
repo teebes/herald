@@ -49,7 +49,7 @@
 <script lang='ts'>
 import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 import { BUILDER_ACTIONS, UI_MUTATIONS } from "@/constants";
-import { FormElement } from "@/core/forms";
+import { FormElement, CONDITIONS } from "@/core/forms";
 
 @Component
 export default class extends Vue {
@@ -108,6 +108,12 @@ export default class extends Vue {
       help: `Enter one or more commands (separated by 'or') that a player can execute to complete this quest, in addition to complete.`
     };
 
+    const completion_conditions: FormElement = {
+      ...CONDITIONS,
+      attr: "completion_conditions",
+      label: "Completion Conditions",
+    };
+
     const modal = {
       data: this.quest,
       schema: [
@@ -116,7 +122,8 @@ export default class extends Vue {
         completion_keywords,
         completion_despawn,
         complete_silently,
-        completion_action
+        completion_action,
+        completion_conditions
       ],
       action: "builder/zones/quest_save"
     };

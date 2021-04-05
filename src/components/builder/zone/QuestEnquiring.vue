@@ -69,6 +69,12 @@ export default class extends Vue {
       help: `Keywords that can be said in a room by a player wanting to complete this quest.`,
     };
 
+    const enquire_conditions: FormElement = {
+      attr: "conditions",
+      label: "Enquire Conditions",
+      help: `If a condition is defined, the quest will not be enquirable unless it is met.`
+    };
+
     const modal = {
       data: this.quest,
       schema: [enquire_cmds, enquire_cmd_available, enquire_keywords],
