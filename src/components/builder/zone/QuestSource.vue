@@ -144,7 +144,16 @@ export default class extends Vue {
       attr: "is_setup",
       label: "Is Setup Quest",
       widget: "checkbox",
+      default: false,
       help: `A setup quest required by an active quest will have its summary or completion commands shown in the quest log.`,
+    };
+
+    const is_logged: FormElement = {
+      attr: "is_logged",
+      label: "Logged Quest",
+      widget: "checkbox",
+      default: true,
+      help: `If this is unchecked, the quest will not appear in the quest completion logs.`,
     };
 
     const schema = [
@@ -158,7 +167,9 @@ export default class extends Vue {
       },
       requires_quest,
       CONDITIONS,
-      is_setup,
+      {
+        children: [is_setup, is_logged],
+      }
     ];
     const modal = {
       data: this.quest,

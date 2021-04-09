@@ -5,12 +5,30 @@
     </div>
 
     <div class="my-4">
-      <h1>Quest Log</h1>
+      <h1 class='mb-4'>Quest Log</h1>
+
+      <div class="tabs-view">
+        <div class="tabs">
+          <div 
+            class="tab-item" 
+            :class="{ activeTab: selectedTab == 'open'}"
+            @click="clickTab('open')">Open Quests</div>
+          <div 
+            class="tab-item" 
+            :class="{ activeTab: selectedTab == 'repeatable'}"
+            @click="clickTab('repeatable')">Repeatable Quests</div>
+          <div 
+            class="tab-item" 
+            :class="{ activeTab: selectedTab == 'completed'}"
+            @click="clickTab('completed')">Completed Quests</div>
+        </div>
+      </div>
 
       <template v-if="log_entries.length">
         <div v-for="log_entry in log_entries" :key="log_entry.id" class="mt-4">
           <h2 @click="onClickName(log_entry)" class="mb-2">
             <span class="interactable">{{ log_entry.quest_name }}</span>
+            <span class='ml-2 color-text-50' v-if="$store.state.game.player.is_immortal">[ {{ log_entry.id }} ]</span>
           </h2>
           <template v-if="expanded == log_entry.id">
             <div
@@ -51,16 +69,37 @@ export default class QuestLog extends Vue {
   expanded: number = 0;
   fetched: boolean = false;
 
+  selectedTab: string = "open"; // Could also be "completed" or "repeatable"
+
   async mounted() {
-    const resp = await axios.get("/game/enquiredquests/", {
+    await this.get_quests();
+  }
+
+  async get_quests() {
+    
+    let endpoint = "/game/quests/open/";
+    if (this.selectedTab == 'completed') {
+      endpoint = "/game/quests/completed/";
+    } else if (this.selectedTab == 'repeatable') {
+      endpoint = "/game/quests/repeatable/";
+    }
+
+    const resp = await axios.get(endpoint, {
       headers: { "X-PLAYER-ID": this.$store.state.game.player.id }
     });
     this.log_entries = resp.data;
     this.fetched = true;
 
+    console.log(this.log_entries);
+
     if (this.log_entries.length) {
       this.expanded = this.log_entries[0].id;
     }
+  }
+
+  async clickTab(tab) {
+    this.selectedTab = tab;
+    await this.get_quests();
   }
 
   onClickName(log_entry) {

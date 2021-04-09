@@ -301,3 +301,53 @@ ul.list {
   justify-content: center;
   align-items: center;
 }
+
+/* Tabs */
+
+.tabs-view {
+  .tabs {
+    display: flex;
+    padding: 0 20px;
+    margin: 10px 0;
+    border-bottom: 1px solid $color-background-light;
+    order: 1;
+
+    @include font-title-light;
+    font-size: 16px;
+    line-height: 18px;
+
+    .tab-item {
+      color: $color-text-hex-30;
+      padding: 10px;
+      position: relative;
+
+      &.activeTab {
+        border: 2px solid $color-background-light;
+        // border-bottom: 2px solid $color-background-black;
+        border-bottom: 2px solid transparent;
+        border-radius: 4px 4px 0 0;
+        color: $color-text;
+        top: 1px;
+      }
+      &:not(.activeTab) {
+        top: 3px;
+        padding: 10px 12px;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  overflow-y: hidden;
+  .tab-contents-region {
+    order: 2;
+    flex: 1 1;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+  }
+}
