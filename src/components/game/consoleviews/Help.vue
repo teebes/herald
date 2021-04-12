@@ -275,6 +275,12 @@
             <div class="cmd" @click="cmdHelp('mark')">mark</div>
             <div class="cmd" @click="cmdHelp('unmark')">unmark</div>
           </div>
+          <div class="cmds">
+            <div class="cmd" @click="cmdHelp('/open')">/open</div>
+            <div class="cmd" @click="cmdHelp('/close')">/close</div>
+            <div class="cmd" @click="cmdHelp('/lock')">/lock</div>
+            <div class="cmd" @click="cmdHelp('/chat')">/chat</div>
+          </div>
         </div>
       </template>
     </div>

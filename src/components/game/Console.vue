@@ -140,7 +140,8 @@ export default class Console extends Vue {
       return "Whois";
     } else if (
       message.type === "notification.cmd.chat.success" ||
-      message.type === "cmd.chat.success"
+      message.type === "cmd.chat.success" ||
+      message.type === "cmd./chat.success"
     ) {
       return "Chat";
     } else if (message.type === "notification.death") {
