@@ -1,7 +1,7 @@
 <template>
   <div v-if="resource">
     <h3 class="name" v-if="resource.name">{{ resource.name.toUpperCase() }}</h3>
-    <div>Prevent: {{ resource.prevent }}</div>
+    <div>Prevent: {{ resource.prevent }} <span v-if="resource.direction">{{ resource.direction }}</span></div>
 
     <template v-if="resource.conditions">
       Conditions: {{ resource.conditions }}
