@@ -45,7 +45,10 @@
         </div>
       </template>
       <template v-else>
-        <div class="mt-6">No enquired quests.</div>
+        <div class="mt-6" v-if="selectedTab == 'repeatable'">No repeatable quests.</div>
+        <div class="mt-6" v-else-if="selectedTab == 'completed'">No completed quests.</div>
+        <div class="mt-6" v-else>No enquired quests.</div>
+
       </template>
     </div>
   </div>
