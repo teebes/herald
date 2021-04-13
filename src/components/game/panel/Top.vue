@@ -109,7 +109,7 @@ export default class PanelTop extends Vue {
       },      
       {
         attr: "display_connect",
-        label: "Display Connect / Disconnect messages",
+        label: "Display Connect / Disconnect Messages",
         widget: "checkbox",
         help: `Whether to display when other players join and quit the world.`,
       },
