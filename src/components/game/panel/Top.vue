@@ -105,7 +105,7 @@ export default class PanelTop extends Vue {
         attr: "display_chat",
         label: "Display Chat",
         widget: "checkbox",
-        help: `Whether to show chat messages & the chat log.`,
+        help: `Whether to show chat messages.`,
       },      
       {
         attr: "display_connect",

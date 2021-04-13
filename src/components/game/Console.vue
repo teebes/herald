@@ -170,9 +170,6 @@ export default class Console extends Vue {
 
   get messages() {
     return this.$store.getters["game/consoleMessages"];
-    return _.filter(this.$store.state.game.messages, message => {
-      return message.text || message.type === "system.connect.success";
-    });
   }
 
   mounted() {
