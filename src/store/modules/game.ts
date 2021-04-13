@@ -459,7 +459,8 @@ const receiveMessage = async ({
     // We only set the player target if it's a player auto-attacking, essentially.
     // And we look at the player's target, rather than setting it when they're
     // the recipient of one, since he could be attacked by multiple enemies.
-    if (message_data.data.actor.key === state.player.key) {
+    if (message_data.data.actor.key === state.player.key
+    && message_data.data.target.key != state.player.key) {
       commit("player_target_set", message_data.data.target);
     }
   } else if (message_data.type === "affect.flee.success") {
@@ -967,8 +968,6 @@ const mutations = {
 const getters = {
   consoleMessages: (state) => {
     return _.filter(state.messages, (message) => {
-      console.log('filtering')
-
       // Exclude chat messages option
       if (!state.player_config.display_chat && message.type == 'notification.cmd.chat.success') {
         return false;
