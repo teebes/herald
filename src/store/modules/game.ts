@@ -967,6 +967,20 @@ const mutations = {
 const getters = {
   consoleMessages: (state) => {
     return _.filter(state.messages, (message) => {
+      console.log('filtering')
+
+      // Exclude chat messages option
+      if (!state.player_config.display_chat && message.type == 'notification.cmd.chat.success') {
+        return false;
+      }
+      // Exclude join / part messages option
+      if (!state.player_config.display_connect
+        && (
+          message.type === 'notification.connect.success'
+          || message.type === 'notification.system.disconnect.success')) {
+        return false;
+      }
+
       return message.text || message.type === "system.connect.success";
     });
   },

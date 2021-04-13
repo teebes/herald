@@ -101,6 +101,18 @@ export default class PanelTop extends Vue {
         widget: "checkbox",
         help: `In combat brief mode, the combat text is abbreviated and indented so that it can be scanned more quickly.`,
       },
+      {
+        attr: "display_chat",
+        label: "Display Chat",
+        widget: "checkbox",
+        help: `Whether to show chat messages & the chat log.`,
+      },      
+      {
+        attr: "display_connect",
+        label: "Display Connect / Disconnect messages",
+        widget: "checkbox",
+        help: `Whether to display when other players join and quit the world.`,
+      },
     ];
 
     if (this.world.is_multiplayer) {
