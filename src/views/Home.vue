@@ -884,6 +884,8 @@ $breakpoint-down-sm: "max-width: 575.98px";
 
       .bottom-wr-title {
         display: block;
+        max-width: 170px;
+        margin: 0 auto;
         margin-bottom: 20px;
       }
 
