@@ -11,7 +11,6 @@
     />
 
     <FormField
-      v-if="$store.state.auth.user.is_staff || $store.state.auth.user.multiplayer_worlds"
       :elementSchema="is_multi_schema"
       v-model="is_multi"
       :formErrors="formErrors"
@@ -35,7 +34,7 @@ import { BUILDER_FORMS, FormElement } from "@/core/forms.ts";
 })
 export default class WorldFrame extends Mixins(Vue) {
   world_name: string = "A New World";
-  is_multi: boolean = false;
+  is_multi: boolean = true;
   formErrors: {} = {};
 
   get name_schema() {
