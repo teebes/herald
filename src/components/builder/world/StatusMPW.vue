@@ -102,7 +102,9 @@ export default class StatusMPW extends Mixins(WorldView) {
     if (!this.admin_data || this.action_submitted) return true;
     return (
       this.admin_data.api_state != "stopped" &&
-      this.admin_data.api_state != "clean"
+      this.admin_data.api_state != "clean" &&
+      this.admin_data.api_state != "new"
+
     );
   }
 
