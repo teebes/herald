@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "serve-local": "vue-cli-service serve --mode=local",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -27,8 +28,8 @@
     "@vue/cli-plugin-babel": "^3.9.2",
     "@vue/cli-plugin-typescript": "^3.9.0",
     "@vue/cli-service": "^4.1.2",
-    "node-sass": "^4.14.1",
-    "sass-loader": "^7.0.1",
+    "node-sass": "^6.0.1",
+    "sass-loader": "^10",
     "typescript": "^3.0.0",
     "vue-template-compiler": "^2.5.17"
   },
