@@ -55,7 +55,7 @@
 
         <div class="highlights">
           <div class="highlight">
-            Free to play! no ads, no paywalls, no annoying popups. Let yourself
+            Free to play! No ads, no paywalls, no annoying popups. Let yourself
             get fully immersed in another world.
           </div>
 
