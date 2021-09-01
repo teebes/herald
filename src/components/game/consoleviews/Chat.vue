@@ -4,7 +4,7 @@
       <span v-if="message.data.is_builder" class="mr-2">[ Builder ]</span>
       <span v-if="message.data.is_builder && message.data.faction" class="mr-2">[ {{ message.data.faction }} ]</span>
       <span v-if="$store.state.game.player.is_immortal && message.data.player && message.data.player.core_faction">[ {{ message.data.player.core_faction }} ]</span>
-      {{ line }}
+      <span class="line" v-html="line"></span>
     </div>
   </div>
 </template>
@@ -17,7 +17,14 @@ export default class Chat extends Vue {
   @Prop() message!: any;
 
   get lines() {
-    return this.message.text.split("\n");
+    return this.message.text.split("\n").map(l => this.parseLinks(l));
+  }
+
+  parseLinks(line) {
+    return line.replace(
+        /((http|https):\/\/[\w?=&.\/-;#~%-]+(?![\w\s?&.\/;#~%"=-]*>))/g,
+        "<a href='$1' class='interactable' target='_blank'>$1</a>"
+    );
   }
 }
 </script>
@@ -31,5 +38,17 @@ export default class Chat extends Vue {
 .builder {
   color: $color-primary;
   @include font-text-regular;
+}
+.line ::v-deep {
+  a {
+    color: $color-text-70;
+
+    &:hover {
+      color: $color-text;
+      text-decoration: none;
+      border-bottom-color: #aaa;
+      cursor: pointer;
+    }
+  }
 }
 </style>
