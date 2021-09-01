@@ -10,6 +10,7 @@ import { Room } from "@/core/interfaces";
 import router, {
   BUILDER_ZONE_PATH_DETAILS,
   BUILDER_ZONE_INDEX,
+  BUILDER_ZONE_LIST,
   BUILDER_ROOM_INDEX
 } from "@/router";
 import { get_room_index_key } from "@/core/map.ts";
@@ -241,6 +242,12 @@ const actions = {
       `builder/worlds/${state.world.id}/zones/${state.zone.id}/`
     );
     commit("zone_clear");
+    router.push({
+      name: BUILDER_ZONE_LIST,
+      params: {
+        world_id: state.world.id
+      }
+    });
   },
 
   zone_save: async ({ commit, state }, payload) => {
@@ -499,6 +506,10 @@ const mutations = {
 
   zone_set: (state, zone) => {
     state.zone = zone;
+  },
+
+  zone_clear: (state) => {
+    state.zone = null;
   },
 
   zone_rooms_set: (state, zone_rooms) => {
