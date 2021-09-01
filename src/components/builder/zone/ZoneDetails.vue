@@ -63,7 +63,7 @@
       >Zone has no rooms. Go to an existing room and assign it to this zone to see a map.</div>
       <div>
         <button class="btn-thin edit-mob" @click="editInfo">EDIT</button>
-        <button class="btn-thin color-text-red" @click="deleteZone">DELETE</button>
+        <button class="btn-thin" @click="deleteZone">DELETE</button>
       </div>
     </div>
 
