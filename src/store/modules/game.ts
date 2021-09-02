@@ -400,6 +400,13 @@ const receiveMessage = async ({
 
   if (message_data.type === "notification.death") {
     commit("last_death_set", message_data.data.deceased.key);
+    commit("room_chars_remove", message_data.data.deceased);
+    if (message_data.data.killer) {
+      commit('room_chars_update_target', {
+        char: message_data.data.killer,
+        target: null,
+      });
+    }
   }
 
   // Complete
@@ -875,6 +882,15 @@ const mutations = {
       }
     }
     state.room_chars = room_chars;
+  },
+
+  room_chars_update_target: (state, { char, target }) => {
+    state.room_chars = state.room_chars.map(c => {
+      if (c.key === char.key) {
+        c.target = target;
+      }
+      return c;
+    });
   },
 
   room_chars_remove: (state, char) => {
