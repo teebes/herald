@@ -63,6 +63,7 @@
       >Zone has no rooms. Go to an existing room and assign it to this zone to see a map.</div>
       <div>
         <button class="btn-thin edit-mob" @click="editInfo">EDIT</button>
+        <button class="btn-thin" @click="deleteZone">DELETE</button>
       </div>
     </div>
 
@@ -216,16 +217,16 @@ export default class ZoneDetails extends Mixins(ZoneView) {
   }
 
   async deleteZone() {
-    const zone_id = this.$store.state.builder.zone.id;
+    const zone = this.$store.state.builder.zone;
 
     // Crude confirm dialog
-    const c = confirm(`Are you sure you want to delete Zone ${zone_id}?`);
+    const c = confirm(`Are you sure you want to delete Zone ${zone.id}: ${zone.name}?`);
     if (!c) return;
 
     await this.$store.dispatch(BUILDER_ACTIONS.ZONE_DELETE);
     this.$store.commit(
       UI_MUTATIONS.SET_NOTIFICATION,
-      `Deleted Mob Template ${zone_id}`
+      `Deleted Zone ${zone.id}`
     );
   }
 
