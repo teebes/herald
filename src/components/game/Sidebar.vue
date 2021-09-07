@@ -400,6 +400,14 @@ export default class Sidebar extends Vue {
       }
     }
 
+    &.who-list {
+      .who-list-detail {
+        .hover:hover {
+          color: $color-text-hex-80;
+        }
+      }
+    }
+
     &.flex-skills {
       .flex-skill {
         &:not(.is_active) {
