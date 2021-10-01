@@ -122,6 +122,10 @@
       <ItemTemplateQuests />
       <ItemTemplateInventory v-if="item_template.type === 'container'" />
     </div>
+
+    <div class="divider"></div>
+
+    <div><ItemTemplateActionList/></div>
   </div>
 </template>
 
@@ -135,6 +139,7 @@ import ItemTemplateEquipment from "./ItemTemplateEquipment.vue";
 import ItemTemplateLoads from "./ItemTemplateLoads.vue";
 import ItemTemplateQuests from "./ItemTemplateQuests.vue";
 import ItemTemplateFood from "./ItemTemplateFood.vue";
+import ItemTemplateActionList from "./ItemTemplateActionList.vue";
 import {
   BUILDER_ACTIONS,
   BUILDER_MUTATIONS,
@@ -150,7 +155,8 @@ import { capfirst } from "@/core/utils.ts";
     ItemTemplateEquipment,
     ItemTemplateLoads,
     ItemTemplateQuests,
-    ItemTemplateFood
+    ItemTemplateFood,
+    ItemTemplateActionList
   }
 })
 export default class ItemTemplateDetails extends Mixins(WorldView) {
