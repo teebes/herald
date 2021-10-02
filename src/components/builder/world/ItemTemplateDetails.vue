@@ -47,7 +47,9 @@
           <div class="look-description">
             <h3>LOOK DESCRIPTION</h3>
             <div v-if="item_template.description">
-              <div v-for="(line, index) in item_template.description.split('\n')" :key="index">
+              <div class='description-line'
+                   v-for="(line, index) in item_template.description.split('\n')" 
+                   :key="index">
                 {{ line }}
               </div>
             </div>
@@ -296,6 +298,12 @@ export default class ItemTemplateDetails extends Mixins(WorldView) {
       .field-desc {
         color: $color-text-hex-70;
       }
+    }
+  }
+
+  .look-description {
+    .description-line {
+      min-height: 14px;
     }
   }
 }

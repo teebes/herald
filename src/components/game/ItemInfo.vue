@@ -163,5 +163,9 @@ export default class ItemInfo extends Vue {
 .description {
   max-height: 300px;
   overflow-y: auto;
+
+  .description-line {
+    min-height: 14px;
+  }
 }
 </style>
