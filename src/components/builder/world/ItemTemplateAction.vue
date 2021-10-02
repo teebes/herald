@@ -50,7 +50,7 @@ export default class extends Mixins(Vue) {
     const item_template_id = this.$store.state.builder.worlds.item_template.id;
     const action_id = resource.id;
     const endpoint = `/builder/worlds/${world_id}/itemtemplates/${item_template_id}/actions/${action_id}/clone/`;
-    const resp = await axios.post(endpoint);m
+    const resp = await axios.post(endpoint);
     this.$emit('addToCollection', resp.data);
   }
 }
