@@ -22,10 +22,10 @@
         <span class="color-text-70 mr-1">{{ event.created_ts }}</span>
         {{ event.event }}
         <router-link
-          :to="player_link(event.player, event.world)"
+          :to="player_link(event.player)"
           class="mr-1"
         >{{ event.player.name }}</router-link>on
-        <router-link :to="world_link(event.world)">{{ event.world.name }}</router-link>
+        <router-link :to="world_link(event.world.context_id)">{{ event.world.name }}</router-link>
       </div>
     </div>
 
@@ -75,29 +75,29 @@ export default class UserInfo extends Vue {
   async mounted() {
     const resp = await axios.get(`/staff/users/${this.$route.params.user_id}`);
     this.user = resp.data;
-    console.log(this.user);
   }
 
-  world_link(world) {
+  world_link(world_id) {
     return {
       name: BUILDER_WORLD_INDEX,
       params: {
-        world_id: world.id
+        world_id: world_id
       }
     };
   }
 
-  player_link(player, world) {
-    let world_id;
-    if (world) {
-      world_id = world.id;
-    } else {
-      world_id = player.world_id;
+  player_link(player) {
+
+    let world_id = player.world_id;
+
+    if (player.world_is_multi) {
+      world_id = player.root_world_id;
     }
+
     return {
       name: BUILDER_WORLD_PLAYER_DETAIL,
       params: {
-        world_id: player.world_id,
+        world_id: player.root_world_id,
         player_id: player.id
       }
     };
