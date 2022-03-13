@@ -90,7 +90,7 @@ export default class PanelVitals extends Vue {
   }
 
   get hasMana() {
-    if (this.player.archetype == "mage" || this.player.archetype == "cleric" || this.world.classless)
+    if (this.player.archetype == "mage" || this.player.archetype == "cleric" || this.world.is_classless)
       return true;
     return false;
   }
