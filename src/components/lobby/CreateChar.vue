@@ -223,6 +223,7 @@ export default class extends Vue {
     );
     if (resp.status === 201) {
       this.$emit("charcreated", resp.data);
+      this.$store.commit('lobby/world_details/char_create', resp.data);
       this.charname = "";
       this.gender = "female";
     }

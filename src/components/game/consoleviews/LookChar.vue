@@ -26,7 +26,15 @@
       <button 
         class="btn-small mr-2" 
         v-if="message.data.target.actions.craft" 
-        @click="doAction(message.data.target, 'craft')">CRAFT</button>        
+        @click="doAction(message.data.target, 'craft')">CRAFT</button>
+      <button 
+        class="btn-small mr-2" 
+        v-if="message.data.target.actions.follow" 
+        @click="doAction(message.data.target, 'follow')">FOLLOW</button>
+      <button 
+        class="btn-small mr-2" 
+        v-if="message.data.target.actions.unfollow" 
+        @click="doAction(message.data.target, 'unfollow')">UNFOLLOW</button>
     </div>
   </div>
 </template>
@@ -44,18 +52,26 @@ import { getTargetInGroup } from "@/core/utils.ts";
 export default class LookChar extends Vue {
   @Prop() message!: any;
 
-  hasAction() {
+  mounted() {
+    console.log(this.message.data.target.actions);
+  }
+
+  get hasAction() {
     return Boolean(
       this.message.data.target.actions.complete ||
         this.message.data.target.actions.completion_action ||
         this.message.data.target.actions.list ||
-        this.message.data.target.actions.offer
+        this.message.data.target.actions.offer ||
+        this.message.data.target.actions.follow ||
+        this.message.data.target.actions.unfollow
     );
   }
 
   doAction(char, action) {
     const target = getTargetInGroup(char, this.$store.state.game.room.chars);
-    if (target.indexOf(".") === -1)
+    if (action === 'follow' || action === 'unfollow') {
+      this.$store.dispatch("game/cmd", `${action} ${target}`)
+    } else if (target.indexOf(".") === -1)
       this.$store.dispatch("game/cmd", `${action}`);
     else this.$store.dispatch("game/cmd", `${action} ${target}`);
 

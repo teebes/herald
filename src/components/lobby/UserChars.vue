@@ -3,14 +3,25 @@
     <CreateChar v-if="newCharacter" :world="world" @charcreated="onCharCreated" />
     <div class="world-chars" v-else>
       <div class="world-chars-title">YOUR CHARACTERS</div>
-      <div class="world-chars-container">
-        <div v-for="char in chars" :key="char.id" class="char-display">
+
+      <div class="world-chars-container mt-8" v-if="!edit_mode">
+        <div v-for="char in chars" :key="char.id" class="char-display panel panel-shadow">
+          <div class="more-actions hover" @click="onClickMoreActions(char.id)">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+
+          <UserCharActions 
+            :player="char" 
+            :world="world"
+            v-if="more_actions[char.id]" @close="onCloseCharActions"/>
+
           <div class="char-name">
             {{ char.name }}
             <span v-if="char.is_immortal" class="color-text-50 ml-2">[ Builder ]</span>
             <span v-if="world.is_multiplayer && !char.world_is_multi" class='color-text-50 ml-2'>[ SPW ]</span>
           </div>
           <div class="char-info" v-if="world.allow_combat">{{ charInfo(char) }}</div>
+          <!-- <div class="char-desc">{{ char.description }}</div> -->
           <div class="enter-world">
             <button
               class="btn-small play-as"
@@ -22,6 +33,10 @@
         </div>
         <button class="btn-add new-character" @click="onClickCreateChar()">CREATE NEW CHARACTER</button>
       </div>
+
+      <div class="world-chars-edit-conatiner" v-if="edit_mode">
+        <PlayerEditList/>
+      </div>
     </div>
   </div>
 </template>
@@ -31,15 +46,24 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import CreateChar from "./CreateChar.vue";
 import { capitalize } from "@/core/utils.ts";
 import { LOBBY_WORLD_TRANSFER } from "@/router.ts";
+import PlayerEditList from "@/components/lobby/PlayerEditList.vue";
+import UserCharActions from "@/components/lobby/UserCharActions.vue";
+
 
 @Component({
   components: {
     CreateChar,
+    PlayerEditList,
+    UserCharActions,
   },
 })
 export default class UserChars extends Vue {
   @Prop() chars!: {}[];
   @Prop() world!: {};
+
+  edit_mode: boolean = false;
+  display_more_actions: boolean = false;
+  more_actions = {};
 
   get newCharacter() {
     return this.$store.state.lobby.world_details.create_character;
@@ -61,7 +85,6 @@ export default class UserChars extends Vue {
   }
 
   onCharCreated(newCharacter) {
-    this.$emit("charcreated", newCharacter);
     this.$store.commit("lobby/world_details/create_character_set", false);
   }
 
@@ -85,16 +108,30 @@ export default class UserChars extends Vue {
   onClickCreateChar() {
     this.$store.commit("lobby/world_details/create_character_set", true);
   }
+
+  onClickMoreActions(char_id) {
+    if (this.more_actions[char_id]) {
+      this.more_actions = {};
+    } else {
+      this.more_actions = {};
+      this.more_actions[char_id] = true;  
+    }
+  }
+
+  onCloseCharActions() {
+    this.more_actions = {};
+  }
+
 }
 </script>
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
-
 @import "@/styles/fonts.scss";
 
 .world-chars-region {
   padding-top: 50px;
+  margin-bottom: 150px;
 
   // Your characters
   .world-chars {
@@ -104,30 +141,72 @@ export default class UserChars extends Vue {
       letter-spacing: 1.5px;
       font-size: 15px;
       line-height: 18px;
-      margin-bottom: 27px;
+      // margin-bottom: 27px;
     }
 
-    .char-display {
-      margin-bottom: 50px;
+    .world-chars-container {
+      justify-content: space-between;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
 
-      .char-name {
-        @include font-text-regular;
-        line-height: 20px;
+      .char-display {
+        margin-bottom: 50px;
+        flex-basis: 47%;
+        position: relative;
+
+        .more-actions {
+          position: absolute;
+          right: 8px;
+          top: 0;
+
+          .dot {
+            height: 3px;
+            width: 3px;
+            background-color: $color-text-half;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+          }
+
+          &:hover {
+            .dot {
+              background-color: $color-primary;
+            }
+          }
+        }
+
+        .expanded-actions {
+          position: absolute;
+          right: -10px;
+          top: 25px;
+          border: 1px solid #333;
+          border-top: 0px;
+          background: #222;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+        }
+
+        .char-name {
+          @include font-text-regular;
+          line-height: 20px;
+        }
+
+        .char-info {
+          @include font-text-light;
+          line-height: 23px;
+          color: $color-text-hex-50;
+        }
+
+        .play-as {
+          margin-top: 15px;
+          text-transform: uppercase;
+        }
       }
 
-      .char-info {
-        @include font-text-light;
-        line-height: 23px;
-        color: $color-text-hex-50;
+      .create-character {
+        margin-top: 12px;
       }
 
-      .play-as {
-        margin-top: 15px;
-      }
-    }
-
-    .create-character {
-      margin-top: 12px;
     }
   }
 

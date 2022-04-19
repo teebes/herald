@@ -31,7 +31,7 @@
             </div>
           </div>
 
-          <UserChars @charcreated="onCharCreated" :chars="chars" :world="world" />
+          <UserChars :chars="chars" :world="world" />
         </div>
 
         <div class="world-leaderboard" v-if="world.allow_combat && !$store.state.lobby.world_details.create_character">
@@ -79,15 +79,7 @@ export default class WorldLobby extends Vue {
   BUILDER_WORLD_INDEX = BUILDER_WORLD_INDEX;
   INTRO_WORLD_ID = INTRO_WORLD_ID;
 
-  chars: {}[] = [];
-  world: any = null;
-  leaders: {}[] = [];
-
   capfirst = capfirst;
-
-  onCharCreated(new_character) {
-    this.chars.splice(0, 0, new_character);
-  }
 
   get is_temporary_user() {
     return this.$store.state.user.is_temporary;
@@ -116,6 +108,16 @@ export default class WorldLobby extends Vue {
     };
   }
 
+  get chars() {
+    return this.$store.state.lobby.world_details.chars;
+  }
+  get world() {
+    return this.$store.state.lobby.world_details.world;
+  }
+  get leaders() {
+    return this.$store.state.lobby.world_details.leaders;
+  }
+
   async mounted() {
     if (this.$store.state.auth.user.is_temporary) {
       this.$router.push({
@@ -126,30 +128,9 @@ export default class WorldLobby extends Vue {
       });
     }
 
-    // reset world details state
-    this.$store.commit("lobby/world_details/reset_state");
-
-    const worldFetchPromise = axios.get(
-      `/lobby/worlds/${this.$route.params.world_id}/`
-    );
-
-    const userCharsPromise = axios.get(
-      `/lobby/worlds/${this.$route.params.world_id}/chars/`
-    );
-
-    const leaderboardPromise = axios.get(
-      `/lobby/worlds/${this.$route.params.world_id}/leaders/`
-    );
-
-    const [world_resp, user_chars_resp, leaderboard_resp] = await Promise.all([
-      worldFetchPromise,
-      userCharsPromise,
-      leaderboardPromise,
-    ]);
-
-    this.chars = user_chars_resp.data.results;
-    this.world = world_resp.data;
-    this.leaders = leaderboard_resp.data.results;
+    await this.$store.dispatch(
+      "lobby/world_details/initial_fetch", 
+      this.$route.params.world_id);
   }
 
   get descLines() {
@@ -237,21 +218,6 @@ export default class WorldLobby extends Vue {
 
         .world-title {
           text-transform: uppercase;
-        }
-
-        .world-chars {
-          .world-chars-container {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            .char-display {
-              flex-basis: 50%;
-
-              .play-as {
-                text-transform: uppercase;
-              }
-            }
-          }
         }
       }
 

@@ -1,7 +1,7 @@
 <template>
   <div class='indented'>
    <div>{{ player.name }} {{ player.title }}</div> 
-   <div>
+   <div class='color-text-50'>
      Level {{ player.level }} 
      <template v-if="player.gender == 'non_binary'">non-binary</template> 
      <template v-else>{{ player.gender }}</template>
@@ -9,7 +9,10 @@
    <div v-for="faction_data in player.factions" :key="faction_data.id" class='color-text-60'>
      {{ faction_data.name }} {{ faction_data.rank}}
    </div>
-   <div v-if="this.$store.state.auth.user.is_staff" class='color-text-50'>
+   <div class="description mt-2" v-if="descLines.length">
+      <div class="description-line" v-for="(line, index) in descLines" :key="index">{{ line }}</div>
+   </div>
+   <div v-if="this.$store.state.auth.user.is_staff" class='color-text-50 mt-1 staff-info'>
      <div>
        Email: {{ player.email }}
        - <span v-if="player.is_confirmed">(confirmed)</span>
@@ -32,5 +35,27 @@ export default class Whois extends Vue {
   get player() {
     return this.message.data.player;
   }
+
+  mounted() {
+    console.log(this.descLines.length);
+  }
+
+  get descLines() {
+    if (this.player.description) {
+      return this.player.description.split('\n');
+    }
+    return [];
+  }
 }
 </script>
+
+<style lang="scss" scoped>
+.description {
+  max-height: 300px;
+  overflow-y: auto;
+
+  .description-line {
+    min-height: 10px;
+  }
+}
+</style>

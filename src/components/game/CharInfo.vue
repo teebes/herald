@@ -11,9 +11,14 @@
     <div class="health color-text-50" v-if="world.allow_combat">
       Health: {{ char.health }} / {{ char.health_max }}
     </div>
-    <div class="description" v-if="char.description">
-      {{ char.description }}
+
+    <div class="description" v-if="descLines.length">
+      <div class="description-line" v-for="(line, index) in descLines" :key="index">{{ line }}</div>
     </div>
+
+    <!-- <div class="description" v-if="char.description">
+      {{ char.description }}
+    </div> -->
 
     <div class="equipment" v-if="slots && slots.length">
       <div>{{ this.$capfirst(char.name) }} is using:</div>
@@ -64,6 +69,11 @@ export default class CharInfo extends Vue {
 
   get world() {
     return this.$store.state.game.world;
+  }
+
+  get descLines() {
+    if (this.char.description) return this.char.description.split('\n');
+    return [];
   }
 }
 </script>
