@@ -46,14 +46,12 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import CreateChar from "./CreateChar.vue";
 import { capitalize } from "@/core/utils.ts";
 import { LOBBY_WORLD_TRANSFER } from "@/router.ts";
-import PlayerEditList from "@/components/lobby/PlayerEditList.vue";
 import UserCharActions from "@/components/lobby/UserCharActions.vue";
 
 
 @Component({
   components: {
     CreateChar,
-    PlayerEditList,
     UserCharActions,
   },
 })
