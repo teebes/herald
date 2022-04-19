@@ -176,6 +176,8 @@ const receiveMessage = async ({
     commit("full_screen_message_clear");
     router.push({ name: "game" });
     commit("ui/notification_set", "Connected.", { root: true });
+  } else if (message_data.type == "system.disconnect.error") {
+    commit("full_screen_message_clear");
   }
 
   // Disconection
