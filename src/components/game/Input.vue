@@ -47,7 +47,12 @@ export default class Input extends Vue {
     let user_input = "";
     if (this.input) {
       user_input = this.input;
-      this.last_sent = this.input;
+      
+      const first_token = user_input.split(' ')[0].toUpperCase();
+      if (first_token !== 'CHAT' && first_token !== 'TELL' && first_token !== 'REPLY') {
+        this.last_sent = this.input;
+      }
+      
     } else if (this.last_sent) {
       user_input = this.last_sent;
     }
