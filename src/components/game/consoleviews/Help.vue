@@ -95,6 +95,7 @@
           <div class="cmd" @click="cmdHelp('tell')">tell</div>
           <div class="cmd" @click="cmdHelp('reply')">reply</div>
           <div class="cmd" @click="cmdHelp('yell')">yell</div>
+          <div class="cmd" @click="cmdHelp('mute')">mute</div>
         </div>
       </div>
 
