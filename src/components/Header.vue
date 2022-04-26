@@ -36,6 +36,7 @@ import { AUTH_ACTIONS, AUTH_MUTATIONS } from "@/constants";
 import { mapGetters } from "vuex";
 import { UI_MUTATIONS } from "@/constants";
 import { FormElement, FIRST_NAME, LAST_NAME } from "@/core/forms";
+import ConfirmEmail from "@/components/ConfirmEmail.vue";
 
 @Component({
   computed: mapGetters(["isAuthenticated"])
@@ -107,7 +108,8 @@ export default class Header extends Vue {
       data: this.$store.state.auth.user,
       title: this.$store.state.auth.user.email,
       schema: edit_account_schema,
-      action: "auth/account_save"
+      action: "auth/account_save",
+      slot: ConfirmEmail,
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }

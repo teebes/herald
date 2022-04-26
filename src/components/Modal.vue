@@ -6,7 +6,9 @@
       v-bind="modalProps"
       @click.native.stop
       @close="closeModal"
-    />
+    >
+      <component v-if="slotComponent" :is="slotComponent"></component>
+    </component>
   </div>
 </template>
 
@@ -65,6 +67,10 @@ export default class Modal extends Vue {
     if (this.$store.state.ui.modal.component)
       return this.$store.state.ui.modal.component;
     return EditEntity;
+  }
+
+  get slotComponent() {
+    return this.$store.state.ui.modal.slot;
   }
 
   get modalProps() {

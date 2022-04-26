@@ -2,6 +2,8 @@
   <div class="edit-entity">
     <h1 v-if="title">{{ title.toUpperCase() }}</h1>
 
+    <slot></slot>
+
     <form @submit.prevent="submit" autocomplete="off">
       <div class="form-content">
         <template v-for="element in validSchema">

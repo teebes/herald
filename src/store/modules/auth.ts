@@ -144,6 +144,25 @@ const actions = {
         });
       }
     }
+  },
+
+  resendemailconfirmation: async ({ commit }, payload) => {
+    try {
+      const resp = await axios.post("/auth/resendconfirmation/", payload);
+      commit("ui/notification_set", "Confirmation e-mail sent.", {
+        root: true
+      });
+    } catch (error) {
+      if (error.response.data.non_field_errors) {
+        commit(
+          "ui/notification_set_error",
+          error.response.data.non_field_errors[0],
+          {
+            root: true
+          }
+        );
+      }
+    }
   }
 };
 
