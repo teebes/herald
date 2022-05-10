@@ -15,7 +15,7 @@
       <div class="menu" v-if="showMenu">
         <template v-if="isAuthenticated">
           <router-link to="/lobby" :class="{ 'selected': isActive('lobby') }">Worlds</router-link>
-          <a href="#" @click.prevent="editAccount">Account</a>
+          <a href="#" @click.prevent="editAccount" v-if="!isTemporary">Account</a>
           <a href="https://docs.writtenrealms.com">Docs</a>
           <!-- <router-link to="/help" :class="{ 'selected': isActive('help') }">Help</router-link> -->
           <a href="#" @click.prevent="logout">Log Out</a>
@@ -45,6 +45,10 @@ export default class Header extends Vue {
   get isDev() {
     if (window.location.href.indexOf("localhost") >= 0) return true;
     return false;
+  }
+
+  get isTemporary() {
+    return this.$store.state.auth.user.is_temporary;
   }
 
   async logout() {
