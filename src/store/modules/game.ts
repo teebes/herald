@@ -199,6 +199,7 @@ const receiveMessage = async ({
         params: { world_id: world_id },
       });
     }
+    commit("closeWs");
     commit("reset_state");
     return;
   }
@@ -512,8 +513,6 @@ const actions = {
   },
 
   openWebSocket: async ({ commit, rootState, state, dispatch }) => {
-    const token = rootState.auth.token;
-
     const onopen = () => {
       dispatch("sendWSMessage", {
         type: "system.connect",
@@ -675,6 +674,12 @@ const mutations = {
     state.websocket = new WebSocket(state.uri);
     state.websocket.onopen = onopen;
     state.websocket.onmessage = onmessage;
+  },
+
+  closeWs: (state) => {
+    if (state.websocket) {
+      state.websocket.close();
+    }
   },
 
   player_set: (state, player) => {
