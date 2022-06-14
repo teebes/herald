@@ -63,7 +63,7 @@ export default class PanelTop extends Vue {
     window.open("https://docs.writtenrealms.com", "_blank");
   }
   onClickChatOnDiscord() {
-    window.open('"https://discord.gg/a3u82tR', "_blank");
+    window.open('https://discord.gg/a3u82tR', "_blank");
   }
   onClickPatreon() {
     window.open("https://www.patreon.com/writtenrealms", "_blank");
