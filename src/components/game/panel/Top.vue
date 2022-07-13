@@ -59,6 +59,10 @@ export default class PanelTop extends Vue {
     return this.$store.state.game.world;
   }
 
+  get player() {
+    return this.$store.state.game.player;
+  }
+
   onClickDocumentation() {
     window.open("https://docs.writtenrealms.com", "_blank");
   }
@@ -107,15 +111,15 @@ export default class PanelTop extends Vue {
         widget: "checkbox",
         help: `Whether to show chat messages.`,
       },      
-      {
-        attr: "display_connect",
-        label: "Display Connect / Disconnect Messages",
-        widget: "checkbox",
-        help: `Whether to display when other players join and quit the world.`,
-      },
+      // {
+      //   attr: "display_connect",
+      //   label: "Display Connect / Disconnect Messages",
+      //   widget: "checkbox",
+      //   help: `Whether to display when other players join and quit the world.`,
+      // },
     ];
 
-    if (this.world.is_multiplayer) {
+    if (this.world.is_multiplayer && this.player.is_immortal) {
       schema.push({
         attr: "idle_logout",
         label: "Idle Auto-Logout",
