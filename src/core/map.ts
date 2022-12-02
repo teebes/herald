@@ -149,7 +149,12 @@ export default class Map {
   }
 
   drawRoom(room, center_key) {
-    var roomColor = ROOMCOLORS[room.type];
+    
+    if (room.color) {
+      var roomColor = room.color;
+    } else {
+      var roomColor = ROOMCOLORS[room.type];
+    }
 
     var x = room.cx,
       y = room.cy,

@@ -572,6 +572,11 @@ export const BUILDER_FORMS = {
       widget: "textarea",
     },
     {
+      attr: 'color',
+      label: 'Color',
+      help: `Optional. If a value is specified, the room will use it as its css color.`
+    },
+    {
       attr: "note",
       label: "Notes",
     },
