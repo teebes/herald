@@ -18,11 +18,11 @@
           :resource="resource"
           @addToCollection="addToCollection"
         />
-        <div class="actions">
+        <div class="actions" v-if="show_actions != false">
           <div>
             <button class="btn-thin" @click="edit(resource)">EDIT</button>
           </div>
-          <div>
+          <div v-if="show_delete != false">
             <button class="btn-thin" @click="remove(resource)">DELETE</button>
           </div>
         </div>
@@ -30,7 +30,7 @@
     </div>
     <div v-else-if="fetched">No {{ title.toLowerCase() }}</div>
 
-    <div v-if="fetched" class="collection-add">
+    <div v-if="fetched && show_add != false" class="collection-add">
       <button class="btn-small add-button" @click="add">
         ADD {{ title.toUpperCase() }}
       </button>
@@ -58,6 +58,9 @@ export default class extends Vue {
   @Prop() action_edit!: string;
   @Prop() action_delete!: string;
   @Prop() page_size!: number;
+  @Prop() show_add!: boolean;
+  @Prop() show_actions!: boolean;
+  @Prop() show_delete!: boolean;
 
   fetched: boolean = false;
 

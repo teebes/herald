@@ -1,6 +1,10 @@
 <template>
   <div class="worlds-lobby" v-if="loaded">
-    <div class="worlds-row">
+
+    <!-- Recent Chars & Featured -->
+    <div class="recent-and-featured lobby-section">
+
+      <!-- Recent Chars -->
       <div class="recent-chars-wrapper">
         <div class="section-title">Recent Characters</div>
 
@@ -27,25 +31,16 @@
         <div v-else>No characters created.</div>
       </div>
 
-      <div class="worlds-wrapper">
+      <!-- Featured Worlds -->
+      <div class="featured-wrapper">
         <div class="worlds">
           <div class="section-title">Featured Worlds</div>
 
           <div class="user-worlds-container">
-            <router-link
+            <WorldCard
               v-for="world in featured_worlds"
               :key="world.id"
-              :to="{ name: LOBBY_WORLD_DETAIL, params: {world_id: world.id}}"
-              class="user-world world-info"
-              :class="{['world-' + world.id]: true}"
-              :style="backgroundImage(world)"
-            >
-              <div class="overlay">
-                <div class="title">{{ world.name.toUpperCase() }}</div>
-
-                <div class="num-characters">{{ world.num_characters }} characters</div>
-              </div>
-            </router-link>
+              :world="world"/>
           </div>
         </div>
       </div>
@@ -53,9 +48,12 @@
 
     <div class="divider higher-divider" v-if="discover_worlds.length"></div>
 
-    <div class="worlds-row discover" style="justify-content: center" v-if="discover_worlds.length">
+    <!-- Staff Picks -->
+    <div class="discover lobby-section" style="justify-content: center" v-if="discover_worlds.length">
       <div>
-        <div class="section-title text-center namubumo"><a href="https://namubumo.com">National Mud Building Month</a></div>
+        <div class="section-title text-center namubumo">
+          Staff Picks
+        </div>
 
         <carousel
           :per-page="1"
@@ -71,13 +69,7 @@
               style="width: 370px; height: 166px; margin: 0 auto"
               @click="clickDiscoverWorld(world)"
             >
-              <div class="user-world world-info" :style="backgroundImage(world)">
-                <div class="overlay">
-                  <div class="title">{{ world.name.toUpperCase() }}</div>
-
-                  <div class="num-characters">{{ world.num_characters }} characters</div>
-                </div>
-              </div>
+              <WorldCard :world="world"/>
             </div>
           </slide>
         </carousel>
@@ -85,60 +77,78 @@
     </div>
 
     <div class="divider lower-divider"></div>
-
-    <div class="worlds-row mt-8">
-      <!-- All Worlds -->
-      <div class="worlds-wrapper all-worlds">
-        <div class="worlds">
-          <div class="section-title">All Worlds</div>
-          <div class="user-worlds-container">
-            <router-link
-              v-for="world in all_worlds"
-              :key="world.id"
-              :to="{ name: LOBBY_WORLD_DETAIL, params: {world_id: world.id}}"
-              class="user-world world-info"
-              :style="backgroundImage(world)"
-            >
-              <div class="overlay">
-                <div class="title">{{ world.name.toUpperCase() }}</div>
-
-                <div class="num-characters">{{ world.num_characters }} characters</div>
-              </div>
-            </router-link>
-          </div>
-        </div>
+    
+  
+    <!-- Playing -->
+    <div class="lobby-section playing">
+      <div class="section-title">Playing</div>
+      <div class="worlds-list-section-worlds"
+           :class="{ two_length: playing_worlds.length === 2}">
+        <WorldCard v-for="world in playing_worlds" :key="world.id" :world="world"/>
       </div>
-
-      <!-- Your Worlds -->
-      <div class="worlds-wrapper your-worlds">
-        <div class="worlds">
-          <div class="section-title">Your Worlds</div>
-          <div class="user-worlds-container">
-            <router-link
-              v-for="world in user_worlds"
-              :key="world.id"
-              :to="{ name: LOBBY_WORLD_DETAIL, params: {world_id: world.id}}"
-              class="user-world world-info"
-              :style="backgroundImage(world)"
-            >
-              <div class="overlay">
-                <div class="title">{{ world.name.toUpperCase() }}</div>
-
-                <div class="num-characters">{{ world.num_characters }} characters</div>
-              </div>
-            </router-link>
-            <router-link :to="create_link" class="w-full">
-              <button class="btn btn-add create-world">CREATE WORLD</button>
-            </router-link>
-          </div>
-        </div>
+      <router-link 
+        :to="{ name: 'lobby_section', params: { section: 'playing' } }"
+        class="lobby-section-link"
+        v-if="playing_worlds.length > 0">
+        View More
+      </router-link>
+      <div v-else>
+        You are not currently playing any worlds. Create a character in one to populate this section.
       </div>
     </div>
+
+    <!-- Building -->
+    <div class="lobby-section building">
+      <div class="section-title">Building</div>
+      <div class="worlds-list-section-worlds"
+           :class="{ two_length: playing_worlds.length === 1 }">
+        <WorldCard v-for="world in building_worlds.slice(0, 2)" :key="world.id" :world="world"/>
+        <router-link :to="create_link" class="create-world">
+          <button class="btn btn-add">CREATE WORLD</button>
+        </router-link>
+      </div>
+      <router-link 
+        :to="{ name: 'lobby_section', params: { section: 'building' } }"
+        class="lobby-section-link">
+        View More
+      </router-link>
+    </div>
+
+    <!-- Start Here-->
+    <div class="lobby-section start-here">
+        <div class="section-title">Start Here</div>
+        <div class="worlds-list-section-worlds">
+          <WorldCard v-for="world in intro_worlds" :key="world.id" :world="world"/>
+        </div>
+    </div>
+    
+
+    <div class="divider lower-divider"></div>
+
+    <div class="lobby-section search">
+      <div class="section-title">Search Worlds</div>
+      <div class="search-row form-group">
+        <input type="text" placeholder="Search for a world" v-model="search_query" @keyup.enter="onSearch">
+        <!-- <button class="btn btn-small" @click="onSearch">SEARCH</button> -->
+      </div>
+      <div class="mb-8">
+        <label class="color-text-60">
+          <input type="checkbox" 
+                 v-model="include_unreviewed"> Include unpublished worlds
+        </label>
+      </div>
+      <div class="worlds-list-section-worlds search-worlds-results">
+        <WorldCard v-for="world in search_worlds" :key="world.id" :world="world"/>
+      </div>
+    </div>
+
+    <div class="divider lower-divider"></div>
+
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import axios from "axios";
 import {
   BUILDER_WORLD_INDEX,
@@ -146,10 +156,15 @@ import {
   BUILDER_WORLD_CREATE,
   LOBBY_WORLD_TRANSFER
 } from "@/router";
-import { INTRO_WORLD_ID } from "@/config.ts";
-import { World } from "@/core/interfaces.ts";
+import { INTRO_WORLD_ID } from "@/config";
+import { World } from "@/core/interfaces";
+import WorldCard from "@/components/WorldCard.vue"
 
-@Component
+@Component({
+  components: {
+    WorldCard
+  }
+})
 export default class Lobby extends Vue {
   BUILDER_WORLD_INDEX = BUILDER_WORLD_INDEX;
   LOBBY_WORLD_DETAIL = LOBBY_WORLD_DETAIL;
@@ -160,10 +175,16 @@ export default class Lobby extends Vue {
   chars: {}[] = [];
   featured_worlds: World[] = [];
   discover_worlds: World[] = [];
-  all_worlds: World[] = [];
-  user_worlds: World[] = [];
+  building_worlds: World[] = [];
+  playing_worlds: World[] = [];
+  intro_worlds: World[] = [];
 
   loaded: boolean = false;
+
+  // Search Fields
+  search_query: string = "";
+  search_worlds: World[] = [];
+  include_unreviewed: boolean = true;
 
   async mounted() {
     if (this.$store.state.auth.user.is_temporary) {
@@ -176,34 +197,36 @@ export default class Lobby extends Vue {
     }
 
     const chars_promise = axios.get("lobby/chars/recent/");
-    const featured_worlds_promise = axios.get(
-      "lobby/worlds/featured/?page_size=2"
-    );
+    const featured_worlds_promise = axios.get("lobby/worlds/featured/?page_size=2");
     const discover_worlds_promise = axios.get("lobby/worlds/discover/");
-    const all_worlds_promise = axios.get("lobby/worlds/all/?page_size=50");
-    const user_worlds_promise = axios.get("lobby/worlds/user/?page_size=50");
+    const building_worlds_promise = axios.get("lobby/worlds/building/?page_size=3")
+    const playing_worlds_promise = axios.get("lobby/worlds/playing/?page_size=3")
+    const intro_worlds_promise = axios.get("lobby/worlds/intro/?page_size=3")
 
     const [
       chars_resp,
       featured_worlds_resp,
       discover_worlds_resp,
-      all_worlds_resp,
-      user_worlds_resp
+      building_worlds_resp,
+      playing_worlds_resp,
+      intro_worlds_resp
     ] = await Promise.all([
       chars_promise,
       featured_worlds_promise,
       discover_worlds_promise,
-      all_worlds_promise,
-      user_worlds_promise
+      building_worlds_promise,
+      playing_worlds_promise,
+      intro_worlds_promise
     ]);
 
-    //this.worlds = worlds_resp.data.results;
+  
     this.chars = chars_resp.data.results;
     this.featured_worlds = featured_worlds_resp.data.results;
     this.discover_worlds = discover_worlds_resp.data.results;
-    // this.discover_worlds = [];
-    this.all_worlds = all_worlds_resp.data.results;
-    this.user_worlds = user_worlds_resp.data.results;
+    this.playing_worlds = playing_worlds_resp.data.results;
+    this.building_worlds = building_worlds_resp.data.results;
+    this.intro_worlds = intro_worlds_resp.data.results;
+
     this.loaded = true;
   }
 
@@ -261,16 +284,46 @@ export default class Lobby extends Vue {
       params: { world_id: world.id }
     });
   }
+
+  timeout: number | null = null;
+  @Watch("search_query")
+  onSearchQueryChange() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    this.timeout = setTimeout(() => {
+      this.onSearch();
+    }, 500);
+  }
+
+  @Watch("include_unreviewed")
+  onIncludeUnreviewedChange() {
+    this.onSearch();
+  }
+
+  async onSearch() {
+    const query = this.search_query.trim();
+    const params = { q: query }
+
+    if (this.include_unreviewed) {
+      params["reviewed"] = false;
+    } else {
+      params["reviewed"] = true;
+    }
+
+    const resp = await axios.get("lobby/worlds/search/", {
+      params: params
+    });
+    this.search_worlds = resp.data.results;
+  }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "@/styles/colors.scss";
 @import "@/styles/fonts.scss";
 @import "@/styles/layout.scss";
 
-$lobby-wide-width: 850px;
-$lobby-breakpoint: 760px;
 
 .worlds-lobby {
   position: relative;
@@ -283,6 +336,8 @@ $lobby-breakpoint: 760px;
   margin-top: 20px;
   width: 100%;
   max-width: $lobby-wide-width;
+
+  .world-card { margin-bottom: 20px; }
 
   .divider {
     margin: 60px 0 20px 0;
@@ -302,85 +357,102 @@ $lobby-breakpoint: 760px;
     }
   }
 
-  .worlds-row {
+  /* 
+    Horizontal section of the lobby, capped at 850 width and 
+    centered at lower widths.
+  */
+  .lobby-section {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
     display: flex;
-    flex-direction: row-reverse;
-    flex-shrink: 0;
-    @media (min-width: $lobby-breakpoint) {
-      flex-direction: row-reverse;
-      justify-content: space-between;
-      flex-grow: 1;
+    flex-direction: column;
 
-      > div {
-        box-sizing: content-box;
+    @media (min-width: $lobby-breakpoint) {
+      justify-content: space-between;
+
+      &.recent-and-featured {
+        flex-direction: row-reverse;
       }
     }
 
     @media (max-width: $lobby-breakpoint) {
-      flex-direction: column;
-      // margin-bottom: 30px;
       align-items: center;
     }
 
     &.discover {
       margin: 0;
+      align-items: center;
       @media (min-width: $lobby-breakpoint) {
         margin: 20px 0 0 0;
       }
     }
 
-    @media (max-width: $lobby-breakpoint) {
-      .all-worlds {
-        order: 2;
-      }
-      .your-worlds {
-        order: 1;
-      }
+    &.playing, &.building {
+      margin-bottom: 20px;
     }
-  }
 
-  .section-title {
-    @include font-title-light;
-    color: $color-secondary;
-    font-size: 30px;
-    line-height: 29px;
-    margin-top: 20px;
-    margin-bottom: 30px;
-  }
+    a.lobby-section-link {
+      color: $color-text-hex-50;
+      &:hover { color: $color-primary; }
+    }
 
-  .worlds-wrapper {
-    width: 375px;
+    .worlds-list-section-worlds {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
 
-    .worlds {
-      max-width: 370px;
-      margin: 0 auto;
+      &.two_length {
+        justify-content: flex-start;
+        > .world-card { margin-right: 20px; }
+      }
 
-      .user-worlds-container {
-        display: flex;
+      &.search-worlds-results {
+        // justify-content: flex-start;
         flex-wrap: wrap;
+      }
 
-        .empty-user-worlds {
-          max-width: 226px;
+      @media (max-width: $lobby-breakpoint) {
+        flex-direction: column;
+      }
+
+      > .world-card {
+        @media (min-width: $lobby-breakpoint) {
+          max-width: 270px;
+          max-height: 140px;
         }
+        // .num-characters { display: none }
       }
 
       .create-world {
-        font-size: 15px;
-        letter-spacing: 1.12px;
-        line-height: 18px;
-        height: 86px;
-        margin-bottom: 20px;
+        width: 270px;
+        height: 140px;
+
+        > button { 
+          height: 100%; 
+          font-size: 15px;
+          letter-spacing: 1.12px;
+          line-height: 18px;
+        }
       }
     }
+
+    .search-row {
+      max-width: 400px;
+      display: flex;
+      flex-direction: row;
+      > button { margin-left: 20px; }
+    }
+  }
+
+  .featured-wrapper { 
+    width: 375px; 
   }
 
   .recent-chars-wrapper {
     width: 375px;
 
     .recent-char {
-      //box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
-      // background: $color-background-light;
-      // border: 1px solid $color-background-light-border;
       color: $color-text-gray;
       width: 370px;
       height: 73px;
@@ -402,96 +474,6 @@ $lobby-breakpoint: 760px;
 
       display: flex;
       justify-content: space-between;
-    }
-  }
-
-  .world-info {
-    background: #332d25;
-
-    a {
-      @include font-title-regular;
-      letter-spacing: 1.3px;
-    }
-
-    .title {
-      @include font-title-regular;
-      text-align: center;
-      font-size: 22px;
-      letter-spacing: 1.14px;
-      line-height: 27px;
-      color: $color-text;
-
-      a {
-        color: $color-text;
-        margin: 0 auto;
-      }
-    }
-
-    &:hover {
-      cursor: pointer;
-      .title,
-      .title > a {
-        color: $color-primary;
-        text-decoration: underline;
-      }
-    }
-
-    .actions {
-      @include font-title-regular;
-      letter-spacing: 0.9px;
-      line-height: 17px;
-      color: $color-primary;
-      font-size: 14px;
-      text-align: center;
-
-      a {
-        margin: 0 auto;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-    }
-
-    .num-characters {
-      color: $color-text-hex-50;
-      // color: white;
-      // opacity: 0.5;
-      line-height: 16px;
-      font-size: 12px;
-      position: absolute;
-      bottom: 15px;
-      text-align: center;
-      width: 100%;
-    }
-
-    &.user-world {
-      width: 370px;
-      height: 166px;
-
-      background: url("/ui/lobby/world-card-horizontal-bg@2x.jpg");
-      background-size: 370px 166px;
-
-      &:not(:last-child) {
-        margin-bottom: 20px;
-      }
-      position: relative;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-
-      .overlay {
-        width: 354px;
-        height: 150px;
-        background-color: rgba(0, 0, 0, 0.5);
-        position: absolute;
-        top: 8px;
-        left: 8px;
-      }
-
-      .title {
-        padding-top: 40px;
-      }
-      .actions {
-        margin-top: 10px;
-      }
     }
   }
 

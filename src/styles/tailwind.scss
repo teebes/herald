@@ -16,9 +16,11 @@
 .flex-col {
   flex-direction: column;
 }
-// .flex-1 {
-//   flex: 1;
-// }
+
+.flex-row {
+  flex-direction: row;
+}
+
 .flex-2 {
   flex: 2;
 }

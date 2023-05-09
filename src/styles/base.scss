@@ -211,6 +211,17 @@ a {
   }
 }
 
+a.gray-link {
+  color: $color-text-hex-50;
+  text-decoration: none;
+  
+  &:hover,
+    &:active {
+      color: $color-primary;
+      text-decoration: underline;
+    }
+}
+
 // Paragraphs by default have a 1 line of text bottom margin
 p {
   margin: 0 0 1em 0;
@@ -302,6 +313,15 @@ ul.list {
   align-items: center;
 }
 
+.section-title {
+  @include font-title-light;
+  color: $color-secondary;
+  font-size: 30px;
+  line-height: 29px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
 /* Tabs */
 
 .tabs-view {
@@ -350,4 +370,8 @@ ul.list {
       width: 8px;
     }
   }
+}
+
+.min-line-height {
+  min-height: 14px;
 }

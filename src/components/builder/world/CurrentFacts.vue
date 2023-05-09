@@ -42,6 +42,10 @@ export default class CurrentFacts extends Vue {
       this.update_facts();
     }, 30000);
   }
+
+  async destroyed() {
+    clearInterval(this.interval);
+  }
 }
 </script>
 

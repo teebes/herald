@@ -27,7 +27,7 @@
 
       <div v-if="completion_entrance_cmds.length">
         <div>
-          Messages displayed when entering the room and the :
+          Messages displayed when entering the room and the quest can be completed:
           <ul class='list'>
             <li
               v-for="completion_entrance_cmd in completion_entrance_cmds"

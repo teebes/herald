@@ -271,6 +271,9 @@
     display: flex;
     flex-wrap: wrap;
 
+    > div {
+      flex-basis: 100%;
+    }
     @media ($desktop-site) {
       > div {
         flex-basis: 50%;
@@ -279,8 +282,14 @@
         }
         &:nth-child(even) {
           padding-left: 15px;
+          border-left: 1px solid $color-background-light-border;
         }
       }
     }
+
+    > div {
+      border-bottom: 1px solid $color-background-light-border;
+      padding-bottom: 10px;
+    } 
   }
 }

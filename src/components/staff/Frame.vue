@@ -1,10 +1,11 @@
 <template>
-  <div class="frame">
+  <div id="page" class="frame">
     <div class="staff-nav side-nav">
       <router-link :to="to_playing">Playing</router-link>
       <router-link :to="to_signups">Signups</router-link>
       <router-link :to="to_worlds">Worlds</router-link>
       <router-link :to="to_activity">Activity</router-link>
+      <router-link :to="{ name: 'staff_reviews' }">Reviews</router-link>
     </div>
 
     <div class="staff-contents flex-grow">
@@ -65,7 +66,7 @@ export default class extends Vue {
   }
 
   .staff-contents {
-    padding: 0 20px;
+    padding: 20px;
   }
 
   @media ($desktop-site) {

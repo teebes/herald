@@ -1,9 +1,23 @@
 <template>
   <div id="world-config" class="builder-config">
-    <h2>WORLD CONFIG</h2>
+    <h2>{{ world.name.toUpperCase() }} CONFIG</h2>
 
-    <div class="general-settings">
-      <h3>GENERAL SETTINGS</h3>
+    <div class="general-settings mt-6">
+      <!-- <h3>GENERAL SETTINGS</h3> -->
+
+      <div class="color-text-60">
+        <span v-if="world.is_public">Public</span><span v-else>Private</span> World
+      </div>
+
+      <div class="color-text-60 mb-6">Publication Status: {{ review_status }} <Help :help="review_help" v-if="review_help"/></div>
+      <div class="review-details" v-if="review_status == 'Reviewed'">
+        <div class="reviewer color-text-60 mb-2">Comments by {{ review.reviewer }}:</div>
+        <div class="review-text mb-4">
+          <div class="review-line min-line-height" 
+              v-for="(line, index) in review.text.split('\n')" 
+              :key="index">{{ line }}</div>
+          </div>
+      </div>
 
       <div v-if="world.description" class="world-description">
         <div class="desc-line" v-for="(line, index) of descLines" :key="index">{{ line }}</div>
@@ -12,8 +26,11 @@
       <div class="settings-actions mt-4">
         <button class="btn-small mr-4" @click="editGeneral">EDIT</button>
         <button class="btn-small" @click="deleteWorld">DELETE</button>
+        <button class="btn-small ml-4" @click="submitForReview" v-if="displaySubmitReview">SUBMIT FOR REVIEW</button>
       </div>
     </div>
+
+    <div class="divider"></div>
 
     <div class="config-panels">
       <div class="advanced-config">
@@ -180,6 +197,8 @@ import {
   BUILDER_WORLD_STARTING_EQ,
   LOBBY,
 } from "@/router";
+import { capfirst } from "@/core/utils.ts";
+import Help from "@/components/Help.vue";
 import { BUILDER_FORMS, FormElement } from "@/core/forms";
 import { UI_MUTATIONS } from "@/constants";
 import WorldView from "@/components/builder/world/WorldView.ts";
@@ -187,6 +206,7 @@ import WorldView from "@/components/builder/world/WorldView.ts";
 @Component({
   components: {
     ElementList,
+    Help,
   },
 })
 export default class WorldFrame extends Mixins(WorldView) {
@@ -213,6 +233,13 @@ export default class WorldFrame extends Mixins(WorldView) {
     return this.$store.state.builder.world;
   }
 
+  async fetch() {
+    this.$store.commit("builder/worlds/config_clear");
+    await this.$store.dispatch("builder/worlds/config_fetch", {
+      world_id: this.world.id,
+    });
+  }
+
   async editGeneral() {
     const modal = {
       title: `Edit World`,
@@ -224,18 +251,12 @@ export default class WorldFrame extends Mixins(WorldView) {
           attr: "is_public",
           label: "Is Public",
           widget: "checkbox",
+          help: `A public world is visible and searchable to all players. A private world is only visible to players who have been given access to it.`,
         },
       ],
       action: "builder/world_save",
     };
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
-  }
-
-  async fetch() {
-    this.$store.commit("builder/worlds/config_clear");
-    await this.$store.dispatch("builder/worlds/config_fetch", {
-      world_id: this.world.id,
-    });
   }
 
   async editAdvancedConfig() {
@@ -420,6 +441,10 @@ export default class WorldFrame extends Mixins(WorldView) {
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
 
+  async submitForReview() { 
+    await this.$store.dispatch("builder/worlds/submit_world_for_review");
+  }
+
   async deleteWorld() {
     const world_id = this.world.id;
 
@@ -475,6 +500,38 @@ export default class WorldFrame extends Mixins(WorldView) {
   get descLines() {
     return this.world.description.split("\n");
   }
+
+  get displaySubmitReview() {
+    return (this.world.review.status === "unsubmitted" || this.world.review.status == "reviewed");
+  }
+
+  get review() {
+    return this.world.review;
+  }
+
+  get review_status() {
+    if (this.world.review.status === 'unsubmitted') {
+      return 'Unpublished';
+    } else if (this.world.review.status === 'submitted') {
+      return 'Under Review';
+    } else if (this.world.review.status === 'reviewed') {
+      return 'Reviewed';
+    } else if (this.world.review.status === 'approved') {
+      return 'Published';
+    }
+    return capfirst(this.world.review.status);
+  }
+
+  get review_help() {
+    if (this.world.review.status === 'unsubmitted') {
+      return `A world that's been approved for publication will be featured in curated sections of the site. To initiate a review, click the SUBMIT FOR REVIEW action.`;
+    } else if (this.world.review.status === 'submitted') {
+      return `Your review has been submitted. Once a staff member reviews it, it will either be approved or you will receive feedback on what to change.`;
+    } else if (this.world.review.status === 'reviewed') {
+      return `Your world has been reviewed but is not quite ready for primetime yet. Read the reviewer's notes and re-submit it once you're ready.`;
+    }
+    return '';
+  }
 }
 </script>
 
@@ -486,5 +543,18 @@ export default class WorldFrame extends Mixins(WorldView) {
   div.desc-line:not(:last-child) {
     margin-bottom: 0.8em;
   }
+}
+
+
+.review-details {
+  .review-text {
+    border: 1px solid $color-background-light-border;
+    padding: 15px;
+  }
+}
+
+.divider {
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 </style>

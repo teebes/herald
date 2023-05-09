@@ -37,6 +37,7 @@ import { mapGetters } from "vuex";
 import { UI_MUTATIONS } from "@/constants";
 import { FormElement, FIRST_NAME, LAST_NAME } from "@/core/forms";
 import ConfirmEmail from "@/components/ConfirmEmail.vue";
+import StaffAccount from "@/components/staff/StaffAccountSlot.vue";
 
 @Component({
   computed: mapGetters(["isAuthenticated"])
@@ -108,14 +109,25 @@ export default class Header extends Vue {
       USE_GRAPEVINE
     ];
 
-    const modal = {
-      data: this.$store.state.auth.user,
-      title: this.$store.state.auth.user.email,
-      schema: edit_account_schema,
-      action: "auth/account_save",
-      slot: ConfirmEmail,
-    };
-    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
+    if (this.$store.state.auth.user.is_staff) {
+      const modal = {
+        data: this.$store.state.auth.user,
+        title: this.$store.state.auth.user.email,
+        schema: edit_account_schema,
+        action: "auth/account_save",
+        slot: StaffAccount,
+      };
+      this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
+    } else {
+      const modal = {
+        data: this.$store.state.auth.user,
+        title: this.$store.state.auth.user.email,
+        schema: edit_account_schema,
+        action: "auth/account_save",
+        slot: ConfirmEmail,
+      };
+      this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
+    }
   }
 }
 </script>

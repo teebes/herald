@@ -20,6 +20,7 @@ import Privacy from "./views/Privacy.vue";
 import WorldLobby from "@/components/lobby/WorldLobby.vue";
 import CompleteSignup from "@/components/lobby/CompleteSignup.vue";
 import Transfer from "@/components/lobby/Transfer.vue";
+import LobbySection from "@/components/lobby/LobbySection.vue";
 
 // Builder
 import BuilderFrame from "@/components/builder/BuilderFrame.vue";
@@ -199,6 +200,12 @@ const router = new Router({
     },
 
     {
+      path: "/lobby/:section",
+      name: "lobby_section",
+      component: LobbySection,
+    },
+
+    {
       path: "/login",
       name: "login",
       component: Login,
@@ -232,8 +239,13 @@ const router = new Router({
       path: "/staff",
       beforeEnter: ifStaff,
       component: () => import("@/components/staff/Frame.vue"),
-      redirect: "/staff/playing",
+      // redirect: "/staff/playing",
       children: [
+        {
+          path: "",
+          name: "staff_index",
+          component: () => import("@/components/staff/Index.vue"),
+        },
         {
           path: "playing",
           name: STAFF_PLAYING,
@@ -258,6 +270,11 @@ const router = new Router({
           path: "users/:user_id",
           name: STAFF_USER_INFO,
           component: () => import("@/components/staff/UserInfo.vue"),
+        },
+        {
+          path: "reviews",
+          name: 'staff_reviews',
+          component: () => import("@/components/staff/Reviews.vue"),
         },
       ],
     },

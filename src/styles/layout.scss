@@ -1,9 +1,3 @@
-// Bootstrap breakpoints
-$screen-xs-max: 767px;
-$screen-sm-min: 768px;
-$screen-sm-max: 991px;
-$screen-md-min: 992px;
-
 /*
     How to use site breakpoints:
     @media ($mobile-site) {}
@@ -22,6 +16,10 @@ $site-max-width: 1150px;
     display: none;
   }
 }
+
+// Lobby Breakpoints
+$lobby-wide-width: 850px;
+$lobby-breakpoint: 760px;
 
 // Game breakpoints
 $game-mobile-breakpoint: 768px;
