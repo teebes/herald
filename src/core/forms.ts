@@ -340,13 +340,18 @@ export const GET_MOB_TEMPLATE_INFO = () => {
               value: "all",
               label: "All",
             },
+            {
+              value: "friendly",
+              label: "Friendly",
+            },
           ],
           help: `Determines a mob's behavior when you enter its room.
                  <br/><br/>
                  * Passive: mob will never attack first.<br/>
                  * Normal: mob will only attack if their faction is at odds with the entering char.<br/>
                  * Players: mob will attack all players.<br/>
-                 * All: mob will attack players & other mobs.
+                 * All: mob will attack players & other mobs.<br/>
+                 * Friendly: Mob will not be able to attack nor be attacked.
                 `,
         },
       ],
