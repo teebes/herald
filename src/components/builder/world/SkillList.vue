@@ -5,6 +5,7 @@
     :endpoint="endpoint"
     :display_component="display_component"
     :schema="schema"
+    page_size="50"
   />
 </template>
 
@@ -23,7 +24,7 @@ import { FormElement, BUILDER_FORMS } from "@/core/forms.ts";
 })
 export default class WorldFrame extends Mixins(WorldView) {
   get endpoint() {
-    return `/builder/worlds/${this.$route.params.world_id}/skills/?page_size=50`;
+    return `/builder/worlds/${this.$route.params.world_id}/skills/`;
   }
 
   get display_component() {
