@@ -293,6 +293,13 @@ ul.list {
   color: $color-text-hex-50;
 }
 
+code {
+  border: 1px solid $color-background-very-light;
+  padding: 10px 15px;
+  word-spacing: 0.4em;
+  display: inline-block;
+}
+
 /* Useful class mixins */
 .hover {
   &:hover {

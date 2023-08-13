@@ -97,9 +97,9 @@ body > .tooltip {
 
   .tooltip-inner {
     // @include font-mono;
-    code {
-      word-spacing: 0.4em;
-    }
+    // code {
+    //   word-spacing: 0.4em;
+    // }
 
     //background: black;
     background: $color-background-light;

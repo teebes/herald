@@ -381,7 +381,7 @@ export default class PanelSkills extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/styles/colors.scss";
 @import "@/styles/fonts.scss";
 

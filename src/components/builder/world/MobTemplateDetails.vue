@@ -6,8 +6,8 @@
           <h2 class="entity-title">{{ template.name }}</h2>
 
           <div class="mob-summary mb-2 text-base">
-            Level {{ template.level }} {{ template.type }} 
-            <template v-if="template.gender == 'non_binary'">non-binary</template> 
+            Level {{ template.level }} {{ template.type }}
+            <template v-if="template.gender == 'non_binary'">non-binary</template>
             <template v-else>{{ template.gender }}</template>
             {{ template.archetype}}
             <span
@@ -117,13 +117,7 @@
       <MobTemplateLoads class="loads" />
       <MobTemplateQuests class="quests" />
       <MobTemplateCrafting class="crafting" />
-      <div id="mob-teaching">
-        <h3>SKILLS</h3>
-        <div class="color-text-70">
-          Mobs can use skills, as well as teach skills to players.
-        </div>
-        <button class="btn-thin" @click="editTeaching">EDIT</button>
-      </div>
+      <MobTemplateSkills class="skills" />
     </div>
   </div>
 </template>
@@ -137,7 +131,7 @@ import {
   UI_MUTATIONS,
   UI_MODALS
 } from "@/constants";
-import { BUILDER_FORMS, GET_MOB_TEMPLATE_INFO } from "@/core/forms.ts";
+import { BUILDER_FORMS, GET_MOB_TEMPLATE_INFO } from "@/core/forms";
 import MobTemplateReactions from "./MobTemplateReactions.vue";
 import MobTemplateStats from "./MobTemplateStats.vue";
 import MobTemplateInventory from "./MobTemplateInventory.vue";
@@ -146,9 +140,8 @@ import MobTemplateMerchant from "./MobTemplateMerchant.vue";
 import MobTemplateLoads from "./MobTemplateLoads.vue";
 import MobTemplateQuests from "./MobTemplateQuests.vue";
 import MobTemplateCrafting from "./MobTemplateCrafting.vue";
-import MobTemplateTeaching from "./MobTemplateTeaching.vue";
-import WorldView from "@/components/builder/world/WorldView.ts";
-import { KeepAliveFetch } from "@/components/Mixins.ts";
+import MobTemplateSkills from "./MobTemplateSkills.vue";
+import WorldView from "@/components/builder/world/WorldView";
 
 @Component({
   components: {
@@ -160,6 +153,7 @@ import { KeepAliveFetch } from "@/components/Mixins.ts";
     MobTemplateLoads,
     MobTemplateQuests,
     MobTemplateCrafting,
+    MobTemplateSkills,
   }
 })
 export default class MobTemplateDetails extends Mixins(WorldView) {
@@ -255,37 +249,6 @@ export default class MobTemplateDetails extends Mixins(WorldView) {
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
 
-  editTeaching() {
-    const modal = {
-      data: this.template,
-      schema: [
-        {
-          children: [
-            {
-              attr: "teaches",
-              label: "Teaches Skills"
-            },
-            {
-              attr: "teaching_conditions",
-              label: "Teaching Conditions",
-            }
-          ],
-        },
-        {
-          attr: "use_abilities",
-          label: "Use Abilities",
-          widget: "checkbox"
-        },
-        {
-          attr: "combat_script",
-          label: "Combat Script",
-          widget: "textarea"
-        }
-      ],
-      action: "builder/worlds/mob_template_save"
-    }
-    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
-  }
 }
 </script>
 
