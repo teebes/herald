@@ -35,6 +35,8 @@
           <div class="cmd" @click="cmdHelp('alias')">alias</div>
           <div class="cmd" @click="cmdHelp('roll')">roll</div>
           <div class="cmd" @click="cmdHelp('learn')">learn</div>
+          <div class="cmd" @click="cmdHelp('forget')">forget</div>
+          <div class="cmd" @click="cmdHelp('skills')">skills</div>
           <div class="cmd" @click="cmdHelp('title')" v-if="$store.state.game.world.players_can_set_title">title</div>
         </div>
         <div class="cmds">
