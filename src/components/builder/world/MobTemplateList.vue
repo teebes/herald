@@ -116,7 +116,11 @@ export default class MobTemplateList extends Vue {
       {
         attr: "sort_by",
         label: "sorting",
-        filter_options: [{ key: "-created_ts", name: "Last Created" }]
+        filter_options: [
+          { key: "-created_ts", name: "Last Created" },
+          { key: "-level", name: "Level - desc" },
+          { key: "level", name: "Level - asc" },
+        ]
       },
       factions,
       mob_types
