@@ -35,10 +35,8 @@
       <div class="actions">
         <button class="btn btn-small start" :disabled="disableStart" @click="onStart">START</button>
         <button class="btn btn-small stop" :disabled="disableStop" @click="onStop">STOP</button>
-        <button
-          class="btn btn-small kill"
-          @click="onKill"
-        >KILL</button>
+        <button class="btn btn-small kill" @click="onKill">KILL</button>
+        <button class="btn btn-small clean" :disabled="disableClean" @click="onClean">CLEAN</button>
       </div>
     </div>
   </div>
@@ -98,19 +96,26 @@ export default class StatusMPW extends Mixins(WorldView) {
     clearInterval(this.interval);
   }
 
+  // Start can only happen from Clean or New worlds
   get disableStart() {
     if (!this.admin_data || this.action_submitted) return true;
     return (
-      this.admin_data.api_state != "stopped" &&
       this.admin_data.api_state != "clean" &&
       this.admin_data.api_state != "new"
-
     );
   }
 
   get disableStop() {
     if (!this.admin_data || this.action_submitted) return true;
     return this.admin_data.api_state != "running";
+  }
+
+  get disableClean() {
+    if (!this.admin_data || this.action_submitted) return true;
+    return (
+      this.admin_data.api_state != "stopped" &&
+      this.admin_data.api_state != "killed"
+    );
   }
 
   async onStart() {
@@ -145,6 +150,18 @@ export default class StatusMPW extends Mixins(WorldView) {
     this.action_submitted = false;
     this.$store.commit("ui/notification_set", "World killed.");
   }
+
+  async onClean() {
+    this.action_submitted = true;
+    this.$store.commit(UI_MUTATIONS.SET_NOTIFICATION, {
+      text: "Cleaning...",
+      expires: false
+    });
+    const resp = await axios.post(`/builder/worlds/${this.world.id}/clean/`);
+    this.admin_data = resp.data;
+    this.action_submitted = false;
+    this.$store.commit("ui/notification_set", "World is clean.");
+  }
 }
 </script>
 
@@ -155,7 +172,7 @@ export default class StatusMPW extends Mixins(WorldView) {
 }
 
 button.stop,
-button.kill {
+button.kill, button.clean {
   margin-left: 1rem;
 }
 </style>
