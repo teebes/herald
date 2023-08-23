@@ -103,24 +103,24 @@ export const CONDITIONS: FormElement = {
   help: `Conditions required for the action to be prevented. For more information on conditions, refer to their <a href='https://docs.writtenrealms.com/building/conditions'>doc page</a>.<br/><br/>
     Quick reference:<br/>
     <code>
-    - level_above level<br/>
-    - item_in_room template_id<br/>
+    - archetype archetype<br/>
+    - core_faction faction_code<br/>
+    - fact_check<br/>
+    - gender<br/>
+    - gold<br/>
+    - has_weapon<br/>
+    - has_shield<br/>
+    - health_below percentage<br/>
+    - in_combat<br/>
+    - item_in_eq template_id<br/>
     - item_in_inv template_id<br/>
-    - item_in_eq template_id<br/>    
+    - item_in_room template_id<br/>
+    - level level<br/>
+    - marked mark value<br/>
     - mob_in_room template_id<br/>
     - player_in_room<br/>
     - quest_complete quest_id<br/>
-    - archetype archetype<br/>    
-    - core_faction faction_code<br/>
-    - standing_above faction_code standing<br/>
-    - health_below percentage<br/>
-    - player_in_room<br/>
-    - gold_above<br/>
-    - fact_check<br/>
-    - marked<br/>
-    - in_combat<br/>
-    - has_weapon<br/>
-    - has_shield<br/>
+    - standing faction_code standing<br/>
     - wields_weapon_type weapon_type
     </code>`,
 };
@@ -287,7 +287,7 @@ export const GET_MOB_TEMPLATE_INFO = () => {
         {
           attr: "level",
           label: "Level",
-          help: `The level of a mob determines how hard it is to kill and how much 
+          help: `The level of a mob determines how hard it is to kill and how much
                 experience it gives.`,
         },
         {
@@ -829,7 +829,7 @@ export const BUILDER_FORMS = {
         {
           attr: "level",
           label: "Level",
-          help: `The level of an item represents its power. For weapons, it 
+          help: `The level of an item represents its power. For weapons, it
                 determines how much damage is dealt, and for armor how much physical
                 damage it absorbs.`,
         },
