@@ -157,70 +157,70 @@ const ROOM_CHECK: FormElement[] = [
     label: "Failure Message",
     help: `The message to display if the check was true, meaning the action was prevented.`,
   },
-  {
-    attr: "check",
-    label: "Check",
-    default: "in_inv",
-    options: [
-      {
-        value: "in_inv",
-        label: "In inventory",
-      },
-      {
-        value: "not_in_inv",
-        label: "Not in inventory",
-      },
-      {
-        value: "equipped",
-        label: "Equipped",
-      },
-      {
-        value: "not_equipped",
-        label: "Not equipped",
-      },
-      {
-        value: "mob_is_present",
-        label: "Mob is present",
-      },
-      {
-        value: "faction_below",
-        label: "Faction below",
-      },
-      {
-        value: "health_below",
-        label: "Health below",
-      },
-      {
-        value: "quest_complete",
-        label: "Quest complete",
-      },
-      {
-        value: "quest_incomplete",
-        label: "Quest incomplete",
-      },
-    ],
-    help: `Deprecated, please use conditions instead.<br/><br/>
-        Which check to perform.<br/>
-        - in inventory: whether item template id 'argument' is in the actor's inventory.<br/>
-        - not in inventory: the opposite of in_inv.<br/>
-        - equipped: whether item template id 'argument' is equipped by the actor.<br/>
-        - not equipped: the opposite of equipped.<br/>
-        - mob is present: whether a mob with template id 'argument' in the room is present. If 'argument2' is specified as a faction, that faction is exempt from the check.<br/>
-        - faction below: whether a character's standing in faction 'argument' is below 'argument2'.<br/>
-        - health below: whether a character’s health is below a 'argument' threshold, in % of their max health.<br/>
-        - quest complete: whether a character has completed quest id 'argument'.<br/>
-        - quest incomplete: whether a character has not completed quest id 'argument'.<br/>`,
-  },
-  {
-    attr: "argument",
-    label: "Argument",
-    help: `Deprecated. Parameter depending on the check. See the 'check' field for details.`,
-  },
-  {
-    attr: "argument2",
-    label: "Argument 2",
-    help: `Deprecated. Parameter used for the 'mob_is_absent' and 'faction_below' checks. See the 'check' field for details.`,
-  },
+  // {
+  //   attr: "check",
+  //   label: "Check",
+  //   default: "in_inv",
+  //   options: [
+  //     {
+  //       value: "in_inv",
+  //       label: "In inventory",
+  //     },
+  //     {
+  //       value: "not_in_inv",
+  //       label: "Not in inventory",
+  //     },
+  //     {
+  //       value: "equipped",
+  //       label: "Equipped",
+  //     },
+  //     {
+  //       value: "not_equipped",
+  //       label: "Not equipped",
+  //     },
+  //     {
+  //       value: "mob_is_present",
+  //       label: "Mob is present",
+  //     },
+  //     {
+  //       value: "faction_below",
+  //       label: "Faction below",
+  //     },
+  //     {
+  //       value: "health_below",
+  //       label: "Health below",
+  //     },
+  //     {
+  //       value: "quest_complete",
+  //       label: "Quest complete",
+  //     },
+  //     {
+  //       value: "quest_incomplete",
+  //       label: "Quest incomplete",
+  //     },
+  //   ],
+  //   help: `Deprecated, please use conditions instead.<br/><br/>
+  //       Which check to perform.<br/>
+  //       - in inventory: whether item template id 'argument' is in the actor's inventory.<br/>
+  //       - not in inventory: the opposite of in_inv.<br/>
+  //       - equipped: whether item template id 'argument' is equipped by the actor.<br/>
+  //       - not equipped: the opposite of equipped.<br/>
+  //       - mob is present: whether a mob with template id 'argument' in the room is present. If 'argument2' is specified as a faction, that faction is exempt from the check.<br/>
+  //       - faction below: whether a character's standing in faction 'argument' is below 'argument2'.<br/>
+  //       - health below: whether a character’s health is below a 'argument' threshold, in % of their max health.<br/>
+  //       - quest complete: whether a character has completed quest id 'argument'.<br/>
+  //       - quest incomplete: whether a character has not completed quest id 'argument'.<br/>`,
+  // },
+  // {
+  //   attr: "argument",
+  //   label: "Argument",
+  //   help: `Deprecated. Parameter depending on the check. See the 'check' field for details.`,
+  // },
+  // {
+  //   attr: "argument2",
+  //   label: "Argument 2",
+  //   help: `Deprecated. Parameter used for the 'mob_is_absent' and 'faction_below' checks. See the 'check' field for details.`,
+  // },
 ];
 
 const ROOM_ACTION: FormElement[] = [

@@ -5,7 +5,13 @@
     :endpoint="endpoint"
     :display_component="display_component"
     :schema="schema"
-  />
+  >
+    <div class="color-text-60">
+      Room Checks are a tool for restricting access to one or more rooms based on certain conditions. For more information, refer to the <a href="https://docs.writtenrealms.com/building/roomactions">Room Checks documentation</a>.
+    </div>
+  </EditableCollection>
+
+
 </template>
 
 <script lang='ts'>
