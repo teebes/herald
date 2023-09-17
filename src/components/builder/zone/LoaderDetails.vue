@@ -2,15 +2,22 @@
   <div v-if="loader" id="loader-details">
     <h2 class="entity-title">{{ loader.name }}</h2>
 
-    <div class="basic-info">
-      <div class="description">
+    <div class="basic-info mb-8">
+      <div class="description mt-2 color-text-50">
         <div v-if="loader.description">{{ loader.description }}</div>
         <div v-else>Loader has no description.</div>
       </div>
-      <div class="loader-condition" v-if="loader.loader_condition">
-        Condition:
+
+      <div class="conditions mt-2" v-if="loader.conditions">
+        <div class="color-text-50">This load will only run if the following condition(s) evaluate to true:</div>
+        <code class="my-2">{{ loader.conditions }}</code>
+      </div>
+
+      <div class="loader-condition mt-2" v-if="loader.loader_condition">
+        Zone data condition:<br/>
         <code>{{ loader.loader_condition }}</code>
       </div>
+
       <div>
         <button class="btn-thin" @click="editInfo">EDIT</button>
         <button class="btn-thin" @click="onClickDelete">DELETE</button>
@@ -59,7 +66,7 @@
             <h3>RESPAWN FREQUENCY</h3>
           </div>
           <div class="hlist-item">
-            
+
             <div class='mb-2'>
               <label>
                 <input type="checkbox" :checked="loader.inherit_zone_wait" @input="onChangeInherit" />
@@ -72,7 +79,7 @@
                 <input type="checkbox" :checked="respawns" @input="onChangeRespawns" />
                 Respawns
               </label>
-            
+
               <div class="respawn-wait mt-2" v-if="respawns">
                 <div>
                   <span
@@ -104,6 +111,7 @@ import {
 import InColumnList from "@/components/incolumnlist/List.vue";
 import { BUILDER_FORMS } from "@/core/forms.ts";
 import LoaderRule from "./LoaderRule.vue";
+import { loader_actions } from "@/store/modules/builder/zones/loaders";
 
 @Component({
   components: {
@@ -113,12 +121,6 @@ import LoaderRule from "./LoaderRule.vue";
 export default class extends Mixins(ZoneView) {
   adding: boolean = false;
   rules: any = null;
-
-  // get inherit() {
-  //   console.log(this.$store.state.builder.zones.loader);
-  //   console.log(this.$store.state.builder.zone);
-  //   return this.$store.state.builder.zones.loader.inherit;
-  // }
 
   get respawns() {
     return this.$store.state.builder.zones.loader.respawn_wait >= 0;
@@ -251,14 +253,7 @@ export default class extends Mixins(ZoneView) {
 #loader-details {
   width: 100%;
 
-  .basic-info {
-    margin-bottom: 40px;
-
-    .description {
-      margin-top: 10px;
-      color: $color-text-hex-50;
-    }
-  }
+  .basic-info { margin-bottom: 40px;  }
 
   @media ($desktop-site) {
     .config-and-rules {

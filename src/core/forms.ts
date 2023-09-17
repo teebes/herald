@@ -1015,10 +1015,17 @@ export const BUILDER_FORMS = {
       label: "Description",
       widget: "textarea",
     },
+    // {
+    //   attr: "loader_condition",
+    //   label: "Condition",
+    // },
     {
-      attr: "loader_condition",
-      label: "Condition",
-    },
+      attr: "conditions",
+      label: "Conditions",
+      help: `If one or more conditions are specified, the loader will not run unless they evaluate to true.<br/><br/>
+             Although there are many conditions, loaders only support one, 'fact_check'. This is because loaders are inherently actor-less and all the other conditions require an actor.<br/><br/>
+             For more information on conditions, refer to their <a href='https://docs.writtenrealms.com/building/conditions'>doc page</a>.`,
+    }
   ],
 
   LOADER_RULE: {

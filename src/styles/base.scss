@@ -214,7 +214,7 @@ a {
 a.gray-link {
   color: $color-text-hex-50;
   text-decoration: none;
-  
+
   &:hover,
     &:active {
       color: $color-primary;
@@ -301,6 +301,10 @@ code {
 }
 
 /* Useful class mixins */
+.hidden {
+  display: none;
+}
+
 .hover {
   &:hover {
     cursor: pointer;
