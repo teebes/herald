@@ -14,12 +14,12 @@
             {{ item_template.type }}
           </div>
 
-          <div class="notes" v-if="item_template.notes">Notes: {{ item_template.notes }}</div>
+          <div class="notes" v-if="item_template.notes">
+            <span class="color-text-70">Notes:</span> {{ item_template.notes }}
+          </div>
 
           <div class="cost">
-            <div class="color-text-70">{{ capfirst(item_template.currency) }} Value</div>
-            <!-- <div>{{ item_template.cost }} ({{ item_template.cost_budget }})</div> -->
-            <div>{{ item_template.cost }}</div>
+            <span class='color-text-70'>{{ capfirst(item_template.currency) }} Value:</span> {{ item_template.cost }}
           </div>
 
           <div class="info-actions mt-4">
@@ -48,7 +48,7 @@
             <h3>LOOK DESCRIPTION</h3>
             <div v-if="item_template.description">
               <div class='description-line'
-                   v-for="(line, index) in item_template.description.split('\n')" 
+                   v-for="(line, index) in item_template.description.split('\n')"
                    :key="index">
                 {{ line }}
               </div>
