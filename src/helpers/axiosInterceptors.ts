@@ -38,7 +38,12 @@ export default function setup() {
         } else {
           const error_keys = Object.keys(errorData);
           if (error_keys.length) {
-            errorMsg += ": " + errorData[error_keys[0]][0];
+            errorMsg += ":"
+            for (let i = 0; i < error_keys.length; i++) {
+              let fieldName = error_keys[i];
+              let fieldError = errorData[fieldName][0];
+              errorMsg += "\n" + fieldName + " - " + fieldError;
+            }
           } else {
             errorMsg += ".";
           }

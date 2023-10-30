@@ -13,8 +13,8 @@
       <div class="review-details" v-if="review_status == 'Reviewed'">
         <div class="reviewer color-text-60 mb-2">Comments by {{ review.reviewer }}:</div>
         <div class="review-text mb-4">
-          <div class="review-line min-line-height" 
-              v-for="(line, index) in review.text.split('\n')" 
+          <div class="review-line min-line-height"
+              v-for="(line, index) in review.text.split('\n')"
               :key="index">{{ line }}</div>
           </div>
       </div>
@@ -51,7 +51,7 @@
             <li>
               Game
               <template v-if="!config.is_narrative">
-                allows combat, pvp mode is 
+                allows combat, pvp mode is
                 <span v-if="config.pvp_mode === 'free_for_all'">Free for All.</span>
                 <span v-else-if="config.pvp_mode === 'zone'">PvP Zones.</span>
                 <span v-else>Disabled.</span>
@@ -202,6 +202,7 @@ import Help from "@/components/Help.vue";
 import { BUILDER_FORMS, FormElement } from "@/core/forms";
 import { UI_MUTATIONS } from "@/constants";
 import WorldView from "@/components/builder/world/WorldView.ts";
+import ReviewInstructions from "@/components/builder/world/ReviewInstructions.vue";
 
 @Component({
   components: {
@@ -278,7 +279,7 @@ export default class WorldFrame extends Mixins(WorldView) {
       references: "room",
       required: true,
       help: `Which room a new player starts in by default.<br/><br/>
-             A starting room can also be defined at the Faction level, 
+             A starting room can also be defined at the Faction level,
              which will take precendence over this default starting room.`,
     };
     const death_mode: FormElement = {
@@ -441,8 +442,25 @@ export default class WorldFrame extends Mixins(WorldView) {
     this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
 
-  async submitForReview() { 
-    await this.$store.dispatch("builder/worlds/submit_world_for_review");
+  async submitForReview() {
+    const modal = {
+      title: 'Submit For Review',
+      data: { 'description': '' },
+      submitLabel: 'SUBMIT',
+      schema: [
+        {
+          attr: 'description',
+          label: 'Description',
+          widget: 'textarea',
+          help: `Describe your world to the reviewer.`
+        }
+      ],
+      action: "builder/worlds/submit_world_for_review",
+      slot: ReviewInstructions,
+    };
+    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
+
+    //await this.$store.dispatch("builder/worlds/submit_world_for_review");
   }
 
   async deleteWorld() {

@@ -2,7 +2,7 @@
   <div id="notification-box">
     <div class="ui-notification" :class="$store.state.ui.notificationType">
       <div class="notification-background"></div>
-      <div class="message">{{ $store.state.ui.notification }}</div>
+      <div class="message" v-html="formattedNotification"></div>
       <div class="close-button" aria-label="Close" @click="closeNotification">
         <span aria-hidden="true">&#10006;</span>
       </div>
@@ -16,6 +16,10 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 @Component({})
 export default class Notification extends Vue {
   timeout: number | null = null;
+
+  get formattedNotification() {
+    return this.$store.state.ui.notification.replace(/\n/g, '<br />');
+  }
 
   mounted() {
     if (this.$store.state.ui.notification_expires) {
@@ -48,4 +52,3 @@ export default class Notification extends Vue {
   z-index: 30000;
 }
 </style>
-

@@ -41,7 +41,7 @@
 
       <div class="action-bar">
         <button class="btn-large action-cancel" type="button" @click="$emit('close')">CANCEL</button>
-        <button class="btn-large action-save" @click="$emit('save')">SAVE CHANGES</button>
+        <button class="btn-large action-save" @click="$emit('save')">{{ submitLabel || 'SAVE CHANGES' }}</button>
       </div>
     </form>
   </div>
@@ -66,6 +66,8 @@ export default class EditEntity extends Vue {
   @Prop() data!: any;
   // Action to call on successful save
   @Prop() action!: string;
+  // Label for the submit button
+  @Prop() submitLabel!: string;
 
   formData: any = {};
   formErrors: any = {};
