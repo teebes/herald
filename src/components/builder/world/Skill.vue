@@ -14,14 +14,14 @@
     <li>
       <template v-if="resource.cast_time">{{ resource.cast_time }} sec cast time,</template>
       <template v-else>Instant cast,</template>
-      
+
       <template v-if="resource.cooldown">{{ resource.cooldown }} sec cooldown.</template>
       <template v-else>no cooldown.</template>
     </li>
 
     <!-- Cost -->
     <li v-if="resource.cost">
-      Costs 
+      Costs
       <template v-if="resource.cost_calc == 'perc_base'">{{ resource.cost }}% of base</template>
       <template v-else-if="resource.cost_calc == 'perc_max'">{{ resource.cost }}% of max</template>
       <template v-else>{{ resource.cost }}</template>
@@ -44,7 +44,7 @@
         </template>
       </template>
       <template v-else>
-        Initially deals 
+        Initially deals
         <template v-if="resource.damage_calc == 'fixed'">
           {{ resource.damage }} {{ resource.damage_type}} damage.
         </template>
@@ -65,10 +65,10 @@
 
     <!-- Effect Damage -->
     <li v-if="resource.effect_damage && (resource.effect == 'dot' || resource.effect == 'hot')">
-        Effect 
+        Effect
         <!-- Dot damage -->
         <template v-if="resource.effect == 'dot'">
-          deals 
+          deals
           <template v-if="resource.effect_damage_calc == 'fixed'">
             {{ resource.effect_damage }} {{ resource.effect_damage_type}} damage.
           </template>
@@ -94,7 +94,7 @@
           </template>
           over {{ resource.effect_duration }} secs.
         </template>
-      </li>    
+      </li>
 
     <!-- Consumes -->
     <li v-if="resource.consumes">
@@ -102,6 +102,9 @@
     </li>
 
     <!-- Requires -->
+    <li v-if="resource.requires">
+      Requires: <span class='ml-2'>{{ resource.requires }}</span>
+    </li>
 
     <li v-if="resource.help">
       Help entry: {{ resource.help }}

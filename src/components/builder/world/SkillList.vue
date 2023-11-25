@@ -155,20 +155,22 @@ export default class WorldFrame extends Mixins(WorldView) {
         {
           value: null,
           label: "None",
-        },
-        {
-            value: "stun",
-            label: "Stun",
-        },{
-            value: "sleep",
-            label: "Sleep",
-        },{
-            value: "dot",
-            label: "DOT",
-        },{
-            value: "hot",
-            label: "HOT",
-        },
+        }, {
+          value: "stun",
+          label: "Stun",
+        }, {
+          value: "sleep",
+          label: "Sleep",
+        }, {
+          value: "dot",
+          label: "DOT",
+        }, {
+          value: "hot",
+          label: "HOT",
+        }, {
+          value: "absorb",
+          label: "Absorb",
+        }
       ]
     };
     const effect_duration: FormElement = {

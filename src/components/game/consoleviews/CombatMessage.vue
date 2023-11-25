@@ -24,8 +24,8 @@
         </span>
 
         <span v-else class='nowrap'>
-          {{ message.data.damage_taken }} dmg 
-        </span>        
+          {{ message.data.damage_taken }} dmg
+        </span>
       </div>
 
       <div class='crit' style='width: 0.5em; text-align: right'><span v-if="message.data.is_crit_hit">!</span></div>
@@ -127,11 +127,22 @@ export default class CombatMessage extends Vue {
   }
 
   get message_type() {
-    if (this.message.data.attack === "attack") return "Attack";
-    return (
-      this.$store.state.game.world.labels.attacks[this.message.data.attack] ||
-      "Special Attack"
-    );
+    const attack = this.message.data.attack;
+
+    let label;
+    const world = this.$store.state.game.world;
+    // See if we find a label in the world labels (for regular skills)
+    if (world.labels.attacks[attack]) {
+      label = world.labels.attacks[attack];
+    } else if (world && world.skills && world.skills.custom) {
+      // See if we find a label in the custom skills (for custom skills)
+      const customSkill = world.skills.custom.definitions[attack];
+      if (customSkill) {
+        label = customSkill.name;
+      }
+    }
+
+    return label || "Special Attack";
   }
 }
 </script>
