@@ -13,6 +13,7 @@
       <span v-if="player.is_invisible" class="ml-1 color-text-50"
         >[invisible]</span
       >
+      <span v-if="player.link_id" class="ml-2 color-text-50">[link {{ player.link_id }}]</span>
     </div>
 
     <template v-if="grapevine_worlds.length">
