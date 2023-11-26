@@ -14,6 +14,7 @@
         <span v-else class='color-text-50'>&gt;</span>
         {{ capfirst(message.data.target.keyword) }}
         <span v-if="message.data.outcome === 'dodged'" class='color-text-30'>(dodge)</span>
+        <span v-if="message.data.damage_absorbed" class='color-text-30'>({{ message.data.damage_absorbed }} abs)</span>
       </div>
 
       <!-- Damage and healing done -->
