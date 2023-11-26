@@ -12,14 +12,13 @@ const actions = {
     const [
       my_reviews, unassigned_reviews
     ] = await Promise.all([user_reviews_promise, unassigned_reviews_promise]);
-    
+
     commit("set_user_reviews", my_reviews.data.results);
     commit("set_unassigned_reviews", unassigned_reviews.data.results);
   },
 
-  edit_review: async ({ commit, dispatch }, data ) => { 
-    console.log(data);
-    const resp = await axios.put(`/staff/reviews/${data.id}/`, data);
+  edit_review: async ({ commit, dispatch }, data ) => {
+    const resp = await axios.patch(`/staff/reviews/${data.id}/`, data);
     dispatch('load_endpoints');
   },
 
