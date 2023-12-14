@@ -3,6 +3,7 @@ import Router, { Route } from "vue-router";
 
 // Views
 import About from "./views/About.vue";
+import CodeOfConduct from "./views/CodeOfConduct.vue";
 import Home from "./views/Home.vue";
 import Lobby from "./views/Lobby.vue";
 import Login from "./views/Login.vue";
@@ -556,6 +557,12 @@ const router = new Router({
       path: "/about",
       name: ABOUT,
       component: About,
+    },
+
+    {
+      path: "/conduct",
+      name: 'conduct',
+      component: CodeOfConduct,
     },
 
     {

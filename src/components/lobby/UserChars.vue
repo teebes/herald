@@ -10,8 +10,8 @@
             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
           </div>
 
-          <UserCharActions 
-            :player="char" 
+          <UserCharActions
+            :player="char"
             :world="world"
             v-if="more_actions[char.id]" @close="onCloseCharActions"/>
 
@@ -48,6 +48,7 @@ import { capitalize } from "@/core/utils.ts";
 import { LOBBY_WORLD_TRANSFER } from "@/router.ts";
 import UserCharActions from "@/components/lobby/UserCharActions.vue";
 
+import CodeOfConduct from "./CodeOfConduct.vue";
 
 @Component({
   components: {
@@ -87,10 +88,20 @@ export default class UserChars extends Vue {
   }
 
   async onEnter(char) {
-    this.$store.dispatch("game/world_enter", {
-      player_id: char.id,
-      world_id: this.$route.params.world_id,
-    });
+    const cod_accepted = this.$store.state.auth.user.cod_accepted;
+    if (cod_accepted) {
+      this.$store.dispatch("game/world_enter", {
+        player_id: char.id,
+        world_id: this.$route.params.world_id,
+      });
+    } else {
+      const modal = {
+        component: CodeOfConduct,
+        options: { closeOnOutsideClick: true },
+        action: "auth/accept_code_of_conduct",
+      };
+      this.$store.commit("ui/modal_set", modal);
+    }
   }
 
   async onTransfer(char) {
@@ -112,7 +123,7 @@ export default class UserChars extends Vue {
       this.more_actions = {};
     } else {
       this.more_actions = {};
-      this.more_actions[char_id] = true;  
+      this.more_actions[char_id] = true;
     }
   }
 

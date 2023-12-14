@@ -163,7 +163,13 @@ const actions = {
         );
       }
     }
+  },
+
+  accept_code_of_conduct: async ({ commit }) => {
+    const resp = await axios.post("/auth/acceptcodeofconduct/", {});
+    commit("user_set", resp.data);
   }
+
 };
 
 const mutations = {

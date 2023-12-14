@@ -77,8 +77,8 @@
     </div>
 
     <div class="divider lower-divider"></div>
-    
-  
+
+
     <!-- Playing -->
     <div class="lobby-section playing">
       <div class="section-title">Playing</div>
@@ -86,7 +86,7 @@
            :class="{ two_length: playing_worlds.length === 2}">
         <WorldCard v-for="world in playing_worlds" :key="world.id" :world="world"/>
       </div>
-      <router-link 
+      <router-link
         :to="{ name: 'lobby_section', params: { section: 'playing' } }"
         class="lobby-section-link"
         v-if="playing_worlds.length > 0">
@@ -107,7 +107,7 @@
           <button class="btn btn-add">CREATE WORLD</button>
         </router-link>
       </div>
-      <router-link 
+      <router-link
         :to="{ name: 'lobby_section', params: { section: 'building' } }"
         class="lobby-section-link">
         View More
@@ -121,7 +121,7 @@
           <WorldCard v-for="world in intro_worlds" :key="world.id" :world="world"/>
         </div>
     </div>
-    
+
 
     <div class="divider lower-divider"></div>
 
@@ -133,7 +133,7 @@
       </div>
       <div class="mb-8">
         <label class="color-text-60">
-          <input type="checkbox" 
+          <input type="checkbox"
                  v-model="include_unreviewed"> Include unpublished worlds
         </label>
       </div>
@@ -159,6 +159,7 @@ import {
 import { INTRO_WORLD_ID } from "@/config";
 import { World } from "@/core/interfaces";
 import WorldCard from "@/components/WorldCard.vue"
+import CodeOfConduct from "@/components/lobby/CodeOfConduct.vue";
 
 @Component({
   components: {
@@ -219,7 +220,7 @@ export default class Lobby extends Vue {
       intro_worlds_promise
     ]);
 
-  
+
     this.chars = chars_resp.data.results;
     this.featured_worlds = featured_worlds_resp.data.results;
     this.discover_worlds = discover_worlds_resp.data.results;
@@ -237,10 +238,20 @@ export default class Lobby extends Vue {
   }
 
   onEnter(char) {
-    this.$store.dispatch("game/world_enter", {
-      player_id: char.id,
-      world_id: this.$route.params.world_id
-    });
+    const cod_accepted = this.$store.state.auth.user.cod_accepted;
+    if (cod_accepted) {
+      this.$store.dispatch("game/world_enter", {
+        player_id: char.id,
+        world_id: this.$route.params.world_id
+      });
+    } else {
+      const modal = {
+        component: CodeOfConduct,
+        options: { closeOnOutsideClick: true },
+        action: "auth/accept_code_of_conduct"
+      };
+      this.$store.commit("ui/modal_set", modal);
+    }
   }
 
   onTransfer(char) {
@@ -357,8 +368,8 @@ export default class Lobby extends Vue {
     }
   }
 
-  /* 
-    Horizontal section of the lobby, capped at 850 width and 
+  /*
+    Horizontal section of the lobby, capped at 850 width and
     centered at lower widths.
   */
   .lobby-section {
@@ -428,8 +439,8 @@ export default class Lobby extends Vue {
         width: 270px;
         height: 140px;
 
-        > button { 
-          height: 100%; 
+        > button {
+          height: 100%;
           font-size: 15px;
           letter-spacing: 1.12px;
           line-height: 18px;
@@ -445,8 +456,8 @@ export default class Lobby extends Vue {
     }
   }
 
-  .featured-wrapper { 
-    width: 375px; 
+  .featured-wrapper {
+    width: 375px;
   }
 
   .recent-chars-wrapper {
@@ -486,10 +497,10 @@ export default class Lobby extends Vue {
 
   .namubumo {
     a { color: $color-secondary; }
-    a { 
-      &:hover { 
-        text-decoration: none; 
-        color: $color-primary; 
+    a {
+      &:hover {
+        text-decoration: none;
+        color: $color-primary;
       }
     }
   }
