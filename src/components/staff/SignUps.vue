@@ -40,7 +40,8 @@ export default class StaffSignUps extends Vue {
       { name: "name", label: "Name" },
       { name: "email", label: "Email", light: true },
       { name: "date_joined_str", label: "Joined", light: true },
-      { name: "send_newsletter", label: "Sub", light: true }
+      { name: "send_newsletter", label: "Sub", light: true },
+      { name: "is_confirmed", label: "Conf", light: true}
     ];
   }
 }

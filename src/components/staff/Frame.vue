@@ -1,6 +1,7 @@
 <template>
   <div id="page" class="frame">
     <div class="staff-nav side-nav">
+      <router-link :to="{name: 'staff_index'}">Panel</router-link>
       <router-link :to="to_playing">Playing</router-link>
       <router-link :to="to_signups">Signups</router-link>
       <router-link :to="to_worlds">Worlds</router-link>
