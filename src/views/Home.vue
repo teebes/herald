@@ -189,7 +189,7 @@
               <div class='patron' v-for="patron in patron_group" :key="patron.id">
                 {{ getName(patron) }}
               </div>
-            </div>            
+            </div>
           </div>
         </div>
       </div>
@@ -213,11 +213,14 @@
         </div>
         <div class="bottom-links mt-4">
           <router-link to="/terms">Terms</router-link>
-          <router-link to="/privacy">Privacy</router-link>          
+          <router-link to="/privacy">Privacy</router-link>
         </div>
+        <div class="bottom-links mt-4">
+            <router-link to="/conduct">Code of Conduct</router-link>
+          </div>
       </div>
 
-      <div class="copyright">&copy; 2020 Morel Software, LLC</div>
+      <div class="copyright">&copy; 2024 Morel Software, LLC</div>
     </div>
   </div>
 </template>
