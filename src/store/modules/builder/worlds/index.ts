@@ -1,5 +1,8 @@
 import axios from "axios";
-import { mob_template_actions, mob_template_mutations } from "./mob_templates";
+import {
+  mob_template_actions,
+  mob_template_mutations
+} from "./mob_templates";
 import {
   item_template_actions,
   item_template_mutations
@@ -7,9 +10,14 @@ import {
 
 const initial_state = () => {
   return {
+    // Used for player details screen
     player: null,
 
+    // Used for the World Config screen
     config: null,
+
+    // Used for the World Admin screen
+    world_admin: null,
 
     mob_template: null,
     mob_template_loads: [],
@@ -25,6 +33,13 @@ export default {
   namespaced: true,
   state: initial_state(),
   actions: {
+    world_admin_fetch: async ({ commit, rootState }, world_id) => {
+      console.log('fetching');
+      const resp = await axios.get(`/builder/worlds/${world_id}/admin/`);
+      console.log(resp.data);
+      commit("world_admin_set", resp.data);
+    },
+
     player_fetch: async ({ commit }, { world_id, player_id }) => {
       const resp = await axios.get(
         `/builder/worlds/${world_id}/players/${player_id}/`
@@ -120,6 +135,10 @@ export default {
       Object.keys(s).forEach(key => {
         state[key] = s[key];
       });
+    },
+
+    world_admin_set: (state, world_admin) => {
+      state.world_admin = world_admin;
     },
 
     player_set: (state, player) => {

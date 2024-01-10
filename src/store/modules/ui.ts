@@ -1,4 +1,5 @@
 import { UI_ACTIONS, UI_MUTATIONS } from "@/constants";
+import { FORGE_WS_URI } from "@/config";
 
 const state = {
   notification: "",
@@ -6,7 +7,9 @@ const state = {
   notification_expires: 3000,
   modal: "",
   modal_data: {}, // data that can optionally be passed to the modal when invoking it,
-  editingField: false
+  editingField: false,
+
+  forge_ws: null,
 };
 
 const getters = {};
@@ -21,7 +24,77 @@ const actions = {
     } else if (error.request) {
       commit(UI_MUTATIONS.SET_NOTIFICATION_ERROR, "Error sending request.");
     }
+  },
+
+  connect_forge_ws: async ({ commit, dispatch, rootState }) => {
+    // We only use a Forge websocket connection for authenticated users
+    if (!rootState.auth.token) {
+      return;
+    }
+
+    const uri = FORGE_WS_URI + '?token=' + rootState.auth.token;
+    const ws = new WebSocket(uri);
+
+    const heartbeatInterval = 30000; // 30 seconds
+    let heartbeatHandle;
+
+    ws.onopen = () => {
+      heartbeatHandle = setInterval(() => {
+        ws.send(JSON.stringify({type: 'heartbeat'}));
+      }, heartbeatInterval);
+      console.log('Connected to Forge Websocket.')
+    };
+
+    ws.onmessage = msg => {
+      const data = JSON.parse(msg.data);
+      console.log("Receive from Forge WS: ", msg)
+      dispatch("receive_forge_ws_message", data);
+    };
+
+    ws.onclose = () => {
+      if (heartbeatHandle) {
+        clearInterval(heartbeatHandle);
+      }
+    };
+
+    commit('set_forge_ws', ws);
+  },
+
+  forge_ws_disconnected: ({ commit }) => {
+    commit('set_forge_ws', null);
+  },
+
+  // Most important routine for handling messages from the Forge websocket
+  receive_forge_ws_message: ({ dispatch, commit, rootState }, data) => {
+
+    // Handle a player entering a world
+    if (data.type === 'world_entered') {
+      dispatch('game/enter_ready_world', {
+        player_id: data.player_id,
+        world: data.world,
+        player_config: data.player_config,
+      }, { root: true });
+
+    // Handle a message published to a channel
+    } else if (data.type === 'pub') {
+
+      // The world has changed, update the builder state
+      if (data.subscription === 'builder.world') {
+        console.log('updating builder wotld to ', data.data);
+        commit('builder/world_set', data.data, {root: true});
+      }
+
+    } else if (data.type === 'notify') {
+      commit('notification_set', data.message);
+    }
+  },
+
+  send_forge_ws: ({ state }, data) => {
+    if (state.forge_ws) {
+      state.forge_ws.send(JSON.stringify(data));
+    }
   }
+
 };
 
 const mutations = {
@@ -82,7 +155,13 @@ const mutations = {
 
   clearNotification(state) {
     state.notification = "";
-  }
+  },
+
+  set_forge_ws: (state, ws) => {
+    state.forge_ws = ws;
+  },
+
+
 };
 
 export default {

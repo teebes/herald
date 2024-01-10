@@ -238,15 +238,34 @@ export default class WorldFrame extends Vue {
       this.$store.commit(BUILDER_MUTATIONS.ROOM_SET, room);
       this.$store.commit(BUILDER_MUTATIONS.ZONE_SET, room.zone);
     }
-    return world;
 
-    // console.log("getting");
-    // await Promise.all([map_promise, world_promise]);
-    // console.log("got");
+    /* Subscribe to updates from the Forge for this world */
+    if (!this.$store.state.ui.forge_ws) {
+      await this.$store.dispatch('ui/connect_forge_ws');
+    }
+
+    if (this.$store.state.ui.forge_ws) {
+      await this.$store.dispatch('ui/send_forge_ws', {
+        'type': 'sub',
+        'subscription': 'builder.world',
+        'world_id': this.$route.params.world_id
+      })
+    }
+
+    return world;
   }
 
   async destroyed() {
     await this.$store.commit(BUILDER_MUTATIONS.RESET_STATE);
+
+    // Unsubscribe from world Forge updates
+    if (this.$store.state.ui.forge_ws) {
+      await this.$store.dispatch('ui/send_forge_ws', {
+        'type': 'unsub',
+        'subscription': 'builder.world',
+        'world_id': this.$route.params.world_id
+      })
+    }
   }
 
   get room() {

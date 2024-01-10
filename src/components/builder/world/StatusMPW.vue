@@ -5,6 +5,10 @@
     <div v-if="admin_data">
       <h3 class="mt-8 mb-2">MULTI PLAYER WORLD</h3>
 
+      <div v-if="admin_data.cluster_data && admin_data.cluster_data.is_cluster">
+        Cluster data: {{ admin_data.cluster_data }}
+      </div>
+
       <div>{{ admin_data.api_num_players }} player characters</div>
 
       <div class="mt-4">API state: {{ admin_data.api_state }}</div>
@@ -36,7 +40,7 @@
         <button class="btn btn-small start" :disabled="disableStart" @click="onStart">START</button>
         <button class="btn btn-small stop" :disabled="disableStop" @click="onStop">STOP</button>
         <button class="btn btn-small kill" @click="onKill">KILL</button>
-        <button class="btn btn-small clean" :disabled="disableClean" @click="onClean">CLEAN</button>
+        <!-- <button class="btn btn-small clean" :disabled="disableClean" @click="onClean">CLEAN</button> -->
       </div>
     </div>
   </div>
@@ -87,9 +91,10 @@ export default class StatusMPW extends Mixins(WorldView) {
 
   async mounted() {
     this.update_data();
-    this.interval = setInterval(() => {
-      this.update_data();
-    }, 10000);
+
+    // this.interval = setInterval(() => {
+    //   this.update_data();
+    // }, 10000);
   }
 
   destroyed() {
@@ -149,7 +154,7 @@ export default class StatusMPW extends Mixins(WorldView) {
     const resp = await axios.post(`/builder/worlds/${this.world.id}/kill/`);
     this.admin_data = resp.data;
     this.action_submitted = false;
-    this.$store.commit("ui/notification_set", "World killed.");
+    this.$store.commit("ui/notification_set", "Kill process started.");
   }
 
   async onClean() {

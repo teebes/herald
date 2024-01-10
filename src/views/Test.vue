@@ -1,8 +1,8 @@
 <template>
   <div id="test">
     <button @click="go">Go</button>
-    <br />
-    <div class="castbar" :ref="castbar" style="width: 100%"></div>
+    <!-- <br />
+    <div class="castbar" :ref="castbar" style="width: 100%"></div> -->
   </div>
 </template>
 
@@ -15,29 +15,18 @@ export default class extends Vue {
   show: boolean = false;
   expanded: boolean = false;
 
-  get castbar() {
-    return "castbar";
-  }
-
   go() {
-    // const t1 = new TweenMax({
-    //   onComplete: function() {
-    //     console.log("complete!");
-    //   }
-    // });
-    var castbar = this.$refs.castbar;
-    if (!this.expanded) {
-      console.log("expanding");
-      TweenLite.to(castbar, 10, { width: "200px" });
-      // TweenLite.to(castbar, 10, { width: "100%" });
-    } else {
-      console.log("contracting");
-      TweenLite.to(castbar, 10, { width: "0" });
-      // TweenLite.to(castbar, 10, { width: "0%" });
-    }
-    this.expanded = !this.expanded;
+    const websocket = new WebSocket('ws://localhost:8888');
+    console.log('sending');
+    websocket.onopen = () => {
+      websocket.send(JSON.stringify({'type': 'test.test'}));
+      console.log('sent');
 
-    // console.log("done!");
+      // websocket.close()
+      // console.log('closed');
+    }
+    
+    // websocket.close();
   }
 }
 </script>

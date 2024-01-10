@@ -5,11 +5,12 @@ import router, {
 } from "@/router";
 import axios from "axios";
 import { LOBBY_WORLD_DETAIL } from "@/router";
-import { WS_URI } from "@/config.ts";
+import { WS_URI, FORGE_WS_URI } from "@/config";
 import _ from "lodash";
 import Vue from "vue";
-import EventBus from "@/core/eventbus.ts";
-import { INTRO_WORLD_ID } from "@/config.ts";
+import EventBus from "@/core/eventbus";
+import { INTRO_WORLD_ID } from "@/config";
+import { UI_MUTATIONS, GAME_ACTIONS as ACTIONS } from "@/constants";
 
 // Want to make sure we can read THIS
 // Running one more test
@@ -21,6 +22,7 @@ const set_initial_state = () => {
     player_id: null,
     world_id: null,
     uri: WS_URI,
+    forge_ws_uri: FORGE_WS_URI,
     room_key: null,
     is_mobile: false,
     width: 0,
@@ -183,7 +185,7 @@ const receiveMessage = async ({
   // Disconection
   if (message_data.type === "system.disconnect.success") {
     if (
-      message_data.data.context && 
+      message_data.data.context &&
       message_data.data.context.split(".")[1] === INTRO_WORLD_ID &&
       rootState.auth.user.is_temporary
     ) {
@@ -442,7 +444,7 @@ const receiveMessage = async ({
   }
 
   // Exit Instance
-  if (message_data.type === 'cmd.leave.success') { 
+  if (message_data.type === 'cmd.leave.success') {
     commit("full_screen_message_set", "Exiting Instance...")
     dispatch("world_enter", {
       player_id: state.player.id,
@@ -479,6 +481,45 @@ const receiveMessage = async ({
 };
 
 const actions = {
+
+  request_enter_world: async ({ commit, dispatch, state }, { player_id, world_id }) => {
+    commit("reset_state");
+    commit(
+      UI_MUTATIONS.SET_NOTIFICATION,
+      { text: "Entering world...", expires: false },
+      { root: true });
+
+    try {
+      const resp = await axios.post(`/game/enter/`, {
+        player_key: `player.${player_id}`,
+      });
+      /*
+        If this is successful, an async task got triggered which will
+        be notified to the UI via a Forge websocket message. So we just
+        exit as soon as we get a response.
+      */
+      return;
+
+    } catch (e) {
+      let error_message = "Unable to enter world.";
+      if (e.response.status === 400 && e.response.data && e.response.data.length) {
+        error_message = e.response.data[0];
+      }
+      commit(UI_MUTATIONS.SET_NOTIFICATION_ERROR, error_message, {
+        root: true,
+      });
+    }
+  },
+
+  enter_ready_world: async ({ commit, dispatch }, { player_id, player_config, world }) => {
+    commit("reset_state");
+    commit("ws_uri_set", `ws://localhost/websocket/${world.context_id}/cmd`);
+    commit("world_set", world);
+    commit("player_config_set", player_config);
+    commit("pregame_set", { player_id: player_id });
+    dispatch("openWebSocket");
+  },
+
   world_enter: async ({ commit, dispatch, state }, { player_id }) => {
     commit("reset_state");
     commit(
@@ -492,6 +533,9 @@ const actions = {
       });
       commit("world_set", resp.data.world);
       commit("player_config_set", resp.data.player_config);
+      if (resp.data.cluster_id) {
+        commit("ws_uri_set", `ws://localhost/websocket/${resp.data.cluster_id}/cmd`);
+      }
 
       commit("pregame_set", {
         player_id: player_id,
@@ -668,6 +712,10 @@ const mutations = {
 
   messages_clear: (state) => {
     state.messages = [];
+  },
+
+  ws_uri_set: (state, uri) => {
+    state.uri = uri;
   },
 
   openWS: (state, { onopen, onmessage }) => {

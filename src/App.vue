@@ -61,6 +61,12 @@ Vue.directive("interactive", interactive);
   }
 })
 export default class App extends Vue {
+
+  mounted() {
+    console.log('Opening Forge WS...')
+    this.$store.dispatch("ui/connect_forge_ws");
+  }
+
   get showHeader() {
     if (
       this.$route.name == "home" ||
