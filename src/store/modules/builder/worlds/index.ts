@@ -17,7 +17,16 @@ const initial_state = () => {
     config: null,
 
     // Used for the World Admin screen
-    world_admin: null,
+    world_admin: {
+      id: null,
+      multiplayer_data: {
+        main_instance: null,
+      },
+      singleplayer_data: {
+        spw_count: 0,
+        live_spw_instances: [],
+      },
+    },
 
     mob_template: null,
     mob_template_loads: [],
@@ -33,9 +42,25 @@ export default {
   namespaced: true,
   state: initial_state(),
   actions: {
+
     world_admin_fetch: async ({ commit, rootState }, world_id) => {
-      console.log('fetching');
       const resp = await axios.get(`/builder/worlds/${world_id}/admin/`);
+      commit("world_admin_set", resp.data);
+    },
+
+    world_admin_start: async ({ commit, rootState }, world_id) => {
+      const resp = await axios.post(`/builder/worlds/${world_id}/start/`);
+      commit("world_admin_set", resp.data);
+    },
+
+    world_admin_stop: async ({ commit, rootState }, world_id) => {
+      const resp = await axios.post(`/builder/worlds/${world_id}/stop/`);
+      commit("world_admin_set", resp.data);
+    },
+
+    world_admin_kill: async ({ commit, rootState }, world_id) => {
+      const resp = await axios.post(`/builder/worlds/${world_id}/kill/`);
+      console.log('kill response:')
       console.log(resp.data);
       commit("world_admin_set", resp.data);
     },

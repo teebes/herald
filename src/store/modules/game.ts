@@ -511,9 +511,10 @@ const actions = {
     }
   },
 
-  enter_ready_world: async ({ commit, dispatch }, { player_id, player_config, world }) => {
+  enter_ready_world: async ({ commit, dispatch }, { player_id, player_config, world, nexus_name }) => {
     commit("reset_state");
-    commit("ws_uri_set", `ws://localhost/websocket/${world.context_id}/cmd`);
+    console.log('nexus name: ' + nexus_name);
+    commit("ws_uri_set", `ws://localhost/websocket/${nexus_name}/cmd`);
     commit("world_set", world);
     commit("player_config_set", player_config);
     commit("pregame_set", { player_id: player_id });
@@ -567,7 +568,12 @@ const actions = {
     const onmessage = (event) => {
       receiveMessage({ event, rootState, state, dispatch, commit });
     };
-    commit("openWS", { onopen, onmessage });
+
+    const onerror = (error) => {
+      console.error('WebSocket Error:', error);
+    };
+
+    commit("openWS", { onopen, onmessage, onerror });
   },
 
   sendWSMessage: async ({ rootState, state }, payload) => {
@@ -718,10 +724,11 @@ const mutations = {
     state.uri = uri;
   },
 
-  openWS: (state, { onopen, onmessage }) => {
+  openWS: (state, { onopen, onmessage, onerror }) => {
     state.websocket = new WebSocket(state.uri);
     state.websocket.onopen = onopen;
     state.websocket.onmessage = onmessage;
+    state.websocket.onerror = onerror;
   },
 
   closeWs: (state) => {

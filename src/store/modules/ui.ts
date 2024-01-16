@@ -47,7 +47,6 @@ const actions = {
 
     ws.onmessage = msg => {
       const data = JSON.parse(msg.data);
-      console.log("Receive from Forge WS: ", msg)
       dispatch("receive_forge_ws_message", data);
     };
 
@@ -60,6 +59,47 @@ const actions = {
     commit('set_forge_ws', ws);
   },
 
+  aconnect_forge_ws: ({ commit, dispatch, rootState }) => {
+    return new Promise((resolve, reject) => {
+      // We only use a Forge websocket connection for authenticated users
+      if (!rootState.auth.token) {
+        reject(new Error("No authentication token found."));
+        return;
+      }
+
+      const uri = FORGE_WS_URI + '?token=' + rootState.auth.token;
+      const ws = new WebSocket(uri);
+
+      const heartbeatInterval = 30000; // 30 seconds
+      let heartbeatHandle;
+
+      ws.onopen = () => {
+        heartbeatHandle = setInterval(() => {
+          ws.send(JSON.stringify({type: 'heartbeat'}));
+        }, heartbeatInterval);
+        console.log('Connected to Forge Websocket.');
+        commit('set_forge_ws', ws);
+        resolve(ws);
+      };
+
+      ws.onmessage = msg => {
+        const data = JSON.parse(msg.data);
+        dispatch("receive_forge_ws_message", data);
+      };
+
+      ws.onerror = (error) => {
+        console.error('WebSocket Error:', error);
+        reject(error);
+      };
+
+      ws.onclose = () => {
+        if (heartbeatHandle) {
+          clearInterval(heartbeatHandle);
+        }
+      };
+    });
+  },
+
   forge_ws_disconnected: ({ commit }) => {
     commit('set_forge_ws', null);
   },
@@ -67,21 +107,27 @@ const actions = {
   // Most important routine for handling messages from the Forge websocket
   receive_forge_ws_message: ({ dispatch, commit, rootState }, data) => {
 
+    console.log("Receive from Forge WS: ", data)
+
     // Handle a player entering a world
     if (data.type === 'world_entered') {
       dispatch('game/enter_ready_world', {
         player_id: data.player_id,
         world: data.world,
         player_config: data.player_config,
+        nexus_name: data.nexus_name
       }, { root: true });
 
     // Handle a message published to a channel
     } else if (data.type === 'pub') {
 
       // The world has changed, update the builder state
-      if (data.subscription === 'builder.world') {
-        console.log('updating builder wotld to ', data.data);
-        commit('builder/world_set', data.data, {root: true});
+      if (data.subscription === 'builder.admin') {
+        commit('builder/worlds/world_admin_set', data.data, {root: true});
+      }
+
+      if (data.subscription === 'staff.panel') {
+        commit('staff/staff_panel_set', data.data, {root: true});
       }
 
     } else if (data.type === 'notify') {
@@ -92,6 +138,7 @@ const actions = {
   send_forge_ws: ({ state }, data) => {
     if (state.forge_ws) {
       state.forge_ws.send(JSON.stringify(data));
+      console.log('sent to forge ws: ', data);
     }
   }
 

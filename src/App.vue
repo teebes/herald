@@ -62,9 +62,9 @@ Vue.directive("interactive", interactive);
 })
 export default class App extends Vue {
 
-  mounted() {
+  async mounted() {
     console.log('Opening Forge WS...')
-    this.$store.dispatch("ui/connect_forge_ws");
+    await this.$store.dispatch("ui/aconnect_forge_ws");
   }
 
   get showHeader() {

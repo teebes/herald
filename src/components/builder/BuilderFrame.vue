@@ -239,19 +239,6 @@ export default class WorldFrame extends Vue {
       this.$store.commit(BUILDER_MUTATIONS.ZONE_SET, room.zone);
     }
 
-    /* Subscribe to updates from the Forge for this world */
-    if (!this.$store.state.ui.forge_ws) {
-      await this.$store.dispatch('ui/connect_forge_ws');
-    }
-
-    if (this.$store.state.ui.forge_ws) {
-      await this.$store.dispatch('ui/send_forge_ws', {
-        'type': 'sub',
-        'subscription': 'builder.world',
-        'world_id': this.$route.params.world_id
-      })
-    }
-
     return world;
   }
 

@@ -47,6 +47,7 @@ import CreateChar from "./CreateChar.vue";
 import { capitalize } from "@/core/utils.ts";
 import { LOBBY_WORLD_TRANSFER } from "@/router.ts";
 import UserCharActions from "@/components/lobby/UserCharActions.vue";
+import { GAME_ACTIONS } from "@/constants";
 
 import CodeOfConduct from "./CodeOfConduct.vue";
 
@@ -90,10 +91,16 @@ export default class UserChars extends Vue {
   async onEnter(char) {
     const cod_accepted = this.$store.state.auth.user.cod_accepted;
     if (cod_accepted) {
-      this.$store.dispatch("game/world_enter", {
+
+      this.$store.dispatch(GAME_ACTIONS.REQUEST_ENTER_WORLD, {
         player_id: char.id,
-        world_id: this.$route.params.world_id,
+        world_id: this.$route.params.world_id
       });
+
+      // this.$store.dispatch("game/world_enter", {
+      //   player_id: char.id,
+      //   world_id: this.$route.params.world_id,
+      // });
     } else {
       const modal = {
         component: CodeOfConduct,
