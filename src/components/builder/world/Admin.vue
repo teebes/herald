@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div v-if="world_admin.id">
     <h2>{{ root_world.name.toUpperCase() }} ADMIN</h2>
-    <div class="world-status" v-if="world_admin">
+    <div class="world-status">
 
       <div class="color-text-50">
         <span v-if="world_admin.is_multiplayer">Multiplayer</span>
@@ -31,16 +31,17 @@
       </div>
 
       <!-- Nexus tracker -->
-      <div v-if="world_admin && world_admin.nexus_data">
+      <div v-if="world_admin && world_admin.nexus_data" class="color-text-50 mt-1">
         Nexus ready:
         <span v-if="world_admin.nexus_data.is_ready">Yes</span>
         <span v-else>No - {{ world_admin.nexus_data.error }}</span>
       </div>
 
+      <!-- Main MPW Instance -->
       <div v-if="main">
         <h3 class="mt-8 mb-2" >MAIN INSTANCE</h3>
-        <div>Instance #{{ main.id }}</div>
-        <div>State: {{ main.state }} <span v-if="main.is_clean">- clean</span></div>
+        <div>Instance #<router-link :to="admin_instance_link(main.id)">{{ main.id }}</router-link></div>
+        <div>State: {{ main.state }} / {{ main.game_state }}<span v-if="main.is_clean">- clean</span></div>
         <div class="actions mt-2">
           <button class="btn btn-small start" :disabled="disableStart(main)" @click="onStart(main)">START</button>
           <button class="btn btn-small stop ml-2" :disabled="disableStop(main)" @click="onStop(main)">STOP</button>
@@ -48,9 +49,12 @@
         </div>
       </div>
 
+      <!-- SPW Instances -->
       <div v-if="spws">
+        <h3 class="mt-8 mb-2" >SINGLE PLAYER INSTANCES</h3>
+        <div>Total SPW instances: {{ world_admin.spw_data.total_count }}</div>
         <div v-for="spw in spws" v-bind:key="spw.id">
-          {{ spw.id }}
+          [ {{ spw.id }} ] {{  spw.player_name }} <button class="btn btn-small kill ml-2" @click="onKill(spw)">KILL</button>
         </div>
       </div>
 
@@ -65,13 +69,14 @@ import { UI_MUTATIONS } from "@/constants";
 import Slider from "@/components/forms/Slider.vue";
 import Help from "@/components/Help.vue";
 import axios from "axios";
+import { BUILDER_WORLD_ADMIN_INSTANCE } from "@/router";
 
 @Component({
   components: {
     Slider, Help
   }
 })
-export default class WorldStatus extends Vue {
+export default class WorldAdmin extends Vue {
 
   // Index of which worlds have an action that was just fired off, so that we
   // can disable the other actions in order not to spam the server.
@@ -97,7 +102,8 @@ export default class WorldStatus extends Vue {
     }
 
     await this.$store.dispatch(
-      'builder/worlds/world_admin_fetch',
+      //'builder/worlds/world_admin_fetch',
+      'builder/worlds/admin/world_admin_fetch',
       this.$route.params.world_id);
   }
 
@@ -113,20 +119,28 @@ export default class WorldStatus extends Vue {
     return this.$store.state.builder.world;
   }
 
+  get world_admin() {
+    return this.$store.state.builder.worlds.admin.world_admin;
+  }
+
   // The main MPW instance
   get main() {
-    return this.world_admin.multiplayer_data.main_instance;
+    return this.world_admin.mpw_data.main_instance;
+  }
+
+  admin_instance_link(instance_id) {
+    return {
+      name: BUILDER_WORLD_ADMIN_INSTANCE,
+      params: {
+        world_id: this.$route.params.world_id,
+        instance_id: instance_id,
+      }
+    }
   }
 
   // The Single Player World instances
   get spws() {
-    console.log('spws:')
-    console.log(this.world_admin.singleplayer_data.running_instances);
-    return this.world_admin.singleplayer_data.running_instances;
-  }
-
-  get world_admin() {
-    return this.$store.state.builder.worlds.world_admin;
+    return this.world_admin.spw_data.running_spws;
   }
 
   disableStart(instance) {
@@ -151,7 +165,7 @@ export default class WorldStatus extends Vue {
       expires: false
     });
     await this.$store.dispatch(
-      'builder/worlds/world_admin_start',
+      'builder/worlds/admin/world_admin_start',
       this.$route.params.world_id);
 
     this.action_submitted[instance.id] = false;
@@ -164,7 +178,7 @@ export default class WorldStatus extends Vue {
       expires: false
     });
     await this.$store.dispatch(
-      'builder/worlds/world_admin_stop',
+      'builder/worlds/admin/world_admin_stop',
       this.$route.params.world_id);
     this.action_submitted[instance.id] = false;
   }
@@ -176,13 +190,12 @@ export default class WorldStatus extends Vue {
       expires: false
     });
     await this.$store.dispatch(
-      'builder/worlds/world_admin_kill',
+      'builder/worlds/admin/world_admin_kill',
       this.$route.params.world_id);
     this.action_submitted[instance.id] = false;
   }
 
   async onSliderChange(newValue: boolean) {
-    console.log('slider changed to', newValue);
     await this.$store.dispatch(
       'builder/world_patch',
       {

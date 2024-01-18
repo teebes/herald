@@ -119,6 +119,9 @@ const actions = {
       }, { root: true });
 
     // Handle a message published to a channel
+    } else if (data.type === "world_exited") {
+      // Relay the world_exited message to the game module
+      dispatch('game/world_exited', data, { root: true });
     } else if (data.type === 'pub') {
 
       // The world has changed, update the builder state
@@ -131,7 +134,11 @@ const actions = {
       }
 
     } else if (data.type === 'notify') {
-      commit('notification_set', data.message);
+      if (data.error) {
+        commit('notification_set_error', data.message);
+      } else {
+        commit('notification_set', data.message);
+      }
     }
   },
 

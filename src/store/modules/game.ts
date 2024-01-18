@@ -184,6 +184,7 @@ const receiveMessage = async ({
 
   // Disconection
   if (message_data.type === "system.disconnect.success") {
+    return;
     if (
       message_data.data.context &&
       message_data.data.context.split(".")[1] === INTRO_WORLD_ID &&
@@ -555,6 +556,28 @@ const actions = {
         root: true,
       });
     }
+  },
+
+  world_exited: async ({ commit, dispatch, state, rootState }, data) => {
+    if (
+      data.context &&
+      data.context.split(".")[1] === INTRO_WORLD_ID &&
+      rootState.auth.user.is_temporary
+    ) {
+      dispatch("auth/logout", null, { root: true });
+      router.push({
+        name: "home",
+        params: { world_id: state.world.context_id },
+      });
+    } else {
+      const world_id = data.exit_to || (state.world && state.world.context_id);
+      router.push({
+        name: LOBBY_WORLD_DETAIL,
+        params: { world_id: world_id },
+      });
+    }
+    commit("closeWs");
+    commit("reset_state");
   },
 
   openWebSocket: async ({ commit, rootState, state, dispatch }) => {
