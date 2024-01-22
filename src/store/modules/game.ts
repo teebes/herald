@@ -490,6 +490,14 @@ const actions = {
       { text: "Entering world...", expires: false },
       { root: true });
 
+    await dispatch('forge/send', {
+      type: 'job',
+      job: 'enter_world',
+      player_id,
+      world_id,
+    }, { root: true });
+
+    return;
     try {
       const resp = await axios.post(`/game/enter/`, {
         player_key: `player.${player_id}`,
@@ -514,6 +522,7 @@ const actions = {
 
   enter_ready_world: async ({ commit, dispatch }, { player_id, player_config, world, nexus_name }) => {
     commit("reset_state");
+    console.log('player_id: ' + player_id);
     console.log('nexus name: ' + nexus_name);
     commit("ws_uri_set", `ws://localhost/websocket/${nexus_name}/cmd`);
     commit("world_set", world);

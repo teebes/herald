@@ -8,8 +8,6 @@ const state = {
   modal: "",
   modal_data: {}, // data that can optionally be passed to the modal when invoking it,
   editingField: false,
-
-  forge_ws: null,
 };
 
 const getters = {};
@@ -25,130 +23,6 @@ const actions = {
       commit(UI_MUTATIONS.SET_NOTIFICATION_ERROR, "Error sending request.");
     }
   },
-
-  connect_forge_ws: async ({ commit, dispatch, rootState }) => {
-    // We only use a Forge websocket connection for authenticated users
-    if (!rootState.auth.token) {
-      return;
-    }
-
-    const uri = FORGE_WS_URI + '?token=' + rootState.auth.token;
-    const ws = new WebSocket(uri);
-
-    const heartbeatInterval = 30000; // 30 seconds
-    let heartbeatHandle;
-
-    ws.onopen = () => {
-      heartbeatHandle = setInterval(() => {
-        ws.send(JSON.stringify({type: 'heartbeat'}));
-      }, heartbeatInterval);
-      console.log('Connected to Forge Websocket.')
-    };
-
-    ws.onmessage = msg => {
-      const data = JSON.parse(msg.data);
-      dispatch("receive_forge_ws_message", data);
-    };
-
-    ws.onclose = () => {
-      if (heartbeatHandle) {
-        clearInterval(heartbeatHandle);
-      }
-    };
-
-    commit('set_forge_ws', ws);
-  },
-
-  aconnect_forge_ws: ({ commit, dispatch, rootState }) => {
-    return new Promise((resolve, reject) => {
-      // We only use a Forge websocket connection for authenticated users
-      if (!rootState.auth.token) {
-        reject(new Error("No authentication token found."));
-        return;
-      }
-
-      const uri = FORGE_WS_URI + '?token=' + rootState.auth.token;
-      const ws = new WebSocket(uri);
-
-      const heartbeatInterval = 30000; // 30 seconds
-      let heartbeatHandle;
-
-      ws.onopen = () => {
-        heartbeatHandle = setInterval(() => {
-          ws.send(JSON.stringify({type: 'heartbeat'}));
-        }, heartbeatInterval);
-        console.log('Connected to Forge Websocket.');
-        commit('set_forge_ws', ws);
-        resolve(ws);
-      };
-
-      ws.onmessage = msg => {
-        const data = JSON.parse(msg.data);
-        dispatch("receive_forge_ws_message", data);
-      };
-
-      ws.onerror = (error) => {
-        console.error('WebSocket Error:', error);
-        reject(error);
-      };
-
-      ws.onclose = () => {
-        if (heartbeatHandle) {
-          clearInterval(heartbeatHandle);
-        }
-      };
-    });
-  },
-
-  forge_ws_disconnected: ({ commit }) => {
-    commit('set_forge_ws', null);
-  },
-
-  // Most important routine for handling messages from the Forge websocket
-  receive_forge_ws_message: ({ dispatch, commit, rootState }, data) => {
-
-    console.log("Receive from Forge WS: ", data)
-
-    // Handle a player entering a world
-    if (data.type === 'world_entered') {
-      dispatch('game/enter_ready_world', {
-        player_id: data.player_id,
-        world: data.world,
-        player_config: data.player_config,
-        nexus_name: data.nexus_name
-      }, { root: true });
-
-    // Handle a message published to a channel
-    } else if (data.type === "world_exited") {
-      // Relay the world_exited message to the game module
-      dispatch('game/world_exited', data, { root: true });
-    } else if (data.type === 'pub') {
-
-      // The world has changed, update the builder state
-      if (data.subscription === 'builder.admin') {
-        commit('builder/worlds/world_admin_set', data.data, {root: true});
-      }
-
-      if (data.subscription === 'staff.panel') {
-        commit('staff/staff_panel_set', data.data, {root: true});
-      }
-
-    } else if (data.type === 'notify') {
-      if (data.error) {
-        commit('notification_set_error', data.message);
-      } else {
-        commit('notification_set', data.message);
-      }
-    }
-  },
-
-  send_forge_ws: ({ state }, data) => {
-    if (state.forge_ws) {
-      state.forge_ws.send(JSON.stringify(data));
-      console.log('sent to forge ws: ', data);
-    }
-  }
-
 };
 
 const mutations = {
@@ -210,11 +84,6 @@ const mutations = {
   clearNotification(state) {
     state.notification = "";
   },
-
-  set_forge_ws: (state, ws) => {
-    state.forge_ws = ws;
-  },
-
 
 };
 

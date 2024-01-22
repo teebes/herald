@@ -6,6 +6,7 @@ import ui from "./modules/ui";
 import game from "./modules/game";
 import lobby from "./modules/lobby/index";
 import staff from "./modules/staff/index";
+import forge from "./modules/forge";
 
 Vue.use(Vuex);
 
@@ -24,6 +25,7 @@ export default new Vuex.Store({
     game,
     lobby,
     staff,
+    forge
   },
   strict: debug
 });

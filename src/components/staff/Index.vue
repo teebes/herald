@@ -4,8 +4,8 @@
 
     <div class="staff-panel" v-if="panel">
 
-      <div class="nexuses my-4">
-
+      <!-- Nexuses -->
+      <div class="nexuses mt-4">
         <h3>NEXUSES STATUS</h3>
 
         <div class="sandbox mt-2" v-if="panel.sandbox_nexus">
@@ -27,7 +27,24 @@
           <button class="btn-small" @click="initialize">INITIALIZE</button>
           <button class="btn-small ml-2" @click="teardown">TEARDOWN</button>
         </div>
+      </div>
 
+      <!-- Running Worlds -->
+      <div class="running-worlds mt-8">
+        <h3>RUNNING WORLDS</h3>
+
+        <div class="worlds mt-2">
+          <div v-for="world in panel.running_worlds" :key="world.key">
+            *
+            [ <router-link :to="world_admin_instance_link(world.context_id, world.id)">{{  world.id  }}</router-link> ]
+            -
+            <router-link :to="world_admin_link(world.context_id)">{{ world.name }}</router-link>
+            - Nexus
+            <span v-if="world.nexus_data.is_ready">Up</span>
+            <span v-else>Down</span>
+          </div>
+          <div class="mt-2">{{ panel.running_worlds_count }} Total</div>
+        </div>
       </div>
 
     </div>
@@ -88,9 +105,9 @@ export default class StaffPage extends Vue {
   @Watch('$store.state.ui.forge_ws')
   async onForgsWsChanged(newValue, oldValue) {
     if (newValue) {
-      await this.$store.dispatch('ui/send_forge_ws', {
+      await this.$store.dispatch('forge/send', {
         'type': 'sub',
-        'subscription': 'staff.panel',
+        'sub': 'staff.panel',
       })
     }
   }
@@ -101,9 +118,9 @@ export default class StaffPage extends Vue {
 
   async destroyed() {
     if (this.$store.state.ui.forge_ws) {
-      await this.$store.dispatch('ui/send_forge_ws', {
+      await this.$store.dispatch('ui/send', {
         'type': 'unsub',
-        'subscription': 'staff.panel',
+        'sub': 'staff.panel',
       })
     }
   }
@@ -169,6 +186,23 @@ export default class StaffPage extends Vue {
       expires: false
     });
     await this.$store.dispatch('staff/staff_panel_teardown');
+  }
+
+  world_admin_link(context_id) {
+    return {
+      name: 'builder_world_admin',
+      params: { world_id: context_id  }
+    }
+  }
+
+  world_admin_instance_link(context_id, instance_id) {
+    return {
+      name: 'builder_world_admin',
+      params: {
+        world_id: context_id,
+        instance_id: instance_id,
+      }
+    }
   }
 
 }

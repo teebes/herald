@@ -88,18 +88,11 @@ export default class WorldAdmin extends Vue {
 
     this.maintenance_msg = this.root_world.maintenance_msg;
 
-    /* Subscribe to updates from the Forge for this world */
-    if (!this.$store.state.ui.forge_ws) {
-      await this.$store.dispatch('ui/connect_forge_ws');
-    }
-
-    if (this.$store.state.ui.forge_ws) {
-      await this.$store.dispatch('ui/send_forge_ws', {
-        'type': 'sub',
-        'subscription': 'builder.admin',
-        'world_id': this.root_world.id,
-      })
-    }
+    await this.$store.dispatch('forge/send', {
+      'type': 'sub',
+      'sub': 'builder.admin',
+      'world_id': this.root_world.id,
+    })
 
     await this.$store.dispatch(
       //'builder/worlds/world_admin_fetch',
@@ -111,7 +104,7 @@ export default class WorldAdmin extends Vue {
     await this.$store.dispatch('ui/send_forge_ws', {
       'type': 'unsub',
       'subscription': 'builder.admin',
-      'world_id': this.root_world.id,
+      'world_id': this.$route.params.world_id,
     })
   }
 
@@ -164,9 +157,14 @@ export default class WorldAdmin extends Vue {
       text: "Starting world, this may take a minute...",
       expires: false
     });
-    await this.$store.dispatch(
-      'builder/worlds/admin/world_admin_start',
-      this.$route.params.world_id);
+    // await this.$store.dispatch(
+    //   'builder/worlds/admin/world_admin_start',
+    //   this.$route.params.world_id);
+    await this.$store.dispatch('forge/send', {
+      'type': 'job',
+      'job': 'start_world',
+      'world_id': instance.id,
+    });
 
     this.action_submitted[instance.id] = false;
   }
@@ -177,9 +175,14 @@ export default class WorldAdmin extends Vue {
       text: "Stopping world, this may take a minute...",
       expires: false
     });
-    await this.$store.dispatch(
-      'builder/worlds/admin/world_admin_stop',
-      this.$route.params.world_id);
+    // await this.$store.dispatch(
+    //   'builder/worlds/admin/world_admin_stop',
+    //   this.$route.params.world_id);
+    await this.$store.dispatch('forge/send', {
+      'type': 'job',
+      'job': 'stop_world',
+      'world_id': instance.id,
+    });
     this.action_submitted[instance.id] = false;
   }
 
@@ -189,9 +192,14 @@ export default class WorldAdmin extends Vue {
       text: "Killing...",
       expires: false
     });
-    await this.$store.dispatch(
-      'builder/worlds/admin/world_admin_kill',
-      this.$route.params.world_id);
+    // await this.$store.dispatch(
+    //   'builder/worlds/admin/world_admin_kill',
+    //   this.$route.params.world_id);
+    await this.$store.dispatch('forge/send', {
+      'type': 'job',
+      'job': 'kill_world',
+      'world_id': instance.id,
+    });
     this.action_submitted[instance.id] = false;
   }
 
