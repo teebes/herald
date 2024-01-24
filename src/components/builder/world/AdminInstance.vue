@@ -17,10 +17,17 @@
       <h3 class="mb-2">LIVE DATA</h3>
 
       <div>
-        <div v-for="player in instance.live_data.connected_players" v-bind:key="player.id">
-          [ {{ player.id }} ] {{ player.name }}
-        </div>
+        <div>{{ instance.live_data.num_items }} items</div>
+        <div>{{ instance.live_data.num_mobs }} mobs</div>
+
+        <!-- Players -->
         <div v-if="!instance.live_data.connected_players.length">No online players.</div>
+        <div v-else>
+          <div>Players:</div>
+          <div v-for="player in instance.live_data.connected_players" v-bind:key="player.id">
+            [ <router-link :to="player_link(player)">{{ player.id }}</router-link> ] {{ player.name }}
+          </div>
+        </div>
       </div>
     </div>
 
@@ -29,6 +36,7 @@
 
 <script lang='ts'>
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { BUILDER_WORLD_PLAYER_DETAIL } from "@/router.ts";
 
 @Component
 export default class extends Vue {
@@ -47,7 +55,16 @@ export default class extends Vue {
       'world_id': this.$store.state.builder.world.id,
       'instance_id': this.$route.params.instance_id,
     })
+  }
 
+  player_link(player) {
+    return {
+      name: BUILDER_WORLD_PLAYER_DETAIL,
+      params: {
+        world_id: this.$store.state.builder.world.id,
+        player_id: player.id,
+      }
+    }
   }
 }
 </script>

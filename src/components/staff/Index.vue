@@ -9,9 +9,21 @@
         <h3>NEXUSES STATUS</h3>
 
         <div class="sandbox mt-2" v-if="panel.sandbox_nexus">
-          Sandbox:
+          Tier 1 Sandbox:
           <span v-if="panel.sandbox_nexus.is_ready">Up</span>
           <span v-else>Down</span>
+        </div>
+
+        <div class="tier2 mt-2">
+          Tier 2 Worlds:
+          <div v-if="panel.tier_2 && panel.tier_2.length">
+            <div v-for="world in panel.tier_2" :key="world.id">
+              * {{ world.name }} -
+              <span v-if="world.nexus_data.is_ready">Up</span>
+              <span v-else>Down</span>
+            </div>
+          </div>
+          <div v-else>None</div>
         </div>
 
         <div class="tier3 mt-2">
@@ -197,7 +209,7 @@ export default class StaffPage extends Vue {
 
   world_admin_instance_link(context_id, instance_id) {
     return {
-      name: 'builder_world_admin',
+      name: 'builder_world_admin_instance',
       params: {
         world_id: context_id,
         instance_id: instance_id,

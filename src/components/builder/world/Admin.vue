@@ -41,7 +41,10 @@
       <div v-if="main">
         <h3 class="mt-8 mb-2" >MAIN INSTANCE</h3>
         <div>Instance #<router-link :to="admin_instance_link(main.id)">{{ main.id }}</router-link></div>
-        <div>State: {{ main.state }} / {{ main.game_state }}<span v-if="main.is_clean">- clean</span></div>
+        <div>
+          State: {{ main.state }} / {{ main.game_state }}
+          <!-- <span v-if="main.is_clean">- clean</span> -->
+        </div>
         <div class="actions mt-2">
           <button class="btn btn-small start" :disabled="disableStart(main)" @click="onStart(main)">START</button>
           <button class="btn btn-small stop ml-2" :disabled="disableStop(main)" @click="onStop(main)">STOP</button>

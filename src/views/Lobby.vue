@@ -243,7 +243,7 @@ export default class Lobby extends Vue {
     if (cod_accepted) {
       this.$store.dispatch(GAME_ACTIONS.REQUEST_ENTER_WORLD, {
         player_id: char.id,
-        world_id: this.$route.params.world_id
+        world_id: char.world_id
       });
     } else {
       const modal = {
