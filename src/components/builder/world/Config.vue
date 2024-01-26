@@ -409,6 +409,12 @@ export default class WorldFrame extends Mixins(WorldView) {
       widget: "checkbox",
       help: `If this option is checked, no player will have a starting archetype, or its associated skills. Builders will have to create all the skills that players can learn.`
     };
+    const non_ascii_names: FormElement = {
+      attr: "non_ascii_names",
+      label: "Allow Non-ASCII Names",
+      widget: "checkbox",
+      help: `If this option is checked, players will be able to use non-ASCII characters in their names.`
+    }
 
     const modal = {
       title: `Edit World Config`,
@@ -430,7 +436,7 @@ export default class WorldFrame extends Mixins(WorldView) {
           children: [can_select_faction, players_can_set_title],
         },
         {
-          children: [is_classless]
+          children: [is_classless, non_ascii_names]
         },
         {
           children: [small_background, large_background],
