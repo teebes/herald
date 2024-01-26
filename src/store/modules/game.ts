@@ -183,7 +183,7 @@ const receiveMessage = async ({
   // Disconection
   if (message_data.type === "system.disconnect.success") {
     if (
-      message_data.data.context && 
+      message_data.data.context &&
       message_data.data.context.split(".")[1] === INTRO_WORLD_ID &&
       rootState.auth.user.is_temporary
     ) {
@@ -442,7 +442,7 @@ const receiveMessage = async ({
   }
 
   // Exit Instance
-  if (message_data.type === 'cmd.leave.success') { 
+  if (message_data.type === 'cmd.leave.success') {
     commit("full_screen_message_set", "Exiting Instance...")
     dispatch("world_enter", {
       player_id: state.player.id,
@@ -995,6 +995,7 @@ const getters = {
       if (!state.player_config.display_chat && message.type == 'notification.cmd.chat.success') {
         return false;
       }
+      /*
       // Exclude join / part messages option
       if (!state.player_config.display_connect
         && (
@@ -1002,6 +1003,7 @@ const getters = {
           || message.type === 'notification.system.disconnect.success')) {
         return false;
       }
+      */
 
       return message.text || message.type === "system.connect.success";
     });

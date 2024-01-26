@@ -109,25 +109,24 @@ export default class Header extends Vue {
       USE_GRAPEVINE
     ];
 
+    // Optional email confirm / staff slot
+    let slot: any = null;
     if (this.$store.state.auth.user.is_staff) {
-      const modal = {
-        data: this.$store.state.auth.user,
-        title: this.$store.state.auth.user.email,
-        schema: edit_account_schema,
-        action: "auth/account_save",
-        slot: StaffAccount,
-      };
-      this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
-    } else {
-      const modal = {
-        data: this.$store.state.auth.user,
-        title: this.$store.state.auth.user.email,
-        schema: edit_account_schema,
-        action: "auth/account_save",
-        slot: ConfirmEmail,
-      };
-      this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
+      slot = StaffAccount;
+    } else if (this.$store.state.auth.user.is_invalid) {
+      // Could also write a message here
+      slot = ConfirmEmail;
+    } else if (!this.$store.state.auth.user.is_confirmed) {
+      slot = ConfirmEmail;
     }
+    const modal = {
+      data: this.$store.state.auth.user,
+      title: this.$store.state.auth.user.email,
+      schema: edit_account_schema,
+      action: "auth/account_save",
+      slot: slot,
+    };
+    this.$store.commit(UI_MUTATIONS.MODAL_SET, modal);
   }
 }
 </script>
