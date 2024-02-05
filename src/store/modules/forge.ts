@@ -81,10 +81,54 @@ const actions = {
     // Kill World
     if (data.job == "kill_world") {
       if (data.status === 'error') {
-        const error = data.error || 'Error killing world.';
+        const error = data.job_data.error || 'Error killing world.';
         commit('ui/notification_set_error', error, { root: true });
       } else if (data.status === 'success') {
         commit('ui/notification_set', 'World killed.', { root: true });
+      }
+    }
+
+    // Initialize
+    if (data.job == "initialize") {
+      if (data.status === 'error') {
+        const error = data.error || 'Error initializing world.';
+        commit('ui/notification_set_error', error, { root: true });
+      } else if (data.status === 'success') {
+        commit('ui/notification_set', 'Initialization complete.', { root: true });
+      }
+    }
+
+    // Teardown
+    if (data.job == "teardown") {
+      if (data.status === 'error') {
+        const error = data.error || 'Error tearing down world.';
+        commit('ui/notification_set_error', error, { root: true });
+      } else if (data.status === 'success') {
+        commit('ui/notification_set', 'Teardown complete.', { root: true });
+      }
+    }
+
+    // Nexus Deleted
+    if (data.job == "delete_nexus") {
+      if (data.status === 'error') {
+        const error = data.error || 'Error deleting nexus.';
+        commit('ui/notification_set_error', error, { root: true });
+      } else if (data.status === 'success') {
+        commit('ui/notification_set', 'Nexus deleted.', { root: true });
+      }
+    }
+
+    // Toggle Maintenance
+    if (data.job == "toggle_maintenance_mode") {
+      if (data.status === 'error') {
+        const error = data.error || 'Error toggling maintenance.';
+        commit('ui/notification_set_error', error, { root: true });
+      } else if (data.status === 'success') {
+        const maintenance_mode = data.job_data.maintenance_mode ? 'ON' : 'OFF';
+        commit(
+          'ui/notification_set',
+          'Maintenance ' + maintenance_mode,
+          { root: true });
       }
     }
   },
@@ -94,6 +138,12 @@ const actions = {
     // builder.admin
     if (pub === 'builder.admin') {
       commit('builder/worlds/admin/world_admin_set',
+        data.pub_data,
+        { root: true });
+    }
+
+    if (pub === 'staff.panel') {
+      commit('staff/staff_panel_set',
         data.pub_data,
         { root: true });
     }
@@ -129,7 +179,7 @@ const actions = {
       };
 
       ws.onerror = (error) => {
-        console.error('WebSocket Error:', error);
+        commit('ui/notification_set_error', 'Error connecting to Forge Websocket.', { root: true });
         reject(error);
       };
 

@@ -3,7 +3,7 @@ import reviews from "./reviews";
 
 const initial_state = () => {
   return {
-    panel: {},
+    panel: null,
   }
 }
 

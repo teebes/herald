@@ -1,49 +1,56 @@
 <template>
   <div id="page">
+    <div class="staff-panel" v-if="panel">
     <h2>Staff Control Panel</h2>
 
-    <div class="staff-panel" v-if="panel">
+    <div class="controls mt-4">
+
+      <h3 class="my-2">CONTROLS</h3>
+
+      <div class="maintenance panel">
+          <div class="maintenance-status mb-2 flex">
+            <div class="mt-1">Maintenance mode:</div>
+            <div class='slider-container'>
+              <Slider
+                :value="panel.maintenance_mode"
+                @change="onSliderChange"/>
+            </div>
+
+            </div>
+            <!-- :
+            <span v-if="panel.maintenance_mode">ON</span>
+            <span v-else>OFF</span> -->
+          </div>
+
+          <div class="slider-container">
+            <!-- <Slider
+              :value="panel.maintenance_mode"
+              @change="onSliderChange"/>
+          </div> -->
+      </div>
+
+      <div class="mt-2">
+        <button class="btn-small" @click="initialize">INITIALIZE</button>
+        <button class="btn-small ml-2" @click="teardown">TEARDOWN</button>
+      </div>
 
       <!-- Nexuses -->
       <div class="nexuses mt-4">
-        <h3>NEXUSES STATUS</h3>
 
-        <div class="sandbox mt-2" v-if="panel.sandbox_nexus">
-          Tier 1 Sandbox:
-          <span v-if="panel.sandbox_nexus.is_ready">Up</span>
-          <span v-else>Down</span>
-        </div>
+        <h3 class="my-2">NEXUSES</h3>
 
-        <div class="tier2 mt-2">
-          Tier 2 Worlds:
-          <div v-if="panel.tier_2 && panel.tier_2.length">
-            <div v-for="world in panel.tier_2" :key="world.id">
-              * {{ world.name }} -
-              <span v-if="world.nexus_data.is_ready">Up</span>
-              <span v-else>Down</span>
-            </div>
-          </div>
-          <div v-else>None</div>
-        </div>
-
-        <div class="tier3 mt-2">
-          Tier 3 Worlds:<br/>
-          <div v-for="world in panel.tier_3" :key="world.key">
-            * {{ world.name }} -
-            <span v-if="world.nexus_data.is_ready">Up</span>
-            <span v-else>Down</span>
+        <div v-for="nexus in panel.nexuses" :key="nexus.id">
+          <div class="mb-1">
+            [ {{ nexus.id }} ] {{ nexus.name }} - {{ nexus.state }}
+            <button class="btn-small ml-2" @click="delete_nexus(nexus)">DELETE</button>
           </div>
         </div>
-
-        <div class="mt-2">
-          <button class="btn-small" @click="initialize">INITIALIZE</button>
-          <button class="btn-small ml-2" @click="teardown">TEARDOWN</button>
-        </div>
+        <div v-if="panel.nexuses && panel.nexuses.length == 0">No online Nexus.</div>
       </div>
 
       <!-- Running Worlds -->
-      <div class="running-worlds mt-8">
-        <h3>RUNNING WORLDS</h3>
+      <div class="running-worlds mt-4">
+        <h3 class="my-2">RUNNING WORLDS</h3>
 
         <div class="worlds mt-2">
           <div v-for="world in panel.running_worlds" :key="world.key">
@@ -62,9 +69,9 @@
     </div>
 
 
-    <div class="search-panel mt-8">
+    <div class="search-panel mt-4">
       <div>
-        <h3>SEARCH</h3>
+        <h3 class='my-2'>SEARCH</h3>
         <div class='form-group search mt-4'>
           <input type='text' v-model="search_query" @keyup.enter="onSearch"/>
         </div>
@@ -91,20 +98,23 @@
       </div>
     </div>
 
-
+    </div>
+    <div v-else>Loading...</div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import ElementList from "@/components/elementlist/ElementList.vue";
+import Slider from "@/components/forms/Slider.vue";
 import axios from "axios";
 import { BUILDER_WORLD_PLAYER_DETAIL, STAFF_USER_INFO, BUILDER_WORLD_INDEX } from "@/router";
 import { UI_MUTATIONS } from "@/constants";
 
 @Component({
   components: {
-    ElementList
+    ElementList,
+    Slider,
   }
 })
 export default class StaffPage extends Vue {
@@ -114,23 +124,27 @@ export default class StaffPage extends Vue {
 
   timeout: number | null = null;
 
-  @Watch('$store.state.ui.forge_ws')
-  async onForgsWsChanged(newValue, oldValue) {
-    if (newValue) {
-      await this.$store.dispatch('forge/send', {
-        'type': 'sub',
-        'sub': 'staff.panel',
-      })
-    }
-  }
+  // @Watch('$store.state.forge.ws')
+  // async onForgsWsChanged(newValue, oldValue) {
+  //   if (newValue) {
+  //     await this.$store.dispatch('forge/send', {
+  //       'type': 'sub',
+  //       'sub': 'staff.panel',
+  //     })
+  //   }
+  // }
 
   async created() {
+    await this.$store.dispatch('forge/send', {
+      'type': 'sub',
+      'sub': 'staff.panel',
+    });
     await this.$store.dispatch('staff/staff_panel_fetch');
   }
 
   async destroyed() {
-    if (this.$store.state.ui.forge_ws) {
-      await this.$store.dispatch('ui/send', {
+    if (this.$store.state.forge.ws) {
+      await this.$store.dispatch('forge/send', {
         'type': 'unsub',
         'sub': 'staff.panel',
       })
@@ -189,7 +203,11 @@ export default class StaffPage extends Vue {
       text: "Initializing...",
       expires: false
     });
-    await this.$store.dispatch('staff/staff_panel_initialize');
+    // await this.$store.dispatch('staff/staff_panel_initialize');
+    await this.$store.dispatch('forge/send', {
+      type: 'job',
+      job: 'initialize'
+    })
   }
 
   async teardown() {
@@ -197,7 +215,23 @@ export default class StaffPage extends Vue {
       text: "Tearing down...",
       expires: false
     });
-    await this.$store.dispatch('staff/staff_panel_teardown');
+    // await this.$store.dispatch('staff/staff_panel_teardown');
+    await this.$store.dispatch('forge/send', {
+      type: 'job',
+      job: 'teardown'
+    })
+  }
+
+  delete_nexus(nexus) {
+    this.$store.commit(UI_MUTATIONS.SET_NOTIFICATION, {
+      text: "Deleting Nexus...",
+      expires: false
+    });
+    this.$store.dispatch('forge/send', {
+      type: 'job',
+      job: 'delete_nexus',
+      nexus_id: nexus.id,
+    });
   }
 
   world_admin_link(context_id) {
@@ -217,6 +251,13 @@ export default class StaffPage extends Vue {
     }
   }
 
+  onSliderChange(newValue: boolean) {
+    this.$store.dispatch('forge/send', {
+      type: 'job',
+      job: 'toggle_maintenance_mode',
+    });
+  }
+
 }
 </script>
 
@@ -226,4 +267,7 @@ export default class StaffPage extends Vue {
 @import "@/styles/layout.scss";
 
 .search { max-width: 320px }
+.slider-container {
+  transform: scale(0.6);
+}
 </style>

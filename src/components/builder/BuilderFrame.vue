@@ -245,15 +245,6 @@ export default class WorldFrame extends Vue {
 
   async destroyed() {
     await this.$store.commit(BUILDER_MUTATIONS.RESET_STATE);
-
-    // Unsubscribe from world Forge updates
-    if (this.$store.state.ui.forge_ws) {
-      await this.$store.dispatch('ui/send_forge_ws', {
-        'type': 'unsub',
-        'subscription': 'builder.world',
-        'world_id': this.$route.params.world_id
-      })
-    }
   }
 
   get room() {

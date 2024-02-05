@@ -15,7 +15,7 @@
           Maintenance mode:
           <span v-if="root_world.maintenance_mode">ON</span>
           <span v-else>OFF</span>
-          <Help help="A world in maintenance mode cannot be entered by players."/>
+          <Help help="Players cannot enter a world in maintenance (but builders can)."/>
         </div>
 
         <div class="form-group">
@@ -34,7 +34,8 @@
       <div v-if="world_admin && world_admin.nexus_data" class="color-text-50 mt-1">
         Nexus ready:
         <span v-if="world_admin.nexus_data.is_ready">Yes</span>
-        <span v-else>No - {{ world_admin.nexus_data.error }}</span>
+        <span v-else>No</span>
+        <span v-if="world_admin.nexus_data.error">- {{ world_admin.nexus_data.error }}</span>
       </div>
 
       <!-- Main MPW Instance -->
@@ -59,6 +60,14 @@
         <div v-for="spw in spws" v-bind:key="spw.id">
           [ {{ spw.id }} ] {{  spw.player_name }} <button class="btn btn-small kill ml-2" @click="onKill(spw)">KILL</button>
         </div>
+      </div>
+
+      <!-- Stats -->
+      <div v-if="world_admin && world_admin.stats" class="mt-8">
+        <h3 class="mb-2">STATS</h3>
+        <div>Rooms: {{ world_admin.stats.num_rooms }}</div>
+        <div>Mob Templates: {{ world_admin.stats.num_mob_templates }}</div>
+        <div>Item Templates: {{ world_admin.stats.num_item_templates }}</div>
       </div>
 
     </div>
@@ -104,9 +113,9 @@ export default class WorldAdmin extends Vue {
   }
 
   async destroyed() {
-    await this.$store.dispatch('ui/send_forge_ws', {
+    await this.$store.dispatch('forge/send', {
       'type': 'unsub',
-      'subscription': 'builder.admin',
+      'sub': 'builder.admin',
       'world_id': this.$route.params.world_id,
     })
   }
@@ -141,7 +150,7 @@ export default class WorldAdmin extends Vue {
 
   disableStart(instance) {
     if (!this.world_admin || this.action_submitted[instance.id]) return true;
-    return instance.state === 'running';
+    return instance.state != 'stored';
   }
 
   disableStop(instance) {

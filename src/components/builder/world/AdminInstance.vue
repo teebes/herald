@@ -17,6 +17,7 @@
       <h3 class="mb-2">LIVE DATA</h3>
 
       <div>
+        <div>Game State: {{ instance.live_data.state }}</div>
         <div>{{ instance.live_data.num_items }} items</div>
         <div>{{ instance.live_data.num_mobs }} mobs</div>
 
