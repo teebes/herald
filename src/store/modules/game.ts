@@ -520,11 +520,12 @@ const actions = {
     }
   },
 
-  enter_ready_world: async ({ commit, dispatch }, { player_id, player_config, world, nexus_name }) => {
+  enter_ready_world: async ({ commit, dispatch }, { player_id, player_config, world, nexus_name, ws_uri }) => {
     commit("reset_state");
     console.log('player_id: ' + player_id);
     console.log('nexus name: ' + nexus_name);
-    commit("ws_uri_set", `ws://localhost/websocket/${nexus_name}/cmd`);
+    // commit("ws_uri_set", `ws://localhost/websocket/${nexus_name}/cmd`);
+    commit("ws_uri_set", ws_uri);
     commit("world_set", world);
     commit("player_config_set", player_config);
     commit("pregame_set", { player_id: player_id });
