@@ -86,7 +86,7 @@
       <div class="world-status">
         <h3>World Status</h3>
 
-        <div>View connected players, start/stop multilpayer worlds.</div>
+        <div>View connected players, start/stop multiplayer worlds.</div>
 
         <router-link :to="world_status_link">manage</router-link>
       </div>
