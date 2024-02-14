@@ -1,7 +1,10 @@
 export const API_BASE = process.env.VUE_APP_WREALMS_API_ENDPOINT;
-export const WS_URI = process.env.VUE_APP_WREALMS_WS_ENDPOINT
+export const FORGE_WS_URI = process.env.VUE_APP_FORGE_WS_URI;
 
-export const FORGE_WS_URI = 'ws://localhost:8050/ws/forge/'
+// Deprecated
+export const WS_URI = 'wss://writtenrealms.com/socket';
+
+
 
 export const MAP_CONFIG = {
   UNIT: 8

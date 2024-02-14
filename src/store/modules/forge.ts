@@ -43,7 +43,8 @@ const actions = {
           player_id: data.job_data.player_id,
           world: data.job_data.world,
           player_config: data.job_data.player_config,
-          nexus_name: data.job_data.nexus_name
+          nexus_name: data.job_data.nexus_name,
+          ws_uri: data.ws_uri,
         }, { root: true });
       }
     }
