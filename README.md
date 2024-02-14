@@ -4,7 +4,18 @@ Herald is the code for the game of https://writtenrealms.com, as well as its wor
 written in [Vue.js](https://vuejs.org/), using [TypeScript](https://www.typescriptlang.org/) and
 [SASS](https://sass-lang.com/).
 
-## Project setup
+## Docker setup
+
+```
+docker build -t herald .
+docker docker run --rm -p 8080:80 herald
+```
+
+Then visit http://localhost:8080/ in your browser
+
+## NPM Project setup
+
+If you want to set up the project directly in your environment, you can install it normally with NPM. Note version 14 is NPM is required for the build to succeed.
 
 ```
 npm install
