@@ -8,7 +8,7 @@ written in [Vue.js](https://vuejs.org/), using [TypeScript](https://www.typescri
 
 ```
 docker build -t herald .
-docker docker run --rm -p 8080:80 herald
+docker run --rm -p 8080:80 herald
 ```
 
 Then visit http://localhost:8080/ in your browser
