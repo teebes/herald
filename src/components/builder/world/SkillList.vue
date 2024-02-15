@@ -5,7 +5,7 @@
     :endpoint="endpoint"
     :display_component="display_component"
     :schema="schema"
-    page_size="50"
+    page_size="100"
   />
 </template>
 

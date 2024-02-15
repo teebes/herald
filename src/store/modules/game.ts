@@ -1083,6 +1083,7 @@ const getters = {
       if (!state.player_config.display_chat && message.type == 'notification.cmd.chat.success') {
         return false;
       }
+      /*
       // Exclude join / part messages option
       if (!state.player_config.display_connect
         && (
@@ -1090,6 +1091,7 @@ const getters = {
           || message.type === 'notification.system.disconnect.success')) {
         return false;
       }
+      */
 
       return message.text || message.type === "system.connect.success";
     });
