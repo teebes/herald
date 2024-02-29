@@ -58,14 +58,34 @@
             [ <router-link :to="world_admin_instance_link(world.context_id, world.id)">{{  world.id  }}</router-link> ]
             -
             <router-link :to="world_admin_link(world.context_id)">{{ world.name }}</router-link>
-            - Nexus
-            <span v-if="world.nexus_data.is_ready">Up</span>
-            <span v-else>Down</span>
+            -
+            <span v-if="world.nexus_data">{{ world.nexus_data.name }} ({{  world.nexus_data.state }})</span>
+            <span v-else>No Nexus</span>
           </div>
           <div class="mt-2">{{ panel.running_worlds_count }} Total</div>
         </div>
       </div>
 
+      <!-- WIP Worlds -->
+      <div class="wip-worlds mt-4">
+        <h3 class="my-2">WIP WORLDS</h3>
+
+        <div class="worlds mt-2">
+          <div v-for="world in panel.wip_worlds" :key="world.key">
+            *
+            [ <router-link :to="world_admin_instance_link(world.context_id, world.id)">{{  world.id  }}</router-link> ]
+            -
+            <router-link :to="world_admin_link(world.context_id)">{{ world.name }}</router-link>
+            -
+            {{ world.state }}
+            -
+            <span v-if="world.nexus_data">{{ world.nexus_data.name }} ({{  world.nexus_data.state }})</span>
+            <span v-else>No Nexus</span>
+            - {{ world.time_since_last_change }}
+          </div>
+          <div class="mt-2">{{ panel.wip_worlds_count }} Total</div>
+        </div>
+      </div>
     </div>
 
 
@@ -152,6 +172,8 @@ export default class StaffPage extends Vue {
   }
 
   get panel() {
+    console.log('=========================')
+    console.log(this.$store.state.staff.panel);
     return this.$store.state.staff.panel;
   }
 
