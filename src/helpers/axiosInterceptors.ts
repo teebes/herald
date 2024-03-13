@@ -5,7 +5,7 @@ import { API_BASE } from "../config";
 import { UI_MUTATIONS } from "@/constants";
 
 export default function setup() {
-  axios.interceptors.request.use(function(config) {
+  axios.interceptors.request.use(function (config) {
     //const token = store.state.auth.token;
     const token = store.state["auth"].token;
     if (token) {

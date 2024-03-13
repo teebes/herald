@@ -47,12 +47,32 @@ export default class Input extends Vue {
     let user_input = "";
     if (this.input) {
       user_input = this.input;
-      
+
       const first_token = user_input.split(' ')[0].toUpperCase();
-      if (first_token !== 'CHAT' && first_token !== 'TELL' && first_token !== 'REPLY') {
+      if (first_token !== 'CHAT'
+        && first_token !== 'CHA'
+        && first_token !== 'CH'
+        && first_token !== 'TELL'
+        && first_token !== 'TEL'
+        && first_token !== 'TE'
+        && first_token !== 'REPLY'
+        && first_token !== 'REPL'
+        && first_token !== 'REP'
+        && first_token !== 'SAY'
+        && first_token !== 'SA'
+        && first_token !== 'CCHAT'
+        && first_token !== 'CCHA'
+        && first_token !== 'CCH'
+        && first_token !== 'CC'
+        && first_token !== 'GOSSIP'
+        && first_token !== 'GOSSI'
+        && first_token !== 'GOSS'
+        && first_token !== 'GOS'
+        && first_token !== 'GO'
+      ) {
         this.last_sent = this.input;
       }
-      
+
     } else if (this.last_sent) {
       user_input = this.last_sent;
     }

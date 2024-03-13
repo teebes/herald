@@ -141,7 +141,11 @@ export default class Console extends Vue {
     } else if (
       message.type === "notification.cmd.chat.success" ||
       message.type === "cmd.chat.success" ||
-      message.type === "cmd./chat.success"
+      message.type === "cmd./chat.success" ||
+      message.type === "cmd.cchat.success" ||
+      message.type === "notification.cmd.cchat.success" ||
+      message.type === "cmd.gossip.success" ||
+      message.type === "notification.cmd.gossip.success"
     ) {
       return "Chat";
     } else if (message.type === "notification.death") {
@@ -281,6 +285,14 @@ export default class Console extends Vue {
       &.notification\.tell,
       &.cmd\.reply\.success {
         color: $color-red;
+      }
+
+      &.cmd\.cchat\.success,
+      &.notification\.cmd\.cchat\.success,
+      &.cmd\.gossip\.success,
+      &.notification\.cmd\.gossip\.success {
+        color: $color-secondary;
+        margin-top: 1rem;
       }
 
       .brief {

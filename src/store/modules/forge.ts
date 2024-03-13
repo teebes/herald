@@ -10,7 +10,9 @@ const state = {
 
 const actions = {
   send: async ({ commit, dispatch, state, rootState }, data) => {
-    if (!state.ws) {
+    if (!state.ws
+      || state.ws.readyState === WebSocket.CLOSED
+      || state.ws.readyState === WebSocket.CLOSING) {
       await dispatch("connect");
     }
     state.ws.send(JSON.stringify(data));

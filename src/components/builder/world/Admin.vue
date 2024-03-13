@@ -54,7 +54,7 @@
       </div>
 
       <!-- SPW Instances -->
-      <div v-if="spws">
+      <div v-if="spws && world_admin.spw_data.total_count">
         <h3 class="mt-8 mb-2" >SINGLE PLAYER INSTANCES</h3>
         <div>Total SPW instances: {{ world_admin.spw_data.total_count }}</div>
         <div v-for="spw in spws" v-bind:key="spw.id">

@@ -125,6 +125,12 @@ const receiveMessage = async ({
     "notification.cmd.chat.success",
     "cmd.tell.success",
     "notification.tell",
+    "cmd.reply.success",
+    "notification.reply",
+    "cmd.cchat.success",
+    "notification.cmd.cchat.success",
+    "cmd.gossip.success",
+    "notification.cmd.gossip.success",
   ];
   if (com_messages.indexOf(message_data.type) != -1) {
     commit("com_list_add", message_data);
@@ -496,28 +502,6 @@ const actions = {
       player_id,
       world_id,
     }, { root: true });
-
-    return;
-    try {
-      const resp = await axios.post(`/game/enter/`, {
-        player_key: `player.${player_id}`,
-      });
-      /*
-        If this is successful, an async task got triggered which will
-        be notified to the UI via a Forge websocket message. So we just
-        exit as soon as we get a response.
-      */
-      return;
-
-    } catch (e) {
-      let error_message = "Unable to enter world.";
-      if (e.response.status === 400 && e.response.data && e.response.data.length) {
-        error_message = e.response.data[0];
-      }
-      commit(UI_MUTATIONS.SET_NOTIFICATION_ERROR, error_message, {
-        root: true,
-      });
-    }
   },
 
   enter_ready_world: async ({ commit, dispatch }, { player_id, player_config, world, nexus_name, ws_uri }) => {
