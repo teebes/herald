@@ -45,6 +45,7 @@ export const UI_MUTATIONS = {
   MODAL_CLOSE: "ui/modal_clear",
   EDITING_FIELD_SET: "ui/editing_field_set",
   EDITING_FIELD_CLEAR: "ui/editing_field_clear",
+  SET_FORGE_WS: "ui/set_forge_ws",
 };
 
 export const UI_MODALS = {
@@ -139,6 +140,12 @@ export const BUILDER_MUTATIONS = {
   QUEST_REWARD_UPDATE: "builder/quest_reward_update",
   QUEST_REWARD_DELETE: "builder/quest_reward_remove",
 };
+
+// Game
+
+export const GAME_ACTIONS = {
+  REQUEST_ENTER_WORLD: 'game/request_enter_world',
+}
 
 export const BUILDER_MUTATIONS_NAMESPACED = {};
 for (let k of Object.keys(BUILDER_MUTATIONS)) {

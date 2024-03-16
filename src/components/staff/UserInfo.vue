@@ -7,13 +7,24 @@
 
     <div class="info">
       <h2>Basic Info</h2>
-      <div>Email: {{ user.email }}</div>
+      <div>
+        Email: {{ user.email }}
+        <span v-if="user.is_confirmed">[ confirmed ]</span>
+        <span v-if="user.is_invalid">[ invalid ]</span>
+        <span v-else-if="!user.is_confirmed">[ unconfirmed ]</span>
+      </div>
       <div>First name: {{ user.first_name || "None set" }}</div>
       <div>Last name: {{ user.last_name || "None set" }}</div>
+      <div>Username: {{ user.name || "None set"}}</div>
       <div>Date joined: {{ user.date_joined }}</div>
       <div>Last login: {{ user.last_login }}</div>
       <div>Send newsletter: {{user.send_newsletter}}</div>
       <div>{{ user.players_count }} player characters</div>
+
+      <div v-if="!user.is_confirmed && !user.is_invalid" class="mt-2">
+        <button class="btn-small" @click="invalidate_email">INVALIDATE EMAIL</button>
+      </div>
+
     </div>
 
     <div class="recent-logins">
@@ -70,11 +81,14 @@ import { BUILDER_WORLD_PLAYER_DETAIL, BUILDER_WORLD_INDEX } from "@/router";
 
 @Component
 export default class UserInfo extends Vue {
-  user: {} | null = null;
+  // user: {} | null = null;
 
   async mounted() {
-    const resp = await axios.get(`/staff/users/${this.$route.params.user_id}`);
-    this.user = resp.data;
+    await this.$store.dispatch('staff/user_fetch', this.$route.params.user_id);
+  }
+
+  get user() {
+    return this.$store.state.staff.user;
   }
 
   world_link(world_id) {
@@ -87,12 +101,11 @@ export default class UserInfo extends Vue {
   }
 
   player_link(player) {
+    // let world_id = player.world_id;
 
-    let world_id = player.world_id;
-
-    if (player.world_is_multi) {
-      world_id = player.root_world_id;
-    }
+    // if (player.world_is_multi) {
+    //   world_id = player.root_world_id;
+    // }
 
     return {
       name: BUILDER_WORLD_PLAYER_DETAIL,
@@ -101,6 +114,10 @@ export default class UserInfo extends Vue {
         player_id: player.id
       }
     };
+  }
+
+  invalidate_email() {
+    this.$store.dispatch('staff/invalidate', this.$route.params.user_id);
   }
 }
 </script>

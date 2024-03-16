@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const makeCrud = (endpoint) => {
   /*
-    Create a dynamic state for a resource that will be manipulated in a 
+    Create a dynamic state for a resource that will be manipulated in a
     predictable manner via CRUD.
   */
   return {
@@ -74,6 +74,12 @@ export const generate_crud_actions = (
   name,
   { create_callback, delete_callback }
 ) => {
+  /*
+    Takes a name (for example mob_template or item_template) and returns a set of
+    actions that can be used to fetch, create, save, and delete that resource.
+
+    This is currently used in
+  */
   const endpoint_token = name.split("_").join("") + "s";
   return {
     [`${name}_fetch`]: async ({ commit, rootState }, id) => {

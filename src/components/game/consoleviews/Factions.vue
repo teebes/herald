@@ -4,6 +4,10 @@
       Core Faction: {{ message.data.core_faction }}
     </div>
 
+    <div class='player-clan' v-if="message.data.clan">
+      Player Clan: {{ capfirst(message.data.clan.rank) }} of {{ message.data.clan.name }}
+    </div>
+
     <div
       class="clanned-factions faction-group mt-4"
       v-if="has_clanned_factions"
@@ -70,12 +74,15 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { capfirst } from "@/core/utils";
+
 @Component
 export default class GameFactions extends Vue {
   @Prop() message!: any;
   @Prop() distanceToBottom!: number;
 
   expanded_factions: {} = {};
+  capfirst = capfirst;
 
   clickFaction(code) {
     if (!this.expanded_factions[code]) {

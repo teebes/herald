@@ -190,7 +190,7 @@ import {
   BUILDER_WORLD_BUILDERS,
   BUILDER_WORLD_PLAYER_LIST,
   BUILDER_ROOM_INDEX,
-  BUILDER_WORLD_STATUS,
+  BUILDER_WORLD_ADMIN,
   BUILDER_WORLD_FACTIONS,
   BUILDER_WORLD_FACTS,
   BUILDER_WORLD_SKILLS,
@@ -488,7 +488,7 @@ export default class WorldFrame extends Mixins(WorldView) {
 
   get world_status_link() {
     return {
-      name: BUILDER_WORLD_STATUS,
+      name: BUILDER_WORLD_ADMIN,
       params: { world_id: this.world.id },
     };
   }

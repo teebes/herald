@@ -56,7 +56,8 @@ import ItemTemplateList from "@/components/builder/world/ItemTemplateList.vue";
 import ItemTemplateDetails from "@/components/builder/world/ItemTemplateDetails.vue";
 import MobTemplateList from "@/components/builder/world/MobTemplateList.vue";
 import MobTemplateDetails from "@/components/builder/world/MobTemplateDetails.vue";
-import WorldStatus from "@/components/builder/world/Status.vue";
+import WorldAdmin from "@/components/builder/world/Admin.vue";
+import WorldAdminInstance from "@/components/builder/world/AdminInstance.vue";
 
 // Game
 import Game from "@/components/game/Game.vue";
@@ -104,7 +105,8 @@ export const BUILDER_WORLD_TRANSFORMATION_TEMPLATE_LIST =
 export const BUILDER_WORLD_BUILDERS = "builder_world_builders";
 export const BUILDER_WORLD_PLAYER_LIST = "builder_world_player_list";
 export const BUILDER_WORLD_PLAYER_DETAIL = "builder_world_player_detail";
-export const BUILDER_WORLD_STATUS = "builder_world_status";
+export const BUILDER_WORLD_ADMIN = "builder_world_admin";
+export const BUILDER_WORLD_ADMIN_INSTANCE = "builder_world_admin_instance";
 export const BUILDER_WORLD_FACTIONS = "builder_world_factions";
 export const BUILDER_WORLD_FACTION_RANK_LIST = "builder_world_faction_ranks";
 export const BUILDER_WORLD_FACTS = "builder_world_facts";
@@ -427,7 +429,17 @@ const router = new Router({
             import("@/components/builder/world/FactionRankList.vue"),
         },
 
-        { path: "status", name: BUILDER_WORLD_STATUS, component: WorldStatus },
+        {
+          path: "admin",
+          name: BUILDER_WORLD_ADMIN,
+          component: WorldAdmin
+        },
+
+        {
+          path: "admin/:instance_id",
+          name: BUILDER_WORLD_ADMIN_INSTANCE,
+          component: WorldAdminInstance,
+        },
 
         {
           path: "rooms/:room_id",

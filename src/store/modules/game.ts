@@ -5,11 +5,12 @@ import router, {
 } from "@/router";
 import axios from "axios";
 import { LOBBY_WORLD_DETAIL } from "@/router";
-import { WS_URI } from "@/config.ts";
+import { WS_URI, FORGE_WS_URI } from "@/config";
 import _ from "lodash";
 import Vue from "vue";
-import EventBus from "@/core/eventbus.ts";
-import { INTRO_WORLD_ID } from "@/config.ts";
+import EventBus from "@/core/eventbus";
+import { INTRO_WORLD_ID } from "@/config";
+import { UI_MUTATIONS, GAME_ACTIONS } from "@/constants";
 
 // Want to make sure we can read THIS
 // Running one more test
@@ -21,6 +22,7 @@ const set_initial_state = () => {
     player_id: null,
     world_id: null,
     uri: WS_URI,
+    forge_ws_uri: FORGE_WS_URI,
     room_key: null,
     is_mobile: false,
     width: 0,
@@ -123,6 +125,12 @@ const receiveMessage = async ({
     "notification.cmd.chat.success",
     "cmd.tell.success",
     "notification.tell",
+    "cmd.reply.success",
+    "notification.reply",
+    "cmd.cchat.success",
+    "notification.cmd.cchat.success",
+    "cmd.gossip.success",
+    "notification.cmd.gossip.success",
   ];
   if (com_messages.indexOf(message_data.type) != -1) {
     commit("com_list_add", message_data);
@@ -479,6 +487,34 @@ const receiveMessage = async ({
 };
 
 const actions = {
+
+  request_enter_world: async ({ commit, dispatch, state }, { player_id, world_id }) => {
+    commit("reset_state");
+    commit(
+      UI_MUTATIONS.SET_NOTIFICATION,
+      { text: "Entering world...", expires: false },
+      { root: true });
+
+    await dispatch('forge/send', {
+      type: 'job',
+      job: 'enter_world',
+      player_id,
+      world_id,
+    }, { root: true });
+  },
+
+  enter_ready_world: async ({ commit, dispatch }, { player_id, player_config, world, nexus_name, ws_uri }) => {
+    commit("reset_state");
+    console.log('player_id: ' + player_id);
+    console.log('nexus name: ' + nexus_name);
+    // commit("ws_uri_set", `ws://localhost/websocket/${nexus_name}/cmd`);
+    commit("ws_uri_set", ws_uri);
+    commit("world_set", world);
+    commit("player_config_set", player_config);
+    commit("pregame_set", { player_id: player_id });
+    dispatch("openWebSocket");
+  },
+
   world_enter: async ({ commit, dispatch, state }, { player_id }) => {
     commit("reset_state");
     commit(
@@ -492,6 +528,9 @@ const actions = {
       });
       commit("world_set", resp.data.world);
       commit("player_config_set", resp.data.player_config);
+      if (resp.data.cluster_id) {
+        commit("ws_uri_set", `ws://localhost/websocket/${resp.data.cluster_id}/cmd`);
+      }
 
       commit("pregame_set", {
         player_id: player_id,
@@ -512,6 +551,28 @@ const actions = {
     }
   },
 
+  world_exited: async ({ commit, dispatch, state, rootState }, data) => {
+    if (
+      data.context &&
+      data.context.split(".")[1] === INTRO_WORLD_ID &&
+      rootState.auth.user.is_temporary
+    ) {
+      dispatch("auth/logout", null, { root: true });
+      router.push({
+        name: "home",
+        params: { world_id: state.world.context_id },
+      });
+    } else {
+      const world_id = data.exit_to || (state.world && state.world.context_id);
+      router.push({
+        name: LOBBY_WORLD_DETAIL,
+        params: { world_id: world_id },
+      });
+    }
+    commit("closeWs");
+    commit("reset_state");
+  },
+
   openWebSocket: async ({ commit, rootState, state, dispatch }) => {
     const onopen = () => {
       dispatch("sendWSMessage", {
@@ -523,7 +584,12 @@ const actions = {
     const onmessage = (event) => {
       receiveMessage({ event, rootState, state, dispatch, commit });
     };
-    commit("openWS", { onopen, onmessage });
+
+    const onerror = (error) => {
+      console.error('WebSocket Error:', error);
+    };
+
+    commit("openWS", { onopen, onmessage, onerror });
   },
 
   sendWSMessage: async ({ rootState, state }, payload) => {
@@ -618,7 +684,10 @@ const actions = {
     commit("auth/auth_set", resp.data.token, { root: true });
     commit("auth/user_set", resp.data.user, { root: true });
     const player_id = resp.data.player.id;
-    dispatch("world_enter", { player_id });
+    dispatch(GAME_ACTIONS.REQUEST_ENTER_WORLD, {
+      player_id,
+      world_id: resp.data.world_id
+    }, { root: true });
   },
 
   save_player_config: async ({ commit, state }, config) => {
@@ -670,10 +739,15 @@ const mutations = {
     state.messages = [];
   },
 
-  openWS: (state, { onopen, onmessage }) => {
+  ws_uri_set: (state, uri) => {
+    state.uri = uri;
+  },
+
+  openWS: (state, { onopen, onmessage, onerror }) => {
     state.websocket = new WebSocket(state.uri);
     state.websocket.onopen = onopen;
     state.websocket.onmessage = onmessage;
+    state.websocket.onerror = onerror;
   },
 
   closeWs: (state) => {

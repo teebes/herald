@@ -33,6 +33,7 @@
 <script lang='ts'>
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import axios from "axios";
+import { GAME_ACTIONS } from "@/constants";
 
 @Component
 export default class LobbyTransfer extends Vue {
@@ -48,8 +49,9 @@ export default class LobbyTransfer extends Vue {
         gender: this.gender
       }
     );
-    this.$store.dispatch("game/world_enter", {
-      player_id: this.$route.params.player_id
+    this.$store.dispatch(GAME_ACTIONS.REQUEST_ENTER_WORLD, {
+      player_id: this.$route.params.player_id,
+      world_id: resp.data.world_id,
     });
   }
 }

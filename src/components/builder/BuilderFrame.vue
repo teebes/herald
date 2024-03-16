@@ -64,7 +64,7 @@
 
           <div class="mobile-hidden">
             <div class="line-divider my-2" />
-            <router-link :to="world_status_link">Status</router-link>
+            <router-link :to="world_admin_link">Admin</router-link>
 
             <router-link
               :to="{name: BUILDER_WORLD_BUILDERS, params: {world_id: $route.params.world_id}}"
@@ -159,7 +159,8 @@ import {
   BUILDER_WORLD_BUILDERS,
   BUILDER_WORLD_PLAYER_LIST,
   BUILDER_WORLD_PLAYER_DETAIL,
-  BUILDER_WORLD_STATUS,
+  BUILDER_WORLD_ADMIN,
+  BUILDER_WORLD_ADMIN_INSTANCE,
   BUILDER_WORLD_FACTS,
   BUILDER_WORLD_SKILLS,
   BUILDER_WORLD_STARTING_EQ,
@@ -238,11 +239,8 @@ export default class WorldFrame extends Vue {
       this.$store.commit(BUILDER_MUTATIONS.ROOM_SET, room);
       this.$store.commit(BUILDER_MUTATIONS.ZONE_SET, room.zone);
     }
-    return world;
 
-    // console.log("getting");
-    // await Promise.all([map_promise, world_promise]);
-    // console.log("got");
+    return world;
   }
 
   async destroyed() {
@@ -300,7 +298,8 @@ export default class WorldFrame extends Vue {
       BUILDER_WORLD_BUILDERS,
       BUILDER_WORLD_PLAYER_LIST,
       BUILDER_WORLD_PLAYER_DETAIL,
-      BUILDER_WORLD_STATUS,
+      BUILDER_WORLD_ADMIN,
+      BUILDER_WORLD_ADMIN_INSTANCE,
       BUILDER_WORLD_FACTIONS,
       BUILDER_WORLD_FACTION_RANK_LIST,
       BUILDER_WORLD_FACTS,
@@ -322,9 +321,9 @@ export default class WorldFrame extends Vue {
     return world ? world.id : null;
   }
 
-  get world_status_link() {
+  get world_admin_link() {
     return {
-      name: BUILDER_WORLD_STATUS,
+      name: BUILDER_WORLD_ADMIN,
       params: { world_id: this.$route.params.world_id },
     };
   }

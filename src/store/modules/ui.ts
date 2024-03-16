@@ -1,4 +1,5 @@
 import { UI_ACTIONS, UI_MUTATIONS } from "@/constants";
+import { FORGE_WS_URI } from "@/config";
 
 const state = {
   notification: "",
@@ -6,7 +7,7 @@ const state = {
   notification_expires: 3000,
   modal: "",
   modal_data: {}, // data that can optionally be passed to the modal when invoking it,
-  editingField: false
+  editingField: false,
 };
 
 const getters = {};
@@ -21,7 +22,7 @@ const actions = {
     } else if (error.request) {
       commit(UI_MUTATIONS.SET_NOTIFICATION_ERROR, "Error sending request.");
     }
-  }
+  },
 };
 
 const mutations = {
@@ -82,7 +83,8 @@ const mutations = {
 
   clearNotification(state) {
     state.notification = "";
-  }
+  },
+
 };
 
 export default {

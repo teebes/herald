@@ -193,6 +193,12 @@ const actions = {
     return resp.data;
   },
 
+  world_patch: async ({ commit, state }, data) => {
+    const resp = await axios.patch(`/builder/worlds/${state.world.id}/`, data);
+    commit("world_set", resp.data);
+    return resp.data;
+  },
+
   world_delete: async ({ commit, state }) => {
     const resp = await axios.delete(`/builder/worlds/${state.world.id}/`);
     commit("world_clear");

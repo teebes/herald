@@ -61,6 +61,7 @@ Vue.directive("interactive", interactive);
   }
 })
 export default class App extends Vue {
+
   get showHeader() {
     if (
       this.$route.name == "home" ||

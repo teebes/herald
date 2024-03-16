@@ -1,14 +1,20 @@
 import axios from "axios";
-import { mob_template_actions, mob_template_mutations } from "./mob_templates";
+import {
+  mob_template_actions,
+  mob_template_mutations
+} from "./mob_templates";
 import {
   item_template_actions,
   item_template_mutations
 } from "./item_templates";
+import admin from "./admin";
 
 const initial_state = () => {
   return {
+    // Used for player details screen
     player: null,
 
+    // Used for the World Config screen
     config: null,
 
     mob_template: null,
@@ -136,5 +142,8 @@ export default {
 
     ...mob_template_mutations,
     ...item_template_mutations
+  },
+  modules: {
+    admin,
   }
 };

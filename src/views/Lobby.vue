@@ -157,6 +157,7 @@ import {
   LOBBY_WORLD_TRANSFER
 } from "@/router";
 import { INTRO_WORLD_ID } from "@/config";
+import { GAME_ACTIONS } from "@/constants";
 import { World } from "@/core/interfaces";
 import WorldCard from "@/components/WorldCard.vue"
 import CodeOfConduct from "@/components/lobby/CodeOfConduct.vue";
@@ -240,9 +241,9 @@ export default class Lobby extends Vue {
   onEnter(char) {
     const cod_accepted = this.$store.state.auth.user.cod_accepted;
     if (cod_accepted) {
-      this.$store.dispatch("game/world_enter", {
+      this.$store.dispatch(GAME_ACTIONS.REQUEST_ENTER_WORLD, {
         player_id: char.id,
-        world_id: this.$route.params.world_id
+        world_id: char.world_id
       });
     } else {
       const modal = {
