@@ -10,7 +10,7 @@ import _ from "lodash";
 import Vue from "vue";
 import EventBus from "@/core/eventbus";
 import { INTRO_WORLD_ID } from "@/config";
-import { UI_MUTATIONS, GAME_ACTIONS as ACTIONS } from "@/constants";
+import { UI_MUTATIONS, GAME_ACTIONS } from "@/constants";
 
 // Want to make sure we can read THIS
 // Running one more test
@@ -190,7 +190,6 @@ const receiveMessage = async ({
 
   // Disconection
   if (message_data.type === "system.disconnect.success") {
-    return;
     if (
       message_data.data.context &&
       message_data.data.context.split(".")[1] === INTRO_WORLD_ID &&
@@ -685,7 +684,10 @@ const actions = {
     commit("auth/auth_set", resp.data.token, { root: true });
     commit("auth/user_set", resp.data.user, { root: true });
     const player_id = resp.data.player.id;
-    dispatch("world_enter", { player_id });
+    dispatch(GAME_ACTIONS.REQUEST_ENTER_WORLD, {
+      player_id,
+      world_id: resp.data.world_id
+    }, { root: true });
   },
 
   save_player_config: async ({ commit, state }, config) => {

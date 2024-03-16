@@ -42,7 +42,8 @@
         <div v-for="nexus in panel.nexuses" :key="nexus.id">
           <div class="mb-1">
             [ {{ nexus.id }} ] {{ nexus.name }} - {{ nexus.state }}
-            <button class="btn-small ml-2" @click="delete_nexus(nexus)">DELETE</button>
+            <button class="btn-small ml-2" @click="build_nexus(nexus)" v-if="nexus.state == 'absent'">BUILD</button>
+            <button class="btn-small ml-2" @click="delete_nexus(nexus)" v-if="nexus.state == 'ready'">DELETE</button>
           </div>
         </div>
         <div v-if="panel.nexuses && panel.nexuses.length == 0">No online Nexus.</div>
@@ -172,8 +173,6 @@ export default class StaffPage extends Vue {
   }
 
   get panel() {
-    console.log('=========================')
-    console.log(this.$store.state.staff.panel);
     return this.$store.state.staff.panel;
   }
 
@@ -242,6 +241,18 @@ export default class StaffPage extends Vue {
       type: 'job',
       job: 'teardown'
     })
+  }
+
+  build_nexus(nexus) {
+    this.$store.commit(UI_MUTATIONS.SET_NOTIFICATION, {
+      text: "Starting Nexus...",
+      expires: false
+    });
+    this.$store.dispatch('forge/send', {
+      type: 'job',
+      job: 'build_nexus',
+      nexus_id: nexus.id,
+    });
   }
 
   delete_nexus(nexus) {

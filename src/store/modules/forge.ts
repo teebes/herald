@@ -111,6 +111,17 @@ const actions = {
       }
     }
 
+    // Nexus Built
+    if (data.job == "build_nexus") {
+      if (data.status === 'error') {
+        const error = data.error || 'Error starting nexus.';
+        commit('ui/notification_set_error', error, { root: true });
+      } else if (data.status === 'success') {
+        commit('ui/notification_set', 'Nexus started.', { root: true });
+      }
+    }
+
+
     // Nexus Deleted
     if (data.job == "delete_nexus") {
       if (data.status === 'error') {
