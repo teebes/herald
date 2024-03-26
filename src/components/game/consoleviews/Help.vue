@@ -101,6 +101,20 @@
         </div>
       </div>
 
+      <div class="cmd-group clan-commands">
+        <div class="group-title">Clan Commands</div>
+        <div class="cmds">
+          <div class="cmd" @click="cmdHelp('cc')">cc</div>
+          <div class="cmd" @click="cmdHelp('cjoin')">cjoin</div>
+          <div class="cmd" @click="cmdHelp('cquit')">cquit</div>
+          <div class="cmd" @click="cmdHelp('cregister')">cregister</div>
+          <div class="cmd" @click="cmdHelp('cpassword')">cpassword</div>
+          <div class="cmd" @click="cmdHelp('cmembers')">cmembers</div>
+          <div class="cmd" @click="cmdHelp('cpromote')">cpromote</div>
+          <div class="cmd" @click="cmdHelp('ckick')">ckick</div>
+        </div>
+      </div>
+
       <div class="cmd-group item-commands">
         <div class="group-title">Item Manipulation</div>
         <div class="cmds">

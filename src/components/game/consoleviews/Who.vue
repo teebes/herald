@@ -4,19 +4,21 @@
     <div
       v-for="player in message.data.players"
       :key="player.id"
-      :class="{ 'color-secondary': player.name_recognition, 'color-primary': player.is_immortal }"
+      :class="playerClasses(player)"
     >
       <!-- <span v-if="player.is_immortal">~</span> -->
       {{ player.name }} {{ player.title }} ({{ player.level }})
-      <span v-if="player.display_faction">[{{ player.display_faction }}]</span>
-      <span v-if="player.is_idle" class="ml-1 color-text-50">(Idle)</span>
+      <span v-if="player.clan" class="ml-2">[ {{ player.clan.name }} ]</span>
       <span v-if="player.is_invisible" class="ml-1 color-text-50"
         >[invisible]</span
       >
-      <span v-if="player.link_id" class="ml-2 color-text-50">[link {{ player.link_id }}]</span>
+      <span v-if="user.is_staff && player.core_faction" class="ml-2 color-text-50">[ {{ player.core_faction }} ]</span>
+      <span v-if="player.link_id" class="ml-2 color-text-50">[ link {{ player.link_id }} ]</span>
+      <span v-if="player.room_id" class="ml-2 color-text-50">[ {{ player.room_id}} ]</span>
+      <span v-if="player.is_idle" class="ml-2 color-text-50">(Idle)</span>
     </div>
 
-    <template v-if="grapevine_worlds.length">
+    <!-- <template v-if="grapevine_worlds.length">
       <h3 class="mt-2">GRAPEVINE</h3>
       <div v-for="world_data of grapevine_worlds" :key="world_data.name">
         <div class="gworld-name-and-count" @click="clickWorld(world_data.name)">
@@ -34,7 +36,7 @@
           </div>
         </template>
       </div>
-    </template>
+    </template> -->
   </div>
 </template>
 
@@ -63,6 +65,10 @@ export default class GameWho extends Vue {
     return worlds;
   }
 
+  get user() {
+    return this.$store.state.auth.user;
+  }
+
   clickWorld(world_name) {
     if (!this.expanded_worlds[world_name]) {
       Vue.set(this.expanded_worlds, world_name, true);
@@ -72,6 +78,15 @@ export default class GameWho extends Vue {
     if (this.distanceToBottom < 5) {
       this.$emit("scrollDown");
     }
+  }
+
+  playerClasses(player) {
+    if (player.is_immortal)
+      return {"color-primary": true}
+    else if (player.name_recognition)
+      return {"color-secondary": true}
+    else
+      return {}
   }
 }
 </script>

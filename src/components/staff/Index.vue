@@ -186,14 +186,14 @@ export default class StaffPage extends Vue {
   player_details(player) {
     return {
       name: BUILDER_WORLD_PLAYER_DETAIL,
-      params: { player_id: player.id, world_id: player.world_id },
+      params: { player_id: player.id, world_id: player.root_world_id },
     };
   }
 
   world_details(player) {
     return {
       name: BUILDER_WORLD_INDEX,
-      params: { world_id: player.world_id },
+      params: { world_id: player.root_world_id },
     };
   }
 
