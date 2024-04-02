@@ -31,7 +31,7 @@
 
       <div class="mt-2">
         <button class="btn-small" @click="initialize">INITIALIZE</button>
-        <button class="btn-small ml-2" @click="teardown">TEARDOWN</button>
+        <button class="btn-small ml-1" @click="teardown">TEARDOWN</button>
       </div>
 
       <!-- Nexuses -->
@@ -44,6 +44,7 @@
             [ {{ nexus.id }} ] {{ nexus.name }} - {{ nexus.state }}
             <button class="btn-small ml-2" @click="build_nexus(nexus)" v-if="nexus.state == 'absent'">BUILD</button>
             <button class="btn-small ml-2" @click="delete_nexus(nexus)" v-if="nexus.state == 'ready'">DELETE</button>
+            <button class="btn-small ml-1" @click="rebuild_nexus(nexus)" v-if="nexus.state == 'ready'">REBUILD</button>
           </div>
         </div>
         <div v-if="panel.nexuses && panel.nexuses.length == 0">No online Nexus.</div>
@@ -263,6 +264,18 @@ export default class StaffPage extends Vue {
     this.$store.dispatch('forge/send', {
       type: 'job',
       job: 'delete_nexus',
+      nexus_id: nexus.id,
+    });
+  }
+
+  rebuild_nexus(nexus) {
+    this.$store.commit(UI_MUTATIONS.SET_NOTIFICATION, {
+      text: "Rebuilding Nexus...",
+      expires: false
+    });
+    this.$store.dispatch('forge/send', {
+      type: 'job',
+      job: 'rebuild_nexus',
       nexus_id: nexus.id,
     });
   }

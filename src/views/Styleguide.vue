@@ -8,6 +8,11 @@
     <p class="font-text-light">Font-Text Light</p>
     <p class="font-title-regular">Font-Title Regular</p>
     <p class="font-title-light">Font-Title Light</p>
+    <p class="color-red">Color-Red</p>
+    <p class="color-green">Color-Green</p>
+    <p class="color-green-chat">Color-Green-Chat</p>
+    <p class="color-blue-chat">Color-Blue-Chat</p>
+
     <div>
       <a href="#" @click.prevent="dummyPrevent">link</a>
     </div>

@@ -294,12 +294,12 @@ export default class Console extends Vue {
 
       &.cmd\.cchat\.success,
       &.notification\.cmd\.cchat\.success {
-        color: $color-blue;
+        color: $color-blue-chat;
       }
 
       &.cmd\.gossip\.success,
       &.notification\.cmd\.gossip\.success {
-        color: $color-green;
+        color: $color-green-chat;
       }
 
       .brief {

@@ -132,6 +132,16 @@ const actions = {
       }
     }
 
+    // Nexus Rebuilt
+    if (data.job == "rebuild_nexus") {
+      if (data.status === 'error') {
+        const error = data.error || 'Error rebuilding nexus.';
+        commit('ui/notification_set_error', error, { root: true });
+      } else if (data.status === 'success') {
+        commit('ui/notification_set', 'Nexus rebuilt.', { root: true });
+      }
+    }
+
     // Toggle Maintenance
     if (data.job == "toggle_maintenance_mode") {
       if (data.status === 'error') {

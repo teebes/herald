@@ -89,14 +89,22 @@ $color-red-70: #8b2b2e;
   color: $color-secondary;
 }
 
-// Extra UI colors taken from the map
-$color-blue: #4798c4;
-$color-green: #26986d;
-
-.color-blue {
-  color: $color-blue;
+.color-red {
+  color: $color-red;
 }
 
 .color-green {
   color: $color-green;
+}
+
+// Extra UI colors taken from the map
+$color-blue-chat: #4798c4;
+$color-green-chat: #26986d; // better contrast
+
+.color-blue-chat {
+  color: $color-blue-chat;
+}
+
+.color-green-chat {
+  color: $color-green-chat;
 }
