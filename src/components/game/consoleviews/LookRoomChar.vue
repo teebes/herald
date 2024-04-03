@@ -1,17 +1,19 @@
 <template>
-  <div class="inline-block">
+  <div class="inline-block" @click="handleClick">
     <template v-if="char.target">
       <span :class="{ hostile: isHostile }">{{ capfirst(char.name) }}</span>
       is here, fighting
       <span v-if="targetsYou">YOU!</span>
       <template v-else>
-        <span v-if="isHostile">*</span><span :class="{ hostile: isHostile }">{{ char.target.name }}</span><span v-if="isHostile">*</span>
-      .
+        <span v-if="isHostile">*</span><span :class="{ hostile: isHostile }">{{ char.target.name }}</span><span
+          v-if="isHostile">*</span>
+        .
       </template>
     </template>
 
     <template v-else-if="isHostile">
-      <span v-if="isHostile">*</span><span :class="{ hostile: isHostile }">{{ capfirst(char.name) }}</span><span v-if="isHostile">*</span>
+      <span v-if="isHostile">*</span><span :class="{ hostile: isHostile }">{{ capfirst(char.name) }}</span><span
+        v-if="isHostile">*</span>
       is here.
     </template>
 
@@ -26,12 +28,13 @@ import { capfirst } from "@/core/utils.ts";
 /*
   When fighting, want to just show name + fighting target / you
   When not fighting, if not hostile should show room desc
-    if hostile, show 
+    if hostile, show
 */
 
 @Component
 export default class LookRoomChar extends Vue {
   @Prop() char!: any;
+
   player: any;
 
   capfirst = capfirst;
@@ -39,10 +42,6 @@ export default class LookRoomChar extends Vue {
   constructor() {
     super();
     this.player = this.$store.state.game.player;
-  }
-
-  get isMob() {
-    return this.char.char_type == "mob";
   }
 
   get isHostile() {
@@ -60,19 +59,8 @@ export default class LookRoomChar extends Vue {
     return false;
   }
 
-  room_char_desc(char) {
-    let name = capfirst(char.name);
-    if (char.key.split(".")[0] === "player") {
-      if (char.title) {
-        name += " " + char.title;
-      }
-    }
-    let desc = `${name} is here`;
-    if (char.target) {
-      desc += `, fighting ${char.target.name}`;
-    }
-    desc += ".";
-    return desc;
+  handleClick() {
+    this.$emit('click');
   }
 }
 </script>

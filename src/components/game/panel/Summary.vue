@@ -2,11 +2,11 @@
   <div class="summary-region">
     <div>
       <div class="name-and-summary">
-        <div class="name" :title="{ [player.title]: player.title }">{{ player.name }}</div>
+        <div class="name">{{ player.name }}</div>
         <div class="summary"><span v-if="$store.state.game.world.allow_combat">{{ archetype }} level {{ player.level }}</span><span v-else>&nbsp;</span></div>
       </div>
       <div class="experience">
-        <div class="exp-gained" :style="{width: expPerc +'%'}"></div>
+        <div class="exp-gained" :style="{width: expPerc +'%'}" :title="expProgress"></div>
       </div>
     </div>
   </div>
@@ -30,6 +30,10 @@ export default class PanelSummary extends Vue {
     const needed = this.player.experience_needed,
       progress = this.player.experience_progress;
     return (progress / (needed + progress)) * 100;
+  }
+
+  get expProgress() {
+    return 'Experience: ' + this.expPerc + '%';
   }
 }
 </script>

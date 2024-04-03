@@ -3,13 +3,11 @@ import Lookup from "@/components/game/Lookup.vue";
 import _ from "lodash";
 
 /*
-  Binding for elements that when hovered on will trigger a lookup popup or 
+  Binding for elements that when hovered on will trigger a lookup popup or
   modal depending on whether one is on mobile or on desktop.
 */
 export const interactive = {
   bind: (el, binding, vnode) => {
-    // console.log(binding.value);
-
     // Get the entity being looked up
     const entity = binding.value.target;
 
@@ -20,7 +18,8 @@ export const interactive = {
 
     if (!entity) return;
 
-    const onDebouncedMouseover = () => {
+    const onDebouncedMouseenter = (event) => {
+      if (!event.target.classList.contains('interactable')) return;
       if (store.state.game.is_mobile) return;
       var rect = el.getBoundingClientRect();
       if (
@@ -40,14 +39,16 @@ export const interactive = {
       }
     };
 
-    const onDebouncedMouseout = () => {
+    const onDebouncedMouseleave = (event) => {
+      if (!event.target.classList.contains('interactable')) return;
       if (store.state.game.is_mobile) return;
       if (!store.state.game.popup_hover) {
         store.commit("game/lookup_clear");
       }
     };
 
-    el.addEventListener("click", () => {
+    el.addEventListener("click", (event) => {
+      if (!event.target.classList.contains('interactable')) return;
       if (!store.state.game.is_mobile) return;
       store.commit("game/lookup_set", { key: entity.key });
       store.commit("ui/modal_set", {
@@ -59,15 +60,17 @@ export const interactive = {
     });
 
     // Mouseover events, one immediate and one debounced
-    el.addEventListener("mouseover", () => {
+    el.addEventListener("mouseenter", (event) => {
+      if (!event.target.classList.contains('interactable')) return;
       store.commit("game/hover_entity_set", entity);
     });
-    el.addEventListener("mouseover", _.debounce(onDebouncedMouseover, 150));
+    el.addEventListener("mouseenter", _.debounce(onDebouncedMouseenter, 150));
 
     // Mouseout events, one immediate and one debounced
-    el.addEventListener("mouseout", () => {
+    el.addEventListener("mouseleave", (event) => {
+      if (!event.target.classList.contains('interactable')) return;
       store.commit("game/hover_entity_set", null);
     });
-    el.addEventListener("mouseout", _.debounce(onDebouncedMouseout, 150));
+    el.addEventListener("mouseleave", _.debounce(onDebouncedMouseleave, 150));
   },
 };
