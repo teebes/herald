@@ -2,7 +2,7 @@
   <div>
     <div class="inventory-view">
       <div
-        class="inventory-item interactive"
+        class="inventory-item"
         :class="[item.quality]"
         v-for="item in stackedInventory(player.inventory)"
         :key="item.key"

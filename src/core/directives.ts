@@ -19,7 +19,8 @@ export const interactive = {
     if (!entity) return;
 
     const onDebouncedMouseenter = (event) => {
-      if (!event.target.classList.contains('interactable')) return;
+      if (!event.target.classList.contains('interactable') &&
+          !event.target.classList.contains('interactive')) return;
       if (store.state.game.is_mobile) return;
       var rect = el.getBoundingClientRect();
       if (
@@ -40,7 +41,8 @@ export const interactive = {
     };
 
     const onDebouncedMouseleave = (event) => {
-      if (!event.target.classList.contains('interactable')) return;
+      if (!event.target.classList.contains('interactable') &&
+          !event.target.classList.contains('interactive')) return;
       if (store.state.game.is_mobile) return;
       if (!store.state.game.popup_hover) {
         store.commit("game/lookup_clear");
@@ -60,14 +62,16 @@ export const interactive = {
 
     // Mouseover events, one immediate and one debounced
     el.addEventListener("mouseenter", (event) => {
-      if (!event.target.classList.contains('interactable')) return;
+      if (!event.target.classList.contains('interactable') &&
+          !event.target.classList.contains('interactive')) return;
       store.commit("game/hover_entity_set", entity);
     });
     el.addEventListener("mouseenter", _.debounce(onDebouncedMouseenter, 150));
 
     // Mouseout events, one immediate and one debounced
     el.addEventListener("mouseleave", (event) => {
-      if (!event.target.classList.contains('interactable')) return;
+      if (!event.target.classList.contains('interactable') &&
+          !event.target.classList.contains('interactive')) return;
       store.commit("game/hover_entity_set", null);
     });
     el.addEventListener("mouseleave", _.debounce(onDebouncedMouseleave, 150));
