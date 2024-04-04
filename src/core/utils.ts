@@ -38,7 +38,7 @@ export const stackedInventory = function(inv) {
   return c_inv;
 };
 
-export const getTargetInGroup = (entity, group) => {
+export const getTargetInGroup = (entity, group, actor?) => {
   // Often when trying to generate a text command for an item or a mob,
   // there could be multiple copies of the item or the mob in the context
   // that is being considered.
@@ -52,7 +52,12 @@ export const getTargetInGroup = (entity, group) => {
   // we start at 1.
   let duplicateCount = 1,
     found = false;
+
   for (const thing of group) {
+    if (actor && thing.key === actor.key) {
+      continue;
+    }
+
     if (entity.key === thing.key) {
       found = true;
       if (entity.key.split(".")[0] === "player") {

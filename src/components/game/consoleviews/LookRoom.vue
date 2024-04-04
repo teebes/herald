@@ -89,9 +89,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import { DIRECTIONS } from "@/constants.ts";
-import { stackedInventory, getTargetInGroup } from "@/core/utils.ts";
-import { capfirst } from "@/core/utils.ts";
+import { DIRECTIONS } from "@/constants";
+import { stackedInventory, getTargetInGroup } from "@/core/utils";
+import { capfirst } from "@/core/utils";
 import LookRoomChar from "./LookRoomChar.vue";
 
 interface Char {
@@ -173,7 +173,7 @@ export default class LookRoom extends Vue {
 
   onCharClick(char) {
     if (this.$store.state.game.is_mobile || !this.isLastMessage) return;
-    const target = getTargetInGroup(char, this.room.chars);
+    const target = getTargetInGroup(char, this.room.chars, this.$store.state.game.player);
     this.$store.dispatch("game/cmd", `look ${target}`);
   }
 

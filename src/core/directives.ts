@@ -48,7 +48,6 @@ export const interactive = {
     };
 
     el.addEventListener("click", (event) => {
-      if (!event.target.classList.contains('interactable')) return;
       if (!store.state.game.is_mobile) return;
       store.commit("game/lookup_set", { key: entity.key });
       store.commit("ui/modal_set", {
