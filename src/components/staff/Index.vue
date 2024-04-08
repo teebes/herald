@@ -3,6 +3,8 @@
     <div class="staff-panel" v-if="panel">
     <h2>Staff Control Panel</h2>
 
+    <div class="mt-2">24-hour New User Signups: {{ panel.user_signups.total }} ({{ panel.user_signups.confirmed }} confirmed).</div>
+
     <div class="controls mt-4">
 
       <h3 class="my-2">CONTROLS</h3>
