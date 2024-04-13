@@ -5,7 +5,7 @@ import {
   DIRECTIONS,
   REVERSE_DIRECTIONS
 } from "@/constants";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { Room } from "@/core/interfaces";
 import router, {
   BUILDER_ZONE_PATH_DETAILS,
@@ -39,6 +39,7 @@ interface BuilderState {
   path: any;
   quest: any;
   world_factions: {}[];
+  cancelPreviousRequest: any;
 }
 
 const initial_state = (): BuilderState => {
@@ -57,7 +58,10 @@ const initial_state = (): BuilderState => {
     path: null,
     quest: null,
     showing: "world",
-    world_factions: []
+    world_factions: [],
+
+    // Axios request cancellation helper
+    cancelPreviousRequest: null,
   };
 };
 
@@ -212,15 +216,30 @@ const actions = {
   },
 
   // Assumes that a world is in the store
-  zone_fetch: async ({ commit, dispatch }, { world_id, zone_id }) => {
-    const endpoint = `/builder/worlds/${world_id}/zones/${zone_id}/`;
-    const resp = await axios.get(endpoint);
-    const zone = resp.data;
-    commit("zone_set", zone);
-    return zone;
+  zone_fetch: async ({ commit, dispatch }, { world_id, zone_id, cancelToken }) => {
+
+    try {
+      const config: AxiosRequestConfig = {
+        method: 'get',
+        url: `/builder/worlds/${world_id}/zones/${zone_id}/`,
+      }
+
+      if (cancelToken) {
+        config.cancelToken = cancelToken;
+      }
+
+      const resp = await axios(config);
+      const zone = resp.data;
+      commit("zone_set", zone);
+      return zone;
+    } catch (error) {
+      if (!axios.isCancel(error)) {
+        console.error('Error fetching zone:', error);
+      }
+    }
   },
 
-  zone_rooms_fetch: async ({ commit }, { world_id, zone_id }) => {
+  zone_rooms_fetch: async ({ commit }, { world_id, zone_id, cancelToken }) => {
     const resp = await axios.get(
       `builder/worlds/${world_id}/zones/${zone_id}/map/`
     );
@@ -280,13 +299,25 @@ const actions = {
   },
 
   room_select: async ({ commit, dispatch, state }, room) => {
-    // Update store
+
+    // Check for previous request cancelling
+    if (state.cancelPreviousRequest) {
+      state.cancelPreviousRequest();
+      commit('setCancellationFunction', null)
+    }
+
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+    commit('setCancellationFunction', source.cancel);
+
+    // Optimistically update store
     commit("room_set", room);
 
     // Dispatch fetch
     dispatch("room_fetch", {
       world_id: state.world.id,
-      room_id: room.id
+      room_id: room.id,
+      cancelToken: source.token
     });
 
     // If the clicked room is taking us to a new zone,
@@ -296,19 +327,33 @@ const actions = {
       commit("zone_rooms_clear");
       dispatch("zone_fetch", {
         world_id: state.world.id,
-        zone_id: room.zone.id
+        zone_id: room.zone.id,
+        cancelToken: source.token,
       });
     }
   },
 
-  room_fetch: async ({ commit, state }, { world_id, room_id }) => {
-    const resp = await axios.get(
-      `/builder/worlds/${world_id}/rooms/${room_id}/`
-    );
-    const room_data = resp.data;
-    delete room_data["map"];
-    commit("room_set", room_data);
-    return room_data;
+  room_fetch: async ({ commit, state }, { world_id, room_id, cancelToken }) => {
+    try {
+
+      const config: AxiosRequestConfig = {
+        method: 'get',
+        url: `/builder/worlds/${world_id}/rooms/${room_id}/`,
+      }
+
+      if (cancelToken) {
+        config.cancelToken = cancelToken;
+      }
+      const resp = await axios(config);
+      const room_data = resp.data;
+      delete room_data["map"];
+      commit("room_set", room_data);
+      return room_data;
+    } catch (error) {
+      if (!axios.isCancel(error)) {
+        console.log("Error fetching room", error);
+      }
+    }
   },
 
   room_save: async ({ state, commit, dispatch }, payload) => {
@@ -597,7 +642,11 @@ const mutations = {
 
   room_door_clear: (state, direction) => {
     Vue.delete(state.room.doors, direction);
-  }
+  },
+
+  setCancellationFunction(state, cancelFunction) {
+    state.cancelPreviousRequest = cancelFunction;
+  },
 };
 
 export default {

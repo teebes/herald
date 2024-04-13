@@ -18,7 +18,12 @@ export default function setup() {
     function(response) {
       return response;
     },
-    function(error) {
+    function (error) {
+      if (axios.isCancel(error)) {
+        // Handle the cancellation error specifically
+        return Promise.reject(error);
+      }
+
       if (error.response.status == 401) {
         store.commit("auth/auth_clear");
       } else if (error.response.status == 403) {
