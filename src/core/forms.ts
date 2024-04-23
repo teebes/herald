@@ -112,6 +112,7 @@ export const CONDITIONS: FormElement = {
     - has_shield<br/>
     - health percentage<br/>
     - in_combat<br/>
+    - is_mob<br/>
     - item_in_eq template_id<br/>
     - item_in_inv template_id<br/>
     - item_in_room template_id<br/>
