@@ -302,6 +302,14 @@ export default class Console extends Vue {
         color: $color-green-chat;
       }
 
+      &.notification\.broadcast {
+        margin-top: 1em;
+        margin-bottom: 1em;
+        color: $color-primary;
+        font-weight: bold;
+        font-size: 1.2em;
+      }
+
       .brief {
         /*
         letter-spacing: 1px;

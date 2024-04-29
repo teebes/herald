@@ -36,6 +36,18 @@
           <button class="btn-small ml-1" @click="teardown">TEARDOWN</button>
         </div>
 
+
+        <!-- Broadcast -->
+        <div class="broadcast my-8">
+          <h3 class="my-2">BROADCAST</h3>
+          <div class="form-group">
+            <textarea v-model="broadcast_message" rows="3"></textarea>
+          </div>
+          <div class="mt-2">
+            <button class="btn-small" @click="broadcast">BROADCAST</button>
+          </div>
+        </div>
+
         <!-- Nexuses -->
         <div class="nexuses mt-4">
 
@@ -149,6 +161,8 @@ export default class StaffPage extends Vue {
 
   timeout: number | null = null;
 
+  broadcast_message: string = "";
+
   // @Watch('$store.state.forge.ws')
   // async onForgsWsChanged(newValue, oldValue) {
   //   if (newValue) {
@@ -247,39 +261,56 @@ export default class StaffPage extends Vue {
     })
   }
 
-  build_nexus(nexus) {
+  async build_nexus(nexus) {
     this.$store.commit(UI_MUTATIONS.SET_NOTIFICATION, {
       text: "Starting Nexus...",
       expires: false
     });
-    this.$store.dispatch('forge/send', {
+    await this.$store.dispatch('forge/send', {
       type: 'job',
       job: 'build_nexus',
       nexus_id: nexus.id,
     });
   }
 
-  delete_nexus(nexus) {
+  async delete_nexus(nexus) {
     this.$store.commit(UI_MUTATIONS.SET_NOTIFICATION, {
       text: "Deleting Nexus...",
       expires: false
     });
-    this.$store.dispatch('forge/send', {
+    await this.$store.dispatch('forge/send', {
       type: 'job',
       job: 'delete_nexus',
       nexus_id: nexus.id,
     });
   }
 
-  rebuild_nexus(nexus) {
+  async rebuild_nexus(nexus) {
     this.$store.commit(UI_MUTATIONS.SET_NOTIFICATION, {
       text: "Rebuilding Nexus...",
       expires: false
     });
-    this.$store.dispatch('forge/send', {
+    await this.$store.dispatch('forge/send', {
       type: 'job',
       job: 'rebuild_nexus',
       nexus_id: nexus.id,
+    });
+  }
+
+  async broadcast() {
+    console.log('broadcast attempt')
+    if (!this.broadcast_message) return;
+
+    console.log('broadcasting')
+
+    this.$store.commit(UI_MUTATIONS.SET_NOTIFICATION, {
+      text: "Broadcasting...",
+      expires: false
+    });
+    await this.$store.dispatch('forge/send', {
+      type: 'job',
+      job: 'broadcast',
+      message: this.broadcast_message,
     });
   }
 
