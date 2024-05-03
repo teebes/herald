@@ -5,7 +5,7 @@
       <h3>LOGS</h3>
       <div class="mt-4">
         <button class="btn-small mb-1 button-gray" @click="onClickQuestLog">QUEST LOG</button>
-        <button class="btn-small button-gray" @click="onClickCommunicationLog">COMMUNICATION LOG</button>
+        <button class="btn-small button-gray" @click="onClickCommunicationLog" v-if="world.is_multiplayer">COMMUNICATION LOG</button>
       </div>
     </div>
 
@@ -19,7 +19,7 @@
     </div>
 
     <!-- Who list -->
-    <div class="sidebar-element who-list">
+    <div class="sidebar-element who-list" v-if="world.is_multiplayer">
       <h3 v-if="who_list && who_list['players']" @click="onClickExpand('who')" class="hover">
         <span v-if="expanded === 'who'">-</span>
         <span v-else>+</span>
@@ -40,7 +40,7 @@
         >
           {{ player.name }} {{ player.title }}
           <span v-if="player.is_idle" class='ml-1 color-text-50'>(Idle)</span>
-        
+
         </div>
       </div>
     </div>
@@ -99,18 +99,18 @@
       <h3 @click="onClickExpand('chars')" class="hover">
         <span v-if="expanded === 'chars'">-</span>
         <span v-else>+</span>
-        {{ $store.state.game.room_chars.length }} 
+        {{ $store.state.game.room_chars.length }}
         <template
           v-if="$store.state.game.room_chars.length == 1"
         >CHARACTER</template>
-        <template v-else>CHARACTERS</template>        
+        <template v-else>CHARACTERS</template>
         IN ROOM
       </h3>
       <div v-if="expanded === 'chars'" class="my-1">
         <Chars/>
       </div>
     </div>
-    
+
     <!-- News -->
   </div>
 </template>
@@ -137,6 +137,10 @@ import _ from "lodash";
 })
 export default class Sidebar extends Vue {
   expanded: "who" | "" | "skills" | "feats" | "chars" = "";
+
+  get world() {
+    return this.$store.state.game.world;
+  }
 
   get is_classless() {
     return !this.$store.state.game.player.archetype;

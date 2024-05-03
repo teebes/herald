@@ -39,7 +39,7 @@ export const UI_ACTIONS = {
 export const UI_MUTATIONS = {
   SET_NOTIFICATION: "ui/notification_set",
   SET_NOTIFICATION_ERROR: "ui/notification_set_error",
-  CLOSE_NOTIFICATION: "ui/notification_close",
+  CLEAR_NOTIFICATION: "ui/notification_clear",
   MODAL_SET: "ui/modal_set",
   MODAL_SET_DATA: "ui/modal_set_extra_data",
   MODAL_CLOSE: "ui/modal_clear",

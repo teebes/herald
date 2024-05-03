@@ -29,7 +29,17 @@
       />
     </div>
 
-    <div class="form-subsection">
+    <div class="form-group">
+      <label for="field-username">Username</label>
+      <input
+        type="text"
+        id="field-username"
+        class="form-control"
+        placeholder="Username"
+        v-model="username">
+    </div>
+
+    <!-- <div class="form-subsection">
       <div class="groups">
         <div class="form-group">
           <label for="field-first_name">First Name</label>
@@ -53,7 +63,7 @@
           />
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- <div class="form-group">
       <label for="field-username">
