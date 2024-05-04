@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>{{ resource.name }} ({{ resource.code }})</div>
+    <div>{{ resource.name }} ({{ resource.code }}) <span class='color-text-50 ml-2' v-if="resource.is_core">[ CORE ]</span></div>
     <!-- Death Rooms -->
     <div v-if="resource.death_rooms && resource.death_rooms.length" class="mt-4">
       <h3>DEATH ROOMS</h3>

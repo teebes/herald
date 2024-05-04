@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <EditableCollection
-      title="Faction Rank"
+      :title="faction_name + ' Faction Rank'"
       name="faction_ranks"
       :endpoint="endpoint"
       :display_component="display_component"
@@ -22,6 +22,17 @@ import { FormElement } from "@/core/forms.ts";
   }
 })
 export default class FactionRankList extends Vue {
+
+  get faction_name() {
+    const faction_id = Number(this.$route.params.faction_id);
+    const factions = this.$store.state.builder.world_factions;
+    function getFactionNameById(factionId: number): string | null {
+      const faction = factions.find(f => f.id === factionId);
+      return faction ? faction.name : '';
+    }
+    return getFactionNameById(faction_id);
+  }
+
   get endpoint() {
     return `/builder/worlds/${this.$route.params.world_id}/factions/${this.$route.params.faction_id}/ranks/`;
   }
