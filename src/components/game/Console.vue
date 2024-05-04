@@ -136,7 +136,7 @@ export default class Console extends Vue {
       return "Upgrade";
     } else if (message.type === "cmd.who.success") {
       return "Who";
-    } else if (message.type === "cmd.whois.success") {
+    } else if (message.type === "cmd.whois.success" || message.type === "cmd./whois.success") {
       return "Whois";
     } else if (
       message.type === "notification.cmd.chat.success" ||
