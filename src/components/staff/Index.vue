@@ -1,126 +1,139 @@
 <template>
   <div id="page">
     <div class="staff-panel" v-if="panel">
-    <h2>Staff Control Panel</h2>
+      <h2>Staff Control Panel</h2>
 
-    <div class="mt-2">24-hour New User Signups: {{ panel.user_signups.total }} ({{ panel.user_signups.confirmed }} confirmed).</div>
+      <div class="mt-2">24-hour New User Signups: {{ panel.user_signups.total }} ({{ panel.user_signups.confirmed }}
+        confirmed).</div>
+      <div class="mt-2">24-hour Unique Players: {{ panel.user_connections }}</div>
 
-    <div class="controls mt-4">
+      <div class="controls mt-4">
 
-      <h3 class="my-2">CONTROLS</h3>
+        <h3 class="my-2">CONTROLS</h3>
 
-      <div class="maintenance panel">
+        <div class="maintenance panel">
           <div class="maintenance-status mb-2 flex">
             <div class="mt-1">Maintenance mode:</div>
             <div class='slider-container'>
-              <Slider
-                :value="panel.maintenance_mode"
-                @change="onSliderChange"/>
+              <Slider :value="panel.maintenance_mode" @change="onSliderChange" />
             </div>
 
-            </div>
-            <!-- :
+          </div>
+          <!-- :
             <span v-if="panel.maintenance_mode">ON</span>
             <span v-else>OFF</span> -->
-          </div>
+        </div>
 
-          <div class="slider-container">
-            <!-- <Slider
+        <div class="slider-container">
+          <!-- <Slider
               :value="panel.maintenance_mode"
               @change="onSliderChange"/>
           </div> -->
-      </div>
+        </div>
 
-      <div class="mt-2">
-        <button class="btn-small" @click="initialize">INITIALIZE</button>
-        <button class="btn-small ml-1" @click="teardown">TEARDOWN</button>
-      </div>
+        <div class="mt-2">
+          <button class="btn-small" @click="initialize">INITIALIZE</button>
+          <button class="btn-small ml-1" @click="teardown">TEARDOWN</button>
+        </div>
 
-      <!-- Nexuses -->
-      <div class="nexuses mt-4">
 
-        <h3 class="my-2">NEXUSES</h3>
-
-        <div v-for="nexus in panel.nexuses" :key="nexus.id">
-          <div class="mb-1">
-            [ {{ nexus.id }} ] {{ nexus.name }} - {{ nexus.state }}
-            <button class="btn-small ml-2" @click="build_nexus(nexus)" v-if="nexus.state == 'absent'">BUILD</button>
-            <button class="btn-small ml-2" @click="delete_nexus(nexus)" v-if="nexus.state == 'ready'">DELETE</button>
-            <button class="btn-small ml-1" @click="rebuild_nexus(nexus)" v-if="nexus.state == 'ready'">REBUILD</button>
+        <!-- Broadcast -->
+        <div class="broadcast my-8">
+          <h3 class="my-2">BROADCAST</h3>
+          <div class="form-group">
+            <textarea v-model="broadcast_message" rows="3"></textarea>
+          </div>
+          <div class="mt-2">
+            <button class="btn-small" @click="broadcast">BROADCAST</button>
           </div>
         </div>
-        <div v-if="panel.nexuses && panel.nexuses.length == 0">No online Nexus.</div>
-      </div>
 
-      <!-- Running Worlds -->
-      <div class="running-worlds mt-4">
-        <h3 class="my-2">RUNNING WORLDS</h3>
+        <!-- Nexuses -->
+        <div class="nexuses mt-4">
 
-        <div class="worlds mt-2">
-          <div v-for="world in panel.running_worlds" :key="world.key">
-            *
-            [ <router-link :to="world_admin_instance_link(world.context_id, world.id)">{{  world.id  }}</router-link> ]
-            -
-            <router-link :to="world_admin_link(world.context_id)">{{ world.name }}</router-link>
-            -
-            <span v-if="world.nexus_data">{{ world.nexus_data.name }} ({{  world.nexus_data.state }})</span>
-            <span v-else>No Nexus</span>
+          <h3 class="my-2">NEXUSES</h3>
+
+          <div v-for="nexus in panel.nexuses" :key="nexus.id">
+            <div class="mb-1">
+              [ {{ nexus.id }} ] {{ nexus.name }} - {{ nexus.state }}
+              <button class="btn-small ml-2" @click="build_nexus(nexus)" v-if="nexus.state == 'absent'">BUILD</button>
+              <button class="btn-small ml-2" @click="delete_nexus(nexus)" v-if="nexus.state == 'ready'">DELETE</button>
+              <button class="btn-small ml-1" @click="rebuild_nexus(nexus)"
+                v-if="nexus.state == 'ready'">REBUILD</button>
+            </div>
           </div>
-          <div class="mt-2">{{ panel.running_worlds_count }} Total</div>
+          <div v-if="panel.nexuses && panel.nexuses.length == 0">No online Nexus.</div>
         </div>
-      </div>
 
-      <!-- WIP Worlds -->
-      <div class="wip-worlds mt-4">
-        <h3 class="my-2">WIP WORLDS</h3>
+        <!-- Running Worlds -->
+        <div class="running-worlds mt-4">
+          <h3 class="my-2">RUNNING WORLDS</h3>
 
-        <div class="worlds mt-2">
-          <div v-for="world in panel.wip_worlds" :key="world.key">
-            *
-            [ <router-link :to="world_admin_instance_link(world.context_id, world.id)">{{  world.id  }}</router-link> ]
-            -
-            <router-link :to="world_admin_link(world.context_id)">{{ world.name }}</router-link>
-            -
-            {{ world.state }}
-            -
-            <span v-if="world.nexus_data">{{ world.nexus_data.name }} ({{  world.nexus_data.state }})</span>
-            <span v-else>No Nexus</span>
-            - {{ world.time_since_last_change }}
+          <div class="worlds mt-2">
+            <div v-for="world in panel.running_worlds" :key="world.key">
+              *
+              [ <router-link :to="world_admin_instance_link(world.context_id, world.id)">{{ world.id }}</router-link> ]
+              -
+              <router-link :to="world_admin_link(world.context_id)">{{ world.name }}</router-link>
+              -
+              <span v-if="world.nexus_data">{{ world.nexus_data.name }} ({{ world.nexus_data.state }})</span>
+              <span v-else>No Nexus</span>
+            </div>
+            <div class="mt-2">{{ panel.running_worlds_count }} Total</div>
           </div>
-          <div class="mt-2">{{ panel.wip_worlds_count }} Total</div>
+        </div>
+
+        <!-- WIP Worlds -->
+        <div class="wip-worlds mt-4">
+          <h3 class="my-2">WIP WORLDS</h3>
+
+          <div class="worlds mt-2">
+            <div v-for="world in panel.wip_worlds" :key="world.key">
+              *
+              [ <router-link :to="world_admin_instance_link(world.context_id, world.id)">{{ world.id }}</router-link> ]
+              -
+              <router-link :to="world_admin_link(world.context_id)">{{ world.name }}</router-link>
+              -
+              {{ world.state }}
+              -
+              <span v-if="world.nexus_data">{{ world.nexus_data.name }} ({{ world.nexus_data.state }})</span>
+              <span v-else>No Nexus</span>
+              - {{ world.time_since_last_change }}
+            </div>
+            <div class="mt-2">{{ panel.wip_worlds_count }} Total</div>
+          </div>
         </div>
       </div>
-    </div>
 
 
-    <div class="search-panel mt-4">
-      <div>
-        <h3 class='my-2'>SEARCH</h3>
-        <div class='form-group search mt-4'>
-          <input type='text' v-model="search_query" @keyup.enter="onSearch"/>
+      <div class="search-panel mt-4">
+        <div>
+          <h3 class='my-2'>SEARCH</h3>
+          <div class='form-group search mt-4'>
+            <input type='text' v-model="search_query" @keyup.enter="onSearch" />
+          </div>
+        </div>
+
+        <div class="mt-4" v-if="user_results.length">
+          <h3>USERS</h3>
+          <div v-for="user in user_results" :key="user.id">
+            [ {{ user.id }} ]
+            <router-link :to="user_details(user)">{{ user.email }}</router-link>
+            <span v-if="user.name">- {{ user.name }}</span>
+          </div>
+        </div>
+
+        <div class="mt-4" v-if="player_results.length">
+          <h3>PLAYERS</h3>
+          <div v-for="player in player_results" :key="player.id">
+            [ {{ player.id }} ]
+            <router-link :to="player_details(player)">{{ player.name }}</router-link>
+            ({{ player.user_id }})
+            -
+            <router-link :to="world_details(player)">{{ player.world_name }}</router-link>
+          </div>
         </div>
       </div>
-
-      <div class="mt-4" v-if="user_results.length">
-        <h3>USERS</h3>
-        <div v-for="user in user_results" :key="user.id">
-          [ {{ user.id }} ]
-          <router-link :to="user_details(user)">{{ user.email }}</router-link>
-          <span v-if="user.name">- {{ user.name }}</span>
-        </div>
-      </div>
-
-      <div class="mt-4" v-if="player_results.length">
-        <h3>PLAYERS</h3>
-        <div v-for="player in player_results" :key="player.id">
-          [ {{ player.id }} ]
-          <router-link :to="player_details(player)">{{ player.name }}</router-link>
-          ({{ player.user_id }})
-          -
-          <router-link :to="world_details(player)">{{ player.world_name }}</router-link>
-        </div>
-      </div>
-    </div>
 
     </div>
     <div v-else>Loading...</div>
@@ -147,6 +160,8 @@ export default class StaffPage extends Vue {
   player_results: any[] = [];
 
   timeout: number | null = null;
+
+  broadcast_message: string = "";
 
   // @Watch('$store.state.forge.ws')
   // async onForgsWsChanged(newValue, oldValue) {
@@ -246,39 +261,56 @@ export default class StaffPage extends Vue {
     })
   }
 
-  build_nexus(nexus) {
+  async build_nexus(nexus) {
     this.$store.commit(UI_MUTATIONS.SET_NOTIFICATION, {
       text: "Starting Nexus...",
       expires: false
     });
-    this.$store.dispatch('forge/send', {
+    await this.$store.dispatch('forge/send', {
       type: 'job',
       job: 'build_nexus',
       nexus_id: nexus.id,
     });
   }
 
-  delete_nexus(nexus) {
+  async delete_nexus(nexus) {
     this.$store.commit(UI_MUTATIONS.SET_NOTIFICATION, {
       text: "Deleting Nexus...",
       expires: false
     });
-    this.$store.dispatch('forge/send', {
+    await this.$store.dispatch('forge/send', {
       type: 'job',
       job: 'delete_nexus',
       nexus_id: nexus.id,
     });
   }
 
-  rebuild_nexus(nexus) {
+  async rebuild_nexus(nexus) {
     this.$store.commit(UI_MUTATIONS.SET_NOTIFICATION, {
       text: "Rebuilding Nexus...",
       expires: false
     });
-    this.$store.dispatch('forge/send', {
+    await this.$store.dispatch('forge/send', {
       type: 'job',
       job: 'rebuild_nexus',
       nexus_id: nexus.id,
+    });
+  }
+
+  async broadcast() {
+    console.log('broadcast attempt')
+    if (!this.broadcast_message) return;
+
+    console.log('broadcasting')
+
+    this.$store.commit(UI_MUTATIONS.SET_NOTIFICATION, {
+      text: "Broadcasting...",
+      expires: false
+    });
+    await this.$store.dispatch('forge/send', {
+      type: 'job',
+      job: 'broadcast',
+      message: this.broadcast_message,
     });
   }
 

@@ -234,6 +234,15 @@ const receiveMessage = async ({
         });
       }
     }
+
+    if (message_data.data.room.id === "10129") {
+      // Hardcode for Cave "loading... indicator when completing"
+      commit(
+        UI_MUTATIONS.SET_NOTIFICATION,
+        { text: "Loading...", expires: false },
+        { root: true });
+    }
+
   } else if (message_data.type === "cmd.jump.success") {
     commit("map_add", message_data.data.target);
     commit("room_set", message_data.data.target);
@@ -403,7 +412,7 @@ const receiveMessage = async ({
   // Resets
   if (message_data.type === "cmd.reset.success") {
     commit("full_screen_message_set", "Resetting...");
-    dispatch("world_enter", {
+    dispatch("request_enter_world", {
       player_id: state.player.id,
       world_id: state.world.id,
     });
@@ -422,6 +431,8 @@ const receiveMessage = async ({
 
   // Complete
   if (message_data.type === "cmd.completeworld.success") {
+    commit(UI_MUTATIONS.CLEAR_NOTIFICATION, null, { root: true })
+
     if (rootState.auth.user.is_temporary) {
       router.push({
         name: LOBBY_WORLD_COMPLETE_SIGNUP,
@@ -505,8 +516,6 @@ const actions = {
 
   enter_ready_world: async ({ commit, dispatch }, { player_id, player_config, world, nexus_name, ws_uri }) => {
     commit("reset_state");
-    console.log('player_id: ' + player_id);
-    console.log('nexus name: ' + nexus_name);
     // commit("ws_uri_set", `ws://localhost/websocket/${nexus_name}/cmd`);
     commit("ws_uri_set", ws_uri);
     commit("world_set", world);
@@ -564,10 +573,14 @@ const actions = {
       });
     } else {
       const world_id = data.exit_to || (state.world && state.world.context_id);
-      router.push({
-        name: LOBBY_WORLD_DETAIL,
-        params: { world_id: world_id },
-      });
+      if (world_id &&
+          (router.currentRoute.name !== LOBBY_WORLD_DETAIL
+            || router.currentRoute.params.world_id !== world_id)) {
+        router.push({
+          name: LOBBY_WORLD_DETAIL,
+          params: { world_id: world_id },
+        });
+      }
     }
     commit("closeWs");
     commit("reset_state");
@@ -680,14 +693,23 @@ const actions = {
   },
 
   play: async ({ commit, dispatch }) => {
-    const resp = await axios.post("/game/play/");
-    commit("auth/auth_set", resp.data.token, { root: true });
-    commit("auth/user_set", resp.data.user, { root: true });
-    const player_id = resp.data.player.id;
-    dispatch(GAME_ACTIONS.REQUEST_ENTER_WORLD, {
-      player_id,
-      world_id: resp.data.world_id
-    }, { root: true });
+    try {
+      const resp = await axios.post("/game/play/");
+      commit("auth/auth_set", resp.data.token, { root: true });
+      commit("auth/user_set", resp.data.user, { root: true });
+      const player_id = resp.data.player.id;
+      dispatch(GAME_ACTIONS.REQUEST_ENTER_WORLD, {
+        player_id,
+        world_id: resp.data.world_id
+      }, { root: true });
+    } catch (e) {
+      // If it's a 400, show the error message to the user
+      if (e.response.status === 400) {
+        commit("ui/modal_clear", null, { root: true });
+        commit("ui/notification_set_error", e.response.data[0], { root: true });
+        return;
+      }
+    }
   },
 
   save_player_config: async ({ commit, state }, config) => {

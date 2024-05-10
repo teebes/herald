@@ -155,6 +155,16 @@ const actions = {
           { root: true });
       }
     }
+
+    // Broadcast Message
+    if (data.job == "broadcast") {
+      if (data.status === 'error') {
+        const error = data.error || 'Error broadcasting message.';
+        commit('ui/notification_set_error', error, { root: true });
+      } else if (data.status === 'success') {
+        commit('ui/notification_set', 'Message broadcasted.', { root: true });
+      }
+    }
   },
 
   pub: async ({ commit, dispatch, state, rootState }, data) => {

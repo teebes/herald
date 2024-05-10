@@ -136,7 +136,7 @@ export default class Console extends Vue {
       return "Upgrade";
     } else if (message.type === "cmd.who.success") {
       return "Who";
-    } else if (message.type === "cmd.whois.success") {
+    } else if (message.type === "cmd.whois.success" || message.type === "cmd./whois.success") {
       return "Whois";
     } else if (
       message.type === "notification.cmd.chat.success" ||
@@ -300,6 +300,14 @@ export default class Console extends Vue {
       &.cmd\.gossip\.success,
       &.notification\.cmd\.gossip\.success {
         color: $color-green-chat;
+      }
+
+      &.notification\.broadcast {
+        margin-top: 1em;
+        margin-bottom: 1em;
+        color: $color-primary;
+        font-weight: bold;
+        font-size: 1.2em;
       }
 
       .brief {

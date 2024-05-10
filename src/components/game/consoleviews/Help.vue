@@ -5,9 +5,7 @@
         <div class="name">
           {{ message.data.help.name }}
           -
-          <span
-            class="color-text-50 font-text-regular"
-          >{{ message.data.help.format }}</span>
+          <span class="color-text-50 font-text-regular">{{ message.data.help.format }}</span>
         </div>
 
         <div class="description">{{ message.data.help.description}}</div>
@@ -15,11 +13,7 @@
         <template v-if="message.data.help.examples && message.data.help.examples.length">
           <div>Examples:</div>
           <div class="examples editable-box">
-            <div
-              class="example"
-              v-for="(example, index) in message.data.help.examples"
-              :key="index"
-            >{{ example }}</div>
+            <div class="example" v-for="(example, index) in message.data.help.examples" :key="index">{{ example }}</div>
           </div>
         </template>
       </div>
@@ -298,6 +292,10 @@
             <div class="cmd" @click="cmdHelp('/lock')">/lock</div>
             <div class="cmd" @click="cmdHelp('/chat')">/chat</div>
             <div class="cmd" @click="cmdHelp('/take')">/take</div>
+            <div class="cmd" @click="cmdHelp('/kill')">/kill</div>
+            <div class="cmd" @click="cmdHelp('/ban')">/ban</div>
+            <div class="cmd" @click="cmdHelp('/mute')">/mute</div>
+            <div class="cmd" @click="cmdHelp('/nochat')">/nochat</div>
           </div>
         </div>
       </template>
