@@ -20,7 +20,7 @@
   If a modal's data has a 'component' attribute, that component will be
   displayed. Otherwise, it is assumed that EditEntity is used, and in
   this case the modal data will look like this:
-  
+
   {
     title: <form name>,
     action: <vuex action name>,
@@ -49,17 +49,8 @@
 */
 
 import { Component, Prop, Vue } from "vue-property-decorator";
-import axios from "axios";
-import MobTemplateEditInfo from "@/components/builder/MobTemplateEditInfo.vue";
 import EditEntity from "@/components/EditEntity.vue";
-import MobTemplateReactions from "@/components/builder/MobTemplateReactions.vue";
-import {
-  BUILDER_MUTATIONS,
-  BUILDER_ACTIONS,
-  UI_MODALS,
-  UI_MUTATIONS
-} from "@/constants.ts";
-import { BUILDER_FORMS } from "@/core/forms.ts";
+import { UI_MUTATIONS } from "@/constants";
 
 @Component
 export default class Modal extends Vue {

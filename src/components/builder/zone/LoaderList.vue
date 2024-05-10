@@ -11,13 +11,11 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { BUILDER_ZONE_PATH_LIST } from "@/router.ts";
 import ElementList from "@/components/elementlist/ElementList.vue";
-import ZoneLoaderDetails from "@/components/builder/ZoneLoaderDetails.vue";
 import ZoneView from "@/components/builder/zone/ZoneView";
-import { BUILDER_ZONE_LOADER_DETAILS } from "@/router.ts";
-import { BUILDER_FORMS, FormElement } from "@/core/forms.ts";
-import { BUILDER_ACTIONS, UI_MUTATIONS } from "@/constants";
+import { BUILDER_ZONE_LOADER_DETAILS } from "@/router";
+import { BUILDER_FORMS } from "@/core/forms";
+import { UI_MUTATIONS } from "@/constants";
 
 @Component({
   components: {

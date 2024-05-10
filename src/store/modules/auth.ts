@@ -37,6 +37,11 @@ const actions = {
     }
   },
 
+  googleLogin: async ({ commit }, { token }) => {
+    console.log("googleLogin with token", token);
+    throw new Error("Not implemented");
+  },
+
   logout: async ({ commit }) => {
     commit(AUTH_MUTATIONS.SET_UNAUTH);
     commit("auth_clear");
