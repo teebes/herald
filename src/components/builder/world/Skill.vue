@@ -117,9 +117,8 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
-import WorldView from "@/components/builder/world/WorldView.ts";
-import DisplayEdit from "@/components/DisplayEdit.vue";
-import { capfirst } from "@/core/utils.ts"
+import WorldView from "@/components/builder/world/WorldView";
+import { capfirst } from "@/core/utils"
 import { BUILDER_ITEM_TEMPLATE_DETAILS } from "@/router";
 
 @Component({

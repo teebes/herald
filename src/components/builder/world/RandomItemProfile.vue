@@ -10,8 +10,7 @@
 
 <script lang='ts'>
 import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
-import WorldView from "@/components/builder/world/WorldView.ts";
-import DisplayEdit from "@/components/DisplayEdit.vue";
+import WorldView from "@/components/builder/world/WorldView";
 
 @Component({
   components: {}
