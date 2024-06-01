@@ -1,23 +1,26 @@
 @import "colors";
 
-.v-popper--theme-menu {
-  max-width: 310px;
-  z-index: 35000 !important;
+.v-popper--theme-menu.v-popper__popper--shown {
+    max-width: 310px;
 
-  .v-popper__inner {
-    background: $color-background-light;
-    border: 3px solid #333;
-    border-radius: 5px;
-    color: #ebebeb;
-    padding: 10px;
+    z-index: 35000 !important;
+
+    .v-popper__wrapper {
+      .v-popper__inner {
+
+        background: $color-background-light;
+        border: 3px solid #333;
+        border-radius: 5px;
+        color: #ebebeb;
+        padding: 10px;
+      }
+
+      .v-popper__arrow-outer {
+        visibility: hidden;
+      }
+
+      .v-popper__arrow-inner {
+        visibility: hidden;
+      }
+    }
   }
-
-  .v-popper__arrow-outer {
-    visibility: hidden;
-  }
-
-  .v-popper__arrow-inner {
-    visibility: hidden;
-  }
-
-}
