@@ -1,0 +1,27 @@
+/*
+    How to use site breakpoints:
+    @media ($mobile-site) {}
+    @media ($desktop-site) {}
+*/
+
+// Builder breakpoints
+$mobile-breakpoint: 650px;
+$mobile-site: "max-width: 649px";
+$desktop-site: "min-width: 650px";
+
+$site-max-width: 1150px;
+
+@media ($mobile-site) {
+  .mobile-hidden {
+    display: none;
+  }
+}
+
+// Lobby Breakpoints
+$lobby-wide-width: 850px;
+$lobby-breakpoint: 760px;
+
+// Game breakpoints
+$game-mobile-breakpoint: 768px;
+$game-mobile-site: "max-width: 768px";
+$game-desktop-site: "min-width: 769px";

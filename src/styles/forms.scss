@@ -1,0 +1,399 @@
+@import "colors";
+@import "fonts";
+
+/*
+    A form group comprises a label and an input, textearea or select.
+*/
+.form-group {
+  margin-bottom: 1rem;
+
+  label {
+    @include font-title-light;
+    color: $color-secondary;
+    font-size: 15px;
+    letter-spacing: 0;
+    line-height: 18px;
+    white-space: nowrap;
+    display: block;
+    padding-bottom: 0.5rem;
+
+    &.error {
+      color: $color-red;
+    }
+
+    span {
+      @include font-text-light;
+      color: $color-text;
+      margin-left: 1em;
+      //font-size: 12px;
+    }
+
+    input[type="checkbox"] {
+      display: inline;
+      width: auto;
+    }
+  }
+
+  // So that the label and the input box are on the same line, for example
+  // with the ID field in builder
+  &.inline {
+    label {
+      display: inline-block;
+    }
+  }
+
+  input,
+  textarea,
+  select {
+    display: block;
+
+    @include font-text-regular;
+    background-color: $color-form-background;
+    border: 1px solid $color-form-border;
+    &.error {
+      border-color: $color-red;
+    }
+    border-radius: 2px;
+    color: $color-text;
+
+    font-size: 13px;
+
+    outline: none;
+    //cursor: text;
+    box-sizing: border-box;
+
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+
+    &[readonly="readonly"] {
+      background: inherit;
+      color: inherit;
+      &:hover {
+        cursor: default;
+      }
+    }
+
+    &.text-center {
+      text-align: center;
+    }
+  }
+  input,
+  textarea,
+  select {
+    &:focus {
+      background-color: $color-form-background;
+    }
+  }
+
+  input,
+  select {
+    &:not[type="checkbox"] {
+      height: 40px;
+    }
+  }
+
+  select {
+    -webkit-appearance: none;
+    -webkit-border-radius: 2px;
+    background: url("@/assets/ui/select-arrow-with-border.png") no-repeat right
+      $color-form-background;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  select > option {
+    color: $color-text;
+  }
+
+  textarea {
+    height: 6em;
+    resize: vertical;
+  }
+
+  .dark-text {
+    @include font-text-light;
+    opacity: 0.5;
+  }
+}
+
+.form-subsection {
+  .subsection-title {
+    @include font-title-regular;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    line-height: 15px;
+    opacity: 0.5;
+    padding: 5px 0;
+  }
+
+  .groups {
+    display: flex;
+
+    .form-group {
+      flex-grow: 1;
+      flex: 1;
+      &:not(:first-child) {
+        margin-left: 5px;
+      }
+      &:not(:last-child) {
+        margin-right: 5px;
+      }
+    }
+    // .form-group:not(:last-child) {
+    //     input { width: 90%;}
+    // }
+
+    &.quad {
+      .form-group {
+        flex-basis: 25%;
+        flex-grow: 0;
+        flex-shrink: 0;
+
+        input {
+          width: 90%;
+        }
+      }
+    }
+  }
+}
+
+/*          Buttons         */
+
+button {
+  outline: none;
+  display: inline-block;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+button.btn-small,
+a[role="button"].btn-small {
+  @include font-title-regular;
+  background: transparent;
+  border: 1px solid $color-primary;
+  color: $color-primary;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.7px;
+  line-height: 13px;
+  border-radius: 2px;
+  padding: 4px 8px;
+
+  &:hover {
+    border: 1px solid $color-primary-70;
+    background-color: $color-primary-70;
+    color: white;
+    box-shadow: none;
+  }
+
+  &[disabled="disabled"] {
+    color: $color-text-hex-50;
+    border-color: $color-text-hex-50;
+    &:hover {
+      background: transparent;
+      cursor: default;
+    }
+  }
+
+  &.button-gray {
+    border-color: $color-text-hex-60;
+    color: $color-text-hex-60;
+    &:hover {
+      background-color: #444;
+    }
+  }
+}
+
+button.btn-medium,
+a[role="button"].btn-medium {
+  @include font-title-regular;
+  background-color: $color-primary;
+  border: 0;
+  color: white;
+  font-size: 13px;
+  line-height: 12px;
+  border-radius: 2px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  outline: none;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $color-primary-70;
+  }
+}
+
+button.btn-large,
+a[role="button"].btn-large {
+  font-size: 17px;
+  letter-spacing: 1.7px;
+  line-height: 20px;
+  width: 100%;
+  height: 70px;
+
+  @include font-title-regular;
+  background: $color-primary;
+  color: white;
+  border: 0;
+  border-radius: 2px;
+  text-align: center;
+
+  &:hover,
+  &:active,
+  &:focus,
+  &:active:focus {
+    background: $color-primary-70;
+    color: white;
+    text-decoration: none;
+  }
+
+  &.action-cancel {
+    background-color: $color-text;
+    color: $color-text-dark;
+    width: 170px;
+    margin-right: 10px;
+    &:hover {
+      background-color: $color-text-hex-70;
+    }
+  }
+}
+
+button.btn-add,
+a[role="button"].btn-add {
+  @include font-title-regular;
+  background: transparent;
+  color: $color-primary;
+  border: 1px dashed $color-primary;
+  font-size: 13px;
+  letter-spacing: 1px;
+  line-height: 15px;
+  padding: 10px 10px;
+  width: 100%;
+  text-align: center;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: $color-primary;
+    outline: none;
+  }
+}
+
+button.btn-thin,
+a[role="button"].btn-thin {
+  border: 0;
+  color: $color-primary;
+  background: transparent;
+  text-decoration: none;
+  padding: 1px 7px;
+  font-size: 0.7rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+button.btn-small,
+button.btn-medium,
+button.btn-large,
+button.btn-add {
+  &.btn-gray {
+    color: $color-text-hex-70;
+    border-color: $color-text-hex-70;
+    &:hover {
+      background-color: #333;
+    }
+  }
+}
+
+.action-bar {
+  display: flex;
+}
+
+// For standalone checkboxes
+.checkbox {
+  label {
+    @include font-text-light;
+    color: inherit;
+    margin-left: 20px;
+    input {
+      margin-left: -20px;
+      margin-right: 5px;
+    }
+    white-space: normal;
+  }
+}
+
+.single-form {
+  /*
+        Use when there is a single, narrow form rendered in the main
+        region.
+    */
+  background: $color-background;
+  margin: 0 auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  align-self: center;
+
+  box-sizing: border-box;
+  min-width: 320px;
+  max-width: 400px;
+  border: 10px solid #020202;
+  padding: 30px 40px;
+
+  h1 {
+    margin-bottom: 1.5em;
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid;
+    padding-bottom: 10px;
+    font-size: 1.5em;
+
+    small {
+      color: $color-text-gray;
+    }
+  }
+
+  button {
+    margin-bottom: 1em;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  // Login special case
+  a.forgot-password {
+    color: $color-text-hex-50;
+    display: block;
+    &:hover {
+      color: $color-primary;
+    }
+  }
+
+  .instructions > div {
+    margin-bottom: 1em;
+  }
+
+  .or-separator {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+
+    .separator-line {
+      flex-grow: 1;
+      height: 1px;
+      background-color: $color-text-hex-50;
+    }
+
+    .separator-text {
+      margin: 0 10px;
+      font-size: 0.9em;
+      color: $color-text-hex-50;
+    }
+  }
+}

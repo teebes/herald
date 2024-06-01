@@ -1,0 +1,141 @@
+/* Colors */
+
+$color-background-black: #121315;
+$color-background-gray: #191A1C;
+$color-background-gray-light: #212121;
+$color-background-gray-very-light: #333333;
+$color-background-super-light: #828283;
+
+$color-mobile-black: #121315;
+$color-mobile-border: #262626;
+
+$color-background-rgba: rgba(25,26,28,1);
+$color-background-header: #131217;
+$color-background-light: #212121;
+$color-background-light-border: #2B2B2B;
+
+$color-dotted-line: #555;
+$color-divider: #313131;
+
+
+// forms
+$color-form-background: #111111;
+$color-form-border: #424242;
+$color-form-border-error: #B03535;
+
+//$color-primary: #c36044;
+$color-primary: #D77617;
+$color-primary-rgba: rgba(215, 118, 23, 1.0);
+$color-primary-half: rgba(215, 118, 23, .5);
+$color-primary-70: rgba(215, 118, 23, .7);
+$color-primary-frontpage: #D97600;
+$color-secondary: #f5c983;
+$color-secondary-half: rgba(245, 201, 131, .5);
+$color-tertiary: #279084;
+
+$color-green-dark: #16514A;
+$color-green: #279084;
+$color-green-70: #266962; // equiv of .7 opacity of green
+$color-red: #C13434;
+$color-red-70: #8b2b2e;
+
+.color-text { color: $color-text; }
+.color-text-50 { color: $color-text-hex-50; }
+.color-primary { color: $color-primary; }
+.color-secondary { color: $color-secondary; }
+
+/* Fonts */
+
+@mixin dotted-box {
+    background-image: linear-gradient(to right, $color-dotted-line 33%, rgba(255,255,255,0) 0%);
+    background-position: top;
+    background-size: 4px 1px;
+    background-repeat: repeat-x;
+
+    background-image: linear-gradient(to right, $color-dotted-line 33%, rgba(255,255,255,0) 0%);
+    background-position: bottom;
+    background-size: 4px 1px;
+    background-repeat: repeat-x;
+
+    background-image: linear-gradient($color-dotted-line 33%, rgba(255,255,255,0) 0%);
+    background-position: right;
+    background-size: 1px 4px;
+    background-repeat: repeat-y;
+
+    background-image: linear-gradient($color-dotted-line 33%, rgba(255,255,255,0) 0%);
+    background-position: left;
+    background-size: 1px 4px;
+    background-repeat: repeat-y;
+}
+
+// Box shadow
+@mixin box-shadow {
+    box-shadow: 1px 5px 10px rgba(0,0,0,0.3);
+}
+
+.box-shadow { @include box-shadow; }
+
+// ==== old =====
+
+// Fonts
+$font-sans-serif: verdana;
+$font-serif: Georgia, seria;
+
+// Color palette
+
+// $color-red: #ff6666;
+$color-blue: #5bd4ed;
+$color-purple: #a476fa;
+$color-yellow: #e2d669;
+$color-brown-gray: #6a6653;
+$color-pink: #f82267;
+// $color-green: #9cd926;
+$color-white: #f7f7f0;
+$color-gray-light: #ccc;
+$color-gray-lighter: #9f9f9f;
+$color-gray-medium: #777;
+$color-gray-blue: #4a525a;
+$color-gray-dark: #4A4A4A;
+$color-orange: #FF9933;
+
+// ==== Named colors ====
+
+$color-link: $color-purple;
+// Important game components
+$color-mob: $color-yellow;
+$color-item: $color-green;
+$color-room: $color-blue;
+
+// Special cases
+$color-text-light: #f8f8f2;
+//$color-text-dark: #333333;
+
+// Organize the below based on palette colors
+
+$color-background-dark: #272822;
+$color-background-map: #ececec;
+$color-background-success: #dff0d8;
+$color-background-error: #f2dede;
+
+$color-text-echo: #aaa;
+//$color-text-gray: #ccc;
+$color-text-gray-light: #ccc;
+
+
+$border-color: #ccc;
+$user-input-echo: #989898;
+
+$color-border-light: #9D9D9D;
+$color-border-dark: #4A4A4A;
+$color-border-green-light: #BED590;
+$color-border-red-light: #A96A6A;
+
+$color-background-very-light-red: #E0D1D1;
+$color-background-light-hover: #6E6E6E;
+
+$panel-border-light: #9D9D9D;
+$panel-border-dark: #4A4A4A;
+
+
+$color-link: $color-blue;
+

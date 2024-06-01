@@ -1,0 +1,110 @@
+$color-transparent-rgba: rgba(0, 0, 0, 0);
+
+/* Background colors */
+
+$color-background: #191a1c;
+$color-background-rgba: rgba(25, 26, 28, 1);
+$color-background-header: #131217;
+$color-background-black: #121315;
+$color-background-light: #212121;
+$color-background-very-light: #333333;
+$color-background-light-border: #2b2b2b;
+$color-background-light-border-selected: #888;
+
+$color-form-background: #111111;
+$color-form-border: #424242;
+
+$color-mobile-border: #262626;
+
+/* Border colors */
+
+// Looks good against $color-background
+$color-background-border: #444444;
+
+/* Text colors */
+
+$color-text: #ebebeb;
+$color-text-half: rgba(235, 235, 235, 0.5);
+$color-text-70: rgba(235, 235, 235, 0.7);
+$color-text-gray: #c5c5c5;
+// Hex equivalents of rgba. Necessary due to Safari
+// bug handling opacity.
+$color-text-hex-30: #555555;
+$color-text-hex-40: #6b6b6b;
+$color-text-hex-50: #808080;
+$color-text-hex-60: #999999;
+$color-text-hex-70: #b3b3b3;
+$color-text-hex-80: #c1c1c2;
+// meant to look good against color-text background
+$color-text-dark: #161616;
+
+/* Color Palette */
+
+$color-primary: #d77617;
+$color-primary-70: #9e5b18;
+//$color-primary-70: rgba(215, 118, 23, .7);
+$color-secondary: #f5c983;
+$color-tertiary: #279084;
+
+// Success / Error colors
+$color-green-dark: #16514a;
+$color-green: #279084;
+$color-green-70: #266962; // equiv of .7 opacity of green
+$color-red: #c13434;
+$color-red-70: #8b2b2e;
+
+.color-text {
+  color: $color-text;
+}
+
+.color-text-red {
+  color: $color-red;
+}
+
+.color-text-30 {
+  color: $color-text-hex-30;
+}
+
+.color-text-40 {
+  color: $color-text-hex-40;
+}
+
+.color-text-50 {
+  color: $color-text-hex-50;
+}
+
+.color-text-60 {
+  color: $color-text-hex-60;
+}
+
+.color-text-70 {
+  color: $color-text-hex-70;
+}
+
+.color-primary {
+  color: $color-primary;
+}
+
+.color-secondary {
+  color: $color-secondary;
+}
+
+.color-red {
+  color: $color-red;
+}
+
+.color-green {
+  color: $color-green;
+}
+
+// Extra UI colors taken from the map
+$color-blue-chat: #4798c4;
+$color-green-chat: #26986d; // better contrast
+
+.color-blue-chat {
+  color: $color-blue-chat;
+}
+
+.color-green-chat {
+  color: $color-green-chat;
+}

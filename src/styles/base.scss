@@ -1,0 +1,388 @@
+@import "colors";
+@import "fonts";
+@import "layout";
+@import "modals";
+@import "ui";
+// @import "tailwind";
+
+// START RESET
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  -webkit-touch-callout: none;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  &.list {
+    list-style: show;
+  }
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+// END RESET
+
+html,
+body {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  scrollbar-color: #777 #333;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+}
+::-webkit-scrollbar-track {
+  background: #333;
+}
+::-webkit-scrollbar-thumb {
+  background: #777;
+}
+
+body {
+  @include font-text-light;
+  font-size: 14px;
+  color: $color-text;
+  line-height: 1.5;
+
+  background: $color-background;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  #app {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    #main {
+      //height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+
+      #builder,
+      #worlds-lobby,
+      #lobby,
+      #page {
+        width: 100%;
+        max-width: $site-max-width;
+        margin: 0 auto;
+        flex: 1 0;
+      }
+      #page {
+        padding: 15px;
+      }
+    }
+  }
+}
+
+// Make links the primary color, and add an underline when hovering or clicking
+a {
+  color: $color-primary;
+  text-decoration: none;
+
+  &:hover,
+  &:active {
+    color: $color-primary;
+    text-decoration: underline;
+  }
+}
+
+a.gray-link {
+  color: $color-text-hex-50;
+  text-decoration: none;
+
+  &:hover,
+    &:active {
+      color: $color-primary;
+      text-decoration: underline;
+    }
+}
+
+// Paragraphs by default have a 1 line of text bottom margin
+p {
+  margin: 0 0 1em 0;
+}
+
+div {
+  box-sizing: border-box;
+}
+
+img {
+  vertical-align: middle;
+  border-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+h1 {
+  @include font-title-regular;
+  // font-family: $font-title, sans-serif;
+  // font-weight: 700;
+
+  letter-spacing: 1.5px;
+  line-height: 30px;
+  font-size: 25px;
+}
+
+h2 {
+  @include font-title-regular;
+  //@include font-text-regular;
+  color: $color-secondary;
+  //font-size: 16px;
+  font-size: 18px;
+}
+
+h3 {
+  @include font-title-regular;
+  color: $color-text-hex-60;
+  font-size: 14px;
+  letter-spacing: 1.2px;
+  line-height: 15px;
+}
+
+/* General elements */
+
+ol.list {
+  padding-left: 1em;
+}
+
+ul.list {
+  padding-left: 3px;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  list-style-type: none;
+
+  li {
+    background: url("@/assets/ui/list-bullet.png") no-repeat left;
+    background-position: 0 50%;
+    padding-left: 10px;
+  }
+}
+
+.help-text {
+  color: $color-text-hex-50;
+}
+
+code {
+  border: 1px solid $color-background-very-light;
+  padding: 10px 15px;
+  word-spacing: 0.4em;
+  display: inline-block;
+}
+
+/* Useful class mixins */
+.hidden {
+  display: none;
+}
+
+.hover {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.logo-title {
+  width: 165px;
+}
+.logo-badge {
+  width: 30px;
+}
+
+.loading-screen {
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.section-title {
+  @include font-title-light;
+  color: $color-secondary;
+  font-size: 30px;
+  line-height: 29px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+/* Tabs */
+
+.tabs-view {
+  .tabs {
+    display: flex;
+    padding: 0 20px;
+    margin: 10px 0;
+    border-bottom: 1px solid $color-background-light;
+    order: 1;
+
+    @include font-title-light;
+    font-size: 16px;
+    line-height: 18px;
+
+    .tab-item {
+      color: $color-text-hex-30;
+      padding: 10px;
+      position: relative;
+
+      &.activeTab {
+        border: 2px solid $color-background-light;
+        // border-bottom: 2px solid $color-background-black;
+        border-bottom: 2px solid transparent;
+        border-radius: 4px 4px 0 0;
+        color: $color-text;
+        top: 1px;
+      }
+      &:not(.activeTab) {
+        top: 3px;
+        padding: 10px 12px;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  overflow-y: hidden;
+  .tab-contents-region {
+    order: 2;
+    flex: 1 1;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+  }
+}
+
+.min-line-height {
+  min-height: 14px;
+}

@@ -1,0 +1,295 @@
+@import "colors";
+@import "fonts";
+@import "layout";
+
+.reference-link {
+  color: $color-secondary;
+}
+
+.resource-list {
+  padding-bottom: 20px;
+
+  // @include media-breakpoint-down(xs) {
+  //     margin-bottom: 15px;
+  // }
+
+  .list-title-row {
+    display: flex;
+    justify-content: space-between;
+
+    .list-title {
+      @include font-title-regular;
+      color: $color-secondary;
+      font-size: 15px;
+      letter-spacing: 1.5px;
+      line-height: 18px;
+      padding: 0 0 5px 10px;
+    }
+  }
+
+  .table-responsive {
+    border: 0;
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+
+      thead {
+        tr {
+          th {
+            @include font-text-light;
+            letter-spacing: -0.5px;
+            line-height: 19px;
+            //opacity: 0.5;
+            color: $color-text-hex-50;
+            border: 0;
+            text-align: left;
+            padding: 0.75rem;
+          }
+        }
+      }
+      tbody {
+        tr {
+          &:hover > td {
+            background: $color-background-light;
+            cursor: pointer;
+          }
+
+          td {
+            padding: 16px 8px;
+            border-color: #444;
+            border-top: 1px solid #444;
+            vertical-align: top;
+          }
+        }
+      }
+    }
+  }
+
+  .resource-pagination {
+    span {
+      opacity: 0.2;
+      margin-right: 1em;
+
+      &.active {
+        opacity: 1;
+        &:hover {
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+.editable-list {
+  .editable-list-item {
+    margin-bottom: 15px;
+  }
+
+  .title-line {
+    margin-bottom: 15px;
+  }
+
+  .element-index {
+    @include font-text-regular;
+    color: $color-secondary;
+    display: inline-block;
+    margin: 5px 13px 0 0;
+    background-color: $color-background;
+    border: 1px solid $color-background-light-border;
+    padding: 6px 13px;
+    border-radius: 200px;
+  }
+}
+
+.display-reactions {
+  .element-index {
+    margin: 0 13px 0 0;
+  }
+
+  .reaction {
+    @include font-text-light;
+
+    margin-top: 10px;
+    margin-bottom: 3px;
+
+    background: $color-background-light;
+    border: 1px solid $color-background-light-border;
+    min-height: 90px;
+    resize: vertical;
+    width: 100%;
+
+    padding: 7px;
+  }
+
+  .reaction-keywords {
+  }
+}
+
+// List for displaying a wide horizontal list of things, like
+// objectives for quests or rules for loaders.
+.horizontal-list,
+.hlist {
+  //border-top: 1px solid $color-text-hex-60;
+  .horizontal-list-header,
+  .hlist-header {
+    //padding-bottom: 20px;
+    height: 45px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid $color-text-hex-60;
+  }
+
+  .horizontal-list-item,
+  .hlist-item {
+    &:not(:last-child) {
+      border-bottom: 1px solid $color-text-hex-60;
+    }
+    padding: 20px 5px;
+
+    &.display-mode {
+      display: flex;
+
+      > div {
+        flex-grow: 1;
+
+        &.actions {
+          flex-grow: 0;
+
+          button {
+            display: block;
+            margin: 3px 7px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.stats-panel {
+  .stats-heading {
+    margin: 0 0 10px 0;
+  }
+
+  .stat-group {
+    .stat {
+      &:not(:last-child) {
+        border-bottom: 1px solid #333;
+      }
+      padding-bottom: 2px;
+      margin-bottom: 2px;
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+
+      .label {
+        color: $color-text-hex-70;
+      }
+    }
+  }
+}
+
+.template-detail {
+  width: 100%;
+  max-width: 800px;
+  padding-bottom: 50px;
+
+  h3 {
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+
+  .template-data {
+    display: flex;
+    margin-bottom: 15px;
+
+    @media ($mobile-site) {
+      flex-direction: column;
+    }
+
+    .template-stats {
+      width: 100%;
+      @media ($mobile-site) {
+        margin-top: 25px;
+      }
+    }
+
+    @media ($desktop-site) {
+      .template-info-and-descs,
+      .template-stats {
+        flex: 1;
+
+        &:not(:last-child) {
+          margin-right: 20px;
+        }
+        &:not(:first-child) {
+          margin-left: 20px;
+        }
+      }
+      .template-info-and-descs {
+        flex: 2;
+      }
+    }
+
+    .template-info {
+      button.delete-template {
+        margin-left: 10px;
+      }
+    }
+
+    .descriptions {
+      h3 {
+        margin-top: 35px;
+      }
+      .defaulting {
+        margin-top: 0.5em;
+      }
+    }
+  }
+
+  .divider {
+    margin: 0 auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    @media ($desktop-site) {
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+  }
+}
+
+.builder-config {
+  h3 {
+    text-transform: uppercase;
+    margin: 30px 0 10px 0;
+  }
+  ul {
+    margin-bottom: 0;
+  }
+  .config-panels {
+    display: flex;
+    flex-wrap: wrap;
+
+    > div {
+      flex-basis: 100%;
+    }
+    @media ($desktop-site) {
+      > div {
+        flex-basis: 50%;
+        &:nth-child(odd) {
+          padding-right: 15px;
+        }
+        &:nth-child(even) {
+          padding-left: 15px;
+          border-left: 1px solid $color-background-light-border;
+        }
+      }
+    }
+
+    > div {
+      border-bottom: 1px solid $color-background-light-border;
+      padding-bottom: 10px;
+    } 
+  }
+}

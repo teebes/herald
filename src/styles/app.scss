@@ -1,0 +1,20 @@
+// @tailwind base;
+/* @tailwind components; */
+@tailwind utilities;
+
+$container-max-widths: (
+  sm: 576px,
+  md: 720px,
+  lg: 940px,
+  xl: 1180px
+);
+
+@import "base";
+@import "forms";
+@import "builder";
+@import "colors";
+@import "fonts";
+@import "layout";
+@import "modals";
+@import "ui";
+// @import "tailwind";
