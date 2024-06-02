@@ -5,18 +5,16 @@
     <div v-else>You are carrying {{inventory.length}} items:</div>
 
     <ul class="list">
-      <li v-for="(item, index) in stackedInventory(inventory)" :key="index" class="inventory-item">
+      <li v-for="(item, index) in inventoryStack" :key="index" class="inventory-item">
         <span
           v-if="isLastMessage"
           v-interactive="{target: item}"
           class='interactive'
           :class="[item.quality]"
-          :key="item.key + '-interactive'"
           @click="isLastMessage && onItemClick(item)"
         >{{ item.name }}</span>
         <span v-else
           :class="[item.quality]"
-          :key="item.key"
         >{{ item.name }}</span>
         <span class="item-count" v-if="item.count && item.count > 1">&nbsp;[{{item.count}}]</span>
       </li>
@@ -27,7 +25,7 @@
 </template>
 
 <script lang='ts' setup>
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { stackedInventory, getTargetInGroup } from "@/core/utils.ts";
 
@@ -47,6 +45,16 @@ const props = defineProps<{
 const player = computed(() => store.state.game.player);
 const inventory = computed(() => player.value.inventory);
 const isLastMessage = computed(() => store.state.game.last_message[props.message.type] == props.message);
+
+// Inventory Stack
+const inventoryStack = ref<any[]>([]);
+const updateInventoryStack = () => {
+  inventoryStack.value = stackedInventory(inventory.value);
+}
+watch(inventory, () => {
+  updateInventoryStack();
+}, { immediate: true });
+
 
 const onItemClick = (item) => {
   if (store.state.game.is_mobile) return;

@@ -4,7 +4,7 @@
       <div
         class="inventory-item"
         :class="[item.quality]"
-        v-for="item in stackedInventory(player.inventory)"
+        v-for="item in inventory"
         :key="item.key"
         action="drop"
         :keyword="item.keywords.split(' ')[0]"
@@ -25,6 +25,7 @@ import { stackedInventory, getTargetInGroup } from "@/core/utils";
 const store = useStore();
 
 const player = computed(() => store.state.game.player);
+const inventory = computed(() => stackedInventory(player.value.inventory));
 
 const onItemClick = (item) => {
   if (store.state.game.is_mobile) return;
