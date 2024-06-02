@@ -16,7 +16,7 @@ npm run dev
 ### Development against a local backend
 
 
-If you are running a local copy of the Written Realms backend, update the API and Websocket endpoints if necessary in `.env.local` then run:
+If you are running a local copy of the Written Realms backend, update the API and Websocket endpoints if necessary in `.env.dev` then run:
 ```
 npm install
 num run dev-local

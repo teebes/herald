@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev-local": "vite --mode dev",
+    "dev-local": "vite --mode localBackend",
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
