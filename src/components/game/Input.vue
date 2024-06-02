@@ -3,6 +3,7 @@
     <form @submit.prevent="onSubmit">
       <div class="form-group">
         <input
+          id="console-input"
           type="text"
           v-model="input"
           @blur="onBlur"
@@ -170,6 +171,8 @@ const onTab = (event: KeyboardEvent) => {
 onMounted(() => {
   window.addEventListener("keyup", onKeyUp);
   window.addEventListener("keydown", onKeyDown);
+  const inputEl = document.getElementById("console-input") as HTMLElement;
+  inputEl.focus();
 });
 
 onBeforeUnmount(() => {

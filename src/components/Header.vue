@@ -3,7 +3,7 @@
     <div class="header-view">
       <div class="logo">
         <router-link to="/home">
-          <img alt="Written Realms logo" src="../assets/logo/logo-black.svg" class="logo-badge" />
+          <img alt="Written Realms logo" src="../assets/logo/logo-black.svg" class="logo-badge mr-1" />
           <img alt="Written Realms text" src="../assets/logo/written-realms.svg" class="logo-title" />
         </router-link>
       </div>
