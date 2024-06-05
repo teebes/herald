@@ -65,10 +65,11 @@
               <option value="assassin">Assassin</option>
             </select>
           </div>
+          <div v-else>&nbsp;</div>
 
           <!-- Faction Description -->
-          <template v-if="showArchetype && showFactions">
-            <div class="form-group field-description">
+          <template v-if="showArchetype || showFactions">
+            <div class="form-group field-description" v-if="showFactions">
               <div class="inner-description">
                 <div
                   v-for="(line, index) in factionDescriptionLines"
@@ -79,7 +80,8 @@
                 </div>
               </div>
             </div>
-            <div class="form-group field-description">
+            <div v-else>&nbsp;</div>
+            <div class="form-group field-description" v-if="showArchetype">
               <div class="inner-description">
                 {{ archetypeDescription(archetype) }}
               </div>
