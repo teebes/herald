@@ -8,7 +8,7 @@
       </div>
       <div id="console-bottom"></div>
     </div>
-    <Input @input="onInput" />
+    <Input />
   </div>
 </template>
 
@@ -16,8 +16,6 @@
 import { watch, nextTick, computed } from 'vue';
 import { useStore } from 'vuex';
 import Input from './Input.vue';
-
-const emit = defineEmits(['input']);
 
 const store = useStore();
 
@@ -40,10 +38,6 @@ const scrollToBottom = async () => {
   await nextTick();
   const bottomRef = document.getElementById('console-bottom');
   bottomRef?.scrollIntoView();
-};
-
-const onInput = (args: any) => {
-  emit('input', args);
 };
 
 // Scroll to bottom when new message is added

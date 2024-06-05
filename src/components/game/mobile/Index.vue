@@ -92,9 +92,9 @@ watch(() => player.value.room, (room) => {
     return;
   }
 
-  if (room && room.key && selectedTab.value !== "look") {
-    onTap("look");
-  }
+  // if (room && room.key && selectedTab.value !== "look") {
+  //   onTap("look");
+  // }
 });
 
 const closeMenu = () => {

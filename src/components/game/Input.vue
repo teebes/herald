@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onBeforeUnmount, defineEmits } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';
 
 const shiftKey = 16,
@@ -30,7 +30,6 @@ const shiftKey = 16,
   downArrow = 40;
 
 const store = useStore();
-const emit = defineEmits(['input']);
 
 const input = ref("");
 const shiftDown = ref(false);

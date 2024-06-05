@@ -4,7 +4,6 @@
     <component
       :is="gameComponent"
       :width="width"
-      @input="onInput"
       class="flex-grow"
       v-if="store.state.game.is_connected"
     ></component>
@@ -39,7 +38,13 @@ const resize = _.debounce(() => {
 
 onMounted(() => {
   if (!store.state.game.player_id) {
-    router.push({ name: "home" });
+    if (store.state.auth.user.is_temporary) {
+      router.push({ name: 'home' });
+      return;
+    } else {
+      router.push({ name: 'lobby' })
+      return;
+    }
   }
   loaded.value = true;
   window.addEventListener("resize", resize);
@@ -49,10 +54,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener("resize", resize);
 });
-
-const onInput = (input) => {
-  store.dispatch("game/cmd", input);
-};
 </script>
 
 <style lang="scss" scoped>
