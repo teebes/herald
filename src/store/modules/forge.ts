@@ -213,7 +213,8 @@ const actions = {
       };
 
       ws.onerror = (error) => {
-        commit('ui/notification_set_error', 'Error connecting to Forge Websocket.', { root: true });
+        console.log('Error connecting to Forge Websocket.', error)
+        // commit('ui/notification_set_error', 'Error connecting to Forge Websocket.', { root: true });
         reject(error);
       };
 

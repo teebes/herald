@@ -99,7 +99,7 @@ onMounted(async () => {
   await store.dispatch('forge/send', {
     'type': 'sub',
     'sub': 'builder.admin',
-    'world_id': root_world.id,
+    'world_id': root_world.value.id,
   });
 
   await store.dispatch(
