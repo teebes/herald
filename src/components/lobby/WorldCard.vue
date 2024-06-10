@@ -41,7 +41,7 @@ const backgroundImage = computed(() => {
   display: block;
 
   a {
-    background: url("https://writtenrealms.com/ui/lobby/world-card-horizontal-bg@2x.jpg");
+    background: url("@/assets/ui/world-card-horizontal-bg@2x.jpg");
     background-size: 370px 166px;
 
     position: relative;

@@ -156,7 +156,7 @@ const world_descriptors = computed(() => {
       position: absolute;
       background: #332d25;
       // background: url("/ui/lobby/world-home-bg.jpg");
-      background: url("https://writtenrealms.com/ui/lobby/world-home-bg.jpg");
+      background: url("@/assets/ui/world-home-bg.jpg");
       background-size: 1150px 299px;
       width: 100%;
       height: 299px;
