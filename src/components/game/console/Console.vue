@@ -82,6 +82,7 @@ const consoleMessage = (message) => {
     "cmd.upgrade.success": Upgrade,
     "cmd.who.success": Who,
     "cmd.whois.success": Whois,
+    "cmd./whois.success": Whois,
   };
 
   if (type_mapping[type]) return type_mapping[type];
