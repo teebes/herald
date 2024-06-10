@@ -182,7 +182,7 @@ const actions = {
   },
 
   world_save: async ({ commit, state }, data) => {
-    const resp = await axios.put(`/builder/worlds/${state.world.id}/`, data);
+    const resp = await axios.patch(`/builder/worlds/${state.world.id}/`, data);
     commit("world_set", resp.data);
     return resp.data;
   },
