@@ -49,7 +49,7 @@
     </template>
 
     <div class="room-inventory">
-      <div class="room-item" v-for="item in stackedInventory(room.inventory)" :key="item.key">
+      <div class="room-item" v-for="item in inventoryStack" :key="item.key">
         <template v-if="isLastMessage">
           <span v-interactive="{ target: item }" class="interactive" :class="[item.quality]"
             @click="onItemClick(item)">
@@ -87,7 +87,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { DIRECTIONS } from "@/constants";
 import { stackedInventory, getTargetInGroup } from "@/core/utils";
@@ -115,6 +115,19 @@ interface Room {
 
 const props = defineProps<{ message: any }>();
 const room = ref<Room>(props.message.data.room);
+
+// Room Inventory Management
+const roomInventory = computed(() => {
+  if (room.value) return room.value.inventory;
+  return []
+})
+const inventoryStack = ref<any[]>([]);
+const updateInventoryStack = () => {
+  inventoryStack.value = stackedInventory(roomInventory.value);
+}
+watch (roomInventory, () => {
+  updateInventoryStack();
+}, { immediate: true });
 
 if (props.message.type === "cmd.look.success" || props.message.type === "cmd.jump.success") {
   room.value = props.message.data.target;
