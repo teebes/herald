@@ -21,6 +21,7 @@ const initialState = (): ModalState => {
     options: {},
     component: null,
     props: {},
+    slot: null,
   };
 }
 
