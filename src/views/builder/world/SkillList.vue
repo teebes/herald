@@ -54,6 +54,10 @@ const schema = computed<any[]>(() => {
       {
         value: "healing",
         label: "Healing",
+      },
+      {
+        value: "self_healing",
+        label: "Self Healing",
       }
     ]
   }
