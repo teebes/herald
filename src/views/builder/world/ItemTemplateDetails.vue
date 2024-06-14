@@ -38,7 +38,7 @@
                 None set. Defaulting to:
                 <span
                   class="color-text"
-                >{{ capfirst(item_template.name) }} is here.</span>
+                >{{ capfirst(item_template.name) }} lies here.</span>
               </div>
             </div>
             <button class="btn-thin" @click="editRoomDesc">EDIT</button>
