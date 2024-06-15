@@ -8,12 +8,12 @@
 
     <ul class='skill-features'>
 
-    <li>{{ capfirst(resource.intent) }} skill.</li>
+    <li>{{ formatted_intent() }} skill.</li>
 
     <!-- Cast time & cooldown -->
     <li>
-      <template v-if="resource.cast_time">{{ resource.cast_time }} sec cast time,</template>
-      <template v-else>Instant cast,</template>
+      <template v-if="resource.cast_time">{{ resource.cast_time }} sec cast time, </template>
+      <template v-else>Instant cast, </template>
 
       <template v-if="resource.cooldown">{{ resource.cooldown }} sec cooldown.</template>
       <template v-else>no cooldown.</template>
@@ -31,8 +31,10 @@
 
     <!-- Initial Damage -->
     <li v-if="resource.damage">
-      <template v-if="resource.intent =='healing'">
-        Initially heals
+      <template v-if="resource.intent == 'healing' || resource.intent == 'self_healing'">
+        Initially
+          <template v-if="resource.intent == 'healing'">heals </template>
+          <template v-else>self heals </template>
         <template v-if="resource.damage_calc == 'fixed'">
           {{ resource.damage }} health.
         </template>
@@ -121,9 +123,16 @@ import { capfirst } from "@/core/utils.ts"
 
 const route = useRoute();
 
-defineProps<{
+const props = defineProps<{
   resource: any;
 }>();
+
+const formatted_intent = () => {
+  if (props.resource.intent == 'self_healing') {
+    return 'Self Healing';
+  }
+  return capfirst(props.resource.intent);
+}
 
 const item_template_link = (item_template_id: number) => {
   return {
