@@ -10,7 +10,7 @@
         type="password"
         class="form-control"
         placeholder="Password"
-        required="required"
+        :required="true"
         v-model="password"
       />
     </div>
