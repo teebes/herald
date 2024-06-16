@@ -58,7 +58,11 @@ const path_rooms = ref<Room[]>([]);
 const room_modifiers = ref<Room[]>([]);
 const zone_rooms = ref<Room[]>([]);
 
-const initial_data = computed<any>(() => {room: store.state.builder.room});
+const initial_data = computed<any>(() => {
+  return {
+    room: store.state.builder.room
+  };
+});
 
 const path_rooms_endpoint = `builder/worlds/${route.params.world_id}/paths/${route.params.path_id}/rooms/`;
 
@@ -132,7 +136,7 @@ onMounted(async () => {
 });
 
 const onAddRoom = (path_room) => {
-  const room_key = path_room.key;
+  const room_key = path_room.room.key;
   const room = store.state.builder.map[room_key];
   store.commit("builder/path_rooms_add", room);
   store.commit("builder/room_set", room);

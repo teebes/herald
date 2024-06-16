@@ -235,8 +235,14 @@ const template_link = computed(() => {
   return { name: '', params: {} }
 });
 
-const template_schema = BUILDER_FORMS.LOADER_RULE.TEMPLATE_SCHEMAS[template_type.value];
-const target_schema = BUILDER_FORMS.LOADER_RULE.TARGET_SCHEMAS[target_type.value];
+const template_schema = computed(() => {
+  return BUILDER_FORMS.LOADER_RULE.TEMPLATE_SCHEMAS[template_type.value];
+});
+
+const target_schema = computed(() => {
+  return BUILDER_FORMS.LOADER_RULE.TARGET_SCHEMAS[target_type.value];
+});
+
 const template_type_choice_schema = BUILDER_FORMS.LOADER_RULE.TEMPLATE_TYPE_SCHEMA;
 
 const target_link = computed(() => {
