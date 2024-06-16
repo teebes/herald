@@ -20,45 +20,29 @@
       </li>
     </ul>
 
-    <div class="gold-inv">You have {{ player.gold }} gold.</div>
+    <div class="gold-inv">You have {{ gold }} gold.</div>
   </div>
 </template>
 
 <script lang='ts' setup>
-import { computed, ref, watch } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 import { stackedInventory, getTargetInGroup } from "@/core/utils.ts";
 
 const store = useStore();
 
-interface InventoryMessage {
-  type: string;
-  data: {
-    inventory: {}[];
-  };
-}
-
 const props = defineProps<{
-  message: InventoryMessage;
+  message: any;
 }>();
 
-const player = computed(() => store.state.game.player);
-const inventory = computed(() => player.value.inventory);
+const gold = props.message.data.actor.gold;
+const inventory = props.message.data.actor.inventory;
+const inventoryStack = stackedInventory(inventory);
 const isLastMessage = computed(() => store.state.game.last_message[props.message.type] == props.message);
-
-// Inventory Stack
-const inventoryStack = ref<any[]>([]);
-const updateInventoryStack = () => {
-  inventoryStack.value = stackedInventory(inventory.value);
-}
-watch(inventory, () => {
-  updateInventoryStack();
-}, { immediate: true });
-
 
 const onItemClick = (item) => {
   if (store.state.game.is_mobile) return;
-  const target = getTargetInGroup(item, inventory.value);
+  const target = getTargetInGroup(item, inventory);
   store.dispatch("game/cmd", `drop ${target}`);
 }
 </script>
