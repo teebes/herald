@@ -79,7 +79,6 @@ const consoleMessage = (message) => {
     "cmd.list.success": List,
     "cmd.offer.success": OfferInventory,
     "cmd.stats.success": Stats,
-    "cmd.upgrade.success": Upgrade,
     "cmd.who.success": Who,
     "cmd.whois.success": Whois,
     "cmd./whois.success": Whois,
@@ -96,7 +95,7 @@ const consoleMessage = (message) => {
       type === "affect.flee.success" ||
       type === "system.connect.success" ||
       type === "cmd.jump.success" ||
-    type === "affect.death") return LookRoom;
+      type === "affect.death") return LookRoom;
 
   if (type === "notification.cmd.chat.success" ||
       type === "cmd.chat.success" ||
@@ -106,8 +105,10 @@ const consoleMessage = (message) => {
       type === "cmd.gossip.success" ||
       type === "notification.cmd.gossip.success") return Chat;
 
-  if (message.type === "notification.combat.attack" ||
-      message.type === "notification.combat.healing") return CombatMessage;
+  if (type === "notification.combat.attack" ||
+      type === "notification.combat.healing") return CombatMessage;
+
+  if (type === "cmd.upgrade.success" && message.data.items) return Upgrade;
 
   if (message.data &&
       message.data.skill &&
