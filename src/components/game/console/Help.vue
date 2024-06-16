@@ -23,7 +23,6 @@
         <div class="group-title">Basic Commands</div>
         <div class="cmds">
           <div class="cmd" @click="cmdHelp('quit')">quit</div>
-          <div class="cmd" @click="cmdHelp('save')">save</div>
           <div class="cmd" @click="cmdHelp('rest')">rest</div>
           <div class="cmd" @click="cmdHelp('stand')">stand</div>
           <div class="cmd" @click="cmdHelp('alias')">alias</div>
