@@ -9,6 +9,7 @@
       <div>Forge State: {{ instance.state }}</div>
       <div>Player Count: {{ instance.forge_data.num_players }}</div>
       <div>Item Count: {{ instance.forge_data.num_items }}</div>
+      <div>Items Pending Deletion Count: {{ instance.forge_data.num_pending_items }}</div>
       <div>Mob Count: {{ instance.forge_data.num_mobs }}</div>
     </div>
 

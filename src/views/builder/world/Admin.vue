@@ -44,7 +44,10 @@
         <div>Instance #<router-link :to="admin_instance_link(main_mpw.id)">{{ main_mpw.id }}</router-link></div>
         <div>
           State: {{ main_mpw.state }} / {{ main_mpw.game_state }}
-          <!-- <span v-if="main.is_clean">- clean</span> -->
+        </div>
+        <div>
+          Is Clean: {{ main_mpw.is_clean }}
+          <span v-if="main_mpw.clean_start_ts" class="ml-2">- Cleanup Started: {{ main_mpw.clean_start_ts }}</span>
         </div>
         <div class="actions mt-2">
           <button class="btn btn-small start" :disabled="disableStart(main_mpw)" @click="onStart(main_mpw)">START</button>
