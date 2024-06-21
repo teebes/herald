@@ -21,6 +21,7 @@
         v-if="!store.state.builder.world.is_multiplayer"
       >RESET</button>
       <button class="btn-small ml-4" @click="deletePlayer">DELETE</button>
+      <button class="btn-small ml-4" @click="restorePlayer">RESTORE</button>
     </div>
 
     <div class="data-and-map">
@@ -155,6 +156,13 @@ const deletePlayer = async () => {
       world_id: route.params.world_id,
     },
   });
+};
+
+const restorePlayer = () => {
+  const c = confirm(`Are you sure you want to restore Player ${player.value.id}?`);
+  if (!c) return;
+
+  store.dispatch("builder/worlds/player_restore");
 };
 
 const resetPlayer = async () => {

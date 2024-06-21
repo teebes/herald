@@ -64,6 +64,16 @@ export default {
       commit("player_set", resp.data);
     },
 
+    player_restore: async ({ commit, rootState, state }) => {
+      const world_id = rootState.builder.world.id;
+      const player_id = state.player.id;
+      const resp = await axios.post(
+        `/builder/worlds/${world_id}/players/${player_id}/restore/`
+      );
+      commit("player_set", resp.data);
+      commit("ui/notification_set", "Player data restored.", { root: true });
+    },
+
     config_fetch: async ({ commit }, { world_id }) => {
       const resp = await axios.get(`/builder/worlds/${world_id}/config/`);
       commit("config_set", resp.data);
