@@ -38,7 +38,7 @@ const routes = [
   { path: '/signup', name: 'signup', component: () => import('@/views/auth/SignUp.vue') },
   { path: '/forgot-password', name: 'forgot-password', component: () => import('@/views/auth/ForgotPassword.vue') },
   { path: '/reset-password/:code', name: 'resetpassword', component: () => import('@/views/auth/ResetPassword.vue') },
-  { path: '/email-confirm/:code', name: 'confirmemail', component: () => import('@/views/auth/ConfirmEmail.vue') },
+  { path: '/emailconfirm/:code', name: 'confirmemail', component: () => import('@/views/auth/ConfirmEmail.vue') },
 
   // Lobby
   { path: '/lobby', name: 'lobby', component: () => import('@/views/lobby/Lobby.vue'), beforeEnter: ifAuthenticated },
