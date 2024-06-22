@@ -61,7 +61,7 @@
         <h3 class="mt-8 mb-2" >SINGLE PLAYER INSTANCES</h3>
         <div>Total SPW instances: {{ world_admin.spw_data.total_count }}</div>
         <div v-for="spw in spws" v-bind:key="spw.id">
-          [ {{ spw.id }} ] {{  spw.player_name }} <button class="btn btn-small kill ml-2" @click="onKill(spw)">KILL</button>
+          [ {{ spw.id }} ] {{  spw.player_name }} - {{ spw.state }} <button class="btn btn-small kill ml-2" @click="onKill(spw)">KILL</button>
         </div>
       </div>
 
@@ -176,6 +176,9 @@ const onStop = async (instance) => {
 
 
 const onKill = async (instance) => {
+  const c = confirm(`This could result in data loss if you still have connected players. Proceed?`);
+  if (!c) return;
+
   action_submitted.value[instance.id] = true;
   store.commit('ui/notification_set', {
     text: "Killing...",
