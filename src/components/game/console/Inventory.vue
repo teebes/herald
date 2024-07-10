@@ -5,7 +5,7 @@
     <div v-else>You are carrying {{inventory.length}} items:</div>
 
     <ul class="list">
-      <li v-for="(item, index) in inventoryStack" :key="index" class="inventory-item">
+      <li v-for="(item, index) in inventoryStack" :key="item.display_key" class="inventory-item">
         <span
           v-if="isLastMessage"
           v-interactive="{target: item}"

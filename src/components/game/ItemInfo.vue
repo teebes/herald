@@ -57,7 +57,24 @@
           >{{ item.inventory.length }} items in {{ item.type }}:</div>
 
           <ul class="list">
-            <li v-for="contained_item in item.inventory" :key="contained_item.key">
+            <li v-for="contained_item in inventoryStack" :key="contained_item.display_key" class="inventory-item">
+              <span
+                :class="{ [contained_item.quality]: true}"
+                class="contained-item interactive"
+                @click="onClickContainedItem(contained_item)"
+                v-if="!from_lookup"
+                v-interactive="{target: contained_item}"
+              >{{ contained_item.name }}</span>
+              <span
+                v-else
+                :class="{ [contained_item.quality]: true}"
+                @click="onClickContainedItem(contained_item)"
+                class="contained-item"
+              >{{ contained_item.name }}</span>
+              <span class="item-count" v-if="contained_item.count && contained_item.count > 1">&nbsp;[{{contained_item.count}}]</span>
+            </li>
+
+            <!-- <li v-for="contained_item in item.inventory" :key="contained_item.key">
               <span
                 :class="{ [contained_item.quality]: true}"
                 class="contained-item interactive"
@@ -71,7 +88,7 @@
                 @click="onClickContainedItem(contained_item)"
                 class="contained-item"
               >{{ contained_item.name }}</span>
-            </li>
+            </li> -->
           </ul>
         </div>
       </template>
@@ -95,6 +112,7 @@ import { computed } from "vue";
 import { useStore } from "vuex";
 import { getTargetInGroup } from "@/core/utils.ts";
 import { capfirst } from "@/core/utils.ts";
+import { stackedInventory } from "@/core/utils.ts";
 
 const store = useStore();
 
@@ -108,6 +126,8 @@ const props = defineProps({
     default: false
   }
 });
+
+const inventoryStack = stackedInventory(props.item.inventory);
 
 const isUpgradable = computed(() => {
   // Only show upgrade option in workshop rooms

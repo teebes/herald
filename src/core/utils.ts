@@ -10,12 +10,15 @@ export const stackedInventory = function(inv) {
   */
 
   var c_inv: any[] = []; // the inventory with template id counts
-  var t_items = {};
+  var t_items = {}; // template items cache
 
   for (let item of inv) {
     var tid = item.template_id;
+
+    // Templated item
     if (tid && !item.is_container) {
       if (t_items[tid] === undefined) {
+        item.display_key = tid;
         t_items[tid] = item;
         item.count = 1;
         item.showCount = false;
@@ -25,7 +28,10 @@ export const stackedInventory = function(inv) {
         if (t_items[tid].count === 1) t_items[tid].showCount = true;
         t_items[tid].count += 1;
       }
+
+    // Generated Item
     } else {
+      item.display_key = item.key;
       c_inv.push(item);
     }
   }
