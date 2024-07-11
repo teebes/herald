@@ -73,7 +73,7 @@ const editAccount = () => {
   } else if (store.state.auth.user.is_invalid) {
     // Could also write a message here
     slot = ConfirmEmail;
-  } else if (store.state.auth.user.is_confirmed) {
+  } else if (!store.state.auth.user.is_confirmed) {
     slot = ConfirmEmail;
   }
 
