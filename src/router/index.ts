@@ -116,6 +116,7 @@ const routes = [
       { path: 'activity', name: 'staff_activity', component: () => import('@/views/staff/Activity.vue') },
       { path: 'users/:user_id', name: 'staff_user_info', component: () => import('@/views/staff/UserInfo.vue') },
       { path: 'reviews', name: 'staff_reviews', component: () => import('@/views/staff/Reviews.vue') },
+      { path: 'nexus/:nexus_id', name: 'staff_nexus_details', component: () => import('@/views/staff/NexusDetails.vue') },
     ],
   }
 ];

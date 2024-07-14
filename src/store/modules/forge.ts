@@ -118,6 +118,11 @@ const actions = {
         commit('ui/notification_set_error', error, { root: true });
       } else if (data.status === 'success') {
         commit('ui/notification_set', 'Nexus started.', { root: true });
+        if (data.job_data.nexus_id) {
+          const nexus_promise = dispatch('staff/nexus_fetch', data.job_data.nexus_id, { root: true });
+          const nexus_data_promise = dispatch('staff/nexus_data_fetch', data.job_data.nexus_id, { root: true });
+          await Promise.all([nexus_promise, nexus_data_promise]);
+        }
       }
     }
 
@@ -129,6 +134,11 @@ const actions = {
         commit('ui/notification_set_error', error, { root: true });
       } else if (data.status === 'success') {
         commit('ui/notification_set', 'Nexus deleted.', { root: true });
+        if (data.job_data.nexus_id) {
+          const nexus_promise = dispatch('staff/nexus_fetch', data.job_data.nexus_id, { root: true });
+          const nexus_data_promise = dispatch('staff/nexus_data_fetch', data.job_data.nexus_id, { root: true });
+          await Promise.all([nexus_promise, nexus_data_promise]);
+        }
       }
     }
 
@@ -139,6 +149,11 @@ const actions = {
         commit('ui/notification_set_error', error, { root: true });
       } else if (data.status === 'success') {
         commit('ui/notification_set', 'Nexus rebuilt.', { root: true });
+        if (data.job_data.nexus_id) {
+          const nexus_promise = dispatch('staff/nexus_fetch', data.job_data.nexus_id, { root: true });
+          const nexus_data_promise = dispatch('staff/nexus_data_fetch', data.job_data.nexus_id, { root: true });
+          await Promise.all([nexus_promise, nexus_data_promise]);
+        }
       }
     }
 

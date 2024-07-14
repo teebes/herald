@@ -5,6 +5,8 @@ const initial_state = () => {
   return {
     panel: null,
     user: null,
+    nexus: null,
+    nexus_data: null,
   }
 }
 
@@ -38,7 +40,22 @@ export default {
     invalidate: async ({ commit }, user_id) => {
       const resp = await axios.post(`/staff/users/${user_id}/invalidate/`);
       commit("user_update", resp.data);
-    }
+    },
+
+    nexus_fetch: async ({ commit }, nexus_id) => {
+      const resp = await axios.get(`/staff/nexus/${nexus_id}/`);
+      commit("nexus_set", resp.data);
+    },
+
+    nexus_patch: async ({ commit, state }, data) => {
+      const resp = await axios.patch(`/staff/nexus/${state.nexus.id}/`, data);
+      commit("nexus_set", resp.data);
+    },
+
+    nexus_data_fetch: async ({ commit }, nexus_id) => {
+      const resp = await axios.get(`/staff/nexus/${nexus_id}/data/`);
+      commit("nexus_data_set", resp.data);
+    },
   },
 
   mutations: {
@@ -50,6 +67,12 @@ export default {
     },
     user_update: (state, data) => {
       state.user =  {...state.user, ...data};
+    },
+    nexus_data_set: (state, data) => {
+      state.nexus_data = data;
+    },
+    nexus_set: (state, data) => {
+      state.nexus = data;
     }
   },
 };

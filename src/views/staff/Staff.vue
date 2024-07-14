@@ -44,7 +44,9 @@
 
           <div v-for="nexus in panel.nexuses" :key="nexus.id">
             <div class="mb-1">
-              [ {{ nexus.id }} ] {{ nexus.name }} - {{ nexus.state }}
+              [ {{ nexus.id }} ]
+              <router-link :to="{name: 'staff_nexus_details', params: { nexus_id: nexus.id }}">{{ nexus.name }}</router-link>
+              - {{ nexus.state }}
               <button class="btn-small ml-2" @click="build_nexus(nexus)" v-if="nexus.state == 'absent'">BUILD</button>
               <button class="btn-small ml-2" @click="delete_nexus(nexus)" v-if="nexus.state == 'ready'">DELETE</button>
               <button class="btn-small ml-1" @click="rebuild_nexus(nexus)"
