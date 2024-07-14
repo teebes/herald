@@ -9,9 +9,11 @@
         </thead>
 
         <tbody>
-          <tr v-for="element in elements" :key="element.id" @click="clickRow(element)">
+          <tr v-for="element in elements" :key="element.id">
             <td v-for="field in schema" :key="field.name" :nowrap="isNowrap(field)">
-              {{ getFieldValue(element, field.name) }}
+              <a :href="element.link">
+                {{ getFieldValue(element, field.name) || "&nbsp;" }}
+              </a>
             </td>
           </tr>
         </tbody>
@@ -28,11 +30,6 @@ defineProps<{
   schema: any;
   elements: Array<ElementListSchema>;
 }>();
-const emit = defineEmits(['show-details']);
-
-const clickRow = (element: ElementListSchema) => {
-  emit('show-details', element);
-};
 
 const isNowrap = (field: any) => {
   return field.nowrap;
@@ -47,4 +44,23 @@ const getFieldValue = (element: ElementListSchema, name: string) => {
   return element[name];
 };
 </script>
-<style lang="scss" scoped></style>
+
+<style lang="scss" scoped>
+@import "@/styles/colors.scss";
+
+tbody {
+  tr {
+    td {
+      position: relative;
+      padding: 0;
+      a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        color: inherit;
+        text-decoration: none;
+      }
+    }
+  }
+}
+</style>

@@ -57,6 +57,7 @@ export interface ElementListSchema {
   id: number;
   name: string;
   label: string;
+  link: string;
 }
 
 export interface ElementListFilterItem {

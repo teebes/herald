@@ -25,8 +25,7 @@
           </div>
         </div>
 
-        <ElementTable :title="title" :elements="elements" :totalPages="totalPages" :schema="schema"
-          @show-details="onShowDetails" v-if="elements.length" />
+        <ElementTable :title="title" :elements="elements" :totalPages="totalPages" :schema="schema" v-if="elements.length" />
         <div v-else class="no-records">No {{ title }} defined.</div>
       </div>
     </div>
@@ -90,7 +89,18 @@ const fetchData = () => {
 
 onMounted(() => { fetchData(); });
 
-const elements = computed(() => paginated_data.value.results);
+// const elements = computed(() => paginated_data.value.results);
+const elements = computed(() => {
+  return paginated_data.value.results.map(element => {
+    const route_data = props.resolve_route(element);
+    const resolved_route = router.resolve(route_data);
+    return {
+      ...element,
+      link: resolved_route.href
+    };
+  });
+});
+
 const totalPages = computed(() => Math.ceil(paginated_data.value.count / 10));
 
 let timeout: ReturnType<typeof setTimeout> | null = null;
@@ -124,11 +134,6 @@ const onClearFilter = (attr) => {
 
 
 // Display details
-
-const onShowDetails = (element) => {
-  const route_data = props.resolve_route(element);
-  router.push(route_data);
-};
 
 const onAdd = () => {
   emit("add");
