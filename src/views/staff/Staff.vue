@@ -296,6 +296,7 @@ const world_admin_instance_link = (context_id, instance_id) => {
     }
   }
 };
+
 const onSliderChange = () => {
   store.dispatch('forge/send', {
     type: 'job',

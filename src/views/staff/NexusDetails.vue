@@ -19,13 +19,29 @@
       <button class="btn-small mr-2" @click="rebuild_nexus(nexus)" v-if="nexus.state == 'ready'">REBUILD</button>
     </div>
 
+    <div class="nexus-worlds mt-8" v-if="nexus_data && nexus_data.worlds.length">
+      <h3 class="mb-4">WORLDS</h3>
+      <div class="worlds mt-2">
+        <div v-for="world in nexus_data.worlds" :key="world.key">
+          *
+          [ <router-link :to="world_admin_instance_link(world.context_id, world.id)">{{ world.id }}</router-link> ]
+          -
+          <router-link :to="world_admin_link(world.context_id)">{{ world.name }}</router-link>
+          -
+          {{ world.state }}
+        </div>
+      </div>
+
+    </div>
+
     <div class="nexus-data mt-8" v-if="nexus.state == 'ready' && nexus_data">
       <h3 class="mb-4">NEXUS DATA</h3>
       <p>DB Size: {{ nexus_data.dbsize }}</p>
       <p>Max lag: {{ max_lag }}</p>
       <p>Timings depth: {{ nexus_data.timings.length }}</p>
 
-      <template v-for="timing in timings">
+      <h3 class="mt-8 mb-4">TIMINGS</h3>
+      <template v-for="timing in timings" v-if="timings.length">
         <div class="flex">
           <div class="toggle" @click="toggleDetails(timing.expires)">
             <span v-if="expanded[timing.expires]">&mdash;</span>
@@ -37,6 +53,7 @@
         </div>
           <pre v-if="expanded[timing.expires]" class="mt-2 mb-4">{{ timing }}</pre>
       </template>
+      <div v-else>None.</div>
     </div>
   </div>
 
@@ -128,6 +145,23 @@ const rebuild_nexus = async (nexus) => {
     job: 'rebuild_nexus',
     nexus_id: nexus.id,
   });
+};
+
+const world_admin_link = (context_id) => {
+  return {
+    name: 'builder_world_admin',
+    params: { world_id: context_id  }
+  }
+};
+
+const world_admin_instance_link = (context_id, instance_id) => {
+  return {
+    name: 'builder_world_admin_instance',
+    params: {
+      world_id: context_id,
+      instance_id: instance_id,
+    }
+  }
 };
 </script>
 
