@@ -122,6 +122,17 @@ const target = computed(() => {
 const message_type = computed(() => {
   const attack = props.message.data.attack;
 
+  if (props.message.data.label && props.message.data.label != "Attack") {
+    let label = props.message.data.label;
+
+    if (props.message.data.attack == "customdot") {
+      label = label + " (DOT)";
+    } else if (props.message.data.attack == "customhot") {
+      label = label + " (HOT)";
+    }
+    return label;
+  }
+
   let label;
   const world = store.state.game.world;
   // See if we find a label in the world labels (for regular skills)
