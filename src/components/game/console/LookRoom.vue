@@ -1,5 +1,13 @@
 <template>
   <div class="look-room">
+
+    <div v-if="message.type === 'system.connect.success' && motd_lines.length" class="motd-wrapper mb-4">
+      <div class="motd">
+        <div class="motd-header mb-4">Message of the Day</div>
+        <div v-for="(line, index) in motd_lines" :key="index">{{ line || "&nbsp;" }}</div>
+      </div>
+    </div>
+
     <div v-if="message.type === 'affect.death'" class="mt-4 color-text-red font-text-regular">
       You have been slain! Rest your weary bones...
     </div>
@@ -214,6 +222,13 @@ const showDescription = computed(() => {
   }
   return true;
 });
+
+const motd_lines = computed(() => {
+  if (!store.state.game.motd) return [];
+  return store.state.game.motd.split('\n') || [];
+});
+console.log('motd_lines: ');
+console.log(motd_lines.value);
 </script>
 
 <style lang="scss" scoped>
@@ -243,6 +258,16 @@ const showDescription = computed(() => {
 
   .room-note {
     opacity: 0.5;
+  }
+}
+
+.motd {
+  border: 1px solid $color-background-light-border;
+  padding: 1rem;
+
+  .motd-header {
+    color: $color-primary;
+    font-weight: bold;
   }
 }
 </style>

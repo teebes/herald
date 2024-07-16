@@ -47,6 +47,7 @@ const actions = {
           player_config: data.job_data.player_config,
           nexus_name: data.job_data.nexus_name,
           ws_uri: data.job_data.ws_uri,
+          motd: data.job_data.motd,
         }, { root: true });
       }
     }

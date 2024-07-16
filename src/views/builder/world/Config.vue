@@ -218,12 +218,24 @@ onMounted(async () => {
 });
 
 const editGeneral = () => {
+
+  const description = {
+    ...BUILDER_FORMS.DESCRIPTION,
+    help: `The description of the world as it will displayed to all players in the world's Lobby.`,
+  };
+
   const modal = {
     title: `Edit World`,
     data: world.value,
     schema: [
       BUILDER_FORMS.NAME,
-      BUILDER_FORMS.DESCRIPTION,
+      description,
+      {
+        attr: "motd",
+        label: "Message of the Day",
+        widget: "textarea",
+        help: `A message that will be displayed to players when they enter the world.`,
+      },
       {
         attr: "is_public",
         label: "Is Public",

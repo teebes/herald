@@ -99,6 +99,7 @@ const set_initial_state = () => {
     com_list: [],
     factions: [],
     room_chars: [],
+    motd: '',
   };
 };
 
@@ -178,6 +179,7 @@ const receiveMessage = async ({
     commit("full_screen_message_clear");
     router.push({ name: "game" });
     commit("ui/notification_set", "Connected.", { root: true });
+
   } else if (message_data.type == "system.disconnect.error") {
     commit("full_screen_message_clear");
   }
@@ -501,13 +503,14 @@ const actions = {
     }, { root: true });
   },
 
-  enter_ready_world: async ({ commit, dispatch }, { player_id, player_config, world, ws_uri }) => {
+  enter_ready_world: async ({ commit, dispatch }, { player_id, player_config, world, ws_uri, motd }) => {
     commit("reset_state");
     // commit("ws_uri_set", `ws://localhost/websocket/${nexus_name}/cmd`);
     commit("ws_uri_set", ws_uri);
     commit("world_set", world);
     commit("player_config_set", player_config);
     commit("pregame_set", { player_id: player_id });
+    commit("motd_set", motd);
     dispatch("openWebSocket");
   },
 
@@ -1077,6 +1080,10 @@ const mutations = {
 
   com_list_add: (state, com) => {
     state.com_list.push(com);
+  },
+
+  motd_set: (state, motd) => {
+    state.motd = motd;
   },
 };
 
