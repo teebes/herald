@@ -14,7 +14,7 @@ import ElementList from "@/components/elementlist/ElementList.vue";
 const endpoint = `/staff/playing/`;
 const resolve_route = (player: any) => {
   return {
-    name: "builder_world_player_detail",
+    name: "builder_world_player_details",
     params: {
       world_id: player.root_world_id,
       player_id: player.id

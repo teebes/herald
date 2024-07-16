@@ -69,6 +69,7 @@
               -
               <span v-if="world.nexus_data">{{ world.nexus_data.name }} ({{ world.nexus_data.state }})</span>
               <span v-else>No Nexus</span>
+              - {{ world.playing_count }} playing
             </div>
             <div class="mt-2">{{ panel.running_worlds_count }} Total</div>
           </div>
