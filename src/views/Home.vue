@@ -36,7 +36,7 @@
 
         <div class="center">
           <div class="subtext font-text-light">
-            Immersive text-based adventure games
+            Immersive text adventure games
           </div>
           <button class="play-demo btn btn-medium" @click="play">PLAY</button>
           <div class="cross-platform">
