@@ -849,12 +849,17 @@ const mutations = {
       return;
     }
 
-    const applied_effects = _.filter(char_effects, (existing_effect) => {
-      return (
-        existing_effect.code !== effect.code ||
-        existing_effect.actor !== effect.actor
-      );
-    });
+    let applied_effects: any[] = [];
+    if (effect.allow_multiple) {
+      applied_effects = char_effects;
+    } else {
+      applied_effects = _.filter(char_effects, (existing_effect) => {
+        return (
+          existing_effect.code !== effect.code ||
+          existing_effect.actor !== effect.actor
+        );
+      });
+    }
     applied_effects.push(effect);
 
     // Vue.set(state.effects, effect.target, applied_effects);
