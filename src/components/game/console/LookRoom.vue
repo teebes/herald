@@ -227,8 +227,6 @@ const motd_lines = computed(() => {
   if (!store.state.game.motd) return [];
   return store.state.game.motd.split('\n') || [];
 });
-console.log('motd_lines: ');
-console.log(motd_lines.value);
 </script>
 
 <style lang="scss" scoped>

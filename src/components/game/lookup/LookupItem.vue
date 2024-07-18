@@ -42,6 +42,10 @@ const actions = computed(() => {
     actionsPriority = [
       // higher the better
       {
+        action: "eat",
+        label: "EAT"
+      },
+      {
         action: "upgrade",
         label: "UPGRADE"
       },
