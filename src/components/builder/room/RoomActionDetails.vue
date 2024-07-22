@@ -34,6 +34,7 @@
 </template>
 
 <script lang='ts' setup>
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 
@@ -43,8 +44,8 @@ const props = defineProps<{
 }>();
 const emit = defineEmits(['addToCollection']);
 
+const commands = computed(() => props.resource.commands.split("\n"));
 
-const commands = props.resource.commands.split("\n");
 const clone = async (resource) => {
   if (!confirm(`Clone this room action?`)) return;
   const world_id = route.params.world_id;
