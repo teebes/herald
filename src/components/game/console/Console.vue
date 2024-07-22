@@ -206,8 +206,7 @@ const onScroll = _.debounce(updateScroll, 250);
       &.notification\.cmd\.emote\.success,
       &.notification\.movement\.enter,
       &.notification\.movement\.exit,
-      &.notification\.decay,
-      &.notification\.death {
+      &.notification\.decay {
         margin-top: 1rem;
       }
 
