@@ -124,6 +124,7 @@
           <div class="cmd" @click="cmdHelp('upgrade')">upgrade</div>
           <div class="cmd" @click="cmdHelp('craft')">craft</div>
           <div class="cmd" @click="cmdHelp('compare')">compare</div>
+          <div class="cmd" @click="cmdHelp('eat')">eat</div>
         </div>
       </div>
 
@@ -269,9 +270,11 @@
             <div class="cmd" @click="cmdHelp('jump')">jump</div>
             <div class="cmd" @click="cmdHelp('transfer')">transfer</div>
             <div class="cmd" @click="cmdHelp('find')">find</div>
-            <div class="cmd" @click="cmdHelp('award')">award</div>
+            <div class="cmd" @click="cmdHelp('/award')">/award</div>
           </div>
           <div class="cmds">
+            <div class="cmd" @click="cmdHelp('/at')">/at</div>
+            <div class="cmd" @click="cmdHelp('/damage')">/damage</div>
             <div class="cmd" @click="cmdHelp('/echo')">/echo</div>
             <div class="cmd" @click="cmdHelp('/gecho')">/gecho</div>
             <div class="cmd" @click="cmdHelp('/zecho')">/zecho</div>
@@ -284,6 +287,9 @@
             <div class="cmd" @click="cmdHelp('clearfact')">clearfact</div>
             <div class="cmd" @click="cmdHelp('mark')">mark</div>
             <div class="cmd" @click="cmdHelp('unmark')">unmark</div>
+            <div class="cmd" @click="cmdHelp('/kill')">/kill</div>
+            <div class="cmd" @click="cmdHelp('/kick')">/kick</div>
+
           </div>
           <div class="cmds">
             <div class="cmd" @click="cmdHelp('/open')">/open</div>
