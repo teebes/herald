@@ -28,24 +28,20 @@ const room: any = computed(() => store.state.game.room);
 
 const onRoomClick = (clickedRoom) => {
   const current_x = room.value.x,
-    current_y = room.value.y;
+        current_y = room.value.y;
 
-  for (const direction of ["north", "east", "south", "west"]) {
-    if (direction === "north") {
-      if (clickedRoom.x === current_x && clickedRoom.y === current_y + 1) {
-        store.dispatch("game/cmd", "north");
-        return;
-      } else if (room.x === current_x && clickedRoom.y === current_y - 1) {
-        store.dispatch("game/cmd", "south");
-        return;
-      } else if (clickedRoom.y === current_y && clickedRoom.x === current_x + 1) {
-        store.dispatch("game/cmd", "east");
-        return;
-      } else if (clickedRoom.y === current_y && clickedRoom.x === current_x - 1) {
-        store.dispatch("game/cmd", "west");
-        return;
-      }
-    }
+  if (clickedRoom.x === current_x && clickedRoom.y === current_y + 1) {
+    store.dispatch("game/cmd", "north");
+    return;
+  } else if (clickedRoom.x === current_x && clickedRoom.y === current_y - 1) {
+    store.dispatch("game/cmd", "south");
+    return;
+  } else if (clickedRoom.y === current_y && clickedRoom.x === current_x + 1) {
+    store.dispatch("game/cmd", "east");
+    return;
+  } else if (clickedRoom.y === current_y && clickedRoom.x === current_x - 1) {
+    store.dispatch("game/cmd", "west");
+    return;
   }
 }
 </script>
