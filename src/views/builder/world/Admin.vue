@@ -36,6 +36,9 @@
         <span v-if="world_admin.nexus_data.is_ready">Yes</span>
         <span v-else>No</span>
         <span v-if="world_admin.nexus_data.error">- {{ world_admin.nexus_data.error }}</span>
+        <span v-if="store.state.auth.user.is_staff && world_admin.nexus_data.id" class="ml-4">
+          [ <router-link :to="{name: 'staff_nexus_details', params: { nexus_id: world_admin.nexus_data.id }}">{{ world_admin.nexus_data.name }}</router-link> ]
+        </span>
       </div>
 
       <!-- Main MPW Instance -->
