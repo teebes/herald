@@ -2,6 +2,8 @@
   <div v-if="instance">
     <h2>{{ root_world.name.toUpperCase() }} INSTANCE #{{ instance.id }}</h2>
 
+    <p class="mt-2">Last state change: {{ instance.change_state_ts }}</p>
+
     <!-- Forge Data -->
     <div class="forge-data mt-4">
       <h3 class="mb-2">FORGE DATA</h3>
