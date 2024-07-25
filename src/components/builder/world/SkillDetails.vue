@@ -96,7 +96,14 @@
           </template>
           over {{ resource.effect_duration }} secs.
         </template>
-      </li>
+    </li>
+
+    <li v-if="resource.arguments">
+      Effect Arguments:
+      <ul v-for="(arg, index) in resource.arguments.split(' ')" :key="index" class="ml-2">
+        <li>{{ arg.split(':')[0] }} * {{ arg.split(':')[1] }}</li>
+      </ul>
+    </li>
 
     <!-- Consumes -->
     <li v-if="resource.consumes">
