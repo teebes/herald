@@ -20,7 +20,7 @@
     <img alt="help" src="@/assets/ui/help_icon_2x.png"/>
 
     <template #popper>
-      <div v-html="help"></div>
+      <div v-html="help" class="help-popper"></div>
     </template>
   </VMenu>
 
@@ -35,4 +35,9 @@ defineProps<{
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
 .vmenutst { display: inline; }
+
+.help-popper {
+  max-height: 400px;
+  overflow-y: scroll;
+}
 </style>

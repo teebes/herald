@@ -14,7 +14,7 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import SkillDetails from "@/components/builder/world/SkillDetails.vue";
 import EditableCollection from "@/components/editablecollection/EditableCollection.vue";
-import { FormElement, BUILDER_FORMS } from "@/core/forms.ts";
+import { FormElement, BUILDER_FORMS, CONDITIONS } from "@/core/forms.ts";
 
 const route = useRoute();
 
@@ -25,11 +25,14 @@ const display_component = SkillDetails;
 const schema = computed<any[]>(() => {
   const name = {
     ...BUILDER_FORMS.NAME,
+    help: `The name of the skill as it will be displayed to players. If omitted, the name will be the code with the first character capitalized.`
   };
   const code: FormElement = {
     attr: "code",
     label: "Code",
     required: true,
+    help: `The code used to reference the skill within the game. This will be what players will type to learn the skill.<br/><br/>
+    For example if the code for a skill is 'bash', players would use 'learn bash' to learn it or 'bash' to use it.`
   };
   const cast_time: FormElement = {
     attr: "cast_time",
@@ -44,6 +47,8 @@ const schema = computed<any[]>(() => {
   const intent: FormElement = {
     attr: "intent",
     label: "Intent",
+    help: `The intent of a skill is whether it is meant to harm or help a target. This comes into play for target selection. For example if a skill has a healing intent and you use it while fighting someone, it will heal you rather than them.<br/><br/>
+    Self Healing means that a skill will only target the caster.`,
     default: "damage",
     widget: "select",
     options: [
@@ -87,6 +92,9 @@ const schema = computed<any[]>(() => {
   const cost_calc: FormElement = {
     attr: "cost_calc",
     label: "Cost Calc",
+    help: `How the cost of the skill is calculated:<br/>
+    * % Base means percent of the base stat, which is the state before item bonuses.<br/>
+    * % Max means percent of the stat when it is at its maximum value including item bonuses.`,
     default: "perc_base",
     options: [
       {
@@ -104,11 +112,15 @@ const schema = computed<any[]>(() => {
   const damage: FormElement = {
     attr: "damage",
     label: "Damage",
+    help: `How much damage to inflict. If this is kept at 0, the skill will not have an attack component.`,
     default: 0,
   };
   const damage_calc: FormElement = {
     attr: "damage_calc",
     label: "Damage Calc",
+    help: `How the damage is calculated.<br/>
+    * Normal means the damage is calculated based on the attacker's stats.<br/>
+    * Fixed means the damage is a fixed amount and does not change based on the attacker's stats.`,
     widget: "select",
     default: "normal",
     options: [
@@ -124,6 +136,7 @@ const schema = computed<any[]>(() => {
   const damage_type: FormElement = {
     attr: "damage_type",
     label: "Damage Type",
+    help: `The type of damage the skill does. Physical damage is reduced by armor and resilience, while magical damage is reduced by resilience only.`,
     widget: "select",
     default: "physical",
     options: [
@@ -140,6 +153,15 @@ const schema = computed<any[]>(() => {
     attr: "effect",
     label: "Effect",
     widget: "select",
+    help: `Whether to apply an effect with the skill. If this is set to None, no effect will be applied.<br/><br/>
+    * Stun: stun the target, preventing them from taking action for the duration of the effect.<br/>
+    * Sleep: puts the target to sleep. They will wake up if they take damage.<br/>
+    * DOT: Damage Over Time. The target will take damage over the duration of the effect based on the 'Effect Damage' field.<br/>
+    * HOT: Heal Over Time. The target will be healed over the duration of the effect based on the 'Effect Damage' field.<br/>
+    * Absorb: Absorb incoming damage from all sources based on the 'Effect Damage' field. The higher the Effect Damage, the more damage will be absorbed.<br/>
+    * Buff: Apply a buff to the target. Buffs increase stats by a given multiplier as specified in the 'Arguments' field.<br/>
+    * Debuff: Apply a debuff to the target. Debuffs decrease stats by a given multiplier as specified in the 'Arguments' field.<br/>
+    * Haste: Apply a haste effect to the target. Targets with haste auto-attack twice per round.`,
     default: "",
     options: [
       {
@@ -160,6 +182,15 @@ const schema = computed<any[]>(() => {
       }, {
         value: "absorb",
         label: "Absorb",
+      }, {
+        value: "buff",
+        label: "Buff",
+      }, {
+        value: "debuff",
+        label: "Debuff",
+      }, {
+        value: "haste",
+        label: "Haste",
       }
     ]
   };
@@ -176,6 +207,7 @@ const schema = computed<any[]>(() => {
   const effect_damage_type: FormElement = {
     attr: "effect_damage_type",
     label: "Effect Damage Type",
+    help: `The type of damage the effect does for DOTs or HOTs. Physical damage is reduced by armor and resilience, while magical damage is reduced by resilience only.`,
     widget: "select",
     default: "magical",
     options: [
@@ -191,6 +223,9 @@ const schema = computed<any[]>(() => {
   const effect_damage_calc: FormElement = {
     attr: "effect_damage_calc",
     label: "Effect Damage Calc",
+    help: `How the damage is calculated.<br/>
+    * Normal means the damage is calculated based on the attacker's stats.<br/>
+    * Fixed means the damage is a fixed amount and does not change based on the attacker's stats.`,
     widget: "select",
     default: "normal",
     options: [
@@ -205,15 +240,24 @@ const schema = computed<any[]>(() => {
   };
   const consumes: FormElement = {
     attr: "consumes",
-    label: "Consumes"
+    label: "Consumes",
+    help: `If the skill requires a consumable item to use, specify the item ID here. Consumable items are removed from the player's inventory when the skill is used.`
   };
   const requires: FormElement = {
     attr: "requires",
-    label: "Requires"
+    label: "Requires",
+    help: CONDITIONS.help,
   };
   const help: FormElement = {
     attr: "help",
-    label: "Help Entry"
+    label: "Help Entry",
+    help: `Help entry to be displayed when a player uses the 'help' command to get more information about the skill.`
+  };
+  const args: FormElement = {
+    attr: "arguments",
+    label: "Arguments",
+    help: `For Buff and Debuff effects, which stats to modify. Syntax '<stat1>:<multiplayer> <stat2:multiplier>'.<br/><br/>
+    Example: for a Buff effect to double attack power, and dodge, the arguments would be 'attack_power:2 dodge:2'.`
   };
 
   return [
@@ -223,8 +267,10 @@ const schema = computed<any[]>(() => {
     { children: [damage, damage_type, damage_calc] },
     { children: [effect, effect_duration] },
     { children: [effect_damage, effect_damage_type, effect_damage_calc] },
-    { children: [consumes, requires] },
-    help,
+    { children: [args, requires] },
+    { children: [consumes, help] },
+    // { children: [consumes, requires] },
+    // { children: [args, help] }
   ];
 });
 </script>
