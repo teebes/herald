@@ -118,24 +118,24 @@ import { capfirst } from "@/core/utils.ts";
 
 const store = useStore();
 
-const player = computed(() => store.state.game.player);
+const player = store.state.game.player;
 
-const exp_perc_left = computed(() => {
-  return Math.round(
-    (player.value.experience_progress /
-      (player.value.experience_progress + player.value.experience_needed)) *
-    100
-  );
-});
+const exp_perc_left = Math.round(
+  (player.experience_progress /
+    (player.experience_progress + player.experience_needed)) *
+  100
+);
 
-const core_faction_name = computed(() => {
+const core_faction_name = (() => {
   const world_factions = store.state.game.world.factions;
-  if (world_factions[player.value.factions.core]) {
-    return world_factions[player.value.factions.core].name;
+  if (world_factions[player.factions.core]) {
+    return world_factions[player.factions.core].name;
   }
-  if (!player.value.factions.core) return "";
-  return capfirst(player.value.factions.core);
-});
+  if (!player.factions.core) return "";
+  return capfirst(player.factions.core);
+})();
+
+
 </script>
 
 <style lang="scss" scoped>
