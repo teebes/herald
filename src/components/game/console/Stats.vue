@@ -112,7 +112,6 @@
 </template>
 
 <script lang='ts' setup>
-import { computed } from "vue";
 import { useStore } from "vuex";
 import { capfirst } from "@/core/utils.ts";
 
