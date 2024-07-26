@@ -4,7 +4,7 @@
     <div v-if="message.type === 'system.connect.success' && motd_lines.length" class="motd-wrapper mb-4">
       <div class="motd">
         <div class="motd-header mb-4">Message of the Day</div>
-        <div v-for="(line, index) in motd_lines" :key="index">{{ line || "&nbsp;" }}</div>
+        <div v-for="(line, index) in motd_lines" :key="index" v-html="line" class="motd-line"></div>
       </div>
     </div>
 
@@ -100,6 +100,7 @@ import { useStore } from "vuex";
 import { DIRECTIONS } from "@/constants";
 import { stackedInventory, getTargetInGroup } from "@/core/utils";
 import LookRoomChar from "@/components/game/console/LookRoomChar.vue";
+import { parseLinks } from "@/core/utils";
 
 const store = useStore();
 
@@ -224,9 +225,21 @@ const showDescription = computed(() => {
 });
 
 const motd_lines = computed(() => {
+  let lines = [];
+
   if (!store.state.game.motd) return [];
-  return store.state.game.motd.split('\n') || [];
+
+  if (store.state.game.motd) {
+    lines = store.state.game.motd.split("\n").map(l => parseLinks(l));
+  }
+
+  return lines || "&nbsp;"
+
+  return store.state.game.motd.split("\n").map(l => parseLinks(l));
+  // return store.state.game.motd.split('\n') || [];
 });
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -267,5 +280,18 @@ const motd_lines = computed(() => {
     color: $color-primary;
     font-weight: bold;
   }
+
+  .motd-line ::v-deep {
+  a {
+    color: $color-text-70;
+
+    &:hover {
+      color: $color-text;
+      text-decoration: none;
+      border-bottom-color: #aaa;
+      cursor: pointer;
+    }
+  }
+}
 }
 </style>

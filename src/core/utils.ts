@@ -81,3 +81,11 @@ export const getTargetInGroup = (entity, group, actor?) => {
   }
   return target;
 };
+
+
+export const parseLinks = (line) => {
+  return line.replace(
+      /((http|https):\/\/[\w?=&.\/-;#~%-]+(?![\w\s?&.\/;#~%"=-]*>))/g,
+      "<a href='$1' class='interactive' target='_blank'>$1</a>"
+  );
+};

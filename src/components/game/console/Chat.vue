@@ -12,6 +12,7 @@
 <script lang='ts' setup>
 import { computed } from 'vue';
 import { useStore } from 'vuex';
+import { parseLinks } from "@/core/utils";
 
 const store = useStore();
 
@@ -22,13 +23,6 @@ const props = defineProps<{
 const lines = computed(() => {
   return props.message.text.split("\n").map(l => parseLinks(l));
 });
-
-const parseLinks = (line) => {
-  return line.replace(
-      /((http|https):\/\/[\w?=&.\/-;#~%-]+(?![\w\s?&.\/;#~%"=-]*>))/g,
-      "<a href='$1' class='interactive' target='_blank'>$1</a>"
-  );
-};
 </script>
 
 <style lang='scss' scoped>
