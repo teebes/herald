@@ -19,7 +19,7 @@ defineProps<{
 }>();
 
 const closeModal = () => {
-  store.commit("ui/modal_clear");
+  store.commit("ui/modal/close");
 };
 </script>
 
