@@ -1,5 +1,17 @@
 <template>
+  <div v-if="store.state.builder.world.instance_of.id">
+    <h2 class="mb-4">ITEM TEMPLATES</h2>
+    <p>The item templates of an instance are inherited from the parent world:</p>
+    <p>
+      <router-link
+        :to="{name: 'builder_item_template_list', params: {world_id: store.state.builder.world.instance_of.id}}">
+        {{ store.state.builder.world.instance_of.name }} Item Templates
+      </router-link>
+    </p>
+  </div>
+
   <ElementList
+    v-else
     title="Item Templates"
     :schema="list_schema"
     :filters="list_filters"
@@ -10,11 +22,14 @@
 </template>
 
 <script lang="ts" setup>
+import { watch } from "vue";
 import { useStore } from "vuex";
+import { useRoute, onBeforeRouteUpdate } from "vue-router";
 import ElementList from "@/components/elementlist/ElementList.vue";
 import { BUILDER_FORMS } from "@/core/forms.ts";
 
 const store = useStore();
+const route = useRoute();
 
 const endpoint = `/builder/worlds/${store.state.builder.world.id}/itemtemplates/`;
 
@@ -78,4 +93,24 @@ const onClickAdd = () => {
   };
   store.commit("ui/modal/open_form", modal);
 };
+
+watch(() => route.params.world_id, (newWorldId) => {
+  console.log('id change');
+  if (newWorldId) {
+    console.log(newWorldId);
+  }
+});
+
+onBeforeRouteUpdate((to, from, next) => {
+  if (to.params.world_id !== from.params.world_id) {
+    store.dispatch(
+      'builder/fetch_world',
+      route.params.world_id);
+  //   worldId.value = to.params.world_id;
+  //   console.log('World ID changed to:', worldId.value);
+  //   // Call any method to handle the ID change, e.g., fetch data
+  //   fetchWorldDetails(worldId.value);
+  }
+  next();
+});
 </script>

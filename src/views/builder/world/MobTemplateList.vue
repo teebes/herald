@@ -1,5 +1,16 @@
 <template>
+  <div v-if="store.state.builder.world.instance_of.id">
+    <h2 class="mb-4">MOB TEMPLATES</h2>
+    <p>The mob templates of an instance are inherited from the parent world:</p>
+    <p>
+      <router-link :to="{name: 'builder_mob_template_list', params: {world_id: store.state.builder.world.instance_of.id}}">
+        {{ store.state.builder.world.instance_of.name }} Mob Templates
+      </router-link>
+    </p>
+  </div>
+
   <ElementList
+    v-else
     title="Mob Templates"
     :schema="list_schema"
     :filters="list_filters"
