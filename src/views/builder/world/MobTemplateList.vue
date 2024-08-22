@@ -23,7 +23,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed } from "vue";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+import { useRoute, onBeforeRouteUpdate } from "vue-router";
 import ElementList from "@/components/elementlist/ElementList.vue";
 import { GET_MOB_TEMPLATE_INFO } from "@/core/forms.ts";
 import axios from "axios";
@@ -159,4 +159,13 @@ const onClickAdd = () => {
     action: "builder/worlds/mob_template_create"
   });
 };
+
+onBeforeRouteUpdate((to, from, next) => {
+  if (to.params.world_id !== from.params.world_id) {
+    store.dispatch(
+      'builder/fetch_world',
+      to.params.world_id);
+  }
+  next();
+});
 </script>

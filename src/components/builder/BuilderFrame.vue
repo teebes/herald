@@ -111,8 +111,8 @@
           </router-link>
 
           <router-link
-            :to="{name: 'builder_room_flags', params: { world_id: $route.params.world_id, room_id: route.params.room_id}}"
-          >Flags</router-link>
+            :to="{name: 'builder_room_config', params: { world_id: $route.params.world_id, room_id: route.params.room_id}}"
+          >Config</router-link>
 
           <router-link
             :to="{name: 'builder_room_details_list', params: { world_id: $route.params.world_id, room_id: route.params.room_id}}"
@@ -126,10 +126,7 @@
       </div>
 
       <div class="builder-contents">
-        <!-- <keep-alive v-if="$store.state.builder.map"> -->
-        <!-- <keep-alive> -->
         <router-view :key="route.fullPath" v-if="map"></router-view>
-        <!-- </keep-alive> -->
         <div v-else>Loading...</div>
       </div>
     </div>
@@ -165,7 +162,7 @@ const world_factions_link = computed(() => {
   };
 });
 
-onMounted(async () => {
+const fetchWorldInfo = async () => {
   store.dispatch(
     'builder/fetch_world_map',
     route.params.world_id)
@@ -182,7 +179,10 @@ onMounted(async () => {
   }
 
   return world;
+};
 
+onMounted(async () => {
+  return await fetchWorldInfo();
 });
 
 onUnmounted(async () => {

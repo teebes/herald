@@ -1,5 +1,16 @@
 <template>
-  <div class="w-full">
+  <div v-if="store.state.builder.world.instance_of.id">
+    <h2 class="mb-4">WORLD FACTIONS</h2>
+    <p>The factions of an instance are inherited from the parent world:</p>
+    <p>
+      <router-link
+        :to="{name: 'builder_world_faction_list', params: {world_id: store.state.builder.world.instance_of.id}}">
+        {{ store.state.builder.world.instance_of.name }} Item Templates
+      </router-link>
+    </p>
+  </div>
+
+  <div class="w-full" v-else>
     <EditableCollection
       title="World Faction"
       name="factions"
@@ -16,12 +27,14 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from "vue-router";
+import { useStore } from "vuex";
+import { useRoute, onBeforeRouteUpdate } from "vue-router";
 import FactionDetails from "@/components/builder/world/FactionDetails.vue";
 import EditableCollection from "@/components/editablecollection/EditableCollection.vue";
 import { FormElement, DESCRIPTION } from "@/core/forms.ts";
 
 const route = useRoute();
+const store = useStore();
 
 
 const endpoint = `/builder/worlds/${route.params.world_id}/factions/`;
@@ -64,4 +77,13 @@ const schema: FormElement[] = [
     help: `Only applicable for core factions. Whether the faction can be selected at character creation screen. Will only be applicable if "Can Select Core Faction" is checked in the world's advanced configuration.`,
   },
 ];
+
+onBeforeRouteUpdate((to, from, next) => {
+  if (to.params.world_id !== from.params.world_id) {
+    store.dispatch(
+      'builder/fetch_world',
+      to.params.world_id);
+  }
+  next();
+});
 </script>

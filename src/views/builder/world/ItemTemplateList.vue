@@ -22,14 +22,12 @@
 </template>
 
 <script lang="ts" setup>
-import { watch } from "vue";
 import { useStore } from "vuex";
-import { useRoute, onBeforeRouteUpdate } from "vue-router";
+import { onBeforeRouteUpdate } from "vue-router";
 import ElementList from "@/components/elementlist/ElementList.vue";
 import { BUILDER_FORMS } from "@/core/forms.ts";
 
 const store = useStore();
-const route = useRoute();
 
 const endpoint = `/builder/worlds/${store.state.builder.world.id}/itemtemplates/`;
 
@@ -94,22 +92,11 @@ const onClickAdd = () => {
   store.commit("ui/modal/open_form", modal);
 };
 
-watch(() => route.params.world_id, (newWorldId) => {
-  console.log('id change');
-  if (newWorldId) {
-    console.log(newWorldId);
-  }
-});
-
 onBeforeRouteUpdate((to, from, next) => {
   if (to.params.world_id !== from.params.world_id) {
     store.dispatch(
       'builder/fetch_world',
-      route.params.world_id);
-  //   worldId.value = to.params.world_id;
-  //   console.log('World ID changed to:', worldId.value);
-  //   // Call any method to handle the ID change, e.g., fetch data
-  //   fetchWorldDetails(worldId.value);
+      to.params.world_id);
   }
   next();
 });
