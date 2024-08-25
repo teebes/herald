@@ -12,6 +12,7 @@
     :endpoint="endpoint"
     :display_component="display_component"
     :schema="schema"
+    :page_size="50"
   />
 
   </div>
@@ -32,7 +33,7 @@ const store = useStore();
 const route = useRoute();
 
 const world = computed(() => store.state.builder.world);
-const endpoint = `/builder/worlds/${route.params.world_id}/factschedules/?page_size=50`;
+const endpoint = `/builder/worlds/${route.params.world_id}/factschedules/`;
 const display_component = FactSchedule;
 const schema = computed(() => {
   const name: FormElement = {
