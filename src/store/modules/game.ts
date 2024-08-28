@@ -213,6 +213,10 @@ const receiveMessage = async ({
     commit('transfer_to_set', message_data.data);
   }
 
+  if (message_data.type === 'affect.enter') {
+    dispatch('cmd', 'enter ' + message_data.data.leader);
+  }
+
   // Successful move updates
   if (
     message_data.type === "cmd.move.success" ||
