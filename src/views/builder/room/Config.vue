@@ -24,7 +24,7 @@
         @update="onUpdateTransferTo"/>
     </div>
 
-    <div v-if="transfer_to" class="mb-4">
+    <div v-if="transfer_to && transfer_to_world" class="mb-4">
       Links to:
       <a :href="instanceRoomLink(transfer_to_world.id, transfer_to.id)">
         {{ transfer_to.name }}

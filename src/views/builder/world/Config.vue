@@ -182,6 +182,10 @@
     <div class="divider"></div>
       <h3 class='mb-8'>INSTANCES</h3>
 
+      <p>An instance is a unique, isolated version of a game area or dungeon that a player or group can enter, allowing for a private experience separate from other players in the world.</p>
+
+      <p>Note: Instances are currently in Alpha, proceed with caution.</p>
+
       <div class='my-8'>
         <button class="btn-small" @click="createInstance">CREATE INSTANCE</button>
       </div>
