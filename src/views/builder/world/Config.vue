@@ -287,11 +287,16 @@ const editAdvancedConfig = () => {
           value: "lose_gold",
           label: "Lose Gold",
         },
+        {
+          value: "destroy_eq",
+          label: "Destroy Equipped Items",
+        },
       ],
       help: `Determines what happens to the player's equipment on death.<br/><br/>
              Lose None: player retains all of their equipment<br/>
              Lose All: all of the player's equipment goes to their corpse<br/>
-             Lose Gold: player pays 20% of their equipment's value on death`,
+             Lose Gold: player pays 20% of their equipment's value on death<br/>
+             Destroy Equipped Items: all equipped items are destroyed on death. Not for the faint of heart.`,
     };
     const built_by: FormElement = {
       attr: "built_by",
