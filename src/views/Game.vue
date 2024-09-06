@@ -1,5 +1,18 @@
 <template>
   <div id="full-screen-message" v-if="full_screen_message">{{ full_screen_message }}</div>
+  <div id="transition-screen"
+       v-else-if="transfer_to.world_name">
+       <div class="instance-world"
+            :style="{ backgroundImage: 'url(' + transfer_to.banner_url + ')' }"
+            @click="canceltransition">
+            <div class="instance-world-overlay">
+              <div class='instance-world-title'>
+                {{ transfer_to.world_name.toUpperCase() }}
+              </div>
+              <div>Loading...</div>
+            </div>
+        </div>
+  </div>
   <div id="game" v-else-if="loaded" class="flex flex-grow">
     <component
       :is="gameComponent"
@@ -22,12 +35,20 @@ import _ from "lodash";
 const store = useStore();
 const router = useRouter();
 
+// Temporary
+const canceltransition = () => {
+  console.log('cancel transition');
+  store.commit("game/transfer_to_set", {});
+}
+
 const loaded = ref(false);
 const width = ref(window.innerWidth);
 
 const messages = computed(() => store.state.game.messages);
 const isConnected = computed(() => store.state.game.is_connected);
 const full_screen_message = computed(() => store.state.game.full_screen_message);
+const transfer_to = computed(() => store.state.game.transfer_to);
+console.log('transfer_to is ', transfer_to.value);
 const accessibility_mode = computed(() => store.state.auth.user.accessibility_mode);
 const gameComponent = computed(() => accessibility_mode.value ? AccessibleGame : AugmentedGame);
 
@@ -58,6 +79,7 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 @import "@/styles/colors.scss";
+@import "@/styles/fonts.scss";
 
 #full-screen-message {
   display: flex;
@@ -79,6 +101,50 @@ onBeforeUnmount(() => {
     right: 0;
     bottom: 0;
     min-height: 0;
+  }
+}
+
+#transition-screen {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  position: relative;
+
+  .instance-world{
+    position: absolute;
+    display: flex;
+    flex-grow: 1;
+    max-width: 1150px;
+    width: 100%;
+    height: 299px;
+    background-size: 1150px 299px;
+
+    .instance-world-overlay {
+      position: absolute;
+      background: linear-gradient(
+        to bottom,
+        $color-transparent-rgba,
+        $color-background-rgba 100%);
+      width: 100%;
+      height: 299px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
+      color: $color-text-70;
+
+      .instance-world-title {
+        color: $color-text;
+        @include font-title-regular;
+        font-size: 30px;
+        letter-spacing: 1.3px;
+      }
+
+    }
   }
 }
 </style>

@@ -31,6 +31,7 @@ const routes = [
   { path: '/terms', name: 'terms', component: () => import('@/views/Terms.vue') },
   { path: '/privacy', name: 'privacy', component: () => import('@/views/Privacy.vue') },
   { path: '/conduct', name: 'conduct', component: () => import('@/views/Conduct.vue') },
+  { path: '/styleguide', name: 'styleguide', component: () => import('@/views/StyleGuide.vue') },
 
 
   // Auth
@@ -100,6 +101,7 @@ const routes = [
       { path: 'rooms/:room_id/actions', name: 'builder_room_action_list', component: () => import('@/views/builder/room/RoomActionList.vue') },
       { path: 'rooms/:room_id/loads', name: 'builder_room_load_list', component: () => import('@/views/builder/room/Loads.vue') },
       { path: 'rooms/:room_id/flags', name: 'builder_room_flags', component: () => import('@/views/builder/room/RoomFlags.vue') },
+      { path: 'rooms/:room_id/config', name: 'builder_room_config', component: () => import('@/views/builder/room/Config.vue') },
       { path: 'rooms/:room_id/details', name: 'builder_room_details_list', component: () => import('@/views/builder/room/RoomDetailsList.vue') },
     ]
   },

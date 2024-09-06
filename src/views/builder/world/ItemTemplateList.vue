@@ -1,5 +1,17 @@
 <template>
+  <div v-if="store.state.builder.world.instance_of.id">
+    <h2 class="mb-4">ITEM TEMPLATES</h2>
+    <p>The item templates of an instance are inherited from the parent world:</p>
+    <p>
+      <router-link
+        :to="{name: 'builder_item_template_list', params: {world_id: store.state.builder.world.instance_of.id}}">
+        {{ store.state.builder.world.instance_of.name }} Item Templates
+      </router-link>
+    </p>
+  </div>
+
   <ElementList
+    v-else
     title="Item Templates"
     :schema="list_schema"
     :filters="list_filters"
@@ -11,6 +23,7 @@
 
 <script lang="ts" setup>
 import { useStore } from "vuex";
+import { onBeforeRouteUpdate } from "vue-router";
 import ElementList from "@/components/elementlist/ElementList.vue";
 import { BUILDER_FORMS } from "@/core/forms.ts";
 
@@ -78,4 +91,13 @@ const onClickAdd = () => {
   };
   store.commit("ui/modal/open_form", modal);
 };
+
+onBeforeRouteUpdate((to, from, next) => {
+  if (to.params.world_id !== from.params.world_id) {
+    store.dispatch(
+      'builder/fetch_world',
+      to.params.world_id);
+  }
+  next();
+});
 </script>

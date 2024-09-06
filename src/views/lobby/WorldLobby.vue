@@ -1,5 +1,5 @@
 <template>
-  <div id="world_lobby" v-if="world && loaded">
+  <div id="world_lobby" v-if="world && loaded" :key="String(world.id)">
     <div class="world-details">
       <div class="world-home-bg" :style="backgroundImage">
         <div class="world-home-bg-overlay"></div>
@@ -23,6 +23,12 @@
                 <router-link
                   :to="{ name: 'builder_world_index', params: { world_id: route.params.world_id } }">EDIT</router-link>
               </template>
+            </div>
+            <div class='instance-of' v-if="world.instance_of.name">
+              <span class='color-text-50'>INSTANCE OF&nbsp;</span>
+              <router-link :to="{ name: 'lobby_world_details', params: { world_id: world.instance_of.id } }">
+                {{ world.instance_of.name.toUpperCase() }}
+              </router-link>
             </div>
 
             <div class="world-description mt-4">
@@ -65,7 +71,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref }  from "vue";
+import { computed, onMounted, ref, watch }  from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import UserChars from "@/components/lobby/UserChars.vue";
@@ -131,6 +137,14 @@ const world_descriptors = computed(() => {
     ? "MULTIPLAYER"
     : "SINGLEPLAYER";
   return `${descriptor} ${world_type} WORLD`;
+});
+
+watch(() => route.params.world_id, (newWorldId) => {
+  if (newWorldId) {
+    store.dispatch(
+    "lobby/initial_fetch",
+    route.params.world_id);
+  }
 });
 </script>
 
@@ -257,6 +271,18 @@ const world_descriptors = computed(() => {
             margin-left: 12px;
             padding-left: 12px;
           }
+        }
+        .instance-of {
+          border-top: 1px solid $color-background-border;
+          margin-top: 5px;
+          padding-top: 5px;
+          width: 350px;
+
+          @include font-title-regular;
+          font-size: 13px;
+          letter-spacing: 0.83px;
+          word-spacing: 0.5em;
+          line-height: 16px;
         }
 
         .world-description {

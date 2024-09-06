@@ -90,6 +90,7 @@ const set_initial_state = () => {
 
     hint: null,
     full_screen_message: null,
+    transfer_to: {},
     // Key of the last character that's died
     last_death: null,
 
@@ -199,6 +200,21 @@ const receiveMessage = async ({
     commit("closeWs");
     commit("reset_state");
     return;
+  }
+
+  // Instance Transition
+  if (message_data.type === "cmd.enter.success" || message_data.type === "cmd.leave.success") {
+    if (!message_data.data.banner_url) {
+      message_data.data.banner_url = "https://assets.writtenrealms.com/ui/lobby/world-home-bg.jpg";
+    }
+    // Preload image
+    const img = new Image();
+    img.src = message_data.data.banner_url;
+    commit('transfer_to_set', message_data.data);
+  }
+
+  if (message_data.type === 'affect.enter') {
+    dispatch('cmd', 'enter ' + message_data.data.leader);
   }
 
   // Successful move updates
@@ -441,21 +457,21 @@ const receiveMessage = async ({
     }
   }
 
-  // Enter Instance
-  if (message_data.type === 'cmd.enter.success') {
-    commit("full_screen_message_set", "Entering Instance...")
-    dispatch("world_enter", {
-      player_id: state.player.id,
-    })
-  }
+  // // Enter Instance
+  // if (message_data.type === 'cmd.enter.success') {
+  //   commit("full_screen_message_set", "Entering Instance...")
+  //   dispatch("world_enter", {
+  //     player_id: state.player.id,
+  //   })
+  // }
 
-  // Exit Instance
-  if (message_data.type === 'cmd.leave.success') {
-    commit("full_screen_message_set", "Exiting Instance...")
-    dispatch("world_enter", {
-      player_id: state.player.id,
-    })
-  }
+  // // Exit Instance
+  // if (message_data.type === 'cmd.leave.success') {
+  //   commit("full_screen_message_set", "Exiting Instance...")
+  //   dispatch("world_enter", {
+  //     player_id: state.player.id,
+  //   })
+  // }
 
   // Who list update
   if (message_data.type === "notification.who") {
@@ -484,6 +500,17 @@ const receiveMessage = async ({
   } else if (message_data.type === "affect.flee.success") {
     commit("player_target_set", null);
   }
+
+  if (message_data.type === 'affect.delete') {
+    if (state.transfer_to.transfer_to_world_id) {
+      setTimeout(() => {
+        dispatch("request_enter_world", {
+          player_id: state.player.id,
+          world_id: state.transfer_to.transfer_to_world_id,
+        });
+      }, 2000);
+    }
+  };
 };
 
 const actions = {
@@ -551,9 +578,14 @@ const actions = {
   },
 
   world_exited: async ({ commit, dispatch, state, rootState }, data) => {
+    console.log("world_exited, state: ", state);
     if (rootState.auth.user.is_temporary) {
       dispatch("auth/logout", null, { root: true });
       router.push({ name: 'home'})
+    } else if (state.transfer_to.transfer_to_world_id) {
+      // Exiting the main world to go into an instance, don't actually go back to the lobby
+      console.log('requesting entrance to ', state.transfer_to.transfer_to_world_id);
+      return;
     } else {
       const world_id = data.exit_to || (state.world && state.world.context_id);
       if (world_id &&
@@ -1034,6 +1066,10 @@ const mutations = {
 
   full_screen_message_clear: (state) => {
     state.full_screen_message = "";
+  },
+
+  transfer_to_set: (state, data) => {
+    state.transfer_to = data;
   },
 
   reset_state: (state) => {

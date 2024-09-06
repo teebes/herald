@@ -178,6 +178,22 @@
         <router-link :to="world_starting_eq_link">manage</router-link>
       </div>
     </div>
+
+    <div class="divider"></div>
+      <h3 class='mb-8'>INSTANCES</h3>
+
+      <p>An instance is a unique, isolated version of a game area or dungeon that a player or group can enter, allowing for a private experience separate from other players in the world.</p>
+
+      <p>Note: Instances are currently in Alpha, proceed with caution.</p>
+
+      <div class='my-8'>
+        <button class="btn-small" @click="createInstance">CREATE INSTANCE</button>
+      </div>
+
+      <div v-for="instance in store.state.builder.worlds.instances" :key="instance.id" :instance="instance" class="mb-8">
+        <a :href="instanceLink(instance.id)">{{ instance.name }}</a>
+      </div>
+
   </div>
 </template>
 
@@ -192,10 +208,6 @@ import ReviewInstructions from "@/components/builder/world/ReviewInstructions.vu
 
 const store = useStore();
 const router = useRouter();
-
-// import { UI_MUTATIONS } from "@/constants";
-// import WorldView from "@/components/builder/world/WorldView.ts";
-// import { Component, Prop, Vue, Watch, Mixins } from "vue-property-decorator";
 
 const world = computed(() => store.state.builder.world);
 const config = computed(() => store.state.builder.worlds.config);
@@ -212,9 +224,19 @@ const room_link = (id: number) => {
 
 onMounted(async () => {
   store.commit("builder/worlds/config_clear");
-  await store.dispatch("builder/worlds/config_fetch", {
+
+  // Convert each call into a promise and then call both at once
+
+  const config_promise = store.dispatch("builder/worlds/config_fetch", {
     world_id: world.value.id,
   });
+
+  const instances_promise = store.dispatch("builder/worlds/instances_fetch", {
+    world_id: world.value.id,
+  });
+
+  await Promise.all([config_promise, instances_promise]);
+
 });
 
 const editGeneral = () => {
@@ -436,6 +458,26 @@ const editAdvancedConfig = () => {
     store.commit('ui/modal/open_form', modal);
 };
 
+const createInstance = () => {
+  const modal = {
+    title: 'Create Instance',
+    data: {
+      'name': 'Unnamed Instance',
+      'instance_of': world.value.id,
+    },
+    submitLabel: 'CREATE INSTANCE',
+    schema: [
+      {
+        attr: 'name',
+        label: 'Name',
+        help: `The name of the instance.`
+      },
+    ],
+    action: 'builder/worlds/instance_create',
+  }
+  store.commit('ui/modal/open_form', modal);
+};
+
 const submitForReview = () => {
   const modal = {
     title: 'Submit For Review',
@@ -509,7 +551,6 @@ const review_status = computed(() => {
   return capfirst(world.value.review.status);
 });
 
-
 const review_help = computed(() => {
   if (world.value.review.status === 'unsubmitted') {
     return `A world that's been approved for publication will be featured in curated sections of the site. To initiate a review, click the SUBMIT FOR REVIEW action.`;
@@ -520,6 +561,13 @@ const review_help = computed(() => {
   }
   return '';
 });
+
+const instanceLink = (instance_id) => {
+  return router.resolve({
+    name: 'builder_world_index',
+    params: { world_id: instance_id }
+  }).href;
+};
 </script>
 
 <style lang="scss" scoped>

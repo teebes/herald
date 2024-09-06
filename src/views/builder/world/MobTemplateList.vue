@@ -1,5 +1,16 @@
 <template>
+  <div v-if="store.state.builder.world.instance_of.id">
+    <h2 class="mb-4">MOB TEMPLATES</h2>
+    <p>The mob templates of an instance are inherited from the parent world:</p>
+    <p>
+      <router-link :to="{name: 'builder_mob_template_list', params: {world_id: store.state.builder.world.instance_of.id}}">
+        {{ store.state.builder.world.instance_of.name }} Mob Templates
+      </router-link>
+    </p>
+  </div>
+
   <ElementList
+    v-else
     title="Mob Templates"
     :schema="list_schema"
     :filters="list_filters"
@@ -12,7 +23,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed } from "vue";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+import { useRoute, onBeforeRouteUpdate } from "vue-router";
 import ElementList from "@/components/elementlist/ElementList.vue";
 import { GET_MOB_TEMPLATE_INFO } from "@/core/forms.ts";
 import axios from "axios";
@@ -148,4 +159,13 @@ const onClickAdd = () => {
     action: "builder/worlds/mob_template_create"
   });
 };
+
+onBeforeRouteUpdate((to, from, next) => {
+  if (to.params.world_id !== from.params.world_id) {
+    store.dispatch(
+      'builder/fetch_world',
+      to.params.world_id);
+  }
+  next();
+});
 </script>

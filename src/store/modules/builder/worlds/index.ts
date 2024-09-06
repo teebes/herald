@@ -23,7 +23,9 @@ const initial_state = () => {
 
     item_template: null,
     item_template_quests: [],
-    item_template_loads: []
+    item_template_loads: [],
+
+    instances: [],
   };
 };
 
@@ -127,6 +129,23 @@ export default {
       commit("builder/faction_delete", resp.data, { root: true });
     },
 
+    instances_fetch: async ({ commit }, { world_id }) => {
+      const resp = await axios.get(`/builder/worlds/${world_id}/instances/`);
+      commit("instances_set", resp.data.results);
+      return resp.data['results'];
+    },
+
+    instance_create: async ({ commit, rootState }, payload) => {
+      payload.instance_of = rootState.builder.world.id;
+      const resp = await axios.post(`/builder/worlds/`, payload);
+
+      if (resp.status === 201) {
+        commit("ui/notification_set", "Instance created.", { root: true });
+        commit("instance_add", resp.data)
+      }
+      return resp.data;
+    },
+
     ...mob_template_actions,
     ...item_template_actions
   },
@@ -148,6 +167,14 @@ export default {
 
     config_clear: state => {
       state.config = null;
+    },
+
+    instances_set: (state, instances) => {
+      state.instances = instances;
+    },
+
+    instance_add: (state, instance) => {
+      state.instances.unshift(instance);
     },
 
     ...mob_template_mutations,

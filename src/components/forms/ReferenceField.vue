@@ -47,6 +47,7 @@ const props = defineProps<{
   schema: any;
   value?: any;
   modelValue?: any;
+  endpoint?: string;
 }>();
 const emit = defineEmits(['update']);
 
@@ -89,6 +90,11 @@ const readOnlyValue = computed(() => {
 const model_type = computed(() => props.schema.references);
 
 const onBlur = () => {
+  if (search_results.value.length === 1 &&
+      !validated_id.value) {
+      selectSearchResult(search_results.value[0]);
+  }
+
   setTimeout(() => {
     store.commit("ui/editing_field_clear");
     if (search_results.value.length) {
@@ -100,8 +106,18 @@ const onBlur = () => {
 
 let timeout: ReturnType<typeof setTimeout> | null = null;
 const onUserReferenceChange = (event) => {
+
   store.commit("ui/editing_field_set");
   user_input.value = event.target.value;
+
+  if (!user_input.value) {
+    validated_id.value = null;
+    validated_data.value = null;
+    search_results.value = [];
+    emit('update', null);
+    return;
+  }
+
   if (timeout) {
     clearTimeout(timeout);
   }
@@ -109,7 +125,7 @@ const onUserReferenceChange = (event) => {
     validated_id.value = null;
     validated_data.value = null;
     lookupReference();
-  }, 250);
+  }, 200);
 };
 
 const lookupReference = async () => {
@@ -137,6 +153,8 @@ const selectSearchResult = (result) => {
 };
 
 const determineEndpoint = () => {
+  if (props.endpoint) return props.endpoint;
+
   const world_id = store.state.builder.world.id;
   if (model_type.value === "item_template" || model_type.value === "itemtemplate") {
     return `builder/worlds/${world_id}/itemtemplates/`;
