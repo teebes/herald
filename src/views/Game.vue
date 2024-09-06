@@ -3,8 +3,7 @@
   <div id="transition-screen"
        v-else-if="transfer_to.world_name">
        <div class="instance-world"
-            :style="{ backgroundImage: 'url(' + transfer_to.banner_url + ')' }"
-            @click="canceltransition">
+            :style="{ backgroundImage: 'url(' + transfer_to.banner_url + ')' }">
             <div class="instance-world-overlay">
               <div class='instance-world-title'>
                 {{ transfer_to.world_name.toUpperCase() }}
@@ -35,12 +34,6 @@ import _ from "lodash";
 const store = useStore();
 const router = useRouter();
 
-// Temporary
-const canceltransition = () => {
-  console.log('cancel transition');
-  store.commit("game/transfer_to_set", {});
-}
-
 const loaded = ref(false);
 const width = ref(window.innerWidth);
 
@@ -48,7 +41,6 @@ const messages = computed(() => store.state.game.messages);
 const isConnected = computed(() => store.state.game.is_connected);
 const full_screen_message = computed(() => store.state.game.full_screen_message);
 const transfer_to = computed(() => store.state.game.transfer_to);
-console.log('transfer_to is ', transfer_to.value);
 const accessibility_mode = computed(() => store.state.auth.user.accessibility_mode);
 const gameComponent = computed(() => accessibility_mode.value ? AccessibleGame : AugmentedGame);
 
