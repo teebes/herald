@@ -222,9 +222,12 @@ const actions = {
       const zone = resp.data;
       commit("zone_set", zone);
       return zone;
-    } catch (error) {
+    } catch (error: any) {
       if (!axios.isCancel(error)) {
         console.error('Error fetching zone:', error);
+        if (error.response && error.response.status === 403) {
+          commit("zone_clear");
+        }
       }
     }
   },
@@ -339,9 +342,12 @@ const actions = {
       delete room_data["map"];
       commit("room_set", room_data);
       return room_data;
-    } catch (error) {
+    } catch (error: any) {
       if (!axios.isCancel(error)) {
         console.log("Error fetching room", error);
+        if (error.response && error.response.status === 403) {
+          commit("room_clear");
+        }
       }
     }
   },

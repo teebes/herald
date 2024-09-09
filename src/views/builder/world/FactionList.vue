@@ -1,28 +1,35 @@
 <template>
-  <div v-if="store.state.builder.world.instance_of.id">
-    <h2 class="mb-4">WORLD FACTIONS</h2>
-    <p>The factions of an instance are inherited from the parent world:</p>
-    <p>
-      <router-link
-        :to="{name: 'builder_world_faction_list', params: {world_id: store.state.builder.world.instance_of.id}}">
-        {{ store.state.builder.world.instance_of.name }} Item Templates
-      </router-link>
-    </p>
-  </div>
+  <div v-if="store.state.builder.world.builder_info_builder_rank > 2">
+    <div v-if="store.state.builder.world.instance_of.id">
+      <h2 class="mb-4">WORLD FACTIONS</h2>
+      <p>The factions of an instance are inherited from the parent world:</p>
+      <p>
+        <router-link
+          :to="{name: 'builder_world_faction_list', params: {world_id: store.state.builder.world.instance_of.id}}">
+          {{ store.state.builder.world.instance_of.name }} Item Templates
+        </router-link>
+      </p>
+    </div>
 
-  <div class="w-full" v-else>
-    <EditableCollection
-      title="World Faction"
-      name="factions"
-      :endpoint="endpoint"
-      :display_component="display_component"
-      :schema="schema"
-      action_add="builder/worlds/faction_add"
-      action_edit="builder/worlds/faction_edit"
-      action_delete="builder/worlds/faction_delete"
-      registration_name="factions"
-      :page_size="50"
-    />
+    <div class="w-full" v-else>
+      <EditableCollection
+        title="World Faction"
+        name="factions"
+        :endpoint="endpoint"
+        :display_component="display_component"
+        :schema="schema"
+        action_add="builder/worlds/faction_add"
+        action_edit="builder/worlds/faction_edit"
+        action_delete="builder/worlds/faction_delete"
+        registration_name="factions"
+        :page_size="50"
+      />
+    </div>
+  </div>
+  <div v-else>
+    <div>
+      You do not have permission to manage factions for this world.
+    </div>
   </div>
 </template>
 

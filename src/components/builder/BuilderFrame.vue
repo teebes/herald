@@ -56,6 +56,7 @@
 
             <router-link
               :to="{name: 'builder_world_builder_list', params: {world_id: route.params.world_id}}"
+              :class="{ 'router-link-active': isWorldBuilderRoute }"
             >Builders</router-link>
 
             <router-link
@@ -216,6 +217,13 @@ const isWorldConfigRoute = computed(() => {
   return routes.includes(route.name as string);
 });
 const isWorldAdminRoute = computed(() => { return route.name === 'builder_world_admin_instance'; });
+const isWorldBuilderRoute = computed(() => {
+  const routes = [
+    'builder_world_builder_list',
+    'builder_world_builder_assignment_list',
+  ]
+  return routes.includes(route.name as string);
+});
 // Zone
 const isZonePathRoute = computed(() => { return route.name === 'builder_zone_path_details'; });
 const isZoneLoadsRoute = computed(() => { return route.name === 'builder_zone_loader_details'; });

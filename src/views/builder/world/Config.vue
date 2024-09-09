@@ -1,5 +1,5 @@
 <template>
-  <div id="world-config" class="builder-config">
+  <div id="world-config" class="builder-config" v-if="store.state.builder.world.builder_info.builder_rank > 2">
     <h2>{{ world.name.toUpperCase() }} CONFIG</h2>
 
     <div class="general-settings mt-6">
@@ -195,12 +195,25 @@
       </div>
 
   </div>
+  <div v-else>
+    <p>You do not have permission to configure this world.</p>
+
+    <p v-if="store.state.builder.world.builder_info.builder_assignments.length">Entites assigned to you:</p>
+    <ul class='ml-4'>
+      <li v-for="assignment in store.state.builder.world.builder_info.builder_assignments" :key="assignment.id">
+        <router-link :to="assignment_link(assignment)">
+          {{ assignment.name }}
+        </router-link>
+      </li>
+    </ul>
+
+  </div>
 </template>
 
 <script lang='ts' setup>
 import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { capfirst } from "@/core/utils.ts";
 import Help from "@/components/Help.vue";
 import { BUILDER_FORMS, FormElement } from "@/core/forms";
@@ -208,6 +221,7 @@ import ReviewInstructions from "@/components/builder/world/ReviewInstructions.vu
 
 const store = useStore();
 const router = useRouter();
+const route = useRoute();
 
 const world = computed(() => store.state.builder.world);
 const config = computed(() => store.state.builder.worlds.config);
@@ -568,6 +582,42 @@ const instanceLink = (instance_id) => {
     params: { world_id: instance_id }
   }).href;
 };
+
+const assignment_link = (assignment) => {
+  if (assignment.model_type === 'zone') {
+    return {
+      name: 'builder_zone_index',
+      params: {
+        world_id: route.params.world_id,
+        zone_id: assignment.id
+      }
+    }
+  } else if (assignment.model_type === 'room') {
+    return {
+      name: 'builder_room_index',
+      params: {
+        world_id: route.params.world_id,
+        room_id: assignment.id
+      }
+    }
+  } else if (assignment.model_type === 'itemtemplate') {
+    return {
+      name: 'builder_item_template_details',
+      params: {
+        world_id: route.params.world_id,
+        item_template_id: assignment.id
+      }
+    }
+  } else if (assignment.model_type === 'mobtemplate') {
+    return {
+      name: 'builder_mob_template_details',
+      params: {
+        world_id: route.params.world_id,
+        mob_template_id: assignment.id
+      }
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 <template>
-  <div id="zone-config" class="builder-config">
+  <div id="zone-config" class="builder-config" v-if="store.state.builder.world.builder_info.builder_rank > 2">
     <h2>ZONE CONFIG</h2>
 
     <div class="config-panels">
@@ -22,6 +22,9 @@
       </div>
     </div>
 
+  </div>
+  <div v-else>
+    You do not have permission to configure this zone.
   </div>
 </template>
 

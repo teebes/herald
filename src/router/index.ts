@@ -75,6 +75,7 @@ const routes = [
       { path: 'transformations', name: 'builder_world_transformation_template_list', component: () => import('@/views/builder/world/TransformationTemplateList.vue') },
       { path: 'facts', name: 'builder_world_fact_list', component: () => import('@/views/builder/world/Facts.vue') },
       { path: 'builders', name: 'builder_world_builder_list', component: () => import('@/views/builder/world/BuilderList.vue') },
+      { path: 'builders/:builder_id/assignments', name: 'builder_world_builder_assignment_list', component: () => import('@/views/builder/world/BuilderAssignmentList.vue') },
       { path: 'players', name: 'builder_world_player_list', component: () => import('@/views/builder/world/PlayerList.vue') },
       { path: 'players/:player_id', name: 'builder_world_player_details', component: () => import('@/views/builder/world/PlayerDetails.vue') },
       { path: 'factions', name: 'builder_world_faction_list', component: () => import('@/views/builder/world/FactionList.vue') },

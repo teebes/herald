@@ -266,7 +266,7 @@ const target_link = computed(() => {
     };
   } else if (props.rule.target.model_type == "zone") {
     return {
-      name: 'builder_zone_path_details',
+      name: 'builder_zone_index',
       params: {
         world_id: world_id,
         zone_id: props.rule.target.id

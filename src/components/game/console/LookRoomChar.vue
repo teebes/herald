@@ -26,7 +26,7 @@
     </div>
 
     <div class="quest-indicator-wrapper" @click="handleClick" v-if="quest_indicator && isLastMessage">
-      [ <span class='quest-indicator'>{{ quest_indicator }}</span> ]
+      <span class='whitespace-nowrap'>[ <span class='quest-indicator'>{{ quest_indicator }}</span> ]</span>
     </div>
   </div>
 </template>
