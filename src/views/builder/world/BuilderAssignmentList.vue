@@ -63,7 +63,7 @@ import axios from "axios";
 import { ref, onMounted, watch } from "vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+import { useRoute, RouteLocationRaw } from "vue-router";
 import FormField from "@/components/forms/FormField.vue";
 import { Entity } from "@/core/interfaces.ts";
 
@@ -157,22 +157,14 @@ const delete_assignment = async (assignment_id) => {
 }
 
 const assignment_link = (assignment) => {
-  if (assignment.model_type === 'zone') {
-    return {
-      name: 'builder_zone_index',
-      params: {
-        world_id: route.params.world_id,
-        zone_id: assignment.id
-      }
-    }
-  } else if (assignment.model_type === 'room') {
+  if (assignment.model_type === 'room') {
     return {
       name: 'builder_room_index',
       params: {
         world_id: route.params.world_id,
         room_id: assignment.id
       }
-    }
+    } as RouteLocationRaw;
   } else if (assignment.model_type === 'itemtemplate') {
     return {
       name: 'builder_item_template_details',
@@ -180,7 +172,7 @@ const assignment_link = (assignment) => {
         world_id: route.params.world_id,
         item_template_id: assignment.id
       }
-    }
+    } as RouteLocationRaw;
   } else if (assignment.model_type === 'mobtemplate') {
     return {
       name: 'builder_mob_template_details',
@@ -188,8 +180,16 @@ const assignment_link = (assignment) => {
         world_id: route.params.world_id,
         mob_template_id: assignment.id
       }
-    }
+    } as RouteLocationRaw;
   }
+  // Assume it's a zone
+  return {
+    name: 'builder_zone_index',
+    params: {
+      world_id: route.params.world_id,
+      zone_id: assignment.id
+    }
+  } as RouteLocationRaw;
 }
 
 const assignment_type_name = (assignment) => {
