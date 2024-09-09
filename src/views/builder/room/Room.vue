@@ -2,6 +2,11 @@
   <div id="room-details" v-if="room">
     <h2 class="entity-title">{{ room.name }}</h2>
 
+    <div v-if="store.state.builder.world.builder_info.builder_rank < 3 && room.has_assignment != undefined" class="color-text-50 mb-4">
+      <span v-if="room.has_assignment">This room is assigned to you, you can edit it.</span>
+      <span v-else>This room is not assigned to you, you can view it but not edit it.</span>
+    </div>
+
     <div v-if="isMapReady" class="info-and-map">
       <div class="id-map-coords">
         <div class="id-and-coords">

@@ -1,6 +1,12 @@
 <template>
   <div id="zone-details" v-if="zone">
     <h2 class="zone-name entity-title">{{ zone.name }}</h2>
+
+    <div v-if="store.state.builder.world.builder_info.builder_rank < 3 && zone.has_assignment != undefined" class="color-text-50 mb-4">
+      <span v-if="zone.has_assignment">This zone is assigned to you, you can edit it.</span>
+      <span v-else>This zone is not assigned to you, you can view it but not edit it.</span>
+    </div>
+
     <template v-if="isReady">
       <div class="zone-map-and-data" v-if="isReady">
         <div class="map-and-edit">
@@ -24,7 +30,7 @@
               <router-link
                 :to="{name: 'builder_mob_template_details', params: {world_id: $route.params.world_id, mob_template_id: mob.id}}"
               >{{ mob.level }} - {{ mob.name }}</router-link>
-              <span class='color-text-50' v-if="mob.is_elite">[elite]</span>
+              <span class='color-text-50 ml-2' v-if="mob.is_elite">[elite]</span>
             </div>
             <div v-if="!zone_mobs">None.</div>
           </div>
@@ -160,12 +166,19 @@ onMounted(async () => {
     zone_id: zone_id,
   });
 
+  const zone_details_promise = store.dispatch('builder/zone_fetch', {
+        world_id: route.params.world_id,
+        zone_id: route.params.zone_id
+      });
+
   const [
     zone_loads_resp,
     zone_rooms_resp,
+    _,
   ] = await Promise.all([
     zone_loads_promise,
     zone_rooms_promise,
+    zone_details_promise,
   ]);
 
   zone_mobs.value = zone_loads_resp.data.mobs;

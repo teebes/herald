@@ -5,6 +5,11 @@
         <div class="template-info">
           <h2 class="entity-title">{{ item_template.name }}</h2>
 
+          <div v-if="store.state.builder.world.builder_info.builder_rank < 3 && item_template.has_assignment !== undefined" class="color-text-50 mb-4">
+            <span v-if="item_template.has_assignment">This item template is assigned to you, you can edit it.</span>
+            <span v-else>This item template is not assigned to you, you can view it but not edit it.</span>
+          </div>
+
           <div class="item-summary mb-2">
             Level {{ item_template.level }}
             <span

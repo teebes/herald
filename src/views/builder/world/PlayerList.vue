@@ -1,17 +1,26 @@
 <template>
-  <ElementList
-    title="Players"
-    :schema="list_schema"
-    :filters="list_filters"
-    :endpoint="endpoint"
-    :resolve_route="resolve_route"
-  />
+  <div v-if="store.state.builder.world.builder_info_builder_rank > 2">
+    <ElementList
+      title="Players"
+      :schema="list_schema"
+      :filters="list_filters"
+      :endpoint="endpoint"
+      :resolve_route="resolve_route"
+    />
+  </div>
+  <div v-else>
+    <div>
+      You do not have permission to manage players for this world.
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
+import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import ElementList from "@/components/elementlist/ElementList.vue";
 
+const store = useStore();
 const route = useRoute();
 
 const endpoint = `/builder/worlds/${route.params.world_id}/players/`;

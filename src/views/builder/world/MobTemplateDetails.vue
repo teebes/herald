@@ -5,6 +5,11 @@
         <div class="template-info">
           <h2 class="entity-title">{{ template.name }}</h2>
 
+          <div v-if="store.state.builder.world.builder_info.builder_rank < 3 && template.has_assignment !== undefined" class="color-text-50 mb-4">
+            <span v-if="template.has_assignment">This mob template is assigned to you, you can edit it.</span>
+            <span v-else>This mob template is not assigned to you, you can view it but not edit it.</span>
+          </div>
+
           <div class="mob-summary mb-2 text-base">
             Level {{ template.level }} {{ template.type }}
             <template v-if="template.gender == 'non_binary'">non-binary</template>

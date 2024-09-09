@@ -12,26 +12,28 @@
       </label>
     </div>
 
-    <h3 class="mt-8 mb-4">INSTANCE LINK</h3>
+    <div v-if="store.state.builder.world.builder_info.builder_rank > 2">
+      <h3 class="mt-8 mb-4">INSTANCE LINK</h3>
 
-    <p>If a room is linked to an instance, a player will be able to enter it via the 'enter' command.</p>
+      <p>If a room is linked to an instance, a player will be able to enter it via the 'enter' command.</p>
 
-    <div class="form-group transfer_to">
-      <ReferenceField
-        :schema="transfer_to_schema"
-        v-model="transfer_to"
-        :endpoint="transfer_to_endpoint"
-        @update="onUpdateTransferTo"/>
+      <div class="form-group transfer_to">
+        <ReferenceField
+          :schema="transfer_to_schema"
+          v-model="transfer_to"
+          :endpoint="transfer_to_endpoint"
+          @update="onUpdateTransferTo"/>
+      </div>
+
+      <div v-if="transfer_to && transfer_to_world" class="mb-4">
+        Links to:
+        <a :href="instanceRoomLink(transfer_to_world.id, transfer_to.id)">
+          {{ transfer_to.name }}
+        </a>
+      </div>
+
+      <button class="btn-medium" @click="onSaveInstanceLink">SAVE</button>
     </div>
-
-    <div v-if="transfer_to && transfer_to_world" class="mb-4">
-      Links to:
-      <a :href="instanceRoomLink(transfer_to_world.id, transfer_to.id)">
-        {{ transfer_to.name }}
-      </a>
-    </div>
-
-    <button class="btn-medium" @click="onSaveInstanceLink">SAVE</button>
 
   </div>
 </template>

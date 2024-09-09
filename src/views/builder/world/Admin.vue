@@ -1,80 +1,85 @@
 <template>
-  <div v-if="world_admin.id">
-    <h2>{{ root_world.name.toUpperCase() }} ADMIN</h2>
-    <div class="world-status">
+  <div v-if="store.state.builder.world.builder_info.builder_rank > 2">
+    <div v-if="world_admin.id">
+      <h2>{{ root_world.name.toUpperCase() }} ADMIN</h2>
+      <div class="world-status">
 
-      <div class="color-text-50">
-        <span v-if="world_admin.is_multiplayer">Multiplayer</span>
-        <span v-else>Single Player</span>
-        World
-      </div>
-
-      <!-- Maintenance Box -->
-      <div class="maintenance panel mt-4">
-        <div class="maintenance-status mb-2">
-          Maintenance mode:
-          <span v-if="root_world.maintenance_mode">ON</span>
-          <span v-else>OFF</span>
-          <Help help="Players cannot enter a world in maintenance (but builders can)."/>
+        <div class="color-text-50">
+          <span v-if="world_admin.is_multiplayer">Multiplayer</span>
+          <span v-else>Single Player</span>
+          World
         </div>
 
-        <div class="form-group">
-          <input type="text" placeholder="Maintenance Message" v-model="maintenance_msg">
-        </div>
+        <!-- Maintenance Box -->
+        <div class="maintenance panel mt-4">
+          <div class="maintenance-status mb-2">
+            Maintenance mode:
+            <span v-if="root_world.maintenance_mode">ON</span>
+            <span v-else>OFF</span>
+            <Help help="Players cannot enter a world in maintenance (but builders can)."/>
+          </div>
 
-        <div class="slider-container">
-          <Slider
-            :value="root_world.maintenance_mode"
-            @change="onSliderChange"/>
+          <div class="form-group">
+            <input type="text" placeholder="Maintenance Message" v-model="maintenance_msg">
+          </div>
+
+          <div class="slider-container">
+            <Slider
+              :value="root_world.maintenance_mode"
+              @change="onSliderChange"/>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Nexus tracker -->
-      <div v-if="world_admin && world_admin.nexus_data" class="color-text-50 mt-1">
-        Nexus ready:
-        <span v-if="world_admin.nexus_data.is_ready">Yes</span>
-        <span v-else>No</span>
-        <span v-if="world_admin.nexus_data.error">- {{ world_admin.nexus_data.error }}</span>
-        <span v-if="store.state.auth.user.is_staff && world_admin.nexus_data.id" class="ml-4">
-          [ <router-link :to="{name: 'staff_nexus_details', params: { nexus_id: world_admin.nexus_data.id }}">{{ world_admin.nexus_data.name }}</router-link> ]
-        </span>
-      </div>
+        <!-- Nexus tracker -->
+        <div v-if="world_admin && world_admin.nexus_data" class="color-text-50 mt-1">
+          Nexus ready:
+          <span v-if="world_admin.nexus_data.is_ready">Yes</span>
+          <span v-else>No</span>
+          <span v-if="world_admin.nexus_data.error">- {{ world_admin.nexus_data.error }}</span>
+          <span v-if="store.state.auth.user.is_staff && world_admin.nexus_data.id" class="ml-4">
+            [ <router-link :to="{name: 'staff_nexus_details', params: { nexus_id: world_admin.nexus_data.id }}">{{ world_admin.nexus_data.name }}</router-link> ]
+          </span>
+        </div>
 
-      <!-- Main MPW Instance -->
-      <div v-if="main_mpw">
-        <h3 class="mt-8 mb-2" >MAIN INSTANCE</h3>
-        <div>Instance #<router-link :to="admin_instance_link(main_mpw.id)">{{ main_mpw.id }}</router-link></div>
-        <div>
-          State: {{ main_mpw.state }} / {{ main_mpw.game_state }}
+        <!-- Main MPW Instance -->
+        <div v-if="main_mpw">
+          <h3 class="mt-8 mb-2" >MAIN INSTANCE</h3>
+          <div>Instance #<router-link :to="admin_instance_link(main_mpw.id)">{{ main_mpw.id }}</router-link></div>
+          <div>
+            State: {{ main_mpw.state }} / {{ main_mpw.game_state }}
+          </div>
+          <div>
+            Is Clean: {{ main_mpw.is_clean }}
+            <span v-if="main_mpw.clean_start_ts" class="ml-2">- Cleanup Started: {{ main_mpw.clean_start_ts }}</span>
+          </div>
+          <div class="actions mt-2">
+            <button class="btn btn-small start" :disabled="disableStart(main_mpw)" @click="onStart(main_mpw)">START</button>
+            <button class="btn btn-small stop ml-2" :disabled="disableStop(main_mpw)" @click="onStop(main_mpw)">STOP</button>
+            <button class="btn btn-small kill ml-2" :disabled="disableKill(main_mpw)" @click="onKill(main_mpw)">KILL</button>
+          </div>
         </div>
-        <div>
-          Is Clean: {{ main_mpw.is_clean }}
-          <span v-if="main_mpw.clean_start_ts" class="ml-2">- Cleanup Started: {{ main_mpw.clean_start_ts }}</span>
-        </div>
-        <div class="actions mt-2">
-          <button class="btn btn-small start" :disabled="disableStart(main_mpw)" @click="onStart(main_mpw)">START</button>
-          <button class="btn btn-small stop ml-2" :disabled="disableStop(main_mpw)" @click="onStop(main_mpw)">STOP</button>
-          <button class="btn btn-small kill ml-2" :disabled="disableKill(main_mpw)" @click="onKill(main_mpw)">KILL</button>
-        </div>
-      </div>
 
-      <!-- SPW Instances -->
-      <div v-if="spws && world_admin.spw_data.total_count">
-        <h3 class="mt-8 mb-2" >SINGLE PLAYER INSTANCES</h3>
-        <div>Total SPW instances: {{ world_admin.spw_data.total_count }}</div>
-        <div v-for="spw in spws" v-bind:key="spw.id">
-          [ {{ spw.id }} ] {{  spw.player_name }} - {{ spw.state }} <button class="btn btn-small kill ml-2" @click="onKill(spw)">KILL</button>
+        <!-- SPW Instances -->
+        <div v-if="spws && world_admin.spw_data.total_count">
+          <h3 class="mt-8 mb-2" >SINGLE PLAYER INSTANCES</h3>
+          <div>Total SPW instances: {{ world_admin.spw_data.total_count }}</div>
+          <div v-for="spw in spws" v-bind:key="spw.id">
+            [ {{ spw.id }} ] {{  spw.player_name }} - {{ spw.state }} <button class="btn btn-small kill ml-2" @click="onKill(spw)">KILL</button>
+          </div>
         </div>
-      </div>
 
-      <!-- Stats -->
-      <div v-if="world_admin && world_admin.stats" class="mt-8">
-        <h3 class="mb-2">STATS</h3>
-        <div>Rooms: {{ world_admin.stats.num_rooms }}</div>
-        <div>Mob Templates: {{ world_admin.stats.num_mob_templates }}</div>
-        <div>Item Templates: {{ world_admin.stats.num_item_templates }}</div>
-      </div>
+        <!-- Stats -->
+        <div v-if="world_admin && world_admin.stats" class="mt-8">
+          <h3 class="mb-2">STATS</h3>
+          <div>Rooms: {{ world_admin.stats.num_rooms }}</div>
+          <div>Mob Templates: {{ world_admin.stats.num_mob_templates }}</div>
+          <div>Item Templates: {{ world_admin.stats.num_item_templates }}</div>
+        </div>
+    </div>
+  </div>
+  <div v-else>
+    You do not have permission to administrate this world.
   </div>
 </template>
 
