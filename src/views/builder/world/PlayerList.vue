@@ -1,5 +1,5 @@
 <template>
-  <div v-if="store.state.builder.world.builder_info_builder_rank > 2">
+  <template v-if="store.state.builder.world.builder_info.builder_rank > 2">
     <ElementList
       title="Players"
       :schema="list_schema"
@@ -7,12 +7,12 @@
       :endpoint="endpoint"
       :resolve_route="resolve_route"
     />
-  </div>
-  <div v-else>
+  </template>
+  <template v-else>
     <div>
       You do not have permission to manage players for this world.
     </div>
-  </div>
+  </template>
 </template>
 
 <script lang="ts" setup>

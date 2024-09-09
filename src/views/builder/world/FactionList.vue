@@ -1,5 +1,5 @@
 <template>
-  <div v-if="store.state.builder.world.builder_info_builder_rank > 2">
+  <div v-if="store.state.builder.world.builder_info.builder_rank > 2">
     <div v-if="store.state.builder.world.instance_of.id">
       <h2 class="mb-4">WORLD FACTIONS</h2>
       <p>The factions of an instance are inherited from the parent world:</p>
