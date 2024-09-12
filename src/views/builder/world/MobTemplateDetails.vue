@@ -123,6 +123,7 @@
       <MobTemplateQuests class="quests" />
       <MobTemplateCrafting class="crafting" />
       <MobTemplateSkills class="skills" />
+      <MobTemplateTraits class="traits" />
     </div>
   </div>
 </template>
@@ -142,6 +143,7 @@ import MobTemplateLoads from "@/components/builder/world/MobTemplateLoads.vue";
 import MobTemplateQuests from "@/components/builder/world/MobTemplateQuests.vue";
 import MobTemplateCrafting from "@/components/builder/world/MobTemplateCrafting.vue";
 import MobTemplateSkills from "@/components/builder/world/MobTemplateSkills.vue";
+import MobTemplateTraits from "@/components/builder/world/MobTemplateTraits.vue";
 
 const store = useStore();
 const route = useRoute();

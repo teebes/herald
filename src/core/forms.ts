@@ -737,6 +737,11 @@ export const BUILDER_FORMS = {
           value: "receive",
           label: "Item is received",
         },
+        {
+          value: "health",
+          label: "Health drops below"
+        }
+
       ],
     },
     {
@@ -754,6 +759,7 @@ export const BUILDER_FORMS = {
               * Something is said: the spoken words that will trigger the reaction.<br/>
               * Time has elapsed: how much time between reactions.<br/>
               * Item is received: ID of the template of the received item.<br/>
+              * Health drops below: the percentage of health below which the reaction will trigger.
               <br/>
               Does nothing for other event types.
               `,
