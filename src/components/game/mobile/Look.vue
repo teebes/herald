@@ -1,7 +1,7 @@
 <template>
   <div id="mobile-look">
     <div class="mobile-mini-map" @click.stop="onClickMiniMap" v-if="mapDisplay == 'mini'">
-      <GameMap :radius="store.state.game.player_config.mobile_map_width" />
+      <GameMap :radius="map_width" :key="map_width"/>
     </div>
 
     <div class="mobile-map-full-region" v-if="mapDisplay == 'full'" ref="fullmap">
@@ -59,6 +59,8 @@ const hasExits = computed(() => {
   }
   return false;
 });
+
+const map_width = computed(() => parseInt(store.state.game.player_config.mobile_map_width));
 
 const onClickMiniMap = () => {
   mapDisplay.value = "full";
