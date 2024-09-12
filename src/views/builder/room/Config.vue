@@ -12,7 +12,7 @@
       </label>
     </div>
 
-    <div v-if="store.state.builder.world.builder_info.builder_rank > 2">
+    <div v-if="store.state.builder.world.builder_info.builder_rank > 2 && has_instances">
       <h3 class="mt-8 mb-4">INSTANCE LINK</h3>
 
       <p>If a room is linked to an instance, a player will be able to enter it via the 'enter' command.</p>
@@ -60,6 +60,7 @@ interface RoomFlag {
 const flags = ref<RoomFlag[]>([]);
 const transfer_to = ref<Entity | null>(null);
 const transfer_to_world = ref<any>(null);
+const has_instances = ref(false);
 const loaded = ref(false);
 
 onMounted(async () => {
@@ -76,6 +77,7 @@ onMounted(async () => {
   flags.value = flags_resp.data;
   transfer_to.value = config_resp.data.transfer_to;
   transfer_to_world.value = config_resp.data.transfer_to_world;
+  has_instances.value = config_resp.data.has_instances;
   loaded.value = true;
 });
 
