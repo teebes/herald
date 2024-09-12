@@ -3,6 +3,9 @@
     <div class="menu-item">
       <a href="#" @click.prevent="onClickSettings">Settings</a>
     </div>
+    <div class="menu-item" v-if="world.id === 2">
+      <a href="#" @click.prevent="onClickMap">World Map</a>
+    </div>
     <div class="menu-item">
       <a href="#" @click.prevent="onClickQuestLog">Quest Log</a>
     </div>
@@ -24,6 +27,7 @@ import { useStore } from "vuex";
 import QuestLog from "@/components/game/QuestLog.vue";
 import { FormElement } from "@/core/forms.ts";
 import { onOutsideClick } from "@/composables/onOutsideClick";
+import WorldMap from "@/components/game/WorldMap.vue";
 
 const store = useStore();
 const emit = defineEmits(["closeMenu"]);
@@ -63,6 +67,11 @@ const onClickSettings = () => {
     });
   }
 
+  schema.push({
+    attr: "mobile_map_width",
+    label: "Map Width",
+  })
+
   store.commit('ui/modal/open_form', {
     title: `Edit Preferences`,
     data: store.state.game.player_config,
@@ -71,6 +80,16 @@ const onClickSettings = () => {
   });
   emit("closeMenu");
 };
+
+const onClickMap = () => {
+  emit('closeMenu');
+  store.commit('ui/modal/open_view', {
+    component: WorldMap,
+    options: {
+      closeOnOutsideClick: true,
+    }
+  });
+}
 </script>
 
 <style lang="scss" scoped>

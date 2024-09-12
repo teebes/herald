@@ -1,7 +1,7 @@
 <template>
   <div id="mobile-look">
     <div class="mobile-mini-map" @click.stop="onClickMiniMap" v-if="mapDisplay == 'mini'">
-      <GameMap :radius="1" />
+      <GameMap :radius="store.state.game.player_config.mobile_map_width" />
     </div>
 
     <div class="mobile-map-full-region" v-if="mapDisplay == 'full'" ref="fullmap">
