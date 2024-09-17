@@ -120,10 +120,12 @@
       <MobTemplateInventory class="inventory" />
       <MobTemplateMerchant class="merchant" />
       <MobTemplateLoads class="loads" />
-      <MobTemplateQuests class="quests" />
+      <MobTemplateUpgrades class="upgrades" />
       <MobTemplateCrafting class="crafting" />
       <MobTemplateSkills class="skills" />
       <MobTemplateTraits class="traits" />
+      <MobTemplateQuests class="quests" />
+
     </div>
   </div>
 </template>
@@ -144,6 +146,7 @@ import MobTemplateQuests from "@/components/builder/world/MobTemplateQuests.vue"
 import MobTemplateCrafting from "@/components/builder/world/MobTemplateCrafting.vue";
 import MobTemplateSkills from "@/components/builder/world/MobTemplateSkills.vue";
 import MobTemplateTraits from "@/components/builder/world/MobTemplateTraits.vue";
+import MobTemplateUpgrades from "@/components/builder/world/MobTemplateUpgrades.vue";
 
 const store = useStore();
 const route = useRoute();
