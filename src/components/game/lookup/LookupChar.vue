@@ -31,8 +31,12 @@ const props = defineProps<{ entity: any }>();
 const char = computed(() => props.entity);
 
 const doAction = (char: any, action: string) => {
-  const target = getTargetInGroup(char, store.state.game.room.chars);
-  store.dispatch("game/cmd", `${action} ${target}`);
+  if (action === 'craft' || action === 'upgrade') {
+    store.dispatch('game/cmd', `${action}`);
+  } else {
+    const target = getTargetInGroup(char, store.state.game.room.chars);
+    store.dispatch("game/cmd", `${action} ${target}`);
+  }
   store.commit("game/lookup_clear");
   store.commit("ui/modal/close");
 };
@@ -48,6 +52,7 @@ const actionsData = computed(() => {
       // higher the better
       { action: "complete", label: "COMPLETE" },
       { action: "craft", label: "CRAFT" },
+      { action: "upgrade", label: "UPGRADE"},
       { action: "follow", label: "FOLLOW" },
       { action: "unfollow", label: "UNFOLLOW" },
       { action: "group", label: "GROUP" },
