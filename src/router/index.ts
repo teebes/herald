@@ -124,7 +124,7 @@ const routes = [
   },
 
   // Wot redirect
-  { path: '/wot', component: () => import('@/views/Wot.vue') },
+  { path: '/wot/:pathMatch(.*)*', component: () => import('@/views/Wot.vue'), },
 ];
 
 const router = createRouter({
