@@ -73,22 +73,6 @@
               >{{ contained_item.name }}</span>
               <span class="item-count" v-if="contained_item.count && contained_item.count > 1">&nbsp;[{{contained_item.count}}]</span>
             </li>
-
-            <!-- <li v-for="contained_item in item.inventory" :key="contained_item.key">
-              <span
-                :class="{ [contained_item.quality]: true}"
-                class="contained-item interactive"
-                @click="onClickContainedItem(contained_item)"
-                v-if="!from_lookup"
-                v-interactive="{target: contained_item}"
-              >{{contained_item.name}}</span>
-              <span
-                v-else
-                :class="{ [contained_item.quality]: true}"
-                @click="onClickContainedItem(contained_item)"
-                class="contained-item"
-              >{{ contained_item.name }}</span>
-            </li> -->
           </ul>
         </div>
       </template>
@@ -101,7 +85,8 @@
       Sells for {{ item.cost }} gold.
       <template v-if="isUpgradable">
         <br />
-        Upgrade can be attempted for {{ item.upgrade_cost }} gold.
+        <!-- Upgrade can be attempted for {{ item.upgrade_cost }} gold. -->
+         Upgrade can be attempted for {{ upgrade_cost(item) }} gold.
       </template>
     </div>
   </div>
@@ -129,14 +114,30 @@ const props = defineProps({
 
 const inventoryStack = stackedInventory(props.item.inventory);
 
+const upgrader = computed(() => {
+  for (const char of store.state.game.room.chars) {
+    if (char.is_upgrader) {
+      return char;
+    }
+  }
+  return null;
+});
+
 const isUpgradable = computed(() => {
+  if (!upgrader.value) return false;
+
   // Only show upgrade option in workshop rooms
-  if (store.state.game.room.flags.indexOf("workshop") == -1) return false;
+  // if (store.state.game.room.flags.indexOf("workshop") == -1) return false;
+
   // Show upgrade price based on whether they can be upgraded
   if (props.item.quality == "enchanted" && props.item.upgrade_count <= 2) return true;
-  else if (props.item.quality == "imbued" && props.item.upgrade_cost == 0) return true;
+  else if (props.item.quality == "imbued" && props.item.upgrade_count == 0) return true;
   return false;
 });
+
+const upgrade_cost = (item) => {
+  return Math.ceil(item.upgrade_cost * upgrader.value.upgrade_cost_multiplier);
+};
 
 const lines = computed(() => props.item.description.split("\n") || []);
 const player = computed(() => store.state.game.player);

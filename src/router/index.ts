@@ -121,7 +121,10 @@ const routes = [
       { path: 'reviews', name: 'staff_reviews', component: () => import('@/views/staff/Reviews.vue') },
       { path: 'nexus/:nexus_id', name: 'staff_nexus_details', component: () => import('@/views/staff/NexusDetails.vue') },
     ],
-  }
+  },
+
+  // Wot redirect
+  { path: '/wot', component: () => import('@/views/Wot.vue') },
 ];
 
 const router = createRouter({

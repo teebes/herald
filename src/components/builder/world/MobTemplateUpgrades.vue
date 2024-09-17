@@ -17,8 +17,9 @@
     <div class="upgrader_config">
       <div class="panel" v-if="template.is_upgrader">
         <p>This mob exposes the 'upgrade' command to players, which allows them to attempt to upgrade their equipment.</p>
-        <p>This crafter will charge {{ template.upgrade_cost }}x the standard upgrade price, and will succeed {{ template.upgrade_success_chance }}% of the time.</p>
+        <p>This crafter will charge {{ template.upgrade_cost_multiplier }}x the standard upgrade price, and will succeed {{ template.upgrade_success_chance }}% of the time.</p>
         <p v-if="template.upgrade_success_cmd">Upon successfully upgrading an item, this mob will run the command:  "{{ template.upgrade_success_cmd }}".</p>
+        <p v-if="template.upgrade_failure_cmd">Upon failing to upgrade an item, this mob will run the command:  "{{ template.upgrade_failure_cmd }}".</p>
         <div>
           <button class="btn-small" @click="editUpgradeOptions">EDIT</button>
         </div>
@@ -43,8 +44,8 @@ const onUpdateIsUpgrader = (event: Event) => {
 };
 
 const editUpgradeOptions = () => {
-  const upgrade_cost: FormElement = {
-    attr: "upgrade_cost",
+  const upgrade_cost_multiplier: FormElement = {
+    attr: "upgrade_cost_multiplier",
     label: "Upgrade Cost Multiplier",
     help: `Multiplier on how much the upgrader charges for their services compared to the standard upgrade cost.`
   };
@@ -56,7 +57,11 @@ const editUpgradeOptions = () => {
     attr: "upgrade_success_cmd",
     label: "Command to run on successful upgrade by the upgrader."
   }
-  const schema = [upgrade_cost, upgrade_success_chance, upgrade_success_cmd];
+  const upgrade_failure_cmd: FormElement = {
+    attr: "upgrade_failure_cmd",
+    label: "Command to run on upgrade failure by the upgrader."
+  }
+  const schema = [upgrade_cost_multiplier, upgrade_success_chance, upgrade_success_cmd, upgrade_failure_cmd];
   const modal = {
     title: `Upgrade Config`,
     data: template.value,
