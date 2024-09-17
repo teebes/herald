@@ -127,7 +127,7 @@ const editSource = () => {
     label: "Is Setup Quest",
     widget: "checkbox",
     default: false,
-    help: `A setup quest required by an active quest will have its summary or completion commands shown in the quest log.`,
+    help: `A setup quest required by an active quest will have its summary shown in the quest log.`,
   };
 
   const is_logged: FormElement = {
