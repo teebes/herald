@@ -51,15 +51,18 @@ const editUpgradeOptions = () => {
   };
   const upgrade_success_chance: FormElement = {
     attr: "upgrade_success_chance",
-    label: "The percent chance that the upgrade will be successful."
+    label: "Success Chance",
+    help: `The percent chance that the upgrade will be successful.`
   };
   const upgrade_success_cmd: FormElement = {
     attr: "upgrade_success_cmd",
-    label: "Command to run on successful upgrade by the upgrader."
+    label: "Success Command",
+    help: "Command to run on successful upgrade by the upgrader."
   }
   const upgrade_failure_cmd: FormElement = {
     attr: "upgrade_failure_cmd",
-    label: "Command to run on upgrade failure by the upgrader."
+    label: "Failure command",
+    help: "Command to run on upgrade failure by the upgrader."
   }
   const schema = [upgrade_cost_multiplier, upgrade_success_chance, upgrade_success_cmd, upgrade_failure_cmd];
   const modal = {
