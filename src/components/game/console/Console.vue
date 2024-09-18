@@ -11,7 +11,7 @@
           :previousMessage="messages[index - 1]"
           :index="index"
           class="message"
-          :class="[message.type]"
+          :class="[message.type, {grouped: isGrouped(message, messages[index - 1])}]"
           :distanceToBottom="distanceToBottom"
           @scrollDown="scrollToBottom"
         />
@@ -125,6 +125,14 @@ const messages = computed(() => {
   return store.getters["game/consoleMessages"];
 });
 
+const isGrouped = (message, prevMessage) => {
+  if (prevMessage &&
+      prevMessage.group &&
+      prevMessage.group === message.group)
+    return true;
+  return false;
+};
+
 onMounted(() => {
   const el = document.getElementById("console") as HTMLElement;
   // const el = this.$refs.console as HTMLElement;
@@ -195,8 +203,6 @@ const onScroll = _.debounce(updateScroll, 250);
       }
 
       &.echo,
-      &.grouped,
-      &.room_write,
       &.affect\.cmd\.look\.success,
       &.affect\.idle\.timeout,
       &.notification\.cmd\.say\.success,
@@ -215,8 +221,9 @@ const onScroll = _.debounce(updateScroll, 250);
       &.write\.sendexcept,
       &.write\.game,
       &.write\.zone {
-        margin-top: 1rem;
-        margin-bottom: 1rem;
+        &:not(.grouped) {
+          margin-top: 1rem;
+        }
       }
 
       &.notification\.cmd\.say\.success,
