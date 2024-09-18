@@ -177,6 +177,15 @@
 
         <router-link :to="world_starting_eq_link">manage</router-link>
       </div>
+
+      <div class="world-name-exclusions">
+        <h3>NAME EXCLUSIONS</h3>
+
+        <div>Exclude certain names from available player characters.</div>
+        <button class="btn-thin" @click="editNameExclusions">EDIT</button>
+      </div>
+
+      <div>&nbsp;</div>
     </div>
 
     <div class="divider"></div>
@@ -470,6 +479,23 @@ const editAdvancedConfig = () => {
       action: "builder/worlds/config_save",
     };
     store.commit('ui/modal/open_form', modal);
+};
+
+const editNameExclusions = () => {
+  const modal = {
+    class: "description-modal",
+    data: config.value,
+    schema: [
+      {
+        attr: 'name_exclusions',
+        label: 'Name Exclusions',
+        widget: 'textarea',
+        help: `A list of names that are not allowed to be used by players in this world. One name per line.`
+      }
+    ],
+    action: "builder/worlds/config_patch",
+  };
+  store.commit('ui/modal/open_form', modal);
 };
 
 const createInstance = () => {

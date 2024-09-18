@@ -89,6 +89,13 @@ export default {
       return resp.data;
     },
 
+    config_patch: async ({ commit, rootState }, data) => {
+      const world_id = rootState.builder.world.id;
+      const resp = await axios.patch(`/builder/worlds/${world_id}/config/`, data);
+      commit("config_set", resp.data);
+      return resp.data;
+    },
+
     submit_world_for_review: async ({ commit, rootState }, data) => {
       const world_id = rootState.builder.world.id;
       const resp = await axios.post(
