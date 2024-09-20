@@ -21,7 +21,7 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import SocialDetails from "@/components/builder/world/SocialDetails.vue";
 import EditableCollection from "@/components/editablecollection/EditableCollection.vue";
-import { FormElement, BUILDER_FORMS, CONDITIONS } from "@/core/forms.ts";
+import { FormElement } from "@/core/forms.ts";
 
 const route = useRoute();
 

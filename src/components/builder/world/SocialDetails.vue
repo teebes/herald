@@ -33,9 +33,7 @@
 </template>
 
 <script lang='ts' setup>
-import { capFirst } from "@/core/utils.ts";
-
-const props = defineProps<{
+defineProps<{
   resource: any;
 }>();
 </script>
