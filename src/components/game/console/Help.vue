@@ -37,6 +37,7 @@
           <div class="cmd" @click="cmdHelp('unfollow')">unfollow</div>
           <div class="cmd" @click="cmdHelp('group')">group</div>
           <div class="cmd" @click="cmdHelp('ungroup')">ungroup</div>
+          <div class="cmd" @click="cmdHelp('socials')">socials</div>
         </div>
       </div>
 
@@ -64,6 +65,7 @@
         <div class="cmds">
           <div class="cmd" @click="cmdHelp('factions')">factions</div>
           <div class="cmd" @click="cmdHelp('scan')">scan</div>
+          <div class="cmd" @click="cmdHelp('track')">track</div>
         </div>
       </div>
 

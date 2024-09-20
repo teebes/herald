@@ -82,6 +82,7 @@ const routes = [
       { path: 'factions/:faction_id/ranks', name: 'builder_world_faction_rank_list', component: () => import('@/views/builder/world/FactionRankList.vue') },
       { path: 'skills', name: 'builder_world_skill_list', component: () => import('@/views/builder/world/SkillList.vue') },
       { path: 'startingeq', name: 'builder_world_starting_eq_list', component: () => import('@/views/builder/world/StartingEqList.vue') },
+      { path: 'socials', name: 'builder_world_social_list', component: () => import('@/views/builder/world/SocialList.vue') },
 
       // Zone Views
       { path: 'zones/:zone_id', name: 'builder_zone_index', component: () => import('@/views/builder/zone/Zone.vue') },

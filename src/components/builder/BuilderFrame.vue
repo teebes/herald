@@ -213,6 +213,7 @@ const isWorldConfigRoute = computed(() => {
     'builder_world_fact_list',
     'builder_world_skill_list',
     'builder_world_starting_eq_list',
+    'builder_world_social_list',
   ];
   return routes.includes(route.name as string);
 });

@@ -178,14 +178,19 @@
         <router-link :to="world_starting_eq_link">manage</router-link>
       </div>
 
+      <div class="world-socials">
+        <h3>SOCIALS</h3>
+        <div>Socials are custom commands defined by builders that players and mobs can use to emote in a standardized way. Example typical socials: nod, shrug, wave, smile, laugh, sigh, shake, slap.</div>
+
+        <router-link :to="world_socials_link">manage</router-link>
+      </div>
+
       <div class="world-name-exclusions">
         <h3>NAME EXCLUSIONS</h3>
 
-        <div>Exclude certain names from available player characters.</div>
+        <div>Exclude certain names available to players at character creation.</div>
         <button class="btn-thin" @click="editNameExclusions">EDIT</button>
       </div>
-
-      <div>&nbsp;</div>
     </div>
 
     <div class="divider"></div>
@@ -571,6 +576,11 @@ const world_skills_link = {
 
 const world_starting_eq_link = {
   name: 'builder_world_starting_eq_list',
+  params: { world_id: world.value.id },
+};
+
+const world_socials_link = {
+  name: 'builder_world_social_list',
   params: { world_id: world.value.id },
 };
 
