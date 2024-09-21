@@ -258,8 +258,8 @@
           <div class="cmds">
             <div class="cmd" @click="cmdHelp('/load')">/load</div>
             <div class="cmd" @click="cmdHelp('reset')">reset</div>
-            <div class="cmd" @click="cmdHelp('geta')">geta</div>
-            <div class="cmd" @click="cmdHelp('seta')">seta</div>
+            <div class="cmd" @click="cmdHelp('geta')">/geta</div>
+            <div class="cmd" @click="cmdHelp('seta')">/seta</div>
             <div class="cmd" @click="cmdHelp('regen')">regen</div>
             <div class="cmd" @click="cmdHelp('/purge')">/purge</div>
             <div class="cmd" @click="cmdHelp('masspurge')">masspurge</div>
@@ -284,11 +284,13 @@
             <div class="cmd" @click="cmdHelp('sendexcept')">sendexcept</div>
           </div>
           <div class="cmds">
-            <div class="cmd" @click="cmdHelp('facts')">facts</div>
-            <div class="cmd" @click="cmdHelp('setfact')">setfact</div>
-            <div class="cmd" @click="cmdHelp('clearfact')">clearfact</div>
-            <div class="cmd" @click="cmdHelp('mark')">mark</div>
-            <div class="cmd" @click="cmdHelp('unmark')">unmark</div>
+            <div class="cmd" @click="cmdHelp('/facts')">/facts</div>
+            <div class="cmd" @click="cmdHelp('/setfact')">/setfact</div>
+            <div class="cmd" @click="cmdHelp('/clearfact')">/clearfact</div>
+            <div class="cmd" @click="cmdHelp('/incfact')">/incfact</div>
+            <div class="cmd" @click="cmdHelp('/mark')">/mark</div>
+            <div class="cmd" @click="cmdHelp('/unmark')">/unmark</div>
+            <div class="cmd" @click="cmdHelp('/incmark')">/incmark</div>
             <div class="cmd" @click="cmdHelp('/kill')">/kill</div>
             <div class="cmd" @click="cmdHelp('/kick')">/kick</div>
 
