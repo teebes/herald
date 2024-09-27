@@ -12,21 +12,20 @@
 
       <template v-if="equipment_type === 'weapon_1h' || equipment_type === 'weapon_2h'">
         <div v-if="item_template.weapon_type">
-          <div class="field-desc">Weapon Type</div>
-          <div>{{ item_template.weapon_type }}</div>
+          <div><span class="color-text-70">Weapon Type:</span> {{ item_template.weapon_type }}</div>
         </div>
 
         <div class="mt-4">
-          <div class="field-desc">First person hit</div>
+          <div class="field-desc">First person hit message:</div>
           <div>You {{ item_template.hit_msg_first }} your target</div>
         </div>
 
         <div class="mt-4">
-          <div class="field-desc">Third person hit</div>
+          <div class="field-desc">Third person hit message:</div>
           <div>Someone {{ item_template.hit_msg_third }} their target</div>
         </div>
       </template>
-      <div v-else>
+      <div v-else-if="equipment_type != 'accessory'">
         <div class="field-desc">Armor class</div>
         <div>{{ item_template.armor_class }}</div>
       </div>
@@ -148,6 +147,7 @@ const equipment_type_schema: FormElement = {
     { value: "waist", label: "Waist" },
     { value: "legs", label: "Legs" },
     { value: "feet", label: "Feet" },
+    { value: "accessory", label: "Accessory" },
   ],
 };
 </script>

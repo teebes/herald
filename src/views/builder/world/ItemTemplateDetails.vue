@@ -10,7 +10,7 @@
             <span v-else>This item template is not assigned to you, you can view it but not edit it.</span>
           </div>
 
-          <div class="item-summary mb-2">
+          <div class="item-summary text-base">
             Level {{ item_template.level }}
             <span
               v-if="item_template.quality != 'normal'"
@@ -18,6 +18,7 @@
             >{{ item_template.quality }}</span>
             {{ item_template.type }}
           </div>
+          <div class="mb-2">ID: {{ item_template.id }}</div>
 
           <div class="notes" v-if="item_template.notes">
             <span class="color-text-70">Notes:</span> {{ item_template.notes }}
@@ -86,7 +87,7 @@
         </div>
       </div>
 
-      <div class="item-stats template-stats" v-if="item_template.type === 'equippable'">
+      <div class="item-stats template-stats" v-if="item_template.type === 'equippable' || item_template.type === 'augment'">
         <div class="panel panel-shadow">
           <ItemTemplateStats />
         </div>
@@ -96,34 +97,42 @@
     <div class="divider"></div>
 
     <div class="half-panels">
-      <ItemTemplateEquipment v-if="item_template.type === 'equippable'" />
 
       <div class="advanced">
         <h3>ADVANCED</h3>
 
-        <div v-if="item_template.is_pickable">Item can be picked up.</div>
-        <div v-else>Item cannot be picked up.</div>
+        <div v-if="item_template.is_pickable" class="color-text-70">Item can be picked up.</div>
+        <div v-else class="color-text-70">Item cannot be picked up.</div>
 
-        <div class="mt-4" v-if="item_template.is_boat">Item allows to go on water.</div>
+        <div class="mt-4 color-text-70" v-if="item_template.is_boat">Item allows to go on water.</div>
 
         <template v-if="store.state.builder.world.is_multiplayer">
           <div
-            class="mt-4"
+            class="mt-4 color-text-70"
             v-if="item_template.is_persistent"
           >Items spawned by this template will persist over reboots even if left on the ground.</div>
           <div
-            class="mt-4"
+            class="mt-4 color-text-70"
             v-else
           >Items spawned by this template will not persist over reboots if left on the ground.</div>
         </template>
 
-        <div class='mt-4'>Item currency: {{ item_template.currency }}</div>
+        <div class='mt-4'><span class="color-text-70">Item currency:</span> {{ item_template.currency }}</div>
+
+        <div class="mt-4" v-if="item_template.on_use_cmd">
+          <div><span class="color-text-70">On Use command:</span> {{ item_template.on_use_cmd}}</div>
+          <div class="mt-4" v-if="item_template.on_use_description"><span class="color-text-70">On Use Description:</span> {{ item_template.on_use_description }}</div>
+        </div>
+        <div v-else class="mt-4 color-text-70">No On Use command defined.</div>
+
+
 
         <button class="btn-thin edit-advanced" @click="editAdvanced">EDIT ADVANCED SETTINGS</button>
       </div>
 
-      <ItemTemplateFood v-if="item_template.type === 'food'" />
-      <div v-else-if="item_template.type !== 'equippable'"></div>
+      <ItemTemplateEquipment v-if="item_template.type === 'equippable'" />
+      <ItemTemplateFood v-else-if="item_template.type === 'food'" />
+      <div v-else></div>
 
       <ItemTemplateLoads />
       <ItemTemplateQuests />
@@ -182,7 +191,7 @@ const editAdvanced = () => {
       attr: "is_boat",
       label: "Allows to go on water",
       widget: "checkbox"
-    }
+    },
   ];
   if (store.state.builder.world.is_multiplayer) {
     schema.push({
@@ -205,6 +214,16 @@ const editAdvanced = () => {
       }
     ]
   });
+  schema.push(...[{
+    attr: "on_use_cmd",
+    label: "On Use Command",
+    help: "Command to be executed when the item is used by a player."
+  },
+  {
+    attr: "on_use_description",
+    label: "On Use Description",
+    help: "Help entry for the item's on use command, shown on the item lookup screens."
+  }])
   const modal = {
     title: `Item Template ${entity.id}`,
     data: entity,

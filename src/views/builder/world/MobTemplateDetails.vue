@@ -10,7 +10,7 @@
             <span v-else>This mob template is not assigned to you, you can view it but not edit it.</span>
           </div>
 
-          <div class="mob-summary mb-2 text-base">
+          <div class="mob-summary text-base">
             Level {{ template.level }} {{ template.type }}
             <template v-if="template.gender == 'non_binary'">non-binary</template>
             <template v-else>{{ template.gender }}</template>
@@ -20,6 +20,9 @@
               class="color-text-50 ml-2"
             >[ Invisible ]</span>
           </div>
+
+          <div class="mb-2">ID: {{ template.id }}</div>
+
           <div v-if="template.notes" class="mob-note">Notes: {{ template.notes }}</div>
 
           <div class="info-elements">

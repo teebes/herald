@@ -62,6 +62,11 @@
           </div>
 
           <div class="stat">
+            <div class="st-label">Stamina Regen</div>
+            <div class="st-value">{{ player.stamina_regen }}</div>
+          </div>
+
+          <div class="stat">
             <div class="st-label">Armor</div>
             <div class="st-value">{{ player.armor_perc }}%</div>
           </div>

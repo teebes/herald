@@ -28,6 +28,8 @@
     <div class="quest-indicator-wrapper" @click="handleClick" v-if="quest_indicator && isLastMessage">
       <span class='whitespace-nowrap'>[ <span class='quest-indicator'>{{ quest_indicator }}</span> ]</span>
     </div>
+
+    <span v-if="char.is_invisible" class="ml-2 color-text-50">[invisible]</span>
   </div>
 </template>
 

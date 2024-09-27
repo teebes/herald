@@ -59,6 +59,8 @@ const slots: any = computed(() => {
       slotDisplayName = "as " + slotName;
     } else if (slotName === "offhand") {
       slotDisplayName = "in " + slotName;
+    } else if (slotName === "accessory") {
+      slotDisplayName = "as " + slotName;
     } else {
       slotDisplayName = "on " + slotName;
     }

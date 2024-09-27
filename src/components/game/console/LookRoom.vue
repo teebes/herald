@@ -76,14 +76,11 @@
 
     <div class="room-chars">
       <div class="room-char" v-for="char in chars" :key="char.key + '_' + message.message_id">
-
         <LookRoomChar
             :isLastMessage="isLastMessage"
             :char="char"
             :key="char.key + message.message_id"
             @click="onCharClick(char)"/>
-
-        <span v-if="char.is_invisible" class="ml-2 color-text-50">[invisible]</span>
       </div>
     </div>
 

@@ -68,6 +68,11 @@
           <div class="value">{{ player.mana_regen }}</div>
         </div>
 
+        <div class="stamina-regen stat-entry">
+          <div class="label">Stamina Regen</div>
+          <div class="value">{{ player.stamina_regen }}</div>
+        </div>
+
         <div class="ap stat-entry">
           <div class="label">Attack Power</div>
           <div class="value">{{ player.attack_power }}</div>

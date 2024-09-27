@@ -60,6 +60,7 @@ const list_filters: any[] = [
       { key: "waist", name: "Waist" },
       { key: "legs", name: "Legs" },
       { key: "feet", name: "Feet" },
+      { key: "accessory", name: "Accessory" },
       { key: "inert", name: "Inert" },
       { key: "container", name: "Containers" },
       { key: "trash", name: "Trashes" },

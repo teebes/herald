@@ -22,7 +22,7 @@
       <div class="description-line" v-for="(line, index) in lines" :key="index">{{ line }}</div>
     </div>
 
-    <template v-if="item.type === 'equippable'">
+    <template v-if="item.type === 'equippable' && item.stats.length">
       <div class="list-title stats">Stats:</div>
       <table class="item-stats">
         <tr
@@ -37,6 +37,13 @@
           </td>
         </tr>
       </table>
+
+      <div class='augments' v-if="item.augment && item.augment.key">
+          Augmented with <span class="font-bold">{{ item.augment.name }}</span><span v-if="item.augment.stats.length">:</span><span v-else>.</span>
+        <ul v-for="stat in item.augment.stats" :key="stat.stat" class="list">
+          <li>+{{ stat.value }} {{ stat.stat }}</li>
+        </ul>
+      </div>
 
       <div
         class="upgrade_count color-text-50"
@@ -80,6 +87,9 @@
     </template>
 
     <div class="color-text-50 mt-2" v-if="item.label">An item label reads: "{{ item.label }}"</div>
+
+    <div class='color-primary' v-if="item.on_use_description">On Use: {{ item.on_use_description }}</div>
+    <div class='color-primary' v-else-if="item.on_use_cmd">Item has On Use command.</div>
 
     <div v-if="item.cost && item.currency === 'gold'" class="color-secondary mt-2">
       Sells for {{ item.cost }} gold.
@@ -188,5 +198,9 @@ const onClickContainedItem = (contained_item) => {
   .description-line {
     min-height: 14px;
   }
+}
+
+.augments .list {
+  margin-bottom: 0;
 }
 </style>

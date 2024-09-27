@@ -20,6 +20,14 @@
         <div class="value">{{ template.mana_regen }}</div>
       </div>
       <div class="stat">
+        <div class="label">Max Stamina</div>
+        <div class="value">{{ template.stamina_max }}</div>
+      </div>
+      <div class="stat">
+        <div class="label">Stamina Regen</div>
+        <div class="value">{{ template.stamina_regen }}</div>
+      </div>
+      <div class="stat">
         <div class="label">Strength</div>
         <div class="value">{{ template.strength }}</div>
       </div>
@@ -57,7 +65,7 @@
       </div>
     </div>
 
-    <div class="stat-group mt-4">
+    <div class="stat-group mt-4" v-if="template.type === 'equippable'">
       <div class="stat">
         <div class="label">Item Power</div>
         <div class="value">{{ Math.round(template.power * 100) }} %</div>

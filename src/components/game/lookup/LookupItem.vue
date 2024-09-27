@@ -59,6 +59,7 @@ const actions = computed(() => {
       { action: "sell", label: "SELL" },
       { action: "wield", label: "WIELD" },
       { action: "wear", label: "WEAR" },
+      { action: "use", label: "USE" },
       { action: "remove", label: "REMOVE" },
       { action: "get", label: "GET" },
       { action: "drop", label: "DROP" },

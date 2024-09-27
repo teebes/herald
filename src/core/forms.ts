@@ -1,4 +1,5 @@
 import store from "@/store";
+import { isLabeledStatement } from "typescript";
 import { Component } from 'vue';
 
 export interface EntityForm {
@@ -799,6 +800,10 @@ export const BUILDER_FORMS = {
               label: "Equippable",
             },
             {
+              value: "augment",
+              label: "Augment",
+            },
+            {
               value: "container",
               label: "Container",
             },
@@ -852,28 +857,40 @@ export const BUILDER_FORMS = {
 
   ITEM_TEMPLATE_STATS: [
     {
-      row_name: "Points",
+      row_name: "Vitals",
       children: [
         {
           attr: "health_max",
           label: "HP Max",
         },
         {
-          attr: "health_regen",
-          label: "HP Regen",
-        },
-        {
           attr: "mana_max",
           label: "Mana Max",
+        },
+        {
+          attr: "stamina_max",
+          label: "Stamina Max",
+        },
+      ],
+    },
+    {
+      children: [
+        {
+          attr: "health_regen",
+          label: "HP Regen",
         },
         {
           attr: "mana_regen",
           label: "Mana Regen",
         },
-      ],
+        {
+          attr: "stamina_regen",
+          label: "Stamina Regen",
+        },
+      ]
     },
     {
-      row_name: "Stats",
+      row_name: "Primary Stats",
       children: [
         {
           attr: "strength",
