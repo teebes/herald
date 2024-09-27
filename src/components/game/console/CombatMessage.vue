@@ -67,8 +67,8 @@ const isGrouped = computed(() => {
       prevMessage.data &&
       prevMessage.data.round_id &&
       prevMessage.data.round_id === props.message.data.round_id)
-    return false;
-  return true;
+    return true;
+  return false;
 });
 
 

@@ -226,6 +226,10 @@ const onScroll = _.debounce(updateScroll, 250);
         }
       }
 
+      &.notification\.combat\.attack:not(.grouped) {
+        margin-top: 1em;
+      }
+
       &.notification\.cmd\.say\.success,
       &.notification\.cmd\.yell\.success,
       &.notification\.cmd\.chat\.success,
