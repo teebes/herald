@@ -94,7 +94,7 @@ const consoleMessage = (message) => {
       type === "cmd.move.success" ||
       type === "affect.flee.success" ||
       type === "system.connect.success" ||
-      type === "cmd.jump.success" ||
+      type === "cmd./jump.success" ||
       type === "affect.death") return LookRoom;
 
   if (type === "notification.cmd.chat.success" ||

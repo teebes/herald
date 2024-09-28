@@ -135,7 +135,7 @@ watch (roomInventory, () => {
   updateInventoryStack();
 }, { immediate: true });
 
-if (props.message.type === "cmd.look.success" || props.message.type === "cmd.jump.success") {
+if (props.message.type === "cmd.look.success" || props.message.type === "cmd./jump.success") {
   room.value = props.message.data.target;
 } else {
   room.value = props.message.data.room;

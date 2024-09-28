@@ -248,7 +248,7 @@ const receiveMessage = async ({
         { root: true });
     }
 
-  } else if (message_data.type === "cmd.jump.success") {
+  } else if (message_data.type === "cmd./jump.success") {
     commit("map_add", message_data.data.target);
     commit("room_set", message_data.data.target);
     commit("player_target_set", null);
@@ -258,8 +258,8 @@ const receiveMessage = async ({
   if (
     message_data.type === "notification.movement.enter" ||
     message_data.type === "notification.cmd.flee.enter" ||
-    message_data.type === "notification.transfer.enter" ||
-    message_data.type === "notification.jump.enter"
+    message_data.type === "notification./transfer.enter" ||
+    message_data.type === "notification./jump.enter"
   ) {
     commit("room_chars_add", message_data.data.actor);
   }
@@ -268,8 +268,8 @@ const receiveMessage = async ({
   if (
     message_data.type === "notification.movement.exit" ||
     message_data.type === "notification.cmd.flee.exit" ||
-    message_data.type === "notification.transfer.exit" ||
-    message_data.type === "notification.jump.exit"
+    message_data.type === "notification./transfer.exit" ||
+    message_data.type === "notification./jump.exit"
   ) {
     commit("room_chars_remove", message_data.data.actor);
 
@@ -318,7 +318,7 @@ const receiveMessage = async ({
 
   // Room updating on look
   if (
-    message_data.type === "cmd.jump.success" ||
+    message_data.type === "cmd./jump.success" ||
     (message_data.type === "cmd.look.success" &&
       message_data.data.target_type === "room")
   ) {
@@ -415,7 +415,7 @@ const receiveMessage = async ({
   }
 
   // Resets
-  if (message_data.type === "cmd.reset.success") {
+  if (message_data.type === "cmd./reset.success") {
     commit("full_screen_message_set", "Resetting...");
     dispatch("request_enter_world", {
       player_id: state.player.id,

@@ -262,17 +262,18 @@
             <div class="cmd" @click="cmdHelp('seta')">/seta</div>
             <div class="cmd" @click="cmdHelp('regen')">regen</div>
             <div class="cmd" @click="cmdHelp('/purge')">/purge</div>
-            <div class="cmd" @click="cmdHelp('masspurge')">masspurge</div>
-            <div class="cmd" @click="cmdHelp('force')">force</div>
+            <div class="cmd" @click="cmdHelp('masspurge')">/masspurge</div>
+            <div class="cmd" @click="cmdHelp('force')">/force</div>
           </div>
           <div class="cmds">
             <div class="cmd" @click="cmdHelp('/invisible')">/invisible</div>
             <div class="cmd" @click="cmdHelp('/repop')">/repop</div>
-            <div class="cmd" @click="cmdHelp('ping')">ping</div>
-            <div class="cmd" @click="cmdHelp('jump')">jump</div>
-            <div class="cmd" @click="cmdHelp('transfer')">transfer</div>
-            <div class="cmd" @click="cmdHelp('find')">find</div>
+            <div class="cmd" @click="cmdHelp('ping')">/ping</div>
+            <div class="cmd" @click="cmdHelp('jump')">/jump</div>
+            <div class="cmd" @click="cmdHelp('transfer')">/transfer</div>
+            <div class="cmd" @click="cmdHelp('find')">/find</div>
             <div class="cmd" @click="cmdHelp('/award')">/award</div>
+            <div class="cmd" @click="cmdHelp('/cast')">/cast</div>
           </div>
           <div class="cmds">
             <div class="cmd" @click="cmdHelp('/at')">/at</div>
@@ -280,8 +281,8 @@
             <div class="cmd" @click="cmdHelp('/echo')">/echo</div>
             <div class="cmd" @click="cmdHelp('/gecho')">/gecho</div>
             <div class="cmd" @click="cmdHelp('/zecho')">/zecho</div>
-            <div class="cmd" @click="cmdHelp('send')">send</div>
-            <div class="cmd" @click="cmdHelp('sendexcept')">sendexcept</div>
+            <div class="cmd" @click="cmdHelp('send')">/send</div>
+            <div class="cmd" @click="cmdHelp('sendexcept')">/sendexcept</div>
           </div>
           <div class="cmds">
             <div class="cmd" @click="cmdHelp('/facts')">/facts</div>
