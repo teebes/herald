@@ -59,8 +59,11 @@ const actionsData = computed(() => {
       { action: "list", label: "LIST" },
       { action: "offer", label: "OFFER" },
       { action: "enquire", label: "ENQUIRE" },
-      { action: "kill", label: "KILL" }
     ];
+
+  if (store.state.game.world.allow_combat) {
+    actionsPriority.push({ action: "kill", label: "KILL" });
+  }
 
   for (let action of actionsPriority) {
     if (char.value.actions[action.action]) {
