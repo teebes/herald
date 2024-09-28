@@ -740,8 +740,11 @@ export const BUILDER_FORMS = {
         {
           value: "health",
           label: "Health drops below"
+        },
+        {
+          value: "social",
+          label: "Social is Received"
         }
-
       ],
     },
     {
