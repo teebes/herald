@@ -763,6 +763,7 @@ export const BUILDER_FORMS = {
               * Time has elapsed: how much time between reactions.<br/>
               * Item is received: ID of the template of the received item.<br/>
               * Health drops below: the percentage of health below which the reaction will trigger.
+              * Social is Received: the social that will trigger the reaction.
               <br/>
               Does nothing for other event types.
               `,
