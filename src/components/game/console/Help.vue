@@ -49,6 +49,7 @@
           <div class="cmd" @click="cmdHelp('focus')">focus</div>
           <div class="cmd" @click="cmdHelp('ambush')">ambush</div>
           <div class="cmd" @click="cmdHelp('assist')">assist</div>
+          <div class="cmd" @click="cmdHelp('taunt')">taunt</div>
         </div>
       </div>
 
