@@ -79,7 +79,7 @@ const formErrors = ref({});
 const assignments = ref<any[]>([]);
 const assignments_loaded = ref(false);
 
-const endpoint_base = `/builder/worlds/${route.params.world_id}/builders/${route.params.builder_id}/assignments/`;
+const endpoint_base = `/builder/worlds/${route.params.world_id}/builders/${route.params.builder_id}/assignments/?page_size=100`;
 
 onMounted(async () => {
   const resp = await axios.get(endpoint_base);
