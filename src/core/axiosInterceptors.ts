@@ -34,7 +34,7 @@ export default function interceptorSetup() {
         }
       } else if (error.response.status == 400) {
         const errorData = error.response.data;
-        let errorMsg = "Error saving form";
+        let errorMsg = "Error";
         if (errorData.non_field_errors && errorData.non_field_errors.length) {
           errorMsg += ": " + errorData.non_field_errors[0];
         } else if (Array.isArray(errorData)) {

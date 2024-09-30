@@ -21,7 +21,13 @@
         v-if="!store.state.builder.world.is_multiplayer"
       >RESET</button>
       <button class="btn-small ml-4" @click="deletePlayer">DELETE</button>
-      <button class="btn-small ml-4" @click="restorePlayer">RESTORE</button>
+      <!-- <button class="btn-small ml-4" @click="restorePlayer">RESTORE</button> -->
+    </div>
+
+    <div class="mt-4">
+      <router-link :to="{name: 'builder_world_player_restoration', params: { world_id: route.params.world_id, player_id: route.params.player_id }}">
+        Item Restoration
+      </router-link>
     </div>
 
     <div class="data-and-map">
