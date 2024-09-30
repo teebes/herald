@@ -21,6 +21,12 @@
      <div>Player ID: {{ player.id }}</div>
      <div>User ID: {{ player.user_id }}</div>
      <div>Username: {{ player.username }}</div>
+     <div v-if="player.alts.length">
+        Alts:
+        <div v-for="alt in player.alts" :key="alt.id">
+          [ {{ alt.id }} ] {{ alt.name }}
+        </div>
+     </div>
    </div>
   </div>
 </template>
