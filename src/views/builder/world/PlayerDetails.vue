@@ -164,13 +164,6 @@ const deletePlayer = async () => {
   });
 };
 
-const restorePlayer = () => {
-  const c = confirm(`Are you sure you want to restore Player ${player.value.id}?`);
-  if (!c) return;
-
-  store.dispatch("builder/worlds/player_restore");
-};
-
 const resetPlayer = async () => {
   const c = confirm(
     `Are you sure you want to reset Player ${player.value.id}? This will erase all of their progress`
