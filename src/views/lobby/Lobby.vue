@@ -107,7 +107,7 @@
       <div class="worlds-list-section-worlds">
         <WorldCard v-for="world in intro_worlds" :key="world.id" :world="world" />
       </div>
-      <router-link :to="{ name: 'lobby_section', params: { section: 'public' } }" class="lobby-section-link">
+      <router-link :to="{ name: 'lobby_section', params: { section: 'public' } }" class="all-public-worlds-link color-primary">
         View All Public Worlds
       </router-link>
     </div>
