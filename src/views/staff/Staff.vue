@@ -6,6 +6,7 @@
       <div class="mt-2">24-hour New User Signups: {{ panel.user_signups.total }} ({{ panel.user_signups.confirmed }}
         confirmed).</div>
       <div class="mt-2">24-hour Unique Players: {{ panel.user_connections }}</div>
+      <div class="mt-2">Unreviewed Submitted Worlds: {{ panel.unreviewed }}</div>
 
       <div class="controls mt-4">
 

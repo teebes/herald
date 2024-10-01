@@ -11,6 +11,33 @@
           <router-link :to="{ name: 'builder_world_index', params: { world_id: review.world.id } }">{{ review.world.name }}</router-link>
         </div>
 
+        <div class="world-info mb-4">
+          <div class="last-updated">
+            Last Updated: {{ formatTimestamp(review.world_last_updated) }}
+          </div>
+          <div class="author">
+            By
+            <router-link :to="{ name: 'staff_user_info', params: { user_id: review.world_author.id } }">
+              {{ review.world_author.name }}
+            </router-link>
+            <span class="color-text-50 ml-4">[ {{ formatTimestamp(review.world_author.last_login ) }} ]</span>
+          </div>
+          <div class="builders" v-if="review.world_builders.length">
+            Builders:
+            <ul class="list">
+              <li v-for="builder in review.world_builders" :key="builder.id">
+                <router-link
+                  :to="{ name: 'staff_user_info', params: { user_id: builder.id } }"
+                >
+                  {{ builder.name }}
+                </router-link>
+                <span class="color-text-50 ml-4">[ {{ formatTimestamp(review.world_author.last_login ) }} ]</span>
+            </li>
+            </ul>
+          </div>
+
+        </div>
+
         <div v-if="review.text">
           <div class="color-text-50">Review:</div>
           <div>{{ review.text }}</div>
@@ -56,6 +83,7 @@ import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import axios from "axios";
 import { FormElement, } from "@/core/forms";
+import { format } from "path";
 
 const store = useStore();
 
@@ -102,6 +130,16 @@ const reject_review = async (review) => {
     store.commit('ui/notification_set', "Submission rejected.");
   }
 };
+
+function formatTimestamp(timestamp: string): string {
+    const date = new Date(timestamp);
+
+    const month = date.getUTCMonth() + 1; // getUTCMonth() returns 0-based month
+    const day = date.getUTCDate();
+    const year = date.getUTCFullYear().toString().slice(-2); // Get last 2 digits of the year
+
+    return `${month}/${day}/${year}`;
+}
 </script>
 
 <style lang="scss" scoped>
