@@ -283,6 +283,14 @@ const receiveMessage = async ({
   if (message_data.type === "notification.combat.attack") {
     commit("room_chars_update", message_data.data.actor);
     commit("room_chars_update", message_data.data.target);
+
+    // Update target data if it's the player's target
+    if (state.player_target && state.player_target.key === message_data.data.actor.key) {
+      commit("player_target_set", message_data.data.actor);
+    }
+    if (state.player_target && state.player_target.key === message_data.data.target.key) {
+      commit("player_target_set", message_data.data.target);
+    }
   }
 
   // Open & close messages
