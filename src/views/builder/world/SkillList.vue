@@ -270,6 +270,11 @@ const schema = computed<any[]>(() => {
     help: `For Buff and Debuff effects, which stats to modify. Syntax '&lt;stat1&gt;:&lt;multiplayer1&gt; &lt;stat2:multiplier2&gt;'.<br/><br/>
     Example: for a Buff effect to double attack power, and dodge, the arguments would be 'attack_power:2 dodge:2'.`
   };
+  const learn_condition: FormElement = {
+    attr: "learn_conditions",
+    label: "Learn Conditions",
+    help: `The conditions that must be met in order to learn the skill. If this is left blank, the skill can be learned by any teacher willing to teach it.`
+  };
 
   return [
     { children: [code, name] },
@@ -278,10 +283,11 @@ const schema = computed<any[]>(() => {
     { children: [damage, damage_type, damage_calc] },
     { children: [effect, effect_duration] },
     { children: [effect_damage, effect_damage_type, effect_damage_calc] },
-    { children: [args, requires] },
-    { children: [consumes, help] },
-    // { children: [consumes, requires] },
-    // { children: [args, help] }
+    { children: [args, consumes] },
+    { children: [requires, learn_condition] },
+    { children: [help] },
+    // { children: [args, requires] },
+    // { children: [consumes, help] },
   ];
 });
 </script>

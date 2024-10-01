@@ -112,9 +112,15 @@
 
     <!-- Requires -->
     <li v-if="resource.requires">
-      Requires: <span class='ml-2'>{{ resource.requires }}</span>
+      Skill use requires: <span class='ml-2'>{{ resource.requires }}</span>
     </li>
 
+    <!-- Learn Condition -->
+    <li v-if="resource.learn_conditions">
+      Conditions to learn the skill: <span class='ml-2'>{{ resource.learn_conditions }}</span>
+    </li>
+
+    <!-- Help -->
     <li v-if="resource.help">
       Help entry: {{ resource.help }}
     </li>
