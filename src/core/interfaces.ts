@@ -11,6 +11,7 @@ export interface World {
   id: number;
   key: string;
   name: string;
+  description: string;
 }
 
 export interface Player {

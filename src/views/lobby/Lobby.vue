@@ -79,6 +79,14 @@
       </div>
     </div>
 
+    <!-- In Development -->
+    <div class="lobby-section dev" v-if="dev_worlds.length">
+      <div class="section-title">In Development</div>
+      <div class="worlds-list-section-worlds" :class="{ two_length: dev_worlds.length === 2 }">
+        <WorldCard v-for="world in dev_worlds" :key="world.id" :world="world" />
+      </div>
+    </div>
+
     <!-- Building -->
     <div class="lobby-section building">
       <div class="section-title">Building</div>
@@ -99,8 +107,10 @@
       <div class="worlds-list-section-worlds">
         <WorldCard v-for="world in intro_worlds" :key="world.id" :world="world" />
       </div>
+      <router-link :to="{ name: 'lobby_section', params: { section: 'public' } }" class="lobby-section-link">
+        View All Public Worlds
+      </router-link>
     </div>
-
 
     <div class="divider lower-divider"></div>
 
@@ -140,6 +150,7 @@ import WorldCard from "@/components/lobby/WorldCard.vue"
 const chars = ref<any[]>([]);
 const featured_worlds = ref<World[]>([]);
 const discover_worlds = ref<World[]>([]);
+const dev_worlds = ref<World[]>([]);
 const building_worlds = ref<World[]>([]);
 const playing_worlds = ref<World[]>([]);
 const intro_worlds = ref<World[]>([]);
@@ -167,6 +178,7 @@ onMounted(async () => {
   const chars_promise = axios.get('lobby/chars/recent/');
   const featured_worlds_promise = axios.get('lobby/worlds/featured/?page_size=2');
   const discover_worlds_promise = axios.get('lobby/worlds/discover/');
+  const dev_worlds_promise = axios.get('lobby/worlds/dev/?page_size=3');
   const building_worlds_promise = axios.get('lobby/worlds/building/?page_size=3');
   const playing_worlds_promise = axios.get('lobby/worlds/playing/?page_size=3');
   const intro_worlds_promise = axios.get('lobby/worlds/intro/?page_size=3');
@@ -175,6 +187,7 @@ onMounted(async () => {
     chars_resp,
     featured_worlds_resp,
     discover_worlds_resp,
+    dev_worlds_resp,
     building_worlds_resp,
     playing_worlds_resp,
     intro_worlds_resp
@@ -182,6 +195,7 @@ onMounted(async () => {
     chars_promise,
     featured_worlds_promise,
     discover_worlds_promise,
+    dev_worlds_promise,
     building_worlds_promise,
     playing_worlds_promise,
     intro_worlds_promise
@@ -191,6 +205,7 @@ onMounted(async () => {
   featured_worlds.value = featured_worlds_resp.data.results;
   discover_worlds.value = discover_worlds_resp.data.results;
   playing_worlds.value = playing_worlds_resp.data.results;
+  dev_worlds.value = dev_worlds_resp.data.results;
   building_worlds.value = building_worlds_resp.data.results;
   intro_worlds.value = intro_worlds_resp.data.results;
 
