@@ -116,7 +116,7 @@ watch(reward_type, () => {
 const get_profile_link = (profile: Entity) => {
   if (profile.model_type === "randomitemprofile") {
     return {
-      name: 'builder_world_random_profiles',
+      name: 'builder_world_random_profile_list',
       params: {
         world_id: route.params.world_id
       }
