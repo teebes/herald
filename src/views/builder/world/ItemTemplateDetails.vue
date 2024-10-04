@@ -132,6 +132,7 @@
 
       <ItemTemplateEquipment v-if="item_template.type === 'equippable'" />
       <ItemTemplateFood v-else-if="item_template.type === 'food'" />
+      <ItemTemplateAugment v-else-if="item_template.type === 'augment'" />
       <div v-else></div>
 
       <ItemTemplateLoads />
@@ -150,6 +151,7 @@ import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { BUILDER_FORMS } from "@/core/forms.ts";
+import ItemTemplateAugment from "@/components/builder/world/ItemTemplateAugment.vue";
 import ItemTemplateStats from "@/components/builder/world/ItemTemplateStats.vue";
 import ItemTemplateInventory from "@/components/builder/world/ItemTemplateInventory.vue";
 import ItemTemplateEquipment from "@/components/builder/world/ItemTemplateEquipment.vue";
