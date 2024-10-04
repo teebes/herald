@@ -11,7 +11,7 @@
         <tbody>
           <tr v-for="element in elements" :key="element.id">
             <td v-for="field in schema" :key="field.name" :nowrap="isNowrap(field)">
-              <a :href="element.link">
+              <a :href="element.link" class="link-full-cell">
                 {{ getFieldValue(element, field.name) || "&nbsp;" }}
               </a>
             </td>
@@ -53,12 +53,14 @@ tbody {
     td {
       position: relative;
       padding: 0;
-      a {
+      a.link-full-cell {
         display: block;
         width: 100%;
         height: 100%;
         color: inherit;
         text-decoration: none;
+        padding: 16px 8px;
+        box-sizing: border-box;
       }
     }
   }
