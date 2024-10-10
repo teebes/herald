@@ -711,7 +711,7 @@ export const BUILDER_FORMS = {
       options: [
         {
           value: "enter",
-          label: "Room is entered",
+          label: "Character enters mob's room",
         },
         {
           value: "say",
@@ -744,6 +744,18 @@ export const BUILDER_FORMS = {
         {
           value: "social",
           label: "Social is Received"
+        },
+        {
+          value: "combat_enter",
+          label: "Enter Combat",
+        },
+        {
+          value: "combat_exit",
+          label: "Exit Combat",
+        },
+        {
+          value: "new_room",
+          label: "Mob enters a new room",
         }
       ],
     },
