@@ -29,7 +29,7 @@ const editTraits = () => {
     schema: [
       {
         label: 'Traits',
-        name: 'traits',
+        attr: 'traits',
         type: 'text',
         placeholder: 'Enter traits separated by spaces',
         help: "Traits are used to define special abilities and behaviors for mobs. Currently only the 'tracker' trait is available. A tracker mob will chase its target to other rooms within its zone.",
