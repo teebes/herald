@@ -5,7 +5,7 @@
 
     <div
       class="cannot-eq-heavy-armor"
-      v-if="player.archetype !== 'warrior' && item.armor_class === 'heavy'"
+      v-if="cannot_wear_heavy_armor"
     >Cannot equip heavy armor.</div>
 
     <div
@@ -150,14 +150,15 @@ const upgrade_cost = (item) => {
 };
 
 const lines = computed(() => props.item.description.split("\n") || []);
-const player = computed(() => store.state.game.player);
+const player = {...store.state.game.player};
 const is_eq_item_too_high_level = computed(() => {
   // If the user is allowed to wear the item, return false.
   // If the user cannot wear the item, return the max level
   // they are able to wear equipment at.
-  const delta = props.item.level - player.value.level;
+  // const delta = props.item.level - player.value.level;
+  const delta = props.item.level - player.level;
   if (delta > 3) {
-    return player.value.level + 3;
+    return player.level + 3;
   } else {
     return false;
   }
@@ -182,6 +183,14 @@ const onClickContainedItem = (contained_item) => {
 
   store.dispatch("game/cmd", `get ${target} ${container}`);
 };
+
+const cannot_wear_heavy_armor = computed(() => {
+  if (player.marks.heavy_armor_proficiency === 'true' ||
+      player.marks.proficiency_heavy_armor === 'true')
+    return false;
+
+  return player.archetype !== 'warrior' && props.item.armor_class === 'heavy'
+});
 </script>
 
 <style lang="scss" scoped>
