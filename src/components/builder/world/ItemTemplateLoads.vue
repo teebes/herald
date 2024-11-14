@@ -2,11 +2,18 @@
   <div id="item-loads">
     <h3>ITEM LOADED BY</h3>
 
-    <ul class="list" v-if="loaders && loaders.length">
+    <ul class="list" v-if="loaders.length || mob_templates.length || item_templates.length">
       <li v-for="loader in loaders" :key="loader.id">
         <router-link :to="loader_link(loader)">{{ loader.name }}</router-link>
       </li>
+      <li v-for="mob_template in mob_templates" :key="mob_template.id">
+        <router-link :to="mob_template_link(mob_template)">{{ mob_template.name }}</router-link>
+      </li>
+      <li v-for="item_template in item_templates" :key="item_template.id">
+        <router-link :to="item_template_link(item_template)">{{ item_template.name }}</router-link>
+      </li>
     </ul>
+
     <button class="btn-add" @click="onAddLoad">LOAD ITEM IN {{ room.name.toUpperCase() }}</button>
   </div>
 </template>
@@ -20,7 +27,18 @@ const store = useStore();
 const route = useRoute();
 const router = useRouter();
 
-const loaders = computed(() => store.state.builder.worlds.item_template_loads);
+// const loaders = computed(() => store.state.builder.worlds.item_template_loads);
+const loads = computed(() => store.state.builder.worlds.item_template_loads);
+const loaders = computed(() => {
+  return loads.value.loaders || [];
+});
+const mob_templates = computed(() => {
+  return loads.value.mob_templates || [];
+})
+const item_templates = computed(() => {
+  return loads.value.item_templates || [];
+})
+
 const template = computed(() => store.state.builder.worlds.item_template);
 const room = computed(() => store.state.builder.room);
 
@@ -31,6 +49,26 @@ const loader_link = (loader) => {
       world_id: route.params.world_id,
       loader_id: loader.id,
       zone_id: loader.zone.id
+    }
+  };
+};
+
+const mob_template_link = (mob_template) => {
+  return {
+    name: 'builder_mob_template_details',
+    params: {
+      world_id: route.params.world_id,
+      mob_template_id: mob_template.id
+    }
+  };
+};
+
+const item_template_link = (item_template) => {
+  return {
+    name: 'builder_item_template_details',
+    params: {
+      world_id: route.params.world_id,
+      item_template_id: item_template.id
     }
   };
 };

@@ -32,8 +32,10 @@ export const item_template_actions = {
     const resp = await axios.get(
       `/builder/worlds/${world_id}/itemtemplates/${item_template_id}/loadsin/`
     );
-    commit("item_template_loads_set", resp.data.loaders);
-    return resp.data.loaders;
+    commit("item_template_loads_set", resp.data);
+    return resp.data;
+    // commit("item_template_loads_set", resp.data.loaders);
+    // return resp.data.loaders;
   },
 
   item_template_load_in_room: async (
@@ -74,7 +76,17 @@ export const item_template_mutations = {
   },
 
   item_template_loads_add: (state, item_template_load) => {
-    state.item_template_loads.push(item_template_load);
+    const item_template_loads = state.item_template_loads || {};
+
+    if (!item_template_loads["loaders"]) {
+      item_template_loads["loaders"] = [];
+    }
+
+    item_template_loads["loaders"].push(item_template_load);
+
+    state.item_template_loads = item_template_loads;
+
+    // state.item_template_loads.push(item_template_load);
   },
 
   item_template_quests_set: (state, quests) => {
