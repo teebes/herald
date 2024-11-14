@@ -47,31 +47,29 @@
 
       <div class="lead">
         <div class="first-paragraph">
-          WrittenRealms - build and play narrative adventure games. To play through a small
-          introduction world, click the Play button above. Once you fight your
-          way out of the cave, you will be taken to Edeus, the multiplayer world where
-          more adventure awaits.
+          Written Realms - Play text adventure games, build your own. To try out a small
+          introduction world, click the Play button above. To dive straight into one of our larger worlds,
+          scroll down to the Featured Worlds section below.
         </div>
 
         <div class="highlights">
           <div class="highlight">
-            Free to play! No ads, no paywalls, no annoying popups. Let yourself
-            get fully immersed in another world.
+            Truly free. No paywalls, no ads, nothing getting in the way of immersion. Just play.
           </div>
 
           <div class="highlight">
-            Features a rich combat system with four playable classes, each with
-            distinct skills and character customizations.
+            Features a rich combat system. Each world offers either four playable classes with
+            predefined skills and talents, or builder-defined custom skills and abilities.
           </div>
 
           <div class="highlight">
-            Play on any device, anywhere: the game offers a different layout and
+            Play on any device, anywhere. The Written Realms UI is responsive, offering a different layout and
             interface for desktop and mobile.
           </div>
 
           <div class="highlight">
-            Different worlds to progress through, some singleplayer and some
-            multiplayer. You can even build your own.
+            Build your own worlds. Written Realms offers a powerful World Editor interface which allows you to
+            create your own text adventure games without needing to code.
           </div>
         </div>
       </div>
@@ -99,7 +97,7 @@
       <div class="divider"></div>
 
       <div class="augmented-ui">
-        <div class="aui-title">Experience a powerful augmented text interface</div>
+        <div class="aui-title">A powerful augmented text interface</div>
 
         <div class="aui-subtitle">
           Written Realms provides a helpful User Interface that augments the
@@ -133,7 +131,7 @@
 
           <div class="feature-text">
             <div>
-              Text popups: hover, click or tap over significant blocks of text
+              Text hovers: hover, click or tap over significant blocks of text
               to view contextual information and actions.
             </div>
           </div>
@@ -162,8 +160,8 @@
           </div>
           <div class="feature-text">
             <div>
-              Build your own worlds: powerful World Editor interface, no
-              programming needed!
+              World Editor: a powerful world building system combines actions, reactions, conditions and
+              quests to give builders maximum freedom of creation, without needing to code.
             </div>
           </div>
         </div>
