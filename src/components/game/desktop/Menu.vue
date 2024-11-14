@@ -21,7 +21,10 @@
           <div class="action" @click="onClickPatreon">
             <a href="https://www.patreon.com/writtenrealms">Support Us</a>
           </div>
-          <div class="action" @click="onClickExit">
+          <div class="action" @click="onClickLeave" v-if="store.state.game.world.instance_of_id">
+            <a href="#" class="exit-game" @click="onClickLeave">Leave Instance</a>
+          </div>
+          <div class="action" @click="onClickExit" v-else>
             <a href="#" class="exit-game" @click="onClickExit">Exit World</a>
           </div>
         </template>
@@ -69,6 +72,11 @@ const onClickPatreon = () => {
 const onClickExit = () => {
   emit('close');
   store.dispatch("game/cmd", "quit");
+}
+
+const onClickLeave = () => {
+  emit('close');
+  store.dispatch("game/cmd", "leave");
 }
 
 const onClickSettings = () => {
