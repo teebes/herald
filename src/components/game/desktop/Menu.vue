@@ -7,7 +7,7 @@
         </template>
         <template v-else>
           <div class="action" @click="onClickSettings">
-            <a href="#" class='settings' @click.prevent="onClickSettings">Settings</a>
+            <a href="#" class='settings' @click.prevent>Settings</a>
           </div>
           <div class="action" v-if="world.id === 2">
             <a href="#" @click.prevent="onClickMap">World Map</a>
@@ -22,10 +22,10 @@
             <a href="https://www.patreon.com/writtenrealms">Support Us</a>
           </div>
           <div class="action" @click="onClickLeave" v-if="store.state.game.world.instance_of_id">
-            <a href="#" class="exit-game" @click="onClickLeave">Leave Instance</a>
+            <a href="#" class="exit-game" @click.prevent>Leave Instance</a>
           </div>
           <div class="action" @click="onClickExit" v-else>
-            <a href="#" class="exit-game" @click="onClickExit">Exit World</a>
+            <a href="#" class="exit-game" @click.prevent>Exit World</a>
           </div>
         </template>
       </div>
