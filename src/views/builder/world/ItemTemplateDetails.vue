@@ -106,7 +106,7 @@
 
         <div class="mt-4 color-text-70" v-if="item_template.is_boat">Item allows to go on water.</div>
 
-        <template v-if="store.state.builder.world.is_multiplayer">
+        <!-- <template v-if="store.state.builder.world.is_multiplayer">
           <div
             class="mt-4 color-text-70"
             v-if="item_template.is_persistent"
@@ -115,7 +115,7 @@
             class="mt-4 color-text-70"
             v-else
           >Items spawned by this template will not persist over reboots if left on the ground.</div>
-        </template>
+        </template> -->
 
         <div class='mt-4'><span class="color-text-70">Item currency:</span> {{ item_template.currency }}</div>
 
@@ -195,13 +195,13 @@ const editAdvanced = () => {
       widget: "checkbox"
     },
   ];
-  if (store.state.builder.world.is_multiplayer) {
-    schema.push({
-      attr: "is_persistent",
-      label: "Is Persistent",
-      widget: "checkbox"
-    });
-  }
+  // if (store.state.builder.world.is_multiplayer) {
+  //   schema.push({
+  //     attr: "is_persistent",
+  //     label: "Is Persistent",
+  //     widget: "checkbox"
+  //   });
+  // }
   schema.push({
     attr: "currency",
     label: "Currency",
