@@ -485,6 +485,20 @@ const actions = {
         path_id: resp.data.id
       }
     });
+  },
+
+  path_delete: async ({ commit, state }) => {
+    await axios.delete(
+      `builder/worlds/${state.world.id}/paths/${state.path.id}/`
+    );
+    commit('ui/notification_set', 'Path deleted.', { root: true });
+    router.push({
+      name: 'builder_zone_index',
+      params: {
+        world_id: state.world.id,
+        zone_id: state.zone.id
+      }
+    });
   }
 };
 

@@ -2,7 +2,10 @@
   <div v-if="path">
     <h2>
       {{ store.state.builder.path.name }}
-      <button class="btn-small" @click="editInfo">EDIT</button>
+      <div>
+        <button class="btn-small" @click="editInfo">EDIT</button>
+        <button class="btn-small ml-2" @click="deletePath">DELETE</button>
+      </div>
     </h2>
     <div class="map-and-rooms">
       <Map
@@ -169,6 +172,10 @@ const editInfo = () => {
     action: "builder/path_save"
   };
   store.commit('ui/modal/open_form', modal);
+};
+
+const deletePath = () => {
+  store.dispatch('builder/path_delete');
 };
 </script>
 
