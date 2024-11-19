@@ -125,8 +125,6 @@
         </div>
         <div v-else class="mt-4 color-text-70">No On Use command defined.</div>
 
-
-
         <button class="btn-thin edit-advanced" @click="editAdvanced">EDIT ADVANCED SETTINGS</button>
       </div>
 
@@ -225,7 +223,13 @@ const editAdvanced = () => {
     attr: "on_use_description",
     label: "On Use Description",
     help: "Help entry for the item's on use command, shown on the item lookup screens."
-  }])
+  },
+  {
+    attr: "on_use_equipped",
+    label: "Only Usable Equipped",
+    widget: "checkbox",
+    help: "If checked, the item can only be used if it is equipped."
+  }]);
   const modal = {
     title: `Item Template ${entity.id}`,
     data: entity,
