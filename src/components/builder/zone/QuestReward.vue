@@ -13,6 +13,9 @@
     <div
       v-if="reward.type == 'faction'"
     >Receive {{ reward.qty }} standing with {{ reward.profile.name }}.</div>
+    <div v-if="reward.type == 'currency'">
+      Receive {{ reward.qty }} {{ currency_name }}.
+    </div>
 
     <div class="actions">
       <button class="btn-thin" @click="edit">EDIT</button>
@@ -51,6 +54,13 @@
           :formErrors="formErrors"
         />
 
+        <FormField
+          v-else-if="reward_type == 'currency'"
+          class="currency"
+          :elementSchema="currency_schema"
+          v-model="currency_id"
+          :formErrors="formErrors"/>
+
         <FormField :elementSchema="quantity_schema" v-model="quantity" :formErrors="formErrors" />
       </div>
     </div>
@@ -63,7 +73,7 @@
 </template>
 
 <script lang='ts' setup>
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import FormField from "@/components/forms/FormField.vue";
@@ -85,6 +95,7 @@ const reward_type = ref("gold");
 const reward_data = ref<Entity | null>(null);
 const formErrors = ref({});
 const quantity = ref(1);
+const currency_id = ref(0);
 
 const props = defineProps<{
   reward?: any;
@@ -105,8 +116,16 @@ if (props.reward !== undefined) {
 
   quantity.value = props.reward.qty;
   reward_data.value = props.reward.profile;
+  if (props.reward.currency) {
+    currency_id.value = props.reward.currency;
+  }
 } else if (props.new_reward) {
   edit_mode.value = true;
+}
+
+if (!currency_id.value) {
+  const currency = store.state.builder.world.currencies.find(c => c.is_default === true);
+  if (currency) currency_id.value = currency.id;
 }
 
 watch(reward_type, () => {
@@ -183,9 +202,28 @@ const reward_type_selection_schema: FormElement = {
     {
       value: "faction",
       label: "Faction Standing"
-    }
+    },
+    {
+      value: "currency",
+      label: "Currency",
+    },
   ]
 };
+
+const currency_schema = {
+  attr: "currency",
+  label: "Currency",
+  options: store.state.builder.world.currencies.map(c => ({
+    value: c.id,
+    label: c.name
+  }))
+};
+
+const currency_name = computed(() => {
+  const currency = store.state.builder.world.currencies.find(c => c.id === currency_id.value);
+  return currency ? currency.name : "";
+});
+
 const edit = () => { edit_mode.value = true; };
 
 const cancel = () => {
@@ -197,9 +235,11 @@ const save = async () => {
   const save_data = {
     qty: quantity.value,
     profile: reward_data.value,
-    type: reward_type.value
+    type: reward_type.value,
+    currency: null as number | null
   };
   if (reward_type.value === "profile") save_data.type = "item";
+  if (reward_type.value === "currency") save_data.currency = currency_id.value;
 
   if (props.new_reward) {
     await store.dispatch("builder/zones/quest_reward_create", save_data);

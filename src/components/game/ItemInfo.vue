@@ -91,11 +91,11 @@
     <div class='color-primary' v-if="item.on_use_description">On Use: {{ item.on_use_description }}</div>
     <div class='color-primary' v-else-if="item.on_use_cmd">Item has On Use command.</div>
 
-    <div v-if="item.cost && item.currency === 'gold'" class="color-secondary mt-2">
-      Sells for {{ item.cost }} gold.
+    <div v-if="item.cost" class="color-secondary mt-2">
+      Sells for {{ item.cost }} {{ currencies[item.currency] }}.
+
       <template v-if="isUpgradable">
         <br />
-        <!-- Upgrade can be attempted for {{ item.upgrade_cost }} gold. -->
          Upgrade can be attempted for {{ upgrade_cost(item) }} gold.
       </template>
     </div>
@@ -190,6 +190,15 @@ const cannot_wear_heavy_armor = computed(() => {
     return false;
 
   return player.archetype !== 'warrior' && props.item.armor_class === 'heavy'
+});
+
+const currencies = computed(() => {
+  const currencies = {}
+  for (const currency_id of Object.keys(store.state.game.world.currencies)) {
+    const currency_data = store.state.game.world.currencies[currency_id];
+    currencies[currency_data.code] = currency_data.name;
+  }
+  return currencies;
 });
 </script>
 

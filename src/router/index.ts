@@ -84,6 +84,7 @@ const routes = [
       { path: 'skills', name: 'builder_world_skill_list', component: () => import('@/views/builder/world/SkillList.vue') },
       { path: 'startingeq', name: 'builder_world_starting_eq_list', component: () => import('@/views/builder/world/StartingEqList.vue') },
       { path: 'socials', name: 'builder_world_social_list', component: () => import('@/views/builder/world/SocialList.vue') },
+      { path: 'currencies', name: 'builder_world_currency_list', component: () => import('@/views/builder/world/CurrencyList.vue') },
 
       // Zone Views
       { path: 'zones/:zone_id', name: 'builder_zone_index', component: () => import('@/views/builder/zone/Zone.vue') },

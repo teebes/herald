@@ -67,6 +67,7 @@
           <div class="cmd" @click="cmdHelp('factions')">factions</div>
           <div class="cmd" @click="cmdHelp('scan')">scan</div>
           <div class="cmd" @click="cmdHelp('track')">track</div>
+          <div class="cmd" @click="cmdHelp('currencies')">currencies</div>
         </div>
       </div>
 

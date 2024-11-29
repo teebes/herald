@@ -12,7 +12,6 @@
 
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
-// import { Component, Prop, Vue } from "vue-property-decorator";
 import { BUILDER_FORMS } from "@/core/forms.ts";
 import InColumnList from "@/components/incolumnlist/List.vue";
 

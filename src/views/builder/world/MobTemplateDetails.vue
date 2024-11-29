@@ -128,7 +128,7 @@
       <MobTemplateSkills class="skills" />
       <MobTemplateTraits class="traits" />
       <MobTemplateQuests class="quests" />
-
+      <MobTemplateAdvanced class="advanced" />
     </div>
   </div>
 </template>
@@ -150,6 +150,7 @@ import MobTemplateCrafting from "@/components/builder/world/MobTemplateCrafting.
 import MobTemplateSkills from "@/components/builder/world/MobTemplateSkills.vue";
 import MobTemplateTraits from "@/components/builder/world/MobTemplateTraits.vue";
 import MobTemplateUpgrades from "@/components/builder/world/MobTemplateUpgrades.vue";
+import MobTemplateAdvanced from "@/components/builder/world/MobTemplateAdvanced.vue";
 
 const store = useStore();
 const route = useRoute();

@@ -15,9 +15,10 @@
         class="reference-link"
       >{{ objective.template.name }}</router-link>.
     </div>
-    <div v-if="objective.type == 'gold'">Receive {{ objective.qty }} gold.</div>
-    <div v-if="objective.type == 'glory'">Receive {{ objective.qty }} glory.</div>
-    <div v-if="objective.type === 'medals'">Receive {{ objective.qty }} medals.</div>
+    <div v-if="objective.type == 'gold'">Turn in {{ objective.qty }} Gold.</div>
+    <div v-if="objective.type == 'glory'">Turn in {{ objective.qty }} Glory.</div>
+    <div v-if="objective.type === 'medals'">Turn in {{ objective.qty }} Medals.</div>
+    <div v-if="objective.type === 'currency'">Turn in {{ objective.qty }} {{ currency_name }}</div>
 
     <div class="actions">
       <button class="btn-thin" @click="edit">EDIT</button>
@@ -52,6 +53,13 @@
         />
 
         <FormField
+          v-else-if="objective_type == 'currency'"
+          class="currency"
+          :elementSchema="currency_schema"
+          v-model="currency_id"
+          :formErrors="formErrors"/>
+
+        <FormField
           class="quantity"
           :elementSchema="quantity_schema"
           v-model="quantity"
@@ -68,7 +76,7 @@
 </template>
 
 <script lang='ts' setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import FormField from "@/components/forms/FormField.vue";
@@ -87,6 +95,7 @@ const store = useStore();
 const edit_mode = ref(false);
 const objective_type = ref("gold");
 const objective_data = ref<Entity | null>(null);
+const currency_id = ref(0);
 const formErrors = ref({});
 const quantity = ref(1);
 
@@ -101,8 +110,16 @@ if (props.objective !== undefined) {
   objective_type.value = props.objective.type;
   quantity.value = props.objective.qty;
   objective_data.value = props.objective.template;
+  if (props.objective.currency) {
+    currency_id.value = props.objective.currency;
+  }
 } else if (props.new_objective) {
   edit_mode.value = true;
+}
+
+if (!currency_id.value) {
+  const currency = store.state.builder.world.currencies.find(c => c.is_default === true);
+  if (currency) currency_id.value = currency.id;
 }
 
 const get_item_link = (item_template_id: number) => {
@@ -139,7 +156,7 @@ const objective_type_selection_schema: FormElement = {
   options: [
     {
       value: "item",
-      label: "Item Received"
+      label: "Item Turned In"
     },
     {
       value: "mob",
@@ -147,18 +164,36 @@ const objective_type_selection_schema: FormElement = {
     },
     {
       value: "gold",
-      label: "Gold Received"
+      label: "Gold"
     },
     {
       value: "glory",
-      label: "Glory Received"
+      label: "Glory"
     },
     {
       value: "medals",
       label: "Medals"
+    },
+    {
+      value: "currency",
+      label: "Currency",
     }
   ]
 };
+
+const currency_schema = {
+  attr: "currency",
+  label: "Currency",
+  options: store.state.builder.world.currencies.map(c => ({
+    value: c.id,
+    label: c.name
+  }))
+};
+
+const currency_name = computed(() => {
+  const currency = store.state.builder.world.currencies.find(c => c.id === currency_id.value);
+  return currency ? currency.name : "";
+});
 
 const edit = () => { edit_mode.value = true; };
 const cancel = () => {
@@ -170,8 +205,13 @@ const save = async () => {
   const save_data = {
     qty: quantity.value,
     template: objective_data.value,
-    type: objective_type.value
+    type: objective_type.value,
+    currency: null as number | null,
   };
+  if (objective_type.value === 'currency') {
+    save_data.currency = currency_id.value;
+  }
+
   if (props.new_objective) {
     await store.dispatch("builder/zones/quest_objective_create", save_data);
     emit("added");

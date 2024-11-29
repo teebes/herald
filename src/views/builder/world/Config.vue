@@ -91,7 +91,7 @@
         <router-link :to="world_admin_link">manage</router-link>
       </div>
 
-      <div class="random-profiles">
+      <div class="random-profiles" v-if="!world.instance_of.id">
         <h3>RANDOM ITEM PROFILES</h3>
 
         <div>
@@ -108,7 +108,7 @@
         >manage</router-link>
       </div>
 
-      <div class="transformation-templates">
+      <div class="transformation-templates" v-if="!world.instance_of.id">
         <h3>Transformations</h3>
 
         <div>
@@ -126,7 +126,7 @@
         >manage</router-link>
       </div>
 
-      <div class="world-builders">
+      <div class="world-builders" v-if="!world.instance_of.id">
         <h3>World Builders</h3>
 
         <div>Builders are able to access the editor for a given world. They can be given read-only access.</div>
@@ -136,7 +136,7 @@
         >manage</router-link>
       </div>
 
-      <div class="world-players">
+      <div class="world-players" v-if="!world.instance_of.id">
         <h3>World Players</h3>
 
         <div>View information about players in your world.</div>
@@ -146,7 +146,7 @@
         >manage</router-link>
       </div>
 
-      <div class="world-factions">
+      <div class="world-factions" v-if="!world.instance_of.id">
         <h3>Worlds Factions</h3>
 
         <div>View information about factions in your world.</div>
@@ -162,7 +162,7 @@
         <router-link :to="world_facts_link">manage</router-link>
       </div>
 
-      <div class='world-skills'>
+      <div class='world-skills' v-if="!world.instance_of.id">
         <h3>Custom Skills</h3>
 
         <div>Builders can create skills, usable by players and mobs that do not have an archetype. To enable the creation of players that do not have an archetype, check the "Classless Players" checkbox under Advanced Config.</div>
@@ -170,7 +170,7 @@
         <router-link :to="world_skills_link">manage</router-link>
       </div>
 
-      <div class="world-starting-eq">
+      <div class="world-starting-eq" v-if="!world.instance_of.id">
         <h3>Starting EQ</h3>
 
         <div>Define the items that a player starts with.</div>
@@ -178,22 +178,33 @@
         <router-link :to="world_starting_eq_link">manage</router-link>
       </div>
 
-      <div class="world-socials">
+      <div class="world-socials" v-if="!world.instance_of.id">
         <h3>SOCIALS</h3>
         <div>Socials are custom commands defined by builders that players and mobs can use to emote in a standardized way. Example typical socials: nod, shrug, wave, smile, laugh, sigh, shake, slap.</div>
 
         <router-link :to="world_socials_link">manage</router-link>
       </div>
 
-      <div class="world-name-exclusions">
+      <div class="world-name-exclusions" v-if="!world.instance_of.id">
         <h3>NAME EXCLUSIONS</h3>
 
         <div>Exclude certain names available to players at character creation.</div>
         <button class="btn-thin" @click="editNameExclusions">EDIT</button>
       </div>
+
+      <div class="world-currencies" v-if="!world.instance_of.id">
+        <h3>CURRENCIES</h3>
+
+        <div>Define the currencies that players can use in your world.</div>
+
+        <router-link
+          :to="{name: 'builder_world_currency_list', params: {world_id: $route.params.world_id}}"
+        >manage</router-link>
+      </div>
     </div>
 
-    <div class="divider"></div>
+    <div class="instances" v-if="!world.instance_of.id">
+      <div class="divider"></div>
       <h3 class='mb-8'>INSTANCES</h3>
 
       <p>An instance is a unique, isolated version of a game area or dungeon that a player or group can enter, allowing for a private experience separate from other players in the world.</p>
@@ -207,7 +218,7 @@
       <div v-for="instance in store.state.builder.worlds.instances" :key="instance.id" :instance="instance" class="mb-8">
         <a :href="instanceLink(instance.id)">{{ instance.name }}</a>
       </div>
-
+    </div>
   </div>
   <div v-else>
     <p>You do not have permission to configure this world.</p>
@@ -238,6 +249,7 @@ const router = useRouter();
 const route = useRoute();
 
 const world = computed(() => store.state.builder.world);
+console.log(world.value);
 const config = computed(() => store.state.builder.worlds.config);
 
 const room_link = (id: number) => {
