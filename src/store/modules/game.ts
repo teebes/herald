@@ -60,6 +60,8 @@ const set_initial_state = () => {
     // cleared momentarily, and we want the UI to be more robust than that.
     player_target: null,
 
+    focus_data: {},
+
     // Master record for all tracked effects, keyed by character key
     effects: {},
 
@@ -290,6 +292,14 @@ const receiveMessage = async ({
     }
     if (state.player_target && state.player_target.key === message_data.data.target.key) {
       commit("player_target_set", message_data.data.target);
+    }
+
+    if (state.player.focus) {
+      if (message_data.data.actor.keyword.toLowerCase() === state.player.focus.toLowerCase()) {
+        commit("update_focus_data", message_data.data.actor);
+      } else if (message_data.data.target.keyword.toLowerCase() === state.player.focus.toLowerCase()) {
+        commit("update_focus_data", message_data.data.target);
+      }
     }
   }
 
@@ -1129,6 +1139,10 @@ const mutations = {
   motd_set: (state, motd) => {
     state.motd = motd;
   },
+
+  update_focus_data: (state, data) => {
+    state.focus_data = data;
+  }
 };
 
 const getters = {
