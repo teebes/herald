@@ -79,6 +79,11 @@ const isNegativeOutcome = computed(() => {
 });
 
 const isPositiveOutcome = computed(() => {
+  if (props.message.type === "notification.combat.healing" &&
+    props.message.data.target.key === player_key) {
+      return true;
+    }
+
   if (
     (props.message.data.actor.key === player_key &&
       props.message.data.outcome === "hit") ||
