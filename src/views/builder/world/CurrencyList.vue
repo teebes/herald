@@ -27,7 +27,7 @@ const schema = computed<any[]>(() => {
     attr: "code",
     label: "Code",
     required: true,
-    help: `The currency code that commands (for example /award) will refer to.`
+    help: `The currency code that commands (for example /award) and conditions will refer to.`
   }
   const name: FormElement = {
     attr: "name",
