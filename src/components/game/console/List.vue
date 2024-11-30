@@ -29,9 +29,12 @@ const props = defineProps<{ message: any }>();
 
 const isLastMessage = computed(() => store.state.game.last_message[props.message.type] == props.message);
 const currencyDisplay = (currency, cost) => {
-  if (cost == 1) return currency;
-  if (currency === "gold") return currency;
-  return currency + "s";
+  if (cost == 1) {
+    if (currency[currency.length - 1] === "s") {
+      return currency.slice(0, -1);
+    }
+  }
+  return currency;
 }
 </script>
 
