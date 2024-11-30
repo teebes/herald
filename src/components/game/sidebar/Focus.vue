@@ -4,9 +4,13 @@
       <input v-if="edit_mode == true" v-model="temp_focus" id="sidebarFocus" />
       <input v-else readonly="true" :value="focus" @click="onClickReadonly" ref="readonlyEl" />
     </div>
-    <div v-if="focus_data.health" class="mt-1">
-      <span class='color-text-50 mr-1'>{{ focus_data.health }} / {{ focus_data.health_max }}</span>
-      [ {{  Math.round(focus_data.health / focus_data.health_max * 100) }}% ]
+
+    <div v-if="focus" class="mt-1">
+      <div v-if="focus_data.health">
+        <span class='color-text-50 mr-1'>{{ focus_data.health }} / {{ focus_data.health_max }}</span>
+        [ {{  Math.round(focus_data.health / focus_data.health_max * 100) }}% ]
+      </div>
+      <div v-else class="color-text-50">Not in room</div>
     </div>
   </form>
 </template>
