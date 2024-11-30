@@ -60,6 +60,8 @@ const set_initial_state = () => {
     // cleared momentarily, and we want the UI to be more robust than that.
     player_target: null,
 
+    focus_data: {},
+
     // Master record for all tracked effects, keyed by character key
     effects: {},
 
@@ -224,7 +226,6 @@ const receiveMessage = async ({
     message_data.type === "notification.transport.exit" ||
     message_data.type === "affect.death" ||
     message_data.type === "affect.transfer"
-    //|| message_data.type === "notification.death"
   ) {
     commit("map_add", message_data.data.room);
     commit("room_set", message_data.data.room);
@@ -246,6 +247,21 @@ const receiveMessage = async ({
         "ui/notification_set",
         { text: "Loading...", expires: false },
         { root: true });
+    }
+
+    // Update focus display
+    if (state.player.focus) {
+      let foundFocus = false;
+      for (const char of message_data.data.room.chars) {
+        if (char.keyword.toLowerCase() === state.player.focus.toLowerCase()) {
+          foundFocus = true;
+          commit("update_focus_data", char);
+          break;
+        }
+      }
+      if (foundFocus === false) {
+        commit("update_focus_data", {});
+      }
     }
 
   } else if (message_data.type === "cmd./jump.success") {
@@ -290,6 +306,14 @@ const receiveMessage = async ({
     }
     if (state.player_target && state.player_target.key === message_data.data.target.key) {
       commit("player_target_set", message_data.data.target);
+    }
+
+    if (state.player.focus) {
+      if (message_data.data.actor.keyword.toLowerCase() === state.player.focus.toLowerCase()) {
+        commit("update_focus_data", message_data.data.actor);
+      } else if (message_data.data.target.keyword.toLowerCase() === state.player.focus.toLowerCase()) {
+        commit("update_focus_data", message_data.data.target);
+      }
     }
   }
 
@@ -1129,6 +1153,10 @@ const mutations = {
   motd_set: (state, motd) => {
     state.motd = motd;
   },
+
+  update_focus_data: (state, data) => {
+    state.focus_data = data;
+  }
 };
 
 const getters = {

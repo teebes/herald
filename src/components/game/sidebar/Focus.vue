@@ -4,6 +4,14 @@
       <input v-if="edit_mode == true" v-model="temp_focus" id="sidebarFocus" />
       <input v-else readonly="true" :value="focus" @click="onClickReadonly" ref="readonlyEl" />
     </div>
+
+    <div v-if="focus" class="mt-1">
+      <div v-if="focus_data.health">
+        <span class='color-text-50 mr-1'>{{ focus_data.health }} / {{ focus_data.health_max }}</span>
+        [ {{  Math.round(focus_data.health / focus_data.health_max * 100) }}% ]
+      </div>
+      <div v-else class="color-text-50">Not in room</div>
+    </div>
   </form>
 </template>
 
@@ -17,6 +25,7 @@ const temp_focus = ref<string>("");
 const edit_mode = ref<boolean>(false);
 
 const focus = computed(() => store.state.game.player.focus);
+const focus_data = computed(() => store.state.game.focus_data);
 
 watch(() => focus.value, (newFocus: string) => {
   edit_mode.value = false;
