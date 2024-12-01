@@ -5,8 +5,13 @@
     <div>
       <span class="color-text-70">Merchant profits:</span> {{ template.merchant_profit }}x
     </div>
+
     <div>
       <span class="color-text-70">Regen rate:</span> {{ template.regen_rate }}%
+    </div>
+
+    <div>
+      <span class="color-text-70">Roam chance:</span> {{ template.roam_chance }}%
     </div>
 
     <button class="btn-thin" @click="editAdvanced">EDIT</button>
