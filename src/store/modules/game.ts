@@ -306,9 +306,9 @@ const receiveMessage = async ({
 
     if (state.player.focus) {
       const focus = state.player.focus.toLowerCase();
-      if (message_data.data.actor.keywords.includes(focus)) {
+      if (message_data.data.actor.keywords && message_data.data.actor.keywords.includes(focus)) {
         commit("update_focus_data", message_data.data.actor);
-      } else if (message_data.data.target.keywords.includes(focus)) {
+      } else if (message_data.data.target.keywords && message_data.data.target.keywords.includes(focus)) {
         commit("update_focus_data", message_data.data.target);
       }
     }
