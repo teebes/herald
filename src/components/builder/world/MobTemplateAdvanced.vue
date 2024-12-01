@@ -3,7 +3,10 @@
     <h3>ADVANCED</h3>
 
     <div>
-      <span class="color-text-70">Merchant profits:</span> {{ template.merchant_profit }}
+      <span class="color-text-70">Merchant profits:</span> {{ template.merchant_profit }}x
+    </div>
+    <div>
+      <span class="color-text-70">Regen rate:</span> {{ template.regen_rate }}%
     </div>
 
     <button class="btn-thin" @click="editAdvanced">EDIT</button>
@@ -28,6 +31,16 @@ const editAdvanced = () => {
         label: "Merchant Profits",
         help: "How much more this mob will sell an item for than it will buy it for."
       },
+      {
+        attr: "regen_rate",
+        label: "Regen Rate",
+        help: "What percentage of the mob's health will regenerate every 2 seconds."
+      },
+      {
+        attr: "roam_chance",
+        label: "Roam Chance",
+        help: "The percent chance that the mob will roam to a new location every 2 seconds."
+      }
     ],
     action: "builder/worlds/mob_template_save"
   }
