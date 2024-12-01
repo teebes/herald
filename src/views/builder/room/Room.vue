@@ -99,7 +99,7 @@ const key_link = (key: any) => {
 };
 
 const onTypeE = (e: KeyboardEvent) => {
-  if (store.state.ui.modal) return;
+  if (store.state.ui.modal.isOpen) return;
   const key = String.fromCharCode(e.keyCode).toLowerCase();
   if (key === "e") editInfo();
 };
