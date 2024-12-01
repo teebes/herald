@@ -114,6 +114,7 @@ export const CONDITIONS: FormElement = {
     <code>
     - archetype archetype<br/>
     - core_faction faction_code<br/>
+    - currency code amount<br/>
     - fact_check<br/>
     - gender<br/>
     - gold<br/>
