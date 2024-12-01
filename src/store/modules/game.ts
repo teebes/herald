@@ -251,15 +251,11 @@ const receiveMessage = async ({
 
     // Update focus display
     if (state.player.focus) {
-      let foundFocus = false;
-      for (const char of message_data.data.room.chars) {
-        if (char.keyword.toLowerCase() === state.player.focus.toLowerCase()) {
-          foundFocus = true;
-          commit("update_focus_data", char);
-          break;
-        }
-      }
-      if (foundFocus === false) {
+      const focus = state.player.focus.toLowerCase();
+      const char = message_data.data.room.chars.find((char) => char.keywords.includes(focus));
+      if (char) {
+        commit("update_focus_data", char);
+      } else {
         commit("update_focus_data", {});
       }
     }
@@ -309,9 +305,10 @@ const receiveMessage = async ({
     }
 
     if (state.player.focus) {
-      if (message_data.data.actor.keyword.toLowerCase() === state.player.focus.toLowerCase()) {
+      const focus = state.player.focus.toLowerCase();
+      if (message_data.data.actor.keywords.includes(focus)) {
         commit("update_focus_data", message_data.data.actor);
-      } else if (message_data.data.target.keyword.toLowerCase() === state.player.focus.toLowerCase()) {
+      } else if (message_data.data.target.keywords.includes(focus)) {
         commit("update_focus_data", message_data.data.target);
       }
     }
@@ -357,6 +354,17 @@ const receiveMessage = async ({
     commit("room_set", message_data.data.target);
     commit("map_add", message_data.data.target);
     commit("last_viewed_room_message_set", message_data);
+
+    if (state.player.focus) {
+      const focus = state.player.focus.toLowerCase();
+      const char = message_data.data.target.chars.find((char) => char.keywords.includes(focus));
+      if (char) {
+        commit("update_focus_data", char);
+      } else {
+        commit("update_focus_data", {});
+      }
+    }
+
   }
 
   // On death, clear out combat window
