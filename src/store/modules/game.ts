@@ -216,6 +216,7 @@ const receiveMessage = async ({
   }
 
   if (message_data.type === 'affect.enter') {
+    await new Promise(resolve => setTimeout(resolve, 2000));
     dispatch('cmd', 'enter ' + message_data.data.leader);
   }
 
