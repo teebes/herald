@@ -262,7 +262,7 @@
             <div class="cmd" @click="cmdHelp('reset')">reset</div>
             <div class="cmd" @click="cmdHelp('geta')">/geta</div>
             <div class="cmd" @click="cmdHelp('seta')">/seta</div>
-            <div class="cmd" @click="cmdHelp('regen')">regen</div>
+            <div class="cmd" @click="cmdHelp('regen')">/regen</div>
             <div class="cmd" @click="cmdHelp('/purge')">/purge</div>
             <div class="cmd" @click="cmdHelp('masspurge')">/masspurge</div>
             <div class="cmd" @click="cmdHelp('force')">/force</div>
@@ -274,7 +274,6 @@
             <div class="cmd" @click="cmdHelp('jump')">/jump</div>
             <div class="cmd" @click="cmdHelp('transfer')">/transfer</div>
             <div class="cmd" @click="cmdHelp('find')">/find</div>
-            <div class="cmd" @click="cmdHelp('/award')">/award</div>
             <div class="cmd" @click="cmdHelp('/cast')">/cast</div>
           </div>
           <div class="cmds">
@@ -308,6 +307,11 @@
             <div class="cmd" @click="cmdHelp('/ban')">/ban</div>
             <div class="cmd" @click="cmdHelp('/mute')">/mute</div>
             <div class="cmd" @click="cmdHelp('/nochat')">/nochat</div>
+          </div>
+          <div class="cmds">
+            <div class="cmd" @click="cmdHelp('/award')">/award</div>
+            <div class="cmd" @click="cmdHelp('/raward')">/raward</div>
+            <div class="cmd" @click="cmdHelp('/zaward')">/zaward</div>
           </div>
         </div>
       </template>
