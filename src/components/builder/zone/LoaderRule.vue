@@ -225,10 +225,9 @@ const template_link = computed(() => {
     };
   } else if (props.rule.template && props.rule.template.model_type == "transformationtemplate") {
     return {
-      name: 'builder_transformation_details',
+      name: 'builder_world_transformation_template_list',
       params: {
         world_id: world_id,
-        transformation_id: props.rule.template.id
       }
     };
   }
