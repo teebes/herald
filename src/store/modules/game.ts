@@ -336,6 +336,7 @@ const receiveMessage = async ({
     message_data.data["actor"].key === state.player.key
   ) {
     commit("player_set", message_data.data.actor);
+
     if (message_data.data.actor && message_data.data.actor.room) {
       commit("set_room_key", message_data.data.actor.room.key);
     }
@@ -538,6 +539,15 @@ const receiveMessage = async ({
     && message_data.data.target.key != state.player.key) {
       commit("player_target_set", message_data.data.target);
     }
+
+    // Since player_set does a partial update if that's all it can do,
+    // we're taking advantage of the fact that the state player could be
+    // the target of someone else's ability (especially if it's a cast outside of
+    // auto-attack rounds).
+    if (message_data.data.target.key == state.player.key) {
+      commit("player_set", message_data.data.target);
+    }
+
   } else if (message_data.type === "affect.flee.success") {
     commit("player_target_set", null);
   }
