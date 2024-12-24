@@ -21,6 +21,7 @@
 
       <div>
         <div>Game State: {{ instance.live_data.state }}</div>
+        <div>Leader: {{ instance.live_data.leader_id }}</div>
         <div>{{ instance.live_data.num_items }} items</div>
         <div>{{ instance.live_data.num_mobs }} mobs</div>
 
