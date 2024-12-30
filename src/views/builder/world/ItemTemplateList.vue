@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
 import { useStore } from "vuex";
-import { onBeforeRouteUpdate } from "vue-router";
+import { onBeforeRouteUpdate, RouteLocationRaw } from "vue-router";
 import ElementList from "@/components/elementlist/ElementList.vue";
 import { BUILDER_FORMS } from "@/core/forms.ts";
 
@@ -95,11 +95,13 @@ const onClickAdd = () => {
   store.commit("ui/modal/open_form", modal);
 };
 
-onBeforeRouteUpdate((to, from, next) => {
+onBeforeRouteUpdate(async (to, from, next) => {
   if (to.params.world_id !== from.params.world_id) {
-    store.dispatch(
+    const world = await store.dispatch(
       'builder/fetch_world',
       to.params.world_id);
+    store.commit('builder/room_set', world.last_viewed_room);
+    store.commit('builder/zone_set', world.last_viewed_room.zone);
   }
   next();
 });

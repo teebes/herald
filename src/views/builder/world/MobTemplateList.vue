@@ -160,11 +160,13 @@ const onClickAdd = () => {
   });
 };
 
-onBeforeRouteUpdate((to, from, next) => {
+onBeforeRouteUpdate(async (to, from, next) => {
   if (to.params.world_id !== from.params.world_id) {
-    store.dispatch(
+    const world = await store.dispatch(
       'builder/fetch_world',
       to.params.world_id);
+    store.commit('builder/room_set', world.last_viewed_room);
+    store.commit('builder/zone_set', world.last_viewed_room.zone);
   }
   next();
 });
