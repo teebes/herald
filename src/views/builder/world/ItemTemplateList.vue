@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
 import { useStore } from "vuex";
-import { onBeforeRouteUpdate, RouteLocationRaw } from "vue-router";
+import { onBeforeRouteUpdate } from "vue-router";
 import ElementList from "@/components/elementlist/ElementList.vue";
 import { BUILDER_FORMS } from "@/core/forms.ts";
 
