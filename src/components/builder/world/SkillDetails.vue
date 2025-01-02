@@ -102,11 +102,11 @@
       Effect Arguments:
       <ul v-for="(arg, index) in resource.arguments.split(' ')" :key="index" class="ml-2">
         <!-- <li>{{ arg.split(/[:+*]/)[0] }} * {{ arg.split(/[:+*]/)[1] }}</li> -->
-        <li v-if="arg.match(/^(.*?)([:+*])(.*?)$/)">
-        {{ arg.match(/^(.*?)([:+*])(.*?)$/)[1] }}
-        {{ arg.match(/^(.*?)([:+*])(.*?)$/)[2] }}
-        {{ arg.match(/^(.*?)([:+*])(.*?)$/)[3] }}
-</li>
+        <li v-if="arg.match(/^(.*?)([:+*\/\-])(.*?)$/)">
+        {{ arg.match(/^(.*?)([:+*\/\-])(.*?)$/)[1] }}
+        {{ arg.match(/^(.*?)([:+*\/\-])(.*?)$/)[2] }}
+        {{ arg.match(/^(.*?)([:+*\/\-])(.*?)$/)[3] }}
+        </li>
       </ul>
     </li>
 
