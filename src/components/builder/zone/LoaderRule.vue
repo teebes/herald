@@ -206,7 +206,12 @@ const num_copies_schema = {
 
 const template_link = computed(() => {
   if (!props.rule) return { name: '', params: {} };
-  const world_id = route.params.world_id;
+
+  let world_id = store.state.builder.world.id;
+  if (store.state.builder.world.instance_of.id) {
+    world_id = store.state.builder.world.instance_of.id;
+  }
+
   if (props.rule.template.model_type == "mobtemplate") {
     return {
       name: 'builder_mob_template_details',

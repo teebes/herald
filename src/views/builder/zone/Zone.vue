@@ -28,7 +28,7 @@
             <h3>MOB LOADS</h3>
             <div v-for="mob in zone_mobs" :key="mob.id">
               <router-link
-                :to="{name: 'builder_mob_template_details', params: {world_id: $route.params.world_id, mob_template_id: mob.id}}"
+                :to="mob_link(mob.id)"
               >{{ mob.level }} - {{ mob.name }}</router-link>
               <span class='color-text-50 ml-2' v-if="mob.is_elite">[elite]</span>
             </div>
@@ -39,7 +39,7 @@
             <h3>ITEM LOADS</h3>
             <div v-for="item in zone_items" :key="item.id">
               <router-link
-                :to="{name: 'builder_item_template_details', params: {world_id: $route.params.world_id, item_template_id: item.id}}"
+                :to="item_link(item.id)"
               >{{ item.name }}</router-link>
             </div>
             <div v-if="!zone_items">None.</div>
@@ -255,6 +255,42 @@ const editRespawns = () => {
   };
   store.commit('ui/modal/open_form', modal);
 };
+
+const mob_link = (mob_id) => {
+  let world_id = store.state.builder.world.id;
+  if (store.state.builder.world.instance_of.id) {
+    world_id = store.state.builder.world.instance_of.id;
+  }
+
+  return {
+    name: 'builder_mob_template_details',
+    params: { world_id: world_id, mob_template_id: mob_id }
+  }
+};
+
+const item_link = (item_id) => {
+  let world_id = store.state.builder.world.id;
+  if (store.state.builder.world.instance_of.id) {
+    world_id = store.state.builder.world.instance_of.id;
+  }
+
+  return {
+    name: 'builder_item_template_details',
+    params: { world_id: world_id, item_template_id: item_id }
+  }
+};
+
+// const mob_link = computed((mob_id) => {
+//   let world_id = store.state.builder.world.id;
+//   if (store.state.builder.world.instance_of.id) {
+//     world_id = store.state.builder.world.instance_of.id;
+//   }
+
+//   return {
+//     name: 'builder_mob_template_details',
+//     params: { world_id: world_id, mob_template_id: mob_id }
+//   }
+// });
 </script>
 
 <style lang='scss' scoped>
