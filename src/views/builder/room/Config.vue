@@ -95,7 +95,8 @@ const onChangeFlag = async (code: string) => {
 const flagHelp = {
   workshop: "The 'upgrade' command is available in Workshop rooms, which lets players attempt to upgrade an item's stats.",
   no_roam: "Rooms flagged as No Roam are excluded from the rooms that a wandering mob might load or move into.",
-  peaceful: "Characters cannot engage in combat in peaceful rooms."
+  peaceful: "Characters cannot engage in combat in peaceful rooms.",
+  no_quit: "Players cannot quit in No Quit rooms."
 };
 
 const transfer_to_schema = {

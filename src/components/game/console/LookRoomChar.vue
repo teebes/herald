@@ -30,6 +30,8 @@
     </div>
 
     <span v-if="char.is_invisible" class="ml-2 color-text-50">[invisible]</span>
+    <span v-if="char.is_linkless" class="ml-2">[LINKLESS]</span>
+
   </div>
 </template>
 

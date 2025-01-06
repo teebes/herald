@@ -8,6 +8,10 @@
       </div>
     </div>
 
+    <div v-if="message.type === 'system.connect.success' && message.data.world.instance_ref" class="mb-4">
+      Instance ID: {{ message.data.world.instance_ref }}
+    </div>
+
     <div v-if="message.type === 'affect.death'" class="mt-4 color-text-red font-text-regular">
       You have been slain! Rest your weary bones...
     </div>
