@@ -558,6 +558,7 @@ const receiveMessage = async ({
         dispatch("request_enter_world", {
           player_id: state.player.id,
           world_id: state.transfer_to.transfer_to_world_id,
+          instance_ref: message_data.data.instance_ref,
         });
       }, 2000);
     }
