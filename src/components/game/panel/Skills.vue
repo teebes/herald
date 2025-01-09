@@ -142,9 +142,7 @@ const startCooldowns = () => {
     if (skill == "flee") continue;
 
     const overlay = skillRefs[skill] as HTMLElement;
-    if (!overlay) {
-      return;
-    }
+    if (!overlay) continue;
 
     const cooldown: Cooldown = currentCooldowns[skill];
 
