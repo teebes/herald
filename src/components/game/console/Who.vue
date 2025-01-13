@@ -7,7 +7,7 @@
       {{ player.name }} {{ player.title }} ({{ player.level }})
       <span v-if="player.clan" class="ml-2">[ {{ player.clan.name }} ]</span>
       <span v-if="player.is_invisible" class="ml-1 color-text-50">[invisible]</span>
-      <span v-if="player.is_linkless" class="ml-1">[LINKLESS]</span>
+      <span v-if="player.is_linkless" class="ml-1">[<span class="color-text-red">LINKLESS</span>]</span>
       <span v-if="player.link_id" class="ml-2 color-text-50">[ link {{ player.link_id }} ]</span>
       <span v-if="player.room_id" class="ml-2 color-text-50">[ {{ player.room_id}} ]</span>
       <span v-if="player.is_idle" class="ml-2 color-text-50">(Idle)</span>
