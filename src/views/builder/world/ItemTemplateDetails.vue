@@ -190,6 +190,8 @@ watch(item_template, (newItemTemplate) => {
 });
 
 watch(currency_id, async (newCurrencyId) => {
+  if (currency_id.value == newCurrencyId) return;
+
   const resp = await axios.patch(
     `builder/worlds/${store.state.builder.world.id}/itemtemplates/${item_template.value.id}/`,
     {
