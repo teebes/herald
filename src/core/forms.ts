@@ -757,6 +757,10 @@ export const BUILDER_FORMS = {
         {
           value: "new_room",
           label: "Mob enters a new room",
+        },
+        {
+          value: "notify",
+          label: "Mob is notified",
         }
       ],
     },
@@ -777,6 +781,7 @@ export const BUILDER_FORMS = {
               * Item is received: ID of the template of the received item.<br/>
               * Health drops below: the percentage of health below which the reaction will trigger.
               * Social is Received: the social that will trigger the reaction.
+              ** Mob is notified: the message that will trigger the reaction.
               <br/>
               Does nothing for other event types.
               `,
