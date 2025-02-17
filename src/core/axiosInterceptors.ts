@@ -25,7 +25,7 @@ export default function interceptorSetup() {
 
       if (error.response.status == 401) {
         store.commit("auth/auth_clear");
-        router.push({ name: "login" });
+        // router.push({ name: "login" });
       } else if (error.response.status == 403) {
         if (router.currentRoute.value.name != "game") {
           store.commit(
