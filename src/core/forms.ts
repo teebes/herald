@@ -115,9 +115,10 @@ export const CONDITIONS: FormElement = {
     - archetype archetype<br/>
     - core_faction faction_code<br/>
     - currency code amount<br/>
-    - fact_check<br/>
-    - gender<br/>
-    - gold<br/>
+    - fact_check fact value<br/>
+    - fact_above fact value<br/>
+    - gender gender<br/>
+    - gold gold<br/>
     - has_weapon<br/>
     - has_shield<br/>
     - health percentage<br/>
@@ -128,7 +129,9 @@ export const CONDITIONS: FormElement = {
     - item_in_room template_id<br/>
     - level level<br/>
     - marked mark value<br/>
+    - mark_above mark value<br/>
     - mob_in_room template_id<br/>
+    - name<br/>
     - player_in_room<br/>
     - quest_complete quest_id<br/>
     - standing faction_code standing<br/>
