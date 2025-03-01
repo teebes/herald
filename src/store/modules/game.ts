@@ -422,6 +422,36 @@ const receiveMessage = async ({
     }
   }
 
+  // Dispel / purge / purify
+  if (message_data.type === "effect.start") {
+
+    let remove_effects = [];
+
+    const is_custom = message_data.data.custom;
+
+    if (is_custom) {
+      if (message_data.data.code === 'dispel') {
+        remove_effects = message_data.data.removed_effects;
+      }
+    } else {
+      if (message_data.data.code === 'purge' || message_data.data.code === 'purify') {
+        remove_effects = message_data.data.removed_effects;
+      }
+    }
+
+    if (remove_effects.length) {
+      // for each effect code to remove, commit effects_consume
+      for (const effect_code of remove_effects) {
+        commit("effects_consume", {
+          actor_key: message_data.data.actor.key,
+          target_key: message_data.data.target,
+          effect_code: effect_code,
+        });
+      }
+    }
+  }
+
+
   // Player cooldowns
   if (message_data.type === "skill.cooldown.start") {
     commit("player_cooldown_start", message_data.data);
