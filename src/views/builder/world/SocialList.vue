@@ -11,7 +11,7 @@
       Socials are custom commands defined by builders that players and mobs can use to emote in a standardized way. Examples of typical socials: nod, shrug, wave, smile, laugh, sigh, shake, slap.
     </p>
 
-    <p>For more information, refer to the <a href='https://docs.writtenrealms.com/building/socials'>documation page.</a></p>
+    <p>For more information, refer to the <a href='https://docs.writtenrealms.com/building/socials'>documentation page.</a></p>
 
 </EditableCollection>
 </template>
