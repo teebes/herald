@@ -128,6 +128,14 @@ const routes = [
 
   // Wot redirect
   { path: '/wot/:pathMatch(.*)*', component: () => import('@/views/Wot.vue'), },
+
+  // Cryptic
+  {
+    path: '/cryptic',
+    name: 'cryptic',
+    component: () => import('@/views/cryptic/Puzzle.vue'),
+    beforeEnter: ifAuthenticated,
+  },
 ];
 
 const router = createRouter({
