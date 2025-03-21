@@ -1,13 +1,13 @@
 <template>
   <div class="cryptic">
     <div v-if="puzzle" class="puzzle-container">
-      <h1>{{ puzzle.title }}</h1>
+      <h1 class="color-secondary">PUZZLE OF THE DAY</h1>
       <div class="puzzle-prompt" :class="{ 'minimized': hasInteractions }">
         <div class="prompt-header"
              v-if="hasInteractions"
              @click="togglePrompt"
              :class="{ 'expanded': isPromptExpanded }">
-          <span>Puzzle Prompt</span>
+          <span>{{ puzzle.title }}</span>
           <button class="toggle-btn">{{ isPromptExpanded ? '▼' : '▶' }}</button>
         </div>
         <div class="prompt-content" v-show="!hasInteractions || isPromptExpanded">
@@ -38,7 +38,6 @@
                :aria-label="`${message.type === 'user' ? 'You' : 'System'}: ${message.content}`">
             <div class="message-content">{{ message.content }}</div>
             <div class="message-meta">
-              <span v-if="message.timestamp" class="timestamp">{{ formatTime(message.timestamp) }}</span>
               <button
                 v-if="message.type === 'user' && !message.hasResponse && message.responseReceived"
                 class="resubmit-btn"
@@ -60,7 +59,7 @@
           <input
             v-model="userInput"
             @keyup.enter="sendMessage"
-            placeholder="Type your answer or question..."
+            placeholder="What do you do?"
             type="text"
             :disabled="isSolved || isTyping"
           />
@@ -125,20 +124,6 @@ const justSolved = ref(false)
 
 const BASE_ENDPOINT = '/cryptic/puzzles/'
 
-const formatTime = (timestamp: string): string => {
-  if (!timestamp) return '';
-
-  const date = new Date(timestamp);
-
-  // Format as HH:MM (24-hour format)
-  // return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-  // Or, for 12-hour time format with AM/PM:
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-
-  // For a more detailed timestamp including date:
-  // return date.toLocaleString();
-}
 
 const togglePrompt = () => {
   isPromptExpanded.value = !isPromptExpanded.value
@@ -169,7 +154,7 @@ const fetchDailyPuzzle = async () => {
       chatHistory.value.push({
         type: 'user',
         content: interaction.input,
-        hasResponse: interaction.output !== null
+        hasResponse: interaction.output !== null && interaction.output !== ''
       })
 
       // Add system response if it exists
