@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node:20-alpine as build-stage
+FROM node:20-alpine AS build-stage
 
 # Set the working directory in the container
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Use an official Nginx image as the second stage
-FROM nginx:stable-alpine as production-stage
+FROM nginx:stable-alpine AS production-stage
 
 # Copy the build output from the previous stage to Nginx's html directory
 COPY --from=build-stage /app/dist /usr/share/nginx/html

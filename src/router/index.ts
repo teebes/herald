@@ -1,11 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import store from "@/store";
 
-const ifAuthenticated = () => {
+const ifAuthenticated = (to) => {
   if (store.getters.isAuthenticated) {
     return true;
   } else {
-    return "/login";
+    return {
+      path: "/login",
+      query: { redirect: to.fullPath }
+    };
   }
 };
 
