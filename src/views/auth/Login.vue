@@ -45,7 +45,7 @@
 <script lang='ts' setup>
 import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { GoogleLogin } from 'vue3-google-login';
 
 const email = ref("");
@@ -53,6 +53,7 @@ const password = ref("");
 
 const store = useStore();
 const router = useRouter();
+const route = useRoute();
 
 onMounted(() => {
   const emailInput = document.getElementById("field-email") as HTMLElement;
@@ -64,11 +65,23 @@ const login = async () => {
     email: email.value,
     password: password.value
   });
-  router.push("/lobby");
+
+  // Check if there's a redirect query parameter
+  if (route.query.redirect) {
+    router.push(route.query.redirect as string);
+  } else {
+    router.push("/lobby");
+  }
 }
 
 const googleLoginCallback = async (response) => {
   await store.dispatch('auth/google_login', response.credential);
-  router.push("/lobby");
+
+  // Check if there's a redirect query parameter
+  if (route.query.redirect) {
+    router.push(route.query.redirect as string);
+  } else {
+    router.push("/lobby");
+  }
 }
 </script>
