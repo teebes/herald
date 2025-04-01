@@ -203,13 +203,14 @@ const actions = {
   connect: ({ commit, dispatch, rootState }) => {
     console.log('Connecting to Forge Websocket...')
     return new Promise((resolve, reject) => {
-      // We only use a Forge websocket connection for authenticated users
-      if (!rootState.auth.token) {
+      // Use accessToken instead of token
+      if (!rootState.auth.accessToken) {
         reject(new Error("No authentication token found."));
         return;
       }
 
-      const uri = FORGE_WS_URI + '?token=' + rootState.auth.token;
+      // Update to use accessToken
+      const uri = FORGE_WS_URI + '?token=' + rootState.auth.accessToken;
       const ws = new WebSocket(uri);
 
       const heartbeatInterval = 30000; // 30 seconds

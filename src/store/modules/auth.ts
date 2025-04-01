@@ -9,13 +9,15 @@ const LOGIN_ENDPOINT = `${API_BASE}auth/login/`;
 const REFRESH_ENDPOINT = `${API_BASE}auth/refresh/`;
 
 interface State {
-  token: string;
+  accessToken: string;
+  refreshToken: string;
   status: string;
   user: Record<string, any>;
 }
 
 const state: State = {
-  token: localStorage.getItem("jwtToken") || "",
+  accessToken: localStorage.getItem("accessToken") || "",
+  refreshToken: localStorage.getItem("refreshToken") || "",
   status: "",
   user: JSON.parse(localStorage.getItem("user") || "{}"),
 };
@@ -24,7 +26,10 @@ const actions = {
   login: async ({ commit, dispatch }: ActionMethods, creds: any) => {
     try {
       const resp = await axios.post(LOGIN_ENDPOINT, creds);
-      commit("auth_set", resp.data.token);
+      commit("auth_set", {
+        access: resp.data.access,
+        refresh: resp.data.refresh
+      });
       commit("user_set", resp.data.user);
     } catch (error: any) {
       if (error.response.data.non_field_errors) {
@@ -38,7 +43,8 @@ const actions = {
       } else {
         dispatch("ui/process_error_response", error, { root: true });
       }
-      localStorage.removeItem("jwtToken");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
     }
   },
 
@@ -46,17 +52,34 @@ const actions = {
     commit("auth_clear");
   },
 
-  renew: async ({ commit }: ActionMethods, token: string) => {
-    const resp = await axios.post(REFRESH_ENDPOINT, {
-      token: token
-    });
-    commit("auth_set", resp.data.token);
+  refreshToken: async ({ commit, state }: ActionMethods) => {
+    try {
+      const resp = await axios.post(REFRESH_ENDPOINT, {
+        refresh: state.refreshToken
+      });
+
+      state.accessToken = resp.data.access;
+      localStorage.setItem("accessToken", resp.data.access);
+
+      if (resp.data.refresh) {
+        state.refreshToken = resp.data.refresh;
+        localStorage.setItem("refreshToken", resp.data.refresh);
+      }
+
+      return resp.data.access;
+    } catch (error) {
+      commit("auth_clear");
+      throw error;
+    }
   },
 
   signup: async ({ commit }: ActionMethods, payload: any) => {
     try {
       const resp = await axios.post("/auth/signup/", payload);
-      commit("auth_set", resp.data.token);
+      commit("auth_set", {
+        access: resp.data.access,
+        refresh: resp.data.refresh
+      });
       commit("user_set", resp.data.user);
       return resp;
     } catch (error: any) {
@@ -206,16 +229,20 @@ const actions = {
 };
 
 const mutations = {
-  auth_set(state: State, token: string) {
-      state.status = "authenticated";
-      state.token = token;
-      localStorage.setItem("jwtToken", token);
+  auth_set(state: State, tokens: { access: string, refresh: string }) {
+    state.status = "authenticated";
+    state.accessToken = tokens.access;
+    state.refreshToken = tokens.refresh;
+    localStorage.setItem("accessToken", tokens.access);
+    localStorage.setItem("refreshToken", tokens.refresh);
   },
 
   auth_clear: (state: State) => {
     state.status = "unauthenticated";
-    state.token = "";
-    localStorage.removeItem("jwtToken");
+    state.accessToken = "";
+    state.refreshToken = "";
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     localStorage.removeItem("user");
   },
 

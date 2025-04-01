@@ -6,6 +6,7 @@ import lobby from './modules/lobby';
 import ui from './modules/ui/index';
 import builder from './modules/builder/index';
 import staff from './modules/staff/index';
+import silis from './modules/silis';
 
 const store = createStore({
   modules: {
@@ -16,10 +17,11 @@ const store = createStore({
     ui,
     builder,
     staff,
+    silis,
   },
   getters: {
     count: (state) => state.count,
-    isAuthenticated: (rootState) => !!rootState.auth.token
+    isAuthenticated: (rootState) => !!rootState.auth.accessToken
   }
 });
 

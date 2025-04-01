@@ -27,7 +27,7 @@ const notification = computed(() => store.state.ui.notification);
 const isModalOpen = computed(() => store.state.ui.modal.isOpen);
 
 const showHeader = computed(() => {
-  return !["home", "game", "homedirect"].includes(route.name as string);
+  return !["home", "game", "homedirect", "silis"].includes(route.name as string);
 })
 </script>
 

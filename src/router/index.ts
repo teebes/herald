@@ -58,6 +58,9 @@ const routes = [
   { path: '/game', name: 'game', component: () => import('@/views/Game.vue'), beforeEnter: ifAuthenticated },
   { path: '/worlds/:world_id/complete/:player_id', name: 'lobby_world_complete_signup', component: () => import('@/views/auth/CompleteSignup.vue') },
 
+  // Silis
+  { path: '/silis/:player_id', name: 'silis', component: () => import('@/views/silis/Silis.vue') },
+
   // Builder
   {
     path: '/build/worlds/:world_id',
