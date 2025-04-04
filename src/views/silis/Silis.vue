@@ -22,7 +22,9 @@
     </div>
 
     <div class="items-and-mobs">
-      Items and mobs
+      <div v-for="mob in mobs" :key="mob.id">
+        {{ mob.room_description }}
+      </div>
     </div>
 
     <div class="flex p-4">
@@ -49,6 +51,7 @@ const selectedTab = ref('look');
 const player = computed(() => store.getters['silis/getPlayer']);
 const room = computed(() => store.getters['silis/getRoom']);
 const map = computed(() => store.getters['silis/getMap']);
+const mobs = computed(() => store.getters['silis/getMobs']);
 
 const onRoomClick = (room) => {
   console.log('room clicked', room);

@@ -39,6 +39,7 @@ const getters = {
   getPlayer: (state: SilisState) => state.context?.actor,
   getRoom: (state: SilisState) => state.context?.room,
   getMap: (state: SilisState) => state.map,
+  getMobs: (state: SilisState) => state.context?.room_mobs,
 
   getInventory: (state: SilisState) => state.inventory,
   isLoading: (state: SilisState) => state.loading,
