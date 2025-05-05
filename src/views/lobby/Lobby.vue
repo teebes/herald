@@ -175,39 +175,15 @@ onMounted(async () => {
     router.push({name: 'home'});
   }
 
-  const chars_promise = axios.get('lobby/chars/recent/');
-  const featured_worlds_promise = axios.get('lobby/worlds/featured/?page_size=2');
-  const discover_worlds_promise = axios.get('lobby/worlds/discover/');
-  const dev_worlds_promise = axios.get('lobby/worlds/dev/?page_size=3');
-  const building_worlds_promise = axios.get('lobby/worlds/building/?page_size=3');
-  const playing_worlds_promise = axios.get('lobby/worlds/playing/?page_size=3');
-  const intro_worlds_promise = axios.get('lobby/worlds/intro/?page_size=3');
+  const lobby_data = await axios.get('lobby/');
 
-  const [
-    chars_resp,
-    featured_worlds_resp,
-    discover_worlds_resp,
-    dev_worlds_resp,
-    building_worlds_resp,
-    playing_worlds_resp,
-    intro_worlds_resp
-  ] = await Promise.all([
-    chars_promise,
-    featured_worlds_promise,
-    discover_worlds_promise,
-    dev_worlds_promise,
-    building_worlds_promise,
-    playing_worlds_promise,
-    intro_worlds_promise
-  ]);
-
-  chars.value = chars_resp.data.results;
-  featured_worlds.value = featured_worlds_resp.data.results;
-  discover_worlds.value = discover_worlds_resp.data.results;
-  playing_worlds.value = playing_worlds_resp.data.results;
-  dev_worlds.value = dev_worlds_resp.data.results;
-  building_worlds.value = building_worlds_resp.data.results;
-  intro_worlds.value = intro_worlds_resp.data.results;
+  chars.value = lobby_data.data.recent_characters;
+  featured_worlds.value = lobby_data.data.featured;
+  discover_worlds.value = lobby_data.data.staff_picks;
+  playing_worlds.value = lobby_data.data.playing;
+  dev_worlds.value = lobby_data.data.in_development;
+  building_worlds.value = lobby_data.data.building;
+  intro_worlds.value = lobby_data.data.intro;
 
   loaded.value = true;
   startAutoSlide();
