@@ -705,7 +705,7 @@ const actions = {
   sendWSMessage: async ({ rootState, state }, payload) => {
     console.log(`SEND ${payload.type}`);
     console.log(payload);
-    payload.token = rootState.auth.token;
+    payload.token = rootState.auth.accessToken;
     if (state.websocket) {
       state.websocket.send(JSON.stringify(payload));
     }

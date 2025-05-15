@@ -102,7 +102,10 @@ const actions = {
   google_login: async ({ commit }: ActionMethods, credential: string) => {
     try {
       const resp = await axios.post("/auth/google/login/", { credential: credential });
-      commit("auth_set", resp.data.token);
+      commit("auth_set", {
+        access: resp.data.access,
+        refresh: resp.data.refresh
+      });
       commit("user_set", resp.data.user);
       return { success: true, resp: resp }
     } catch (error: any) {
