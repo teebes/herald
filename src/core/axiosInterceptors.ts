@@ -27,9 +27,6 @@ export default function interceptorSetup() {
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
 
-        store.commit("auth/auth_clear");
-        
-        /*
         try {
           const newToken = await store.dispatch("auth/refreshToken");
 
@@ -41,7 +38,6 @@ export default function interceptorSetup() {
           router.push({ name: "login" });
           return Promise.reject(refreshError);
         }
-        */
       }
 
       if (error.response.status === 403) {

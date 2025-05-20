@@ -52,24 +52,23 @@ const actions = {
     commit("auth_clear");
   },
 
-  refreshToken: async ({ commit, state }: ActionMethods) => {
-    try {
-      const resp = await axios.post(REFRESH_ENDPOINT, {
-        refresh: state.refreshToken
-      });
+  refreshToken: async ({ commit, state }) => {
+    if (state.refreshToken) {
+      try {
+        const resp = await axios.post(REFRESH_ENDPOINT, {
+          refresh: state.refreshToken
+        });
 
-      state.accessToken = resp.data.access;
-      localStorage.setItem("accessToken", resp.data.access);
+        commit("auth_set", {
+          access: resp.data.access,
+          refresh: resp.data.refresh || state.refreshToken
+        });
 
-      if (resp.data.refresh) {
-        state.refreshToken = resp.data.refresh;
-        localStorage.setItem("refreshToken", resp.data.refresh);
+        return resp.data.access;
+      } catch (error) {
+        commit("auth_clear");
+        throw error;
       }
-
-      return resp.data.access;
-    } catch (error) {
-      commit("auth_clear");
-      throw error;
     }
   },
 

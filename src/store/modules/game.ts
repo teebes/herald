@@ -792,7 +792,10 @@ const actions = {
   play: async ({ commit, dispatch }) => {
     try {
       const resp = await axios.post("/game/play/");
-      commit("auth/auth_set", resp.data.token, { root: true });
+      commit("auth/auth_set", {
+        access: resp.data.access,
+        refresh: resp.data.refresh
+      }, { root: true });
       commit("auth/user_set", resp.data.user, { root: true });
       const player_id = resp.data.player.id;
       dispatch("request_enter_world", {
