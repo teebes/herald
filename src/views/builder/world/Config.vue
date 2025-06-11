@@ -312,158 +312,169 @@ const editGeneral = () => {
 
 const editAdvancedConfig = () => {
   const starting_gold: FormElement = {
-      attr: "starting_gold",
-      label: "Starting Gold",
-    };
-    const death_room: FormElement = {
-      attr: "death_room",
-      label: "Death Room",
-      widget: "reference",
-      references: "room",
-      required: true,
-    };
-    const starting_room: FormElement = {
-      attr: "starting_room",
-      label: "Starting Room",
-      widget: "reference",
-      references: "room",
-      required: true,
-      help: `Which room a new player starts in by default.<br/><br/>
-             A starting room can also be defined at the Faction level,
-             which will take precendence over this default starting room.`,
-    };
-    const death_mode: FormElement = {
-      attr: "death_mode",
-      label: "Death EQ Loss",
-      widget: "select",
-      options: [
-        {
-          value: "lose_all",
-          label: "Lose All",
-        },
-        {
-          value: "lose_none",
-          label: "Lose None",
-        },
-        {
-          value: "lose_gold",
-          label: "Lose Gold",
-        },
-        {
-          value: "destroy_eq",
-          label: "Destroy Equipped Items",
-        },
-      ],
-      help: `Determines what happens to the player's equipment on death.<br/><br/>
-             Lose None: player retains all of their equipment<br/>
-             Lose All: all of the player's equipment goes to their corpse<br/>
-             Lose Gold: player pays 20% of their equipment's value on death<br/>
-             Destroy Equipped Items: all equipped items are destroyed on death. Not for the faint of heart.`,
-    };
-    const built_by: FormElement = {
-      attr: "built_by",
-      label: "Built By",
-      help: `What to show in the 'built by' field of the World Lobby. If missing, will default to the author's username.`,
-    };
-    const death_route: FormElement = {
-      attr: "death_route",
-      label: "Death Route",
-      widget: "select",
-      options: [
-        {
-          value: "top_faction",
-          label: "Top Faction",
-        },
-        {
-          value: "near_room",
-          label: "Nearest Room",
-        },
-        {
-          value: "far_room",
-          label: "Furthest Room",
-        },
-        {
-          value: "nearest_in_zone",
-          label: "Nearest in Zone",
-        },
-      ],
-      help: `Where players go on death.<br/><br/>
-             Top Faction: the nearest procession room of the faction you have highest standing with.<br/>
-             Nearest Room: the procession room nearest where you died.<br/>
-             Furthest Room: the procession room furthest from where you died.<br/>
-             Nearest in Zone: the procession room closest to you in your current zone.`,
-    };
-    const auto_equip: FormElement = {
-      attr: "auto_equip",
-      label: "Auto Equip Items",
-      widget: "checkbox",
-      help: `If checked, items acquired to the player's inventory will
-             automatically equip if the corresponding slot is empty.`,
-    };
+    attr: "starting_gold",
+    label: "Starting Gold",
+  };
+  const death_room: FormElement = {
+    attr: "death_room",
+    label: "Death Room",
+    widget: "reference",
+    references: "room",
+    required: true,
+  };
+  const starting_room: FormElement = {
+    attr: "starting_room",
+    label: "Starting Room",
+    widget: "reference",
+    references: "room",
+    required: true,
+    help: `Which room a new player starts in by default.<br/><br/>
+            A starting room can also be defined at the Faction level,
+            which will take precendence over this default starting room.`,
+  };
+  const death_mode: FormElement = {
+    attr: "death_mode",
+    label: "Death EQ Loss",
+    widget: "select",
+    options: [
+      {
+        value: "lose_all",
+        label: "Lose All",
+      },
+      {
+        value: "lose_none",
+        label: "Lose None",
+      },
+      {
+        value: "lose_gold",
+        label: "Lose Gold",
+      },
+      {
+        value: "lose_inv",
+        label: "Lose Inventory",
+      },
+      {
+        value: "destroy_eq",
+        label: "Destroy Equipped Items",
+      },
+    ],
+    help: `Determines what happens to the player's equipment on death.<br/><br/>
+            Lose None: player retains all of their equipment<br/>
+            Lose All: all of the player's equipment goes to their corpse<br/>
+            Lose Gold: player pays 20% of their equipment's value on death<br/>
+            Lose Inventory: all of the player's inventory goes to their corpse<br/>
+            Destroy Equipped Items: all equipped items are destroyed on death. Not for the faint of heart.`,
+  };
+  const built_by: FormElement = {
+    attr: "built_by",
+    label: "Built By",
+    help: `What to show in the 'built by' field of the World Lobby. If missing, will default to the author's username.`,
+  };
+  const death_route: FormElement = {
+    attr: "death_route",
+    label: "Death Route",
+    widget: "select",
+    options: [
+      {
+        value: "top_faction",
+        label: "Top Faction",
+      },
+      {
+        value: "near_room",
+        label: "Nearest Room",
+      },
+      {
+        value: "far_room",
+        label: "Furthest Room",
+      },
+      {
+        value: "nearest_in_zone",
+        label: "Nearest in Zone",
+      },
+    ],
+    help: `Where players go on death.<br/><br/>
+            Top Faction: the nearest procession room of the faction you have highest standing with.<br/>
+            Nearest Room: the procession room nearest where you died.<br/>
+            Furthest Room: the procession room furthest from where you died.<br/>
+            Nearest in Zone: the procession room closest to you in your current zone.`,
+  };
+  const auto_equip: FormElement = {
+    attr: "auto_equip",
+    label: "Auto Equip Items",
+    widget: "checkbox",
+    help: `If checked, items acquired to the player's inventory will
+            automatically equip if the corresponding slot is empty.`,
+  };
 
-    const pvp_mode: FormElement = {
-      attr: "pvp_mode",
-      label: "PvP Mode",
-      widget: "select",
-      options: [
-        {
-          value: "free_for_all",
-          label: "Free for All",
-        },
-        {
-          value: "disabled",
-          label: "Disabled",
-        },
-        {
-          value: "zone",
-          label: "PvP Zones",
-        },
-      ],
-      help: `In multiplayer worlds, to what extent PvP is allowed.<br/><br/>
-            Free for All - anyone can attack anyone else, unless in a peace room.<br/>
-            Disabled - no player can attack another player, ever.<br/>
-            PvP Zones - default is no PvP but certain zones can enable it.<br/>
-      `,
-    };
-    const can_select_faction: FormElement = {
-      attr: "can_select_faction",
-      label: "Can Select Core Faction",
-      widget: "checkbox",
-      help: `If unchecked, all players will always start with the default core faction.`,
-    };
-    const allow_combat: FormElement = {
-      attr: "is_narrative",
-      label: "Narrative World",
-      widget: "checkbox",
-      help: `A narrative world disables combat, and will not show combat-related UI elements.`,
-    };
-    const players_can_set_title: FormElement = {
-      attr: "players_can_set_title",
-      label: "Players Can Set Title",
-      widget: "checkbox",
-      help: `Whether players are allowed to change their own title.`,
-    };
-    const small_background: FormElement = {
-      attr: "small_background",
-      label: "740 x 332 Card URL",
-      help: `Image displayed in the general lobby`,
-    };
-    const large_background: FormElement = {
-      attr: "large_background",
-      label: "2300 x 598 Banner URL",
-      help: `Image displayed in the world lobby`,
-    };
-    const is_classless: FormElement = {
-      attr: "is_classless",
-      label: "Classless Players",
-      widget: "checkbox",
-      help: `If this option is checked, no player will have a starting archetype, or its associated skills. Builders will have to create all the skills that players can learn.`
-    };
+  const pvp_mode: FormElement = {
+    attr: "pvp_mode",
+    label: "PvP Mode",
+    widget: "select",
+    options: [
+      {
+        value: "free_for_all",
+        label: "Free for All",
+      },
+      {
+        value: "disabled",
+        label: "Disabled",
+      },
+      {
+        value: "zone",
+        label: "PvP Zones",
+      },
+    ],
+    help: `In multiplayer worlds, to what extent PvP is allowed.<br/><br/>
+          Free for All - anyone can attack anyone else, unless in a peace room.<br/>
+          Disabled - no player can attack another player, ever.<br/>
+          PvP Zones - default is no PvP but certain zones can enable it.<br/>
+    `,
+  };
+  const can_select_faction: FormElement = {
+    attr: "can_select_faction",
+    label: "Can Select Core Faction",
+    widget: "checkbox",
+    help: `If unchecked, all players will always start with the default core faction.`,
+  };
+  const allow_combat: FormElement = {
+    attr: "is_narrative",
+    label: "Narrative World",
+    widget: "checkbox",
+    help: `A narrative world disables combat, and will not show combat-related UI elements.`,
+  };
+  const players_can_set_title: FormElement = {
+    attr: "players_can_set_title",
+    label: "Players Can Set Title",
+    widget: "checkbox",
+    help: `Whether players are allowed to change their own title.`,
+  };
+  const small_background: FormElement = {
+    attr: "small_background",
+    label: "740 x 332 Card URL",
+    help: `Image displayed in the general lobby`,
+  };
+  const large_background: FormElement = {
+    attr: "large_background",
+    label: "2300 x 598 Banner URL",
+    help: `Image displayed in the world lobby`,
+  };
+  const is_classless: FormElement = {
+    attr: "is_classless",
+    label: "Classless Players",
+    widget: "checkbox",
+    help: `If this option is checked, no player will have a starting archetype, or its associated skills. Builders will have to create all the skills that players can learn.`
+  };
   const non_ascii_names: FormElement = {
     attr: "non_ascii_names",
     label: "Allow Non-ASCII Names",
     widget: "checkbox",
     help: `If this option is checked, players will be able to use non-ASCII characters in their names.`
+  };
+  const globals_enabled: FormElement = {
+    attr: "globals_enabled",
+    label: "Enable Channels",
+    widget: "checkbox",
+    help: `If this option is checked, players will be able to use global communication channels (chat, gossip, clan chat).`,
   };
 
   const modal = {
@@ -487,6 +498,9 @@ const editAdvancedConfig = () => {
         },
         {
           children: [is_classless, non_ascii_names]
+        },
+        {
+          children: [globals_enabled],
         },
         {
           children: [small_background, large_background],
