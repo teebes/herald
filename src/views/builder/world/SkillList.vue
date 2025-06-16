@@ -270,8 +270,11 @@ const schema = computed<any[]>(() => {
   const args: FormElement = {
     attr: "arguments",
     label: "Arguments",
-    help: `For Buff and Debuff effects, which stats to modify. Syntax '&lt;stat1&gt;:&lt;multiplayer1&gt; &lt;stat2:multiplier2&gt;'.<br/><br/>
-    Example: for a Buff effect to double attack power, and dodge, the arguments would be 'attack_power:2 dodge:2'.`
+    help: `For Buff and Debuff effects, how to modify the stats. Examples:<br/><br/>
+    * Double AP: 'attack_power*2'<br/>
+    * Increase AP by 10: 'attack_power+10'<br/>
+    * Half SP: 'spell_power/2'<br/>
+    * Decrease SP by 20: 'spell_power-20'`
   };
   const learn_condition: FormElement = {
     attr: "learn_conditions",
