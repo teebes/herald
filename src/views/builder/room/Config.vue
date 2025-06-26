@@ -96,7 +96,8 @@ const flagHelp = {
   workshop: "The 'upgrade' command is available in Workshop rooms, which lets players attempt to upgrade an item's stats.",
   no_roam: "Rooms flagged as No Roam are excluded from the rooms that a wandering mob might load or move into.",
   peaceful: "Characters cannot engage in combat in peaceful rooms.",
-  no_quit: "Players cannot quit in No Quit rooms."
+  no_quit: "Players cannot quit in No Quit rooms.",
+  landmark: "A landmark room is shown on the player's map even if they've never visited it.",
 };
 
 const transfer_to_schema = {
