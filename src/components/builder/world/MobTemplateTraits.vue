@@ -32,7 +32,13 @@ const editTraits = () => {
         attr: 'traits',
         type: 'text',
         placeholder: 'Enter traits separated by spaces',
-        help: "Traits are used to define special abilities and behaviors for mobs. Currently only the 'tracker' trait is available. A tracker mob will chase its target to other rooms within its zone.",
+        help: `Traits are used to define special abilities and behaviors for mobs.<br/>
+        <br/>
+        Available traits:<br/>
+        * 'tracker' - a tracker mob will chase its target to other rooms within its zone<br/>
+        * 'keen' - a keen mob can see through stealth<br/>
+        <br/>
+        Multiple traits can be added by separating them with spaces, for example: 'tracker keen'.`
       },
     ],
     action: "builder/worlds/mob_template_save"
