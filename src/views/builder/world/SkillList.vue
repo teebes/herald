@@ -199,6 +199,12 @@ const schema = computed<any[]>(() => {
       }, {
         value: "dispel",
         label: "Dispel",
+      }, {
+      //   value: "invisibility",
+      //   label: "Invisibility",
+      // }, {
+        value: "stealth",
+        label: "Stealth",
       }
     ]
   };
