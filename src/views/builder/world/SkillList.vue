@@ -162,7 +162,7 @@ const schema = computed<any[]>(() => {
     * Buff: Apply a buff to the target. Buffs increase stats by a given multiplier as specified in the 'Arguments' field.<br/>
     * Debuff: Apply a debuff to the target. Debuffs decrease stats by a given multiplier as specified in the 'Arguments' field.<br/>
     * Haste: Apply a haste effect to the target. Targets with haste auto-attack twice per round.<br/>
-    * Invisibility: Make the target invisible. Invisible targets cannot be targeted, unless they are in combat.<br/>
+    * Stealth: Make the target enter stealth. Chars in stealth are invisible to all but keen mobs.<br/>
     * Summon: Summon the mob whose template ID is specified in the 'Arguments' field.`,
     default: "",
     options: [
