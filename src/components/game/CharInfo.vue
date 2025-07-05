@@ -4,8 +4,7 @@
     <div class="summary" v-if="world.allow_combat">
       Level {{ char.level }} {{ gender }} {{ char.archetype }}
       <template v-if="char.is_elite">
-        &nbsp;[&nbsp;
-        <span class="color-primary">elite</span>&nbsp;]
+        &nbsp;[&nbsp;<span class="color-primary">elite</span>&nbsp;]
       </template>
     </div>
     <div class="health color-text-50" v-if="world.allow_combat">
