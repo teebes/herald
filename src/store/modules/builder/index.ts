@@ -153,7 +153,7 @@ const getters = {
     for (const faction of state.world.factions) {
       if (faction.is_core && faction.is_default) {
         return faction.code;
-      } else {
+      } else if (faction.is_core) {
         core_factions.push(faction);
       }
     }
