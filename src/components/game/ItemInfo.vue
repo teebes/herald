@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div class="name" :class="[item.quality]">{{ capfirst(item.name) }}</div>
+    <div class="name" :class="[item.quality]">
+      {{ capfirst(item.name) }}
+      <span class='ml-2 color-text-50 font-text-light' v-if="item.template_id && player.is_immortal">
+        [ {{ item.template_id }} ]
+      </span>
+    </div>
     <div class="summary">{{ item.summary }}</div>
 
     <div
