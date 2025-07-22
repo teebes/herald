@@ -23,11 +23,11 @@
     </div>
 
     <template v-if="item.type === 'equippable' && item.stats.length">
-      <div class="list-title stats">Stats:</div>
+      <div class="list-title stats" v-if="itemStats.length">Stats:</div>
       <table class="item-stats">
         <tr
-          v-for="stat in item.stats"
-          :key="item.stats.indexOf(stat)"
+          v-for="stat in itemStats"
+          :key="itemStats.indexOf(stat)"
           :class="{ 'zero': stat.is_zero }"
         >
           <td class="item-name">{{ stat.label }}</td>
@@ -103,7 +103,7 @@
 </template>
 
 <script lang='ts' setup>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { getTargetInGroup } from "@/core/utils.ts";
 import { capfirst } from "@/core/utils.ts";
@@ -120,6 +120,12 @@ const props = defineProps({
     type: Boolean,
     default: false
   }
+});
+
+const world = computed(() => store.state.game.world);
+
+const itemStats = computed(() => {
+  return props.item.stats.filter(stat => world.value.allow_combat || stat.label !== 'Damage');
 });
 
 const inventoryStack = stackedInventory(props.item.inventory);
