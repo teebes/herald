@@ -108,7 +108,7 @@
 </template>
 
 <script lang='ts' setup>
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 import { getTargetInGroup } from "@/core/utils.ts";
 import { capfirst } from "@/core/utils.ts";
