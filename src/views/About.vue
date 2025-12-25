@@ -37,8 +37,8 @@
         >Shoulders hunched over the keyboard, this little probe tirelessly builds world upon world, animating them with stories, quests and possibilities. It mostly beeps in English, though occasionally some of the instructions come out in French. Every once in a while, it coughs a little.</div>
 
         <div class="member-twitter">
-          <a href="https://twitter.com/@teebesz">
-            @teebesz
+          <a href="https://twitter.com/@thibaudm">
+            @thibaudm
             <img src="@/assets/about/Twitter_Social_Icon_Circle_Color.svg" width="16px" />
           </a>
         </div>
