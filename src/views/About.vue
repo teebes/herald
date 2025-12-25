@@ -37,9 +37,9 @@
         >Shoulders hunched over the keyboard, this little probe tirelessly builds world upon world, animating them with stories, quests and possibilities. It mostly beeps in English, though occasionally some of the instructions come out in French. Every once in a while, it coughs a little.</div>
 
         <div class="member-twitter">
-          <a href="https://twitter.com/@thibaudm">
+          <a href="https://x.com/thibaudm">
             @thibaudm
-            <img src="@/assets/about/Twitter_Social_Icon_Circle_Color.svg" width="16px" />
+            <img src="@/assets/about/x-logo-white.png" width="16px" />
           </a>
         </div>
       </div>
@@ -62,10 +62,10 @@
         >Longtime student of fantasy gaming in its many wondrous forms, from Baldur’s Gate to Chrono Trigger to Magic: the Gathering. Interests include min/maxing, raiding Naxxramas, long walks on the beach, and being just a little too competitive about things that don’t matter.</div>
 
         <div class="member-twitter">
-          <a href="https://twitter.com/@patpatomalley">
+          <a href="https://x.com/patpatomalley">
             @patpatomalley
             <img
-              src="@/assets/about/Twitter_Social_Icon_Circle_Color.svg"
+              src="@/assets/about/x-logo-white.png"
               width="16px"
             />
           </a>

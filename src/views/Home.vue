@@ -215,9 +215,9 @@
           <a href="https://docs.writtenrealms.com">Help</a>
           <a href="https://blog.writtenrealms.com">Blog</a>
 
-          <a href="https://twitter.com/Written_Realms">
+          <a href="https://x.com/thibaudm">
             <img
-              src="@/assets/about/Twitter_Social_Icon_Circle_Color.svg"
+              src="@/assets/about/x-logo-white.png"
               width="16px"
             />
           </a>
@@ -231,7 +231,7 @@
           </div>
       </div>
 
-      <div class="copyright">&copy; 2024 Morel Software, LLC</div>
+      <div class="copyright">&copy; 2026 Morel Software, LLC</div>
     </div>
   </div>
 </template>
