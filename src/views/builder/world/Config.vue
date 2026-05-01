@@ -2,13 +2,14 @@
   <div id="world-config" class="builder-config" v-if="store.state.builder.world.builder_info.builder_rank > 2">
     <h2>{{ world.name.toUpperCase() }} CONFIG</h2>
 
-    <div class="general-settings mt-6">
+    <div class="general-settings">
       <!-- <h3>GENERAL SETTINGS</h3> -->
 
       <div class="color-text-60">
         <span v-if="world.is_public">Public</span><span v-else>Private</span> World
       </div>
 
+      <!--
       <div class="color-text-60 mb-6">Publication Status: {{ review_status }} <Help :help="review_help" v-if="review_help"/></div>
       <div class="review-details" v-if="review_status == 'Reviewed'">
         <div class="reviewer color-text-60 mb-2">Comments by {{ review.reviewer }}:</div>
@@ -18,6 +19,7 @@
               :key="index">{{ line }}</div>
           </div>
       </div>
+      -->
 
       <div v-if="world.description" class="world-description">
         <div class="desc-line" v-for="(line, index) of descLines" :key="index">{{ line }}</div>
@@ -26,7 +28,7 @@
       <div class="settings-actions mt-4">
         <button class="btn-small mr-4" @click="editGeneral">EDIT</button>
         <button class="btn-small" @click="deleteWorld">DELETE</button>
-        <button class="btn-small ml-4" @click="submitForReview" v-if="displaySubmitReview">SUBMIT FOR REVIEW</button>
+        <!-- <button class="btn-small ml-4" @click="submitForReview" v-if="displaySubmitReview">SUBMIT FOR REVIEW</button> -->
       </div>
     </div>
 
