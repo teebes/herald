@@ -241,10 +241,10 @@
 import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter, useRoute, RouteLocationRaw } from 'vue-router';
-import { capfirst } from "@/core/utils.ts";
-import Help from "@/components/Help.vue";
+// import { capfirst } from "@/core/utils.ts";
+// import Help from "@/components/Help.vue";
 import { BUILDER_FORMS, FormElement } from "@/core/forms";
-import ReviewInstructions from "@/components/builder/world/ReviewInstructions.vue";
+// import ReviewInstructions from "@/components/builder/world/ReviewInstructions.vue";
 
 const store = useStore();
 const router = useRouter();
@@ -551,24 +551,24 @@ const createInstance = () => {
   store.commit('ui/modal/open_form', modal);
 };
 
-const submitForReview = () => {
-  const modal = {
-    title: 'Submit For Review',
-    data: { 'description': '' },
-    submitLabel: 'SUBMIT',
-    schema: [
-      {
-        attr: 'description',
-        label: 'Description',
-        widget: 'textarea',
-        help: `Describe your world to the reviewer.`
-      }
-    ],
-    action: "builder/worlds/submit_world_for_review",
-    slot: ReviewInstructions,
-  };
-  store.commit('ui/modal/open_form', modal);
-}
+// const submitForReview = () => {
+//   const modal = {
+//     title: 'Submit For Review',
+//     data: { 'description': '' },
+//     submitLabel: 'SUBMIT',
+//     schema: [
+//       {
+//         attr: 'description',
+//         label: 'Description',
+//         widget: 'textarea',
+//         help: `Describe your world to the reviewer.`
+//       }
+//     ],
+//     action: "builder/worlds/submit_world_for_review",
+//     slot: ReviewInstructions,
+//   };
+//   store.commit('ui/modal/open_form', modal);
+// }
 
 const deleteWorld = async () => {
   const world_id = world.value.id;
@@ -613,32 +613,32 @@ const world_socials_link = {
 };
 
 const descLines = computed(() => world.value.description.split("\n"));
-const displaySubmitReview = computed(() => world.value.review.status === "unsubmitted" || world.value.review.status == "reviewed");
-const review = computed(() => world.value.review);
+// const displaySubmitReview = computed(() => world.value.review.status === "unsubmitted" || world.value.review.status == "reviewed");
+// const review = computed(() => world.value.review);
 
-const review_status = computed(() => {
-  if (world.value.review.status === 'unsubmitted') {
-    return 'Unpublished';
-  } else if (world.value.review.status === 'submitted') {
-    return 'Under Review';
-  } else if (world.value.review.status === 'reviewed') {
-    return 'Reviewed';
-  } else if (world.value.review.status === 'approved') {
-    return 'Published';
-  }
-  return capfirst(world.value.review.status);
-});
+// const review_status = computed(() => {
+//   if (world.value.review.status === 'unsubmitted') {
+//     return 'Unpublished';
+//   } else if (world.value.review.status === 'submitted') {
+//     return 'Under Review';
+//   } else if (world.value.review.status === 'reviewed') {
+//     return 'Reviewed';
+//   } else if (world.value.review.status === 'approved') {
+//     return 'Published';
+//   }
+//   return capfirst(world.value.review.status);
+// });
 
-const review_help = computed(() => {
-  if (world.value.review.status === 'unsubmitted') {
-    return `A world that's been approved for publication will be featured in curated sections of the site. To initiate a review, click the SUBMIT FOR REVIEW action.`;
-  } else if (world.value.review.status === 'submitted') {
-    return `Your review has been submitted. Once a staff member reviews it, it will either be approved or you will receive feedback on what to change.`;
-  } else if (world.value.review.status === 'reviewed') {
-    return `Your world has been reviewed but is not quite ready for primetime yet. Read the reviewer's notes and re-submit it once you're ready.`;
-  }
-  return '';
-});
+// const review_help = computed(() => {
+//   if (world.value.review.status === 'unsubmitted') {
+//     return `A world that's been approved for publication will be featured in curated sections of the site. To initiate a review, click the SUBMIT FOR REVIEW action.`;
+//   } else if (world.value.review.status === 'submitted') {
+//     return `Your review has been submitted. Once a staff member reviews it, it will either be approved or you will receive feedback on what to change.`;
+//   } else if (world.value.review.status === 'reviewed') {
+//     return `Your world has been reviewed but is not quite ready for primetime yet. Read the reviewer's notes and re-submit it once you're ready.`;
+//   }
+//   return '';
+// });
 
 const instanceLink = (instance_id) => {
   return router.resolve({
