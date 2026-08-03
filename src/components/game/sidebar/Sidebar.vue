@@ -58,9 +58,12 @@
           v-for="skill in player_flex_skills_info.skills"
           :key="skill.code"
           class="flex-skill"
-          :class="{ is_active: skill.is_active }"
+          :class="{ is_active: skill.is_active, is_subclass: skill.is_subclass }"
           @click="onClickFlexSkill(skill)"
-        >{{ skill.name }}</div>
+        >{{ skill.name }}<span
+            v-if="skill.is_subclass"
+            class="subclass-tag"
+          >({{ skill.subclass_archetype }})</span></div>
       </div>
       <div
         v-if="player_flex_skills_info.num_active < player_flex_skills_info.learnable_count"
@@ -82,10 +85,13 @@
           <div
             v-for="feat_data of tier.feats"
             :key="feat_data.code"
-            :class="{ is_active: feat_data.is_active }"
+            :class="{ is_active: feat_data.is_active, is_subclass: feat_data.is_subclass }"
             class="feat"
             @click="onClickFeat(feat_data)"
-          >{{ feat_data.name }}</div>
+          >{{ feat_data.name }}<span
+              v-if="feat_data.is_subclass"
+              class="subclass-tag"
+            >({{ feat_data.subclass_archetype }})</span></div>
         </div>
       </div>
       <div
@@ -123,6 +129,7 @@ import QuestLog from "@/components/game/QuestLog.vue";
 import ComLog from "@/components/game/sidebar/ComLog.vue";
 import Focus from "@/components/game/sidebar/Focus.vue";
 import Chars from "@/components/game/sidebar/Chars.vue";
+import { getSubclass } from "@/core/subclass";
 import _ from "lodash";
 
 const store = useStore();
@@ -140,12 +147,18 @@ const player_skills = computed(() => store.state.game.player_skills);
 const player_level = computed(() => store.state.game.player_level);
 const room_chars_length = computed(() => store.state.game.room_chars.length);
 
+// The archetype this character has as a subclass, or "" for none.
+const player_subclass = computed(() =>
+  getSubclass(store.state.game.player));
+
 const player_feats_info = computed(() => {
   interface FeatData {
     code: string;
     name: string;
     description: string;
     is_active: boolean;
+    is_subclass: boolean;
+    subclass_archetype: string;
   }
 
   interface FeatTier {
@@ -158,11 +171,14 @@ const player_feats_info = computed(() => {
   const feats: FeatTier[] = [];
 
   const archetype_feats = world_feats.value[player_archetype.value];
+  const subclass = player_subclass.value;
+  const subclass_feats = subclass ? world_feats.value[subclass] : null;
 
   interface PlayerFeats {
     1: string;
     2: string;
     3: string;
+    4: string;
   }
 
   const player_feats: PlayerFeats = player_skills.value.feat;
@@ -193,6 +209,8 @@ const player_feats_info = computed(() => {
       const world_feat_data: FeatData = {
         ...archetype_feats[tier_level][feat_name],
         is_active: false,
+        is_subclass: false,
+        subclass_archetype: "",
       };
 
       if (player_feats[tier_number] === feat_name) {
@@ -202,6 +220,36 @@ const player_feats_info = computed(() => {
 
       tier_data.feats.push(world_feat_data);
     }
+
+    // A subclass adds one more option per tier, drawn from that archetype's
+    // subclassable feats. It does not add a pick: the player still selects a
+    // single feat per tier, just from a wider list.
+    const subclass_tier_feats =
+      subclass_feats && subclass_feats[tier_level]
+        ? subclass_feats[tier_level]
+        : {};
+    for (const feat_name of Object.keys(subclass_tier_feats)) {
+      if (!subclass_tier_feats[feat_name].subclassable) continue;
+
+      const world_feat_data: FeatData = {
+        ...subclass_tier_feats[feat_name],
+        is_active: false,
+        is_subclass: true,
+        subclass_archetype: subclass,
+      };
+
+      if (player_feats[tier_number] === feat_name) {
+        world_feat_data.is_active = true;
+        num_learned_feats += 1;
+      }
+
+      tier_data.feats.push(world_feat_data);
+    }
+
+    // Own feats first, subclass options last. The two loops above already
+    // produce that order, but state it explicitly so it survives any
+    // reordering, and so it matches the Feats command readout.
+    tier_data.feats = _.sortBy(tier_data.feats, (f) => (f.is_subclass ? 1 : 0));
 
     feats.push(tier_data);
   }
@@ -225,7 +273,6 @@ const player_flex_skills_info = computed(() => {
   }
 
   const archetype_skills = world_skills.value[player_archetype.value];
-  const archetype_flex_skill_codes = archetype_skills.flex;
   // Remap player skills from {1: skill1, 2: skill3} to [ skill1, skill2 ]
   const player_flex_skills: string[] = [];
   for (const i of [1, 2, 3]) {
@@ -238,25 +285,40 @@ const player_flex_skills_info = computed(() => {
     code: string;
     name: string;
     is_active: boolean;
+    is_subclass: boolean;
+    subclass_archetype: string;
   }
+
+  // Unlike feats, every flex skill of the subclass archetype is available;
+  // there is no per-skill opt in. Own archetype is listed first.
+  const subclass = player_subclass.value;
+  const skill_sources: [any, string][] = [[archetype_skills, ""]];
+  if (subclass && world_skills.value[subclass]) {
+    skill_sources.push([world_skills.value[subclass], subclass]);
+  }
+
   const skills: SkillData[] = [];
   let num_active = 0;
-  for (const skill_code of archetype_flex_skill_codes) {
-    const skill_data = archetype_skills[skill_code];
+  for (const [source_skills, source_archetype] of skill_sources) {
+    for (const skill_code of source_skills.flex) {
+      const skill_data = source_skills[skill_code];
 
-    if (skill_data.level > player_level.value) continue;
+      if (skill_data.level > player_level.value) continue;
 
-    let is_active = false;
-    if (player_flex_skills.indexOf(skill_data.code) !== -1) {
-      is_active = true;
-      num_active += 1;
+      let is_active = false;
+      if (player_flex_skills.indexOf(skill_data.code) !== -1) {
+        is_active = true;
+        num_active += 1;
+      }
+
+      skills.push({
+        code: skill_data.code,
+        name: skill_data.name,
+        is_active: is_active,
+        is_subclass: Boolean(source_archetype),
+        subclass_archetype: source_archetype,
+      });
     }
-
-    skills.push({
-      code: skill_data.code,
-      name: skill_data.name,
-      is_active: is_active,
-    });
   }
 
   // Calculate the number of skills that this player is able to learn
@@ -386,6 +448,14 @@ const onClickCommunicationLog = () => {
           }
         }
       }
+    }
+
+    // Marks the options a subclass adds, so they are not mistaken for
+    // native class options.
+    .subclass-tag {
+      margin-left: 4px;
+      color: $color-text-hex-50;
+      font-size: 11px;
     }
   }
 }
