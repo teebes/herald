@@ -28,7 +28,12 @@
             :class="{ tier_selected: feat_tier.selected, feat_selected: feat.selected }"
             @click="click_feat(feat.code, feat_tier.tier)"
           >
-            <td class="feat-name">{{ feat.name }}</td>
+            <td class="feat-name">
+              {{ feat.name }}<span
+                v-if="feat.is_subclass"
+                class="subclass-tag color-text-50"
+              >({{ feat.subclass_archetype }})</span>
+            </td>
             <td class="feat-description">{{ feat.description }}</td>
           </tr>
         </template>

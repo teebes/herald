@@ -103,6 +103,7 @@ import { useStore } from "vuex";
 import { gsap } from "gsap";
 import EventBus from "@/core/eventbus";
 import { capfirst } from "@/core/utils";
+import { getSubclass, findSkillData } from "@/core/subclass";
 
 const store = useStore();
 
@@ -242,6 +243,16 @@ const archetypeSkills = computed(() => {
   return skills;
 });
 
+// Skills of the player's subclass, if any. Deliberately not merged into
+// archetypeSkills: core skills stay own-archetype only, matching the server,
+// which refuses cross-archetype core skills at use time. This is used purely
+// to resolve flex and feat selections that came from the subclass.
+const subclassSkills = computed(() => {
+  const subclass = getSubclass(player.value);
+  if (!subclass) return {};
+  return store.state.game.world.skills[subclass] || {};
+});
+
 const coreSkills = computed(() => {
   const archetype = player.value.archetype;
   const player_level = player.value.level;
@@ -279,7 +290,8 @@ const flexSkills = computed(() => {
   for (const flexNumber of [1, 2, 3]) {
     const skillCode = player.value.skills.flex[flexNumber];
     if (skillCode) {
-      const skillData = archetypeSkills.value[skillCode];
+      const skillData = findSkillData(
+        skillCode, archetypeSkills.value, subclassSkills.value);
       if (!skillData) continue;
       if (player.value.level >= skillData.level) {
         skills.push({
@@ -297,7 +309,9 @@ const flexSkills = computed(() => {
 const featSkill = computed(() => {
   const tier4_selection = player.value.skills.feat['4'];
   if (tier4_selection) {
-    const skillData = archetypeSkills.value[tier4_selection];
+    // May be a subclass feat, so fall back to the subclass skill set.
+    const skillData = findSkillData(
+      tier4_selection, archetypeSkills.value, subclassSkills.value);
     if (!skillData) return false;
     return {
       label: skillData.name,
