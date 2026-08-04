@@ -1,7 +1,16 @@
 <template>
   <div class="flex-grow flex flex-col console-wrapper">
-    <div id="console" ref="console" class="testing">
-      <div class="message" v-for="message in messages" :key="message.request_id">
+    <div
+      id="console"
+      ref="console"
+      class="testing"
+      role="log"
+      aria-label="Game output"
+      aria-live="polite"
+      aria-relevant="additions"
+      aria-atomic="false"
+    >
+      <div class="message" v-for="message in messages" :key="message.message_id">
         <div v-if="message" class="mt-4">
           <div v-for="(line, index) in getLines(message)" :key="index">{{ line }}</div>
         </div>
@@ -26,7 +35,7 @@ const messages = computed(() => {
 
 interface Message {
   type: string;
-  request_id: string;
+  message_id: string;
   text: string;
 }
 
@@ -40,17 +49,15 @@ const scrollToBottom = async () => {
   bottomRef?.scrollIntoView();
 };
 
-// Scroll to bottom when new message is added
-let lastMessageID = '';
-watch(() => messages.value, (newMessages: Message[]) => {
-  const newMessage = newMessages[newMessages.length - 1];
-
-  if (newMessage.request_id === lastMessageID) return;
-  lastMessageID = newMessage.request_id;
-
-  scrollToBottom();
-},
-{ deep: true });
+// Scroll to bottom when a new message is added. The live log announces the
+// appended message without moving keyboard focus away from the command input.
+watch(
+  () => messages.value[messages.value.length - 1]?.message_id,
+  (messageID) => {
+    if (!messageID) return;
+    scrollToBottom();
+  },
+);
 </script>
 
 <style lang="scss" scoped>

@@ -5,6 +5,7 @@
         <input
           id="console-input"
           type="text"
+          aria-label="Game command"
           v-model="input"
           @blur="onBlur"
           @focus="onFocus"
