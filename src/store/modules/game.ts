@@ -342,6 +342,16 @@ const receiveMessage = async ({
     }
   }
 
+  // A give affect carries the recipient's full state as the target.
+  if (
+    message_data.type === "affect.cmd.give.success" &&
+    state.player &&
+    message_data.data.target &&
+    message_data.data.target.key === state.player.key
+  ) {
+    commit("player_set", message_data.data.target);
+  }
+
   // Inventory affect
   if (message_data.type === "affect.inventory.remove") {
     commit("player_remove_from_inventory", message_data.data.items);
