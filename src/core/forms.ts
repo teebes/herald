@@ -128,7 +128,7 @@ export const CONDITIONS: FormElement = {
     - item_in_inv template_id<br/>
     - item_in_room template_id<br/>
     - level level<br/>
-    - marked mark value<br/>
+    - marked mark [value] (omit value for presence; include it for equality)<br/>
     - mark_above mark value<br/>
     - mob_in_room template_id<br/>
     - name<br/>
