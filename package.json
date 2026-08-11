@@ -13,7 +13,7 @@
     "axios": "^1.7.4",
     "floating-vue": "^5.2.2",
     "gsap": "^3.12.5",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "vue": "^3.4.21",
     "vue-router": "^4.3.2",
     "vue3-google-login": "^2.0.26",
