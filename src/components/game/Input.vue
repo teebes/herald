@@ -23,6 +23,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';
+import { getSubclass } from '@/core/subclass';
 
 const shiftKey = 16,
   leftArrow = 37,
@@ -121,16 +122,62 @@ const onTab = (event: KeyboardEvent) => {
   // If there's only one word in the input bar, then assume a combat command
   // is being tab-completed
   if (tokens.length === 1) {
-    const archetypeSkills = store.state.game.world.skills[store.state.game.player.archetype];
-    let skills = archetypeSkills.core.slice();
-    const flexSkills = store.state.game.player.skills.flex;
-    for (const flexSkill of flexSkills) {
-      if (flexSkill) {
-        skills.push(flexSkill);
+    const player = store.state.game.player;
+    const worldSkills = store.state.game.world.skills;
+    const archetypeSkills = worldSkills[player.archetype] || {};
+    const subclass = getSubclass(player);
+    const subclassSkills = worldSkills[subclass] || {};
+    const activeEffects = new Set(
+      (store.state.game.effects[player.key] || []).map(effect => effect.code)
+    );
+    const skills: string[] = [];
+
+    const addSkill = (skillSet, code) => {
+      const skill = skillSet[code];
+      if (!skill) return;
+      if (player.level < skill.level) return;
+      skills.push(skill.command || skill.code);
+    };
+
+    for (const code of archetypeSkills.core || []) {
+      const skill = archetypeSkills[code];
+      if (!skill.requires_effect || activeEffects.has(skill.requires_effect)) {
+        addSkill(archetypeSkills, code);
       }
     }
 
-    for (const skill of skills) {
+    const flexSkills = Object.values(player.skills.flex || {});
+    for (const flexSkill of flexSkills) {
+      if (flexSkill) {
+        if (archetypeSkills[flexSkill as string]) {
+          addSkill(archetypeSkills, flexSkill);
+        } else {
+          addSkill(subclassSkills, flexSkill);
+        }
+      }
+    }
+
+    const featSkills = Object.values(player.skills.feat || {});
+    for (const featSkill of featSkills) {
+      if (featSkill) {
+        if (archetypeSkills[featSkill as string]) {
+          addSkill(archetypeSkills, featSkill);
+        } else {
+          addSkill(subclassSkills, featSkill);
+        }
+      }
+    }
+
+    // A subclass grants no ordinary core skills. It can expose a companion
+    // such as Warp while that skill's required effect is active.
+    for (const code of subclassSkills.core || []) {
+      const skill = subclassSkills[code];
+      if (skill.requires_effect && activeEffects.has(skill.requires_effect)) {
+        addSkill(subclassSkills, code);
+      }
+    }
+
+    for (const skill of new Set(skills)) {
       if (skill.match("^" + lastToken)) {
         input.value = skill;
         return;

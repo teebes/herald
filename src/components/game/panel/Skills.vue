@@ -28,7 +28,10 @@
         </div>
       </div>
 
-      <div class="flex-skills-region skills action-boxes" v-if="flexSkills.length">
+      <div
+        class="flex-skills-region skills action-boxes"
+        v-if="flexSkills.length || featSkills.length"
+      >
         <div>
           <div class="label">Flex Skills</div>
           <div class="skill-boxes">
@@ -43,10 +46,10 @@
                 <span class="box-name unselectable">{{ skill.label }}</span>
                 <span class="hotkey unselectable">{{ skill.hotKey }}</span>
               </div>
-              <template v-if="featSkill">
+              <template v-if="featSkills.length">
                 <div
                   class="box-item no-touch"
-                  v-for="skill in [featSkill]"
+                  v-for="skill in featSkills"
                   :key="skill.cmd"
                   @click="onClick(skill)"
                 >
@@ -55,6 +58,28 @@
                   <span class="hotkey unselectable">{{ skill.hotKey }}</span>
                 </div>
               </template>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="companion-skills-region skills action-boxes"
+        v-if="companionSkills.length"
+      >
+        <div>
+          <div class="label">Companion Skills</div>
+          <div class="skill-boxes">
+            <div class="box-row">
+              <div
+                class="box-item no-touch"
+                v-for="skill in companionSkills"
+                :key="skill.cmd"
+                @click="onClick(skill)"
+              >
+                <div class="box-overlay" :ref="el => skillRefs[`${skill.cmd}`] = el"></div>
+                <span class="box-name unselectable">{{ skill.label }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -154,6 +179,16 @@ const startCooldowns = () => {
     const remaining_time = duration - elapsed - COOLDOWN_FINISH;
     const remaining_perc = 100 - Math.round((100 * elapsed) / duration) + "%";
 
+    if (activeAnimations[skill]) {
+      activeAnimations[skill].kill();
+    }
+
+    if (remaining_time <= 0) {
+      overlay.setAttribute('style', 'height: 0');
+      onComplete(skill);
+      continue;
+    }
+
     overlay.setAttribute("style", `height: ${remaining_perc}`);
     const animation = gsap.to(overlay, {
       duration: remaining_time / 1000,
@@ -180,12 +215,10 @@ const onComplete = (skill: string) => {
 };
 
 const onCooldownAdjustment = (data: any) => {
-  let cd_data: any = {};
-  if (cooldowns.value[data.skill]) {
-    cd_data = { ...cooldowns.value[data.skill] };
-  }
-  const previous_adjustment = cd_data.adjustment || 0,
-    adjustment = previous_adjustment + data.adjustment,
+  const cd_data = cooldowns.value[data.skill];
+  if (!cd_data) return;
+
+  const adjustment = cd_data.adjustment || 0,
     current = new Date().getTime(),
     elapsed = current + adjustment * 1000 - cd_data.start,
     duration = cd_data.duration * 1000,
@@ -193,8 +226,11 @@ const onCooldownAdjustment = (data: any) => {
     remaining_perc = 100 - Math.round((100 * elapsed) / duration) + '%';
 
   const overlay = skillRefs[data.skill] as HTMLElement;
+  if (!overlay) return;
 
-  activeAnimations[data.skill].kill();
+  if (activeAnimations[data.skill]) {
+    activeAnimations[data.skill].kill();
+  }
 
   if (remaining_time > 0) {
     overlay.setAttribute('style', `height: ${remaining_perc}`);
@@ -202,16 +238,14 @@ const onCooldownAdjustment = (data: any) => {
       duration: remaining_time / 1000,
       height: '0%',
       ease: 'none',
+      onComplete: onComplete,
+      onCompleteParams: [data.skill],
     });
   } else {
     overlay.setAttribute('style', 'height: 0');
     onComplete(data.skill);
   }
 
-  store.commit('game/player_cooldown_adjust', {
-    skill: data.skill,
-    adjustment: adjustment
-  });
 };
 
 const archetypeSkills = computed(() => {
@@ -245,8 +279,9 @@ const archetypeSkills = computed(() => {
 
 // Skills of the player's subclass, if any. Deliberately not merged into
 // archetypeSkills: core skills stay own-archetype only, matching the server,
-// which refuses cross-archetype core skills at use time. This is used purely
-// to resolve flex and feat selections that came from the subclass.
+// which refuses cross-archetype core skills at use time. This resolves flex
+// and feat selections plus effect-gated companion skills from the subclass;
+// ordinary subclass core skills remain hidden.
 const subclassSkills = computed(() => {
   const subclass = getSubclass(player.value);
   if (!subclass) return {};
@@ -261,6 +296,7 @@ const coreSkills = computed(() => {
   const skills: any[] = [];
   for (const skillCode of archetypeSkills.value.core) {
     const skillData = archetypeSkills.value[skillCode];
+    if (skillData.requires_effect) continue;
     if (player_level >= skillData.level) {
       skills.push({
         label: skillData.name,
@@ -281,6 +317,30 @@ const coreSkills = computed(() => {
       is_disabled: true
     });
   }
+  return skills;
+});
+
+const activeEffectCodes = computed(() => {
+  const playerEffects = store.state.game.effects[player.value.key] || [];
+  return new Set(playerEffects.map(effect => effect.code));
+});
+
+const companionSkills = computed(() => {
+  const skills: any[] = [];
+  const seen = new Set<string>();
+
+  for (const skillSet of [archetypeSkills.value, subclassSkills.value]) {
+    for (const skillCode of skillSet.core || []) {
+      const skillData = skillSet[skillCode];
+      if (!skillData || !skillData.requires_effect) continue;
+      if (!activeEffectCodes.value.has(skillData.requires_effect)) continue;
+      if (player.value.level < skillData.level || seen.has(skillData.code)) continue;
+
+      skills.push({ label: skillData.name, cmd: skillData.code });
+      seen.add(skillData.code);
+    }
+  }
+
   return skills;
 });
 
@@ -306,20 +366,26 @@ const flexSkills = computed(() => {
   return skills;
 });
 
-const featSkill = computed(() => {
-  const tier4_selection = player.value.skills.feat['4'];
-  if (tier4_selection) {
-    // May be a subclass feat, so fall back to the subclass skill set.
-    const skillData = findSkillData(
-      tier4_selection, archetypeSkills.value, subclassSkills.value);
-    if (!skillData) return false;
-    return {
-      label: skillData.name,
-      cmd: skillData.code,
-      hotKey: 9
-    };
+const featSkills = computed(() => {
+  const skills: any[] = [];
+  const selections = Object.entries(player.value.skills.feat || {})
+    .sort(([left], [right]) => Number(left) - Number(right));
+
+  for (const [, selection] of selections) {
+    if (selection) {
+      // May be a subclass feat, so fall back to the subclass skill set.
+      const skillData = findSkillData(
+        selection as string, archetypeSkills.value, subclassSkills.value);
+      if (!skillData) continue;
+      skills.push({
+        label: skillData.name,
+        cmd: skillData.code,
+        // Feat skills have no numeric alias in Advent.
+        hotKey: ''
+      });
+    }
   }
-  return false;
+  return skills;
 });
 
 const playerCustomSkills = computed(() => player.value.skills.custom || {});
@@ -370,11 +436,12 @@ const customSkills2 = computed(() => {
 onMounted(() => {
   EventBus.on("cooldown-adjustment", onCooldownAdjustment);
   EventBus.on("cooldown-start", startCooldowns);
-  // startCooldowns();
+  startCooldowns();
 });
 
 onUnmounted(() => {
   EventBus.off("cooldown-adjustment", onCooldownAdjustment);
+  EventBus.off("cooldown-start", startCooldowns);
   for (const animation in activeAnimations) {
     activeAnimations[animation].kill();
   }

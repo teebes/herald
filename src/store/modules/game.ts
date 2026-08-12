@@ -9,6 +9,45 @@ import router from "@/router";
 // Running one more test
 
 const MESSAGE_LIMIT = 200;
+const cooldownClearTimers: Record<string, ReturnType<typeof setTimeout>> = {};
+
+const clearCooldownTimer = (skill: string) => {
+  const timer = cooldownClearTimers[skill];
+  if (timer) {
+    clearTimeout(timer);
+    delete cooldownClearTimers[skill];
+  }
+};
+
+const clearCooldownTimers = () => {
+  for (const skill of Object.keys(cooldownClearTimers)) {
+    clearCooldownTimer(skill);
+  }
+};
+
+const scheduleCooldownClear = (state, commit, skill: string) => {
+  const cooldown = state.player_cooldowns[skill];
+  if (!cooldown) return;
+
+  clearCooldownTimer(skill);
+  const cooldownStart = cooldown.start;
+  const cooldownExpires = cooldown.expires;
+  const elapsed = new Date().getTime() - cooldownStart;
+  const adjustment = (cooldown.adjustment || 0) * 1000;
+  const remaining = Math.max(0, cooldown.duration * 1000 - elapsed - adjustment);
+
+  cooldownClearTimers[skill] = setTimeout(() => {
+    delete cooldownClearTimers[skill];
+    const current = state.player_cooldowns[skill];
+    if (
+      current &&
+      current.start === cooldownStart &&
+      current.expires === cooldownExpires
+    ) {
+      commit("player_cooldown_clear", skill);
+    }
+  }, remaining);
+};
 
 const set_initial_state = () => {
   return {
@@ -178,6 +217,46 @@ const receiveMessage = async ({
     };
     commit("world_set", world_data);
     commit("player_set", message_data.data.actor);
+    const receivedAt = new Date().getTime();
+    const serverTime = message_data.data.server_time || receivedAt / 1000;
+    for (const effectData of message_data.data.effects || []) {
+      const remaining = Math.max(
+        0, (effectData.expires - serverTime) * 1000);
+      if (remaining <= 0) continue;
+      const effect = {
+        ...effectData,
+        start: receivedAt - Math.max(
+          0, effectData.duration * 1000 - remaining),
+      };
+      commit("effects_add", effect);
+      if (effect.target === message_data.data.actor.key) {
+        commit("player_effects_add", effect);
+      }
+      setTimeout(() => {
+        commit("effects_remove", effect);
+        if (effect.target === message_data.data.actor.key) {
+          commit("player_effects_remove", effect);
+        }
+      }, remaining);
+    }
+    const hydratedCooldowns = {};
+    for (const cooldown of message_data.data.cooldowns || []) {
+      const remaining = Math.max(
+        0, (cooldown.expires - serverTime) * 1000);
+      if (remaining <= 0) continue;
+      const elapsed = Math.max(0, cooldown.duration * 1000 - remaining);
+      hydratedCooldowns[cooldown.skill] = {
+        ...cooldown,
+        adjustment: 0,
+        start: receivedAt - elapsed,
+      };
+    }
+    clearCooldownTimers();
+    commit("player_cooldowns_set", hydratedCooldowns);
+    for (const skill of Object.keys(hydratedCooldowns)) {
+      scheduleCooldownClear(state, commit, skill);
+    }
+    EventBus.emit("cooldown-start");
     commit("who_list_set", message_data.data.who_list);
     commit("full_screen_message_clear");
     router.push({ name: "game" });
@@ -226,7 +305,8 @@ const receiveMessage = async ({
     message_data.type === "affect.flee.success" ||
     message_data.type === "notification.transport.exit" ||
     message_data.type === "affect.death" ||
-    message_data.type === "affect.transfer"
+    message_data.type === "affect.transfer" ||
+    message_data.type === "affect.return"
   ) {
     commit("map_add", message_data.data.room);
     commit("room_set", message_data.data.room);
@@ -272,7 +352,8 @@ const receiveMessage = async ({
     message_data.type === "notification.movement.enter" ||
     message_data.type === "notification.cmd.flee.enter" ||
     message_data.type === "notification./transfer.enter" ||
-    message_data.type === "notification./jump.enter"
+    message_data.type === "notification./jump.enter" ||
+    message_data.type === "notification.return.enter"
   ) {
     commit("room_chars_add", message_data.data.actor);
   }
@@ -282,7 +363,8 @@ const receiveMessage = async ({
     message_data.type === "notification.movement.exit" ||
     message_data.type === "notification.cmd.flee.exit" ||
     message_data.type === "notification./transfer.exit" ||
-    message_data.type === "notification./jump.exit"
+    message_data.type === "notification./jump.exit" ||
+    message_data.type === "notification.return.exit"
   ) {
     commit("room_chars_remove", message_data.data.actor);
 
@@ -432,28 +514,13 @@ const receiveMessage = async ({
     }
   }
 
-  // Dispel / purge / purify
+  // Clear any effects named by a cleansing effect. Ice Block and Smoke Bomb
+  // use the same wire field as Dispel, Purge, and Purify.
   if (message_data.type === "effect.start") {
-
-    let remove_effects = [];
-
-    const is_custom = message_data.data.custom;
-
-    if (is_custom) {
-      if (message_data.data.code === 'dispel') {
-        remove_effects = message_data.data.removed_effects;
-      }
-    } else {
-      if (message_data.data.code === 'purge' || message_data.data.code === 'purify') {
-        remove_effects = message_data.data.removed_effects;
-      }
-    }
-
-    if (remove_effects.length) {
-      // for each effect code to remove, commit effects_consume
-      for (const effect_code of remove_effects) {
-        commit("effects_consume", {
-          actor_key: message_data.data.actor.key,
+    const removedEffects = message_data.data.removed_effects;
+    if (Array.isArray(removedEffects)) {
+      for (const effect_code of removedEffects) {
+        commit("effects_remove_code", {
           target_key: message_data.data.target,
           effect_code: effect_code,
         });
@@ -466,13 +533,13 @@ const receiveMessage = async ({
   if (message_data.type === "skill.cooldown.start") {
     commit("player_cooldown_start", message_data.data);
     EventBus.emit("cooldown-start", message_data.data);
-    setTimeout(() => {
-      commit("player_cooldown_clear", message_data.data.skill);
-    }, message_data.data.duration * 1000);
+    scheduleCooldownClear(state, commit, message_data.data.skill);
   }
 
   if (message_data.type === "skill.cooldown.adjust") {
-    // EventBus.$emit("cooldown-adjustment", message_data.data);
+    commit("player_cooldown_adjust", message_data.data);
+    EventBus.emit("cooldown-adjustment", message_data.data);
+    scheduleCooldownClear(state, commit, message_data.data.skill);
   }
 
   // Hint processing
@@ -929,7 +996,7 @@ const mutations = {
   },
 
   player_effects_add: (state, effect) => {
-    effect.start = new Date().getTime();
+    effect.start = effect.start || new Date().getTime();
     if (!state.player_effects.length) {
       state.player_effects = [effect];
       return;
@@ -966,7 +1033,7 @@ const mutations = {
   },
 
   effects_add: (state, effect) => {
-    effect.start = new Date().getTime();
+    effect.start = effect.start || new Date().getTime();
     const char_effects = state.effects[effect.target] || [];
 
     if (!char_effects.length) {
@@ -1012,32 +1079,67 @@ const mutations = {
     const char_effects = state.effects[target_key];
     if (!char_effects || !char_effects.length) return;
 
-    const kept_effects: {}[] = _.filter(char_effects, (effect) => {
-      return (
-        effect.actor != actor_key &&
-        effect.target != target_key &&
-        effect.code != effect_code
-      );
-    });
+    const matching = _.filter(
+      char_effects,
+      (effect) => effect.code == effect_code
+    );
+    let consumed = matching.find(effect => effect.actor == actor_key);
+    if (!consumed) {
+      consumed = matching.sort((left, right) =>
+        String(left.key).localeCompare(String(right.key)))[0];
+    }
+    if (!consumed) return;
+
+    const kept_effects: {}[] = _.filter(
+      char_effects,
+      (effect) => effect.key != consumed.key
+    );
     // Vue.set(state.effects, target_key, kept_effects);
     state.effects[target_key] = kept_effects;
+    if (target_key === state.player?.key) {
+      state.player_effects = _.filter(
+        state.player_effects,
+        (effect) => effect.key != consumed.key
+      );
+    }
+  },
+
+  effects_remove_code: (state, { target_key, effect_code }) => {
+    const char_effects = state.effects[target_key];
+    if (!char_effects || !char_effects.length) return;
+
+    state.effects[target_key] = _.filter(
+      char_effects,
+      (effect) => effect.code != effect_code
+    );
+    if (target_key === state.player?.key) {
+      state.player_effects = _.filter(
+        state.player_effects,
+        (effect) => effect.code != effect_code
+      );
+    }
   },
 
   player_cooldown_start: (state, message_data) => {
-    message_data.start = new Date().getTime();
+    message_data.start = message_data.start || new Date().getTime();
     // Vue.set(state.player_cooldowns, message_data.skill, message_data);
     state.player_cooldowns[message_data.skill] = message_data;
   },
 
   player_cooldown_adjust: (state, { skill, adjustment }) => {
     if (state.player_cooldowns[skill]) {
-      state.player_cooldowns[skill].adjustment = adjustment;
+      const previous = state.player_cooldowns[skill].adjustment || 0;
+      state.player_cooldowns[skill].adjustment = previous + adjustment;
     }
   },
 
   player_cooldown_clear: (state, skill) => {
     // Vue.delete(state.player_cooldowns, skill);
     delete state.player_cooldowns[skill];
+  },
+
+  player_cooldowns_set: (state, cooldowns) => {
+    state.player_cooldowns = cooldowns;
   },
 
   player_config_set: (state, player_config) => {
@@ -1165,6 +1267,7 @@ const mutations = {
   },
 
   reset_state: (state) => {
+    clearCooldownTimers();
     const new_state = set_initial_state();
     for (const attr in new_state) {
       state[attr] = new_state[attr];
