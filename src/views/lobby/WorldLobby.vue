@@ -82,6 +82,7 @@ const router = useRouter();
 const route = useRoute();
 
 const loaded = ref(false);
+let active_load_id = 0;
 
 const world = computed(() => store.state.lobby.world);
 const leaders = computed(() => store.state.lobby.leaders);
@@ -96,17 +97,33 @@ const backgroundImage = computed(() => {
 
 const descLines = computed(() => world.value.description.split("\n"));
 
+const loadWorld = async (world_id) => {
+  const load_id = ++active_load_id;
+  loaded.value = false;
+
+  try {
+    const world_loaded = await store.dispatch(
+      "lobby/initial_fetch",
+      world_id);
+
+    if (load_id === active_load_id && world_loaded) {
+      loaded.value = true;
+    }
+  } catch {
+    if (load_id === active_load_id) {
+      loaded.value = false;
+    }
+  }
+};
+
 onMounted(async () => {
   if (store.state.auth.user.is_temporary) {
     await store.dispatch('auth/logout');
-    router.push({name: 'home'});
+    await router.push({name: 'home'});
+    return;
   }
 
-  await store.dispatch(
-    "lobby/initial_fetch",
-    route.params.world_id);
-
-  loaded.value = true;
+  await loadWorld(route.params.world_id);
 });
 
 
@@ -141,9 +158,7 @@ const world_descriptors = computed(() => {
 
 watch(() => route.params.world_id, (newWorldId) => {
   if (newWorldId) {
-    store.dispatch(
-    "lobby/initial_fetch",
-    route.params.world_id);
+    void loadWorld(newWorldId);
   }
 });
 </script>

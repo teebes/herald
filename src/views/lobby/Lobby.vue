@@ -172,7 +172,8 @@ const route = useRoute();
 onMounted(async () => {
   if (store.state.auth.user.is_temporary) {
     await store.dispatch('auth/logout');
-    router.push({name: 'home'});
+    await router.push({name: 'home'});
+    return;
   }
 
   const lobby_data = await axios.get('lobby/');

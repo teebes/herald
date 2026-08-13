@@ -1,5 +1,5 @@
 <template>
-  <div class="world-card">
+  <div class="world-card" ref="cardElement">
 
     <router-link
       :to="{ name: 'lobby_world_details', params: { world_id: world.id } }"
@@ -16,17 +16,63 @@
 </template>
 
 <script lang='ts' setup>
-import { computed } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 
 const props = defineProps<{
   world: any;
 }>();
 
+const cardElement = ref<HTMLElement | null>(null);
+const remoteBackgroundReady = ref(false);
+let observer: IntersectionObserver | null = null;
+
+const isRemoteBackground = computed(() => {
+  return /^https?:\/\//i.test(props.world?.small_background || '');
+});
+
 const backgroundImage = computed(() => {
-  if (props.world && props.world.small_background) {
+  if (props.world?.small_background
+      && (!isRemoteBackground.value || remoteBackgroundReady.value)) {
     return { backgroundImage: `url(${props.world.small_background})` };
   }
   return {};
+});
+
+const observeRemoteBackground = () => {
+  observer?.disconnect();
+  observer = null;
+  remoteBackgroundReady.value = false;
+
+  if (!isRemoteBackground.value) {
+    return;
+  }
+
+  if (!('IntersectionObserver' in window)) {
+    remoteBackgroundReady.value = true;
+    return;
+  }
+
+  observer = new IntersectionObserver((entries) => {
+    if (entries.some(entry => entry.isIntersecting)) {
+      remoteBackgroundReady.value = true;
+      observer?.disconnect();
+      observer = null;
+    }
+  }, { rootMargin: '200px 0px' });
+
+  if (cardElement.value) {
+    observer.observe(cardElement.value);
+  }
+};
+
+onMounted(() => {
+  observeRemoteBackground();
+});
+
+watch(() => props.world?.small_background, observeRemoteBackground);
+
+onUnmounted(() => {
+  observer?.disconnect();
 });
 </script>
 

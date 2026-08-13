@@ -1,5 +1,5 @@
 <template>
-  <div class="world-chars-region">
+  <div class="world-chars-region" v-if="chars !== null">
     <CreateChar v-if="newCharacter" :world="world" @charcreated="onCharCreated" />
     <div class="world-chars" v-else>
       <div class="world-chars-title">YOUR CHARACTERS</div>

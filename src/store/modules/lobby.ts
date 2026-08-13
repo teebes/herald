@@ -1,6 +1,8 @@
 import axios from "axios";
 import _ from "lodash";
 
+let active_fetch_id = 0;
+
 const set_initial_state = () => {
   return {
     world: null,
@@ -15,30 +17,54 @@ const set_initial_state = () => {
 };
 
 const actions = {
-  initial_fetch: async ({ commit }, world_id) => {
+  initial_fetch: async ({ commit, rootState }, world_id) => {
+    const fetch_id = ++active_fetch_id;
     commit('reset_state');
 
     const worldFetchPromise = axios.get(
       `/lobby/worlds/${world_id}/`
     );
 
-    const userCharsPromise = axios.get(
-      `/lobby/worlds/${world_id}/chars/?page_size=30`
-    );
+    if (rootState.auth.token) {
+      axios.get(
+        `/lobby/worlds/${world_id}/chars/?page_size=30`
+      ).then((user_chars_resp) => {
+        if (fetch_id === active_fetch_id) {
+          commit('set_chars', user_chars_resp.data.results);
+        }
+      }).catch(() => {
+        if (fetch_id === active_fetch_id) {
+          commit('set_chars', []);
+        }
+      });
+    } else {
+      commit('set_chars', []);
+    }
 
-    const leaderboardPromise = axios.get(
-      `/lobby/worlds/${world_id}/leaders/`
-    );
+    const world_resp = await worldFetchPromise;
+    if (fetch_id !== active_fetch_id) {
+      return false;
+    }
 
-    const [world_resp, user_chars_resp, leaderboard_resp] = await Promise.all([
-      worldFetchPromise,
-      userCharsPromise,
-      leaderboardPromise,
-    ]);
-
-    commit('set_chars', user_chars_resp.data.results);
     commit('set_world', world_resp.data);
-    commit('set_leaders', leaderboard_resp.data.results)
+
+    if (world_resp.data.allow_combat && Number(world_resp.data.id) !== 217) {
+      axios.get(
+        `/lobby/worlds/${world_id}/leaders/`
+      ).then((leaderboard_resp) => {
+        if (fetch_id === active_fetch_id) {
+          commit('set_leaders', leaderboard_resp.data.results);
+        }
+      }).catch(() => {
+        if (fetch_id === active_fetch_id) {
+          commit('set_leaders', []);
+        }
+      });
+    } else {
+      commit('set_leaders', []);
+    }
+
+    return true;
   },
   char_edit: async ({ commit, state }, payload) => {
     const world_id = state.world.id;
