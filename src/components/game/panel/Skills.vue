@@ -376,7 +376,9 @@ const featSkills = computed(() => {
       // May be a subclass feat, so fall back to the subclass skill set.
       const skillData = findSkillData(
         selection as string, archetypeSkills.value, subclassSkills.value);
-      if (!skillData) continue;
+      // Passive feats may share a code with an ordinary skill. Only render
+      // abilities that the server explicitly identifies as feat skills.
+      if (!skillData || !skillData.is_feat) continue;
       skills.push({
         label: skillData.name,
         cmd: skillData.code,
