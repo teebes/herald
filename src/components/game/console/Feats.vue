@@ -87,13 +87,11 @@ const click_feat = (code, tier) => {
   }
 
   tr.feat-row {
-    &.tier_selected {
-      &:not(.feat_selected) {
-        color: $color-text-hex-50;
-        &:hover {
-          cursor: pointer;
-          color: $color-primary;
-        }
+    &:not(.feat_selected) {
+      color: $color-text-hex-50;
+      &:hover {
+        cursor: pointer;
+        color: $color-primary;
       }
     }
 
