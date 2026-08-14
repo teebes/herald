@@ -29,7 +29,7 @@
                 v-for="effect in target_effects"
                 :key="effect.expires"
                 :duration="effect.duration"
-                :label="effect.code"
+                :label="effect.stack > 1 ? `${effect.code} ${effect.stack}` : effect.code"
                 :expires="effect.expires"
                 :start="effect.start"
                 method="channel"

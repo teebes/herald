@@ -13,7 +13,7 @@
           v-for="effect in player_effects"
           :key="effect.expires"
           :duration="effect_duration(effect)"
-          :label="effect.code"
+          :label="effect.stack > 1 ? `${effect.code} ${effect.stack}` : effect.code"
           :expires="effect.expires"
           method="channel"
         />
