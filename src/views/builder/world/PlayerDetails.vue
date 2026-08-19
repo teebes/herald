@@ -5,7 +5,7 @@
     <div>
       Level {{ player.level }} {{ player.archetype }}
       <span v-if="store.state.auth.user.is_staff" class='ml-2 color-text-50'>
-        [ <router-link :to="user_page(player)">user {{ player.animation_data.user_id }}</router-link> ]
+        [ <router-link :to="user_page()">user {{ playerUserId }}</router-link> ]
       </span>
     </div>
     <div v-if="player.title">Title: {{ player.title }}</div>
@@ -45,14 +45,14 @@
 
         <div class="factions">
           <h3>Factions</h3>
-          <div>core: {{ player.animation_data.factions.core }}</div>
+          <div>core: {{ playerFactions.core }}</div>
           <div
-            v-for="faction_code in Object.keys(player.animation_data.factions)"
+            v-for="faction_code in Object.keys(playerFactions)"
             :key="faction_code"
           >
             <template
               v-if="faction_code !== 'core'"
-            >{{ faction_code }}: {{ player.animation_data.factions[faction_code] }}</template>
+            >{{ faction_code }}: {{ playerFactions[faction_code] }}</template>
           </div>
         </div>
 
@@ -123,6 +123,14 @@ const fetched = ref(false);
 const center_key = ref("");
 
 const player = computed<any>(() => store.state.builder.worlds.player);
+// Forge and Herald deploy independently, so retain old-response fallbacks
+// until top-level player identity has reached every Forge deployment.
+const playerUserId = computed(() =>
+  player.value?.user_id ?? player.value?.animation_data?.user_id
+);
+const playerFactions = computed(() =>
+  player.value?.factions ?? player.value?.animation_data?.factions ?? {}
+);
 
 
 onMounted(async () => {
@@ -204,11 +212,11 @@ const player_rooms = computed(() => {
 });
 
 
-const user_page = (player) => {
+const user_page = () => {
   return {
     name: 'staff_user_info',
     params: {
-      user_id: player.animation_data.user_id,
+      user_id: playerUserId.value,
     },
   };
 };
