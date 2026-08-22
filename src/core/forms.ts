@@ -246,12 +246,12 @@ export const GET_MOB_TEMPLATE_INFO = () => {
           widget: "select",
           options: [
             {
-              value: "female",
-              label: "Female",
-            },
-            {
               value: "male",
               label: "Male",
+            },
+            {
+              value: "female",
+              label: "Female",
             },
             {
               value: "non_binary",

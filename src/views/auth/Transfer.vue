@@ -21,8 +21,9 @@
     <div class="form-group">
       <label for="field-gender">Gender</label>
       <select id="field-gender" name="gender" class="form-control tracked" v-model="gender">
-        <option value="female">Female</option>
         <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="non_binary">Non-Binary</option>
       </select>
     </div>
 
@@ -40,7 +41,7 @@ const store = useStore();
 const route = useRoute();
 
 const name = ref("");
-const gender = ref<"male" | "female">("female");
+const gender = ref<"male" | "female" | "non_binary">("female");
 
 const transfer = async () => {
   const resp = await axios.post(`/lobby/worlds/${route.params.player_id}/transfer/`, {

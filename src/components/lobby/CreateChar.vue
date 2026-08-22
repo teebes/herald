@@ -33,8 +33,8 @@
               :disabled="!world.can_select_gender"
               :readonly="!world.can_select_gender"
             >
-              <option value="female">Female</option>
               <option value="male">Male</option>
+              <option value="female">Female</option>
               <option value="non_binary">Non-Binary</option>
             </select>
           </div>
