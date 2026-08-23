@@ -294,6 +294,10 @@ export const GET_MOB_TEMPLATE_INFO = () => {
               value: "friendly",
               label: "Friendly",
             },
+            {
+              value: "faction_friendly",
+              label: "Faction Friendly",
+            },
           ],
           help: `Determines a mob's behavior when you enter its room.
                  <br/><br/>
@@ -301,7 +305,9 @@ export const GET_MOB_TEMPLATE_INFO = () => {
                  * Normal: mob will only attack if their faction is at odds with the entering char.<br/>
                  * Players: mob will attack all players.<br/>
                  * All: mob will attack players & other mobs.<br/>
-                 * Friendly: Mob will not be able to attack nor be attacked.
+                 * Friendly: Mob will not be able to attack nor be attacked.<br/>
+                 * Faction Friendly: mob behaves normally, but cannot be attacked
+                   by a character in the same core faction.<br/>
                 `,
         },
       ],
