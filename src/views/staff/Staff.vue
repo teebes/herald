@@ -8,6 +8,37 @@
       <div class="mt-2">24-hour Unique Players: {{ panel.user_connections }}</div>
       <div class="mt-2">Unreviewed Submitted Worlds: {{ panel.unreviewed }}</div>
 
+      <div class="save-errors panel mt-4"
+        v-if="panel.player_save_errors && panel.player_save_errors.length">
+        <h3 class="color-text-red mb-2">
+          BLOCKED CHARACTER SAVES
+          ({{ panel.player_save_errors_count || panel.player_save_errors.length }})
+        </h3>
+        <div class="mb-2">
+          Forge rejected these character snapshots. An entry clears only after
+          an equal or newer snapshot saves successfully.
+        </div>
+        <div v-for="error in panel.player_save_errors"
+          :key="error.player_id" class="mt-2">
+          [ {{ error.player_id }} ]
+          <router-link :to="save_error_player_details(error)">
+            {{ error.player_name }}
+          </router-link>
+          -
+          <router-link :to="world_admin_instance_link(
+            error.root_world_id, error.world_id)">
+            {{ error.world_name }}
+          </router-link>
+          - {{ error.reason }}
+          - detected {{ format_datetime(error.detected_ts) }}
+          <div class="color-text-red">{{ error.detail }}</div>
+        </div>
+        <div class="mt-2"
+          v-if="panel.player_save_errors_count > panel.player_save_errors.length">
+          Showing the {{ panel.player_save_errors.length }} oldest errors.
+        </div>
+      </div>
+
       <div class="controls mt-4">
 
         <h3 class="my-2">CONTROLS</h3>
@@ -146,6 +177,7 @@ const user_results = ref<any[]>([]);
 const player_results = ref<any[]>([]);
 const broadcast_message = ref("");
 let timeout: ReturnType<typeof setTimeout> | null = null;
+let panel_refresh_interval: ReturnType<typeof setInterval> | null = null;
 
 onMounted(async () => {
   await store.dispatch('forge/send', {
@@ -153,9 +185,15 @@ onMounted(async () => {
     'sub': 'staff.panel',
   });
   await store.dispatch('staff/staff_panel_fetch');
+  panel_refresh_interval = setInterval(() => {
+    store.dispatch('staff/staff_panel_fetch');
+  }, 60000);
 });
 
 onUnmounted(async () => {
+  if (panel_refresh_interval) {
+    clearInterval(panel_refresh_interval);
+  }
   if (store.state.forge.ws) {
     await store.dispatch('forge/send', {
       'type': 'unsub',
@@ -185,6 +223,20 @@ const world_details = (player) => {
     name: 'builder_world_index',
     params: { world_id: player.root_world_id },
   };
+};
+
+const save_error_player_details = (error) => {
+  return {
+    name: 'builder_world_player_details',
+    params: {
+      player_id: error.player_id,
+      world_id: error.root_world_id,
+    },
+  };
+};
+
+const format_datetime = (value) => {
+  return new Date(value).toLocaleString();
 };
 
 watch(search_query, () => {
