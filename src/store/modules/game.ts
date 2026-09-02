@@ -25,6 +25,37 @@ const clearCooldownTimers = () => {
   }
 };
 
+const applyCommandFocus = (command, focus) => {
+  if (!focus) return command;
+
+  const leading = command.match(/^\s*/)?.[0] || "";
+  const trailing = command.match(/\s*$/)?.[0] || "";
+  const trimmed = command.trim();
+  const lowerCommand = trimmed.toLowerCase();
+  const firstToken = lowerCommand.split(" ")[0];
+
+  if (
+    lowerCommand === "k" ||
+    lowerCommand === "ki" ||
+    lowerCommand === "kil" ||
+    lowerCommand === "kill"
+  ) {
+    return leading + trimmed + " " + focus + trailing;
+  }
+
+  if (!new RegExp("^" + firstToken).exec("help")) {
+    const commandTokens = trimmed.split(" ");
+    if (
+      commandTokens.length === 2 &&
+      new RegExp("^" + commandTokens[1]).exec("focus")
+    ) {
+      return leading + commandTokens[0] + " " + focus + trailing;
+    }
+  }
+
+  return command;
+};
+
 const scheduleCooldownClear = (state, commit, skill: string) => {
   const cooldown = state.player_cooldowns[skill];
   if (!cooldown) return;
@@ -187,8 +218,12 @@ const receiveMessage = async ({
 
   // Add message to be shown in console
   if (skip_messages.indexOf(message_data.type) == -1) {
-    // EventBus.$emit("new-message", message_data);
-    commit("message_add", message_data);
+    if (message_data.type === "cmd.history.replay") {
+      commit("history_replay_resolve", message_data);
+    } else {
+      // EventBus.$emit("new-message", message_data);
+      commit("message_add", message_data);
+    }
   }
 
 
@@ -804,27 +839,12 @@ const actions = {
       }
     }
 
-    const lcmd = cmd.toLowerCase();
-    const lfirst_token = lcmd.split(" ")[0];
-
-    // Special focus processing
-    if (
-      state.player.focus &&
-      (lcmd === "k" || lcmd === "ki" || lcmd === "kil" || lcmd === "kill")
-    ) {
-      // Kill with no arguments
-      cmd = `${cmd} ${state.player.focus}`;
-    } else if (!new RegExp("^" + lfirst_token).exec("help")) {
-      // exclude 'help' from focus processing
-      // F commands
-      const cmd_tokens = cmd.split(" ");
-      if (cmd_tokens.length === 2) {
-        const arg = cmd_tokens[1];
-        if (new RegExp("^" + arg).exec("focus")) {
-          cmd = `${cmd_tokens[0]} ${state.player.focus}`;
-        }
-      }
-    }
+    // Advent owns command-chain ordering. Keep the chain intact while
+    // preserving the existing focus substitution on each segment.
+    cmd = cmd
+      .split(";")
+      .map((subcommand) => applyCommandFocus(subcommand, state.player.focus))
+      .join(";");
 
     const message = { type: "cmd.text", text: cmd, echo: true };
 
@@ -833,11 +853,19 @@ const actions = {
       commit("message_add", message);
     }
 
-    // Support semicolon commands
-    var subCommands = cmd.split(";");
-    if (subCommands.length > 1) {
-      for (const subcmd of subCommands) {
-        dispatch("cmd", { cmd: subcmd, silent: true });
+    // Quit is still a client-owned system message. Preserve its established
+    // chain behavior unless a history reference requires Advent to reject the
+    // complete chain atomically.
+    const subCommands = cmd.split(";");
+    const hasHistoryReference = subCommands.some((subcommand) =>
+      subcommand.trim().startsWith("!")
+    );
+    const hasQuit = subCommands.some(
+      (subcommand) => subcommand.trim().toLowerCase() === "quit"
+    );
+    if (subCommands.length > 1 && hasQuit && !hasHistoryReference) {
+      for (const subcommand of subCommands) {
+        dispatch("cmd", { cmd: subcommand, silent: true });
       }
       return;
     }
@@ -923,6 +951,33 @@ const mutations = {
         messages_length
       );
     }
+  },
+
+  history_replay_resolve: (state, message) => {
+    const pendingIndex = state.messages.findIndex(
+      (pending) =>
+        pending.type === "cmd.text" &&
+        pending.message_id === message.request_id
+    );
+
+    if (pendingIndex === -1) {
+      message.receive_ts = new Date().getTime();
+      message.message_id = uuidv4();
+      state.messages.push(message);
+      const messagesLength = state.messages.length;
+      if (messagesLength > MESSAGE_LIMIT) {
+        state.messages = state.messages.slice(
+          messagesLength - MESSAGE_LIMIT,
+          messagesLength
+        );
+      }
+      return;
+    }
+
+    const pending = state.messages[pendingIndex];
+    message.receive_ts = new Date().getTime();
+    message.message_id = pending.message_id;
+    state.messages[pendingIndex] = message;
   },
 
   last_viewed_room_message_set: (state, message) => {
