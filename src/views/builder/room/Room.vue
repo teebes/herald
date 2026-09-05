@@ -67,10 +67,12 @@ import { DIRECTIONS } from "@/constants";
 import RoomDirActions from "@/components/builder/room/RoomDirActions.vue";
 import { BUILDER_FORMS } from "@/core/forms";
 import RoomDescription from "@/components/builder/room/RoomDescription.vue";
+import axios from "axios";
 
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
+const roomRequest = axios.CancelToken.source();
 
 const map = computed(() => store.state.builder.map);
 const center_key = computed(() => store.state.builder.room.key);
@@ -106,22 +108,25 @@ const onTypeE = (e: KeyboardEvent) => {
 
 onMounted(async () => {
   window.addEventListener("keypress", onTypeE);
-  if (!store.state.builder.room || store.state.builder.room != route.params.room_id) {
-    const room = await store.dispatch("builder/room_fetch", {
-      world_id: route.params.world_id,
-      room_id: route.params.room_id
-    });
+  // The selected room may contain only map data, so fetch its full details.
+  const room = await store.dispatch("builder/room_fetch", {
+    world_id: route.params.world_id,
+    room_id: route.params.room_id,
+    cancelToken: roomRequest.token
+  });
+  if (!room || roomRequest.token.reason) return;
 
-    if (!store.state.builder.zone || store.state.builder.zone != room.zone.id) {
-      await store.dispatch("builder/zone_fetch", {
-        world_id: route.params.world_id,
-        zone_id: room.zone.id
-      });
-    }
+  if (store.state.builder.zone?.id != room.zone.id) {
+    await store.dispatch("builder/zone_fetch", {
+      world_id: route.params.world_id,
+      zone_id: room.zone.id,
+      cancelToken: roomRequest.token
+    });
   }
 });
 
 onUnmounted(() => {
+  roomRequest.cancel();
   window.removeEventListener("keypress", onTypeE);
 });
 

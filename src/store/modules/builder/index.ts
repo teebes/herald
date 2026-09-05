@@ -32,6 +32,7 @@ interface BuilderState {
   quest: any;
   world_factions: {}[];
   cancelPreviousRequest: any;
+  room_fetch_request: symbol | null;
 }
 
 const initial_state = (): BuilderState => {
@@ -52,6 +53,7 @@ const initial_state = (): BuilderState => {
 
     // Axios request cancellation helper
     cancelPreviousRequest: null,
+    room_fetch_request: null,
   };
 };
 
@@ -315,7 +317,7 @@ const actions = {
 
     // If the clicked room is taking us to a new zone,
     // dispatch to get that as well
-    if (room.zone.id != state.zone.id) {
+    if (room.zone.id != state.zone?.id) {
       // Clear the zone's rooms since they will be refetched
       commit("zone_rooms_clear");
       dispatch("zone_fetch", {
@@ -326,7 +328,14 @@ const actions = {
     }
   },
 
-  room_fetch: async ({ commit }, { world_id, room_id, cancelToken }) => {
+  room_fetch: async ({ commit, state }, { world_id, room_id, cancelToken }) => {
+    // Map clicks and room-view mounts both fetch details. Only the newest
+    // request may update the selection, even if an older one wasn't cancelled.
+    const request = Symbol();
+    commit("room_fetch_request_set", request);
+    const isCurrentRequest = () =>
+      state.room_fetch_request === request && !cancelToken?.reason;
+
     try {
 
       const config: AxiosRequestConfig = {
@@ -338,11 +347,15 @@ const actions = {
         config.cancelToken = cancelToken;
       }
       const resp = await axios(config);
+      if (!isCurrentRequest()) return;
+
       const room_data = resp.data;
       delete room_data["map"];
       commit("room_set", room_data);
       return room_data;
     } catch (error: any) {
+      if (!isCurrentRequest()) return;
+
       if (!axios.isCancel(error)) {
         console.log("Error fetching room", error);
         if (error.response && error.response.status === 403) {
@@ -512,6 +525,7 @@ const mutations = {
   },
 
   reset_state: state => {
+    if (state.cancelPreviousRequest) state.cancelPreviousRequest();
     const s = initial_state();
     Object.keys(s).forEach(key => {
       state[key] = s[key];
@@ -559,6 +573,10 @@ const mutations = {
 
   room_set: (state, room) => {
     state.room = room;
+  },
+
+  room_fetch_request_set: (state, request) => {
+    state.room_fetch_request = request;
   },
 
   room_clear: (state) => {
