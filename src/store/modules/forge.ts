@@ -35,6 +35,15 @@ const actions = {
   // Receive actions
 
   job_complete: async ({ commit, dispatch }, data) => {
+    if (['delete_nexus', 'rebuild_nexus'].includes(data.job)
+        && data.status === 'progress') {
+      commit('ui/notification_set', {
+        text: data.job_data.message,
+        expires: false,
+      }, { root: true });
+      return;
+    }
+
     // Enter World
     if (data.job === 'enter_world') {
       if (data.status === 'error') {
@@ -105,7 +114,7 @@ const actions = {
     // Teardown
     if (data.job == "teardown") {
       if (data.status === 'error') {
-        const error = data.error || 'Error tearing down world.';
+        const error = data.job_data?.error || data.error || 'Error tearing down world.';
         commit('ui/notification_set_error', error, { root: true });
       } else if (data.status === 'success') {
         commit('ui/notification_set', 'Teardown complete.', { root: true });
@@ -131,7 +140,7 @@ const actions = {
     // Nexus Deleted
     if (data.job == "delete_nexus") {
       if (data.status === 'error') {
-        const error = data.error || 'Error deleting nexus.';
+        const error = data.job_data?.error || data.error || 'Error deleting nexus.';
         commit('ui/notification_set_error', error, { root: true });
       } else if (data.status === 'success') {
         commit('ui/notification_set', 'Nexus deleted.', { root: true });
@@ -146,7 +155,7 @@ const actions = {
     // Nexus Rebuilt
     if (data.job == "rebuild_nexus") {
       if (data.status === 'error') {
-        const error = data.error || 'Error rebuilding nexus.';
+        const error = data.job_data?.error || data.error || 'Error rebuilding nexus.';
         commit('ui/notification_set_error', error, { root: true });
       } else if (data.status === 'success') {
         commit('ui/notification_set', 'Nexus rebuilt.', { root: true });
