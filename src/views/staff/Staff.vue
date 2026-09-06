@@ -16,7 +16,8 @@
         </h3>
         <div class="mb-2">
           Forge rejected these character snapshots. An entry clears only after
-          an equal or newer snapshot saves successfully.
+          an equal or newer snapshot saves successfully. Fix the reported value
+          before retrying the save; dismissing the error cannot save the character.
         </div>
         <div v-for="error in panel.player_save_errors"
           :key="error.player_id" class="mt-2">
@@ -90,7 +91,13 @@
 
         <!-- Running Worlds -->
         <div class="running-worlds mt-4">
-          <h3 class="my-2">RUNNING WORLDS</h3>
+          <h3 class="my-2">LOADED WORLD INSTANCES</h3>
+          <div class="mb-2">
+            Connections exclude disconnected and exiting characters.
+            <span v-if="panel.lifecycle_recovery_enabled !== undefined">
+              Automatic lifecycle recovery: {{ panel.lifecycle_recovery_enabled ? 'enabled' : 'disabled' }}.
+            </span>
+          </div>
 
           <div class="worlds mt-2">
             <div v-for="world in panel.running_worlds" :key="world.key">
@@ -101,15 +108,31 @@
               -
               <span v-if="world.nexus_data">{{ world.nexus_data.name }} ({{ world.nexus_data.state }})</span>
               <span v-else>No Nexus</span>
-              - {{ world.playing_count }} playing
+              <template v-if="world.runtime && world.runtime.state === 'online'">
+                - {{ world.runtime.connected_count }} connected
+                <span v-if="world.runtime.linkless_count">, {{ world.runtime.linkless_count }} disconnected</span>
+                <span v-if="world.runtime.exiting_count">, {{ world.runtime.exiting_count }} exiting</span>
+                <span v-if="world.runtime.stale_exiting_count" class="color-text-red">
+                  — {{ world.runtime.stale_exiting_count }} exiting with no activity for over 10 minutes
+                </span>
+              </template>
+              <span v-else-if="world.runtime" class="color-text-red">
+                - runtime {{ world.runtime.state }}
+              </span>
+              <span v-else>- {{ world.playing_count }} marked in game</span>
             </div>
-            <div class="mt-2">{{ panel.running_worlds_count }} Total</div>
+            <div class="mt-2">
+              {{ panel.running_worlds_count }} total
+              <span v-if="panel.running_worlds.length < panel.running_worlds_count">
+                (showing {{ panel.running_worlds.length }})
+              </span>
+            </div>
           </div>
         </div>
 
         <!-- WIP Worlds -->
         <div class="wip-worlds mt-4">
-          <h3 class="my-2">WIP WORLDS</h3>
+          <h3 class="my-2">WORLDS CHANGING STATE</h3>
 
           <div class="worlds mt-2">
             <div v-for="world in panel.wip_worlds" :key="world.key">
