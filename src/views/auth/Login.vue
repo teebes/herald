@@ -47,6 +47,7 @@ import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import { GoogleLogin } from 'vue3-google-login';
+import { safeLoginRedirect } from '@/core/coreSignIn';
 
 const email = ref("");
 const password = ref("");
@@ -61,27 +62,15 @@ onMounted(() => {
 });
 
 const login = async () => {
-  await store.dispatch('auth/login', {
+  const success = await store.dispatch('auth/login', {
     email: email.value,
     password: password.value
   });
-
-  // Check if there's a redirect query parameter
-  if (route.query.redirect) {
-    router.push(route.query.redirect as string);
-  } else {
-    router.push("/lobby");
-  }
+  if (success) router.push(safeLoginRedirect(route.query.redirect));
 }
 
 const googleLoginCallback = async (response) => {
-  await store.dispatch('auth/google_login', response.credential);
-
-  // Check if there's a redirect query parameter
-  if (route.query.redirect) {
-    router.push(route.query.redirect as string);
-  } else {
-    router.push("/lobby");
-  }
+  const result = await store.dispatch('auth/google_login', response.credential);
+  if (result.success) router.push(safeLoginRedirect(route.query.redirect));
 }
 </script>

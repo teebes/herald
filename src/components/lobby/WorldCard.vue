@@ -1,17 +1,20 @@
 <template>
   <div class="world-card" ref="cardElement">
 
-    <router-link
-      :to="{ name: 'lobby_world_details', params: { world_id: world.id } }"
+    <component
+      :is="externalUrl ? 'a' : 'router-link'"
+      :to="externalUrl ? undefined : { name: 'lobby_world_details', params: { world_id: world.id } }"
+      :href="externalUrl"
       :class="{ ['world-' + world.id]: true }"
       :style="backgroundImage"
     >
       <div class="overlay">
         <div class="title">{{ world.name.toUpperCase() }}</div>
 
-        <div class="num-characters">{{ world.num_characters }} characters</div>
+        <div class="num-characters" v-if="externalUrl">Written Realms Core</div>
+        <div class="num-characters" v-else>{{ world.num_characters }} characters</div>
       </div>
-    </router-link>
+    </component>
   </div>
 </template>
 
@@ -20,6 +23,7 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 
 const props = defineProps<{
   world: any;
+  externalUrl?: string;
 }>();
 
 const cardElement = ref<HTMLElement | null>(null);

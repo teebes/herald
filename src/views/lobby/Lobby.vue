@@ -33,6 +33,8 @@
 
           <div class="user-worlds-container">
             <WorldCard v-for="world in featured_worlds" :key="world.id" :world="world" />
+            <WorldCard v-for="world in core_featured_worlds" :key="'core-' + world.id"
+              :world="world" :external-url="world.external_url" />
           </div>
         </div>
       </div>
@@ -149,6 +151,7 @@ import WorldCard from "@/components/lobby/WorldCard.vue"
 
 const chars = ref<any[]>([]);
 const featured_worlds = ref<World[]>([]);
+const core_featured_worlds = ref<{ id: string; name: string; external_url: string }[]>([]);
 const discover_worlds = ref<World[]>([]);
 const dev_worlds = ref<World[]>([]);
 const building_worlds = ref<World[]>([]);
@@ -180,6 +183,7 @@ onMounted(async () => {
 
   chars.value = lobby_data.data.recent_characters;
   featured_worlds.value = lobby_data.data.featured;
+  core_featured_worlds.value = lobby_data.data.core_featured || [];
   discover_worlds.value = lobby_data.data.staff_picks;
   playing_worlds.value = lobby_data.data.playing;
   dev_worlds.value = lobby_data.data.in_development;

@@ -26,8 +26,9 @@ const actions = {
       const resp = await axios.post(LOGIN_ENDPOINT, creds);
       commit("auth_set", resp.data.token);
       commit("user_set", resp.data.user);
+      return true;
     } catch (error: any) {
-      if (error.response.data.non_field_errors) {
+      if (error.response?.data?.non_field_errors) {
         commit(
           "ui/notification_set_error",
           error.response.data.non_field_errors[0],
@@ -38,7 +39,8 @@ const actions = {
       } else {
         dispatch("ui/process_error_response", error, { root: true });
       }
-      localStorage.removeItem("jwtToken");
+      commit("auth_clear");
+      return false;
     }
   },
 
@@ -166,17 +168,19 @@ const actions = {
         commit("ui/notification_set", "E-mail successfully confirmed.", {
           root: true
         });
-        commit("auth_set", resp.data.token);
+        if (resp.data.token) commit("auth_set", resp.data.token);
         commit("user_set", resp.data.user);
         router.push({ name: "lobby" });
+        return true;
       }
     } catch (e: any) {
-      if (e.response.data.code) {
+      if (e.response?.data?.code) {
         commit("ui/notification_set_error", e.response.data.code[0], {
           root: true
         });
       }
     }
+    return false;
   },
 
   resendemailconfirmation: async ({ commit }: ActionMethods, payload: any) => {

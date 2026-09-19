@@ -23,17 +23,17 @@ export default function interceptorSetup() {
         return Promise.reject(error);
       }
 
-      if (error.response.status == 401) {
+      if (error.response?.status == 401) {
         store.commit("auth/auth_clear");
         // router.push({ name: "login" });
-      } else if (error.response.status == 403) {
+      } else if (error.response?.status == 403) {
         if (router.currentRoute.value.name != "game") {
           store.commit(
             "ui/notification_set_error",
             "You are not authorized to perform this action"
           );
         }
-      } else if (error.response.status == 400) {
+      } else if (error.response?.status == 400) {
         const errorData = error.response.data;
         let errorMsg = "Error";
         if (errorData.non_field_errors && errorData.non_field_errors.length) {
