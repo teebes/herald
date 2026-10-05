@@ -33,6 +33,14 @@ export default function interceptorSetup() {
             "You are not authorized to perform this action"
           );
         }
+      } else if (error.response?.status == 429 &&
+        /auth\/(signup|save|forgotpassword|resendconfirmation)\//.test(error.config?.url || "")) {
+        const seconds = Number(error.response.headers["retry-after"]);
+        const minutes = Math.ceil(seconds / 60);
+        const retry = seconds > 0
+          ? ` Please try again in ${minutes} ${minutes === 1 ? "minute" : "minutes"}.`
+          : " Please wait before trying again.";
+        store.commit("ui/notification_set_error", "Too many requests." + retry);
       } else if (error.response?.status == 400) {
         const errorData = error.response.data;
         let errorMsg = "Error";

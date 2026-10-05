@@ -135,9 +135,11 @@ const actions = {
   },
 
   forgotpassword: async ({}, payload: any) => {
-    const resp = await axios.post("/auth/forgotpassword/", payload);
-    if (resp.status === 201) {
-      return true;
+    try {
+      const resp = await axios.post("/auth/forgotpassword/", payload);
+      return resp.status === 201;
+    } catch {
+      return false;
     }
   },
 
@@ -189,8 +191,9 @@ const actions = {
       commit("ui/notification_set", "Confirmation e-mail sent.", {
         root: true
       });
+      return { success: true, retryAfter: 60 };
     } catch (error: any) {
-      if (error.response.data.non_field_errors) {
+      if (error.response?.data?.non_field_errors) {
         commit(
           "ui/notification_set_error",
           error.response.data.non_field_errors[0],
@@ -199,6 +202,10 @@ const actions = {
           }
         );
       }
+      return {
+        success: false,
+        retryAfter: Number(error.response?.headers?.["retry-after"]) || 0,
+      };
     }
   },
 

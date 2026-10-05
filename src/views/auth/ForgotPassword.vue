@@ -2,7 +2,7 @@
   <form class="single-form" @submit.prevent="forgotpassword">
     <h1>FORGOT YOUR PASSWORD?</h1>
 
-    <template v-if="sent">Request sent. Check your email inbox and click the reset link.</template>
+    <template v-if="sent">If this account can receive email, a reset link has been requested. Check your inbox. If you recently requested a link, allow time for it to arrive before trying again.</template>
 
     <template v-else>
       <div class="form-group">
@@ -18,7 +18,7 @@
         />
       </div>
 
-      <button class="btn-medium">GET RESET LINK</button>
+      <button class="btn-medium" :disabled="sending">GET RESET LINK</button>
     </template>
   </form>
 </template>
@@ -31,9 +31,16 @@ const store = useStore();
 
 const email = ref("");
 const sent = ref(false);
+const sending = ref(false);
 
 const forgotpassword = async () => {
-  sent.value = await store.dispatch("auth/forgotpassword", { email: email.value });
+  if (sending.value) return;
+  sending.value = true;
+  try {
+    sent.value = await store.dispatch("auth/forgotpassword", { email: email.value });
+  } finally {
+    sending.value = false;
+  }
 };
 
 onMounted(() => {

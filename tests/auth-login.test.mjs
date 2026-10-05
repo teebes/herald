@@ -57,3 +57,28 @@ test('confirming while authenticated preserves a token omitted by the API', asyn
   assert.ok(!f.commits.some(([mutation]) => mutation === 'auth_set'));
   assert.deepEqual(f.navigations, [{ name: 'lobby' }]);
 });
+
+test('resend throttling exposes the server delay without reporting a send', async () => {
+  const f = fixture(async () => { throw {
+    response: { status: 429, headers: { 'retry-after': '3420' }, data: { detail: 'Throttled.' } },
+  }; });
+  assert.deepEqual(await f.actions.resendemailconfirmation(f.context, {}),
+    { success: false, retryAfter: 3420 });
+  assert.ok(!f.commits.some(([mutation]) => mutation === 'ui/notification_set'));
+});
+
+test('successful resend starts cooldown and network failures remain retryable', async () => {
+  const sent = fixture(async () => ({ status: 201 }));
+  assert.deepEqual(await sent.actions.resendemailconfirmation(sent.context, {}),
+    { success: true, retryAfter: 60 });
+  const offline = fixture(async () => { throw new Error('offline'); });
+  assert.deepEqual(await offline.actions.resendemailconfirmation(offline.context, {}),
+    { success: false, retryAfter: 0 });
+});
+
+test('password reset shows acknowledgement only for accepted requests', async () => {
+  const accepted = fixture(async () => ({ status: 201 }));
+  assert.equal(await accepted.actions.forgotpassword(accepted.context, {}), true);
+  const limited = fixture(async () => { throw { response: { status: 429 } }; });
+  assert.equal(await limited.actions.forgotpassword(limited.context, {}), false);
+});
