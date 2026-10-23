@@ -23,7 +23,9 @@
           @clickRoom="onMapClickRoom"
         />
         <div class="basic-actions mt-1">
-          <button class="btn-small mr-4" @click="editInfo">EDIT</button>
+          <button class="btn-small mr-4" :disabled="openingEditor" @click="editInfo">
+            {{ openingEditor ? 'LOADING…' : 'EDIT' }}
+          </button>
           <button class="btn-small" @click="deleteRoom">DELETE</button>
         </div>
       </div>
@@ -59,7 +61,7 @@
 </template>
 
 <script lang='ts' setup>
-import { computed, onMounted, onUnmounted } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import Map from "@/components/ui/Map.vue";
@@ -73,6 +75,7 @@ const store = useStore();
 const route = useRoute();
 const router = useRouter();
 const roomRequest = axios.CancelToken.source();
+const openingEditor = ref(false);
 
 const map = computed(() => store.state.builder.map);
 const center_key = computed(() => store.state.builder.room.key);
@@ -130,13 +133,27 @@ onUnmounted(() => {
   window.removeEventListener("keypress", onTypeE);
 });
 
-const editInfo = () => {
-  const modal = {
-    data: room.value,
-    schema: BUILDER_FORMS.ROOM_INFO,
-    action: "builder/room_save"
-  };
-  store.commit("ui/modal/open_form", modal);
+const editInfo = async () => {
+  if (!room.value || openingEditor.value || roomRequest.token.reason) return;
+  const roomId = room.value.id;
+  openingEditor.value = true;
+  try {
+    // Map records omit fields such as color. Open only with full room details.
+    const details = await store.dispatch("builder/room_fetch", {
+      world_id: route.params.world_id,
+      room_id: roomId,
+      cancelToken: roomRequest.token
+    });
+    if (!details || roomRequest.token.reason || room.value?.id != roomId || store.state.ui.modal.isOpen) return;
+
+    store.commit("ui/modal/open_form", {
+      data: details,
+      schema: BUILDER_FORMS.ROOM_INFO,
+      action: "builder/room_save"
+    });
+  } finally {
+    openingEditor.value = false;
+  }
 };
 
 const deleteRoom = async () => {
