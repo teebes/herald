@@ -13,15 +13,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import Notification from '@/components/ui/Notification.vue';
 import Modal from '@/components/ui/Modal.vue';
 import Header from '@/components/Header.vue'
+import { getPageTitle } from '@/router/pageTitles';
 
 const route = useRoute();
 const store = useStore();
+
+watch(
+  () => getPageTitle(route, store.state),
+  title => { document.title = title; },
+  { immediate: true },
+);
 
 const notification = computed(() => store.state.ui.notification);
 const isModalOpen = computed(() => store.state.ui.modal.isOpen);
