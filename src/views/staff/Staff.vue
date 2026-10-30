@@ -133,6 +133,9 @@
         <!-- WIP Worlds -->
         <div class="wip-worlds mt-4">
           <h3 class="my-2">WORLDS CHANGING STATE</h3>
+          <div class="mb-2">
+            Transitions over 5 minutes are highlighted. Recovery retries can restart the timer.
+          </div>
 
           <div class="worlds mt-2">
             <div v-for="world in panel.wip_worlds" :key="world.key">
@@ -145,7 +148,11 @@
               -
               <span v-if="world.nexus_data">{{ world.nexus_data.name }} ({{ world.nexus_data.state }})</span>
               <span v-else>No Nexus</span>
-              - {{ world.time_since_last_change }}
+              -
+              <span :class="{ 'color-text-red': world.time_since_last_change > 300 }"
+                :title="world.change_state_ts ? `Last state change: ${world.change_state_ts} UTC` : undefined">
+                {{ format_state_age(world.time_since_last_change) }} in this state
+              </span>
             </div>
             <div class="mt-2">{{ panel.wip_worlds_count }} Total</div>
           </div>
@@ -260,6 +267,20 @@ const save_error_player_details = (error) => {
 
 const format_datetime = (value) => {
   return new Date(value).toLocaleString();
+};
+
+const format_state_age = (seconds: number | null | undefined) => {
+  if (typeof seconds !== 'number' || !Number.isFinite(seconds)) {
+    return 'Unknown time';
+  }
+  const total = Math.max(0, Math.floor(seconds));
+  const days = Math.floor(total / 86400);
+  const hours = Math.floor(total / 3600) % 24;
+  const minutes = Math.floor(total / 60) % 60;
+  if (days) return `${days}d ${hours}h`;
+  if (hours) return `${hours}h ${minutes}m`;
+  if (minutes) return `${minutes}m ${total % 60}s`;
+  return `${total}s`;
 };
 
 watch(search_query, () => {
